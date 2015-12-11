@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<UIAttributes 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xsi:schemaLocation="UIAttributes.xsd">
+	<UIAttribute>
+		<locator>username</locator>
+		<style>Text</style>
+		<displayName>User Name</displayName>
+		<description>Provide user name</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>realname</locator>
+		<style>Text</style>
+		<displayName>Real Name</displayName>
+		<description>Provide real name</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>phone</locator>
+		<style>Text</style>
+		<displayName>Phone Number</displayName>
+		<description>Provide phone number</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>email</locator>
+		<style>Text</style>
+		<displayName>Email</displayName>
+		<description>Provide email id</description>
+	</UIAttribute>
+	
+	
+	<UIAttribute>
+		<locator>Permissions</locator>
+		<style>Table</style>
+		<displayName>Permissions</displayName>
+		<description>Provide permissions</description>
+	</UIAttribute>
+	
+</UIAttributes>

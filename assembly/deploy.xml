@@ -1,0 +1,50 @@
+<project default="deploy">
+    <target name="deploy">
+        <echo message="deploy target/automation-tests-lib"/>
+		<delete dir="target/automation-ease-tests-lib" failonerror="false"/>
+    	<delete dir="target/ease-automation-tests-lib" failonerror="false"/>
+		<delete dir="target/automation-tests-lib" failonerror="false"/>
+        <unzip src="target/automation-tests-jars.zip"  dest="target/automation-tests-lib" overwrite="true"/>
+		<move todir="target/automation-tests-lib">
+			<fileset dir="target">
+				<include name="automation-onejar.jar"/>
+			</fileset>
+		</move>		
+		<move todir="./../automation-jsystem/tests/resources/webdriver">
+			<fileset dir="target/automation-tests-lib">
+				<include name="ie-driver-server*/**"/>
+				<include name="chromedriver*/**"/>
+			</fileset>
+		</move>	
+		
+		<unzip dest="./../automation-jsystem/tests/resources/webdriver">    
+			<fileset dir="./../automation-jsystem/tests/resources/webdriver">
+				<include name="**/*.zip"/>				
+			</fileset>
+		</unzip> 
+		
+		<delete>
+			<fileset dir="./../automation-jsystem/tests/resources/webdriver" includes="**/*.zip"/>
+		</delete>
+		<delete file="target/automation-tests-jars.zip"/>
+		<antcall target="delete-jsystem-selenium-dir"/>
+
+		<!--<delete dir="target/thirdparty/selenium" failonerror="false"/>-->
+    </target>
+	
+	 <target name="check-if-jsystem-selenium-dir-exists">
+		<condition property="deldir">
+			<available file="target/thirdparty/selenium" type="dir"/>
+		</condition>
+	</target>	
+	
+	<target name="delete-jsystem-selenium-dir" depends="check-if-jsystem-selenium-dir-exists" if="deldir">
+		<delete dir="target/thirdparty/selenium"/>   	
+	</target>
+	
+	<!-- delete the runner .project -->
+	<delete file="target/.project" failonerror="false"/>
+	<!-- delete the thirdparty .project -->
+	<delete file="target/thirdparty/.project" failonerror="false"/>
+	
+</project>

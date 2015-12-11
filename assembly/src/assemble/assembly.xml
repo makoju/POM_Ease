@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/assembly-1.0.0.xsd">
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+        <fileSet>		 
+			<directory>src/main/install/${resource-dir}</directory>
+            <outputDirectory>..</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+            <lineEnding>keep</lineEnding>
+        </fileSet>
+    </fileSets>
+    <dependencySets>   	    
+		<dependencySet>
+			<outputDirectory>../</outputDirectory>
+			<excludes>			
+				<exclude>org.apache.ws.commons:XmlSchema</exclude>				
+				<exclude>stax:stax-api</exclude>
+				<exclude>com.ability.ease.automation:automation-assembly</exclude>
+				<exclude>com.ability.ease.automation:automation-jsystem</exclude>
+				<exclude>com.ability.ease.automation:automation-common</exclude>	
+				<exclude>com.ability.ease.automation:automation-api</exclude>
+				<exclude>com.ability.ease.automation:automation-impl</exclude>	
+				<exclude>jsystem:jsystemCore</exclude>
+				<exclude>jsystem:jsystemAgent</exclude>
+				<exclude>jsystem:jsystemApp</exclude>
+				<exclude>jsystem:ant-jsystem</exclude>
+				<exclude>jsystem:jsystemCommon</exclude>
+				<exclude>jsystem:j2autoit</exclude>
+				<exclude>jsystem:cli</exclude>
+				<exclude>jsystem:filetransfer</exclude>				
+				<!--<exclude>jsystem:selenium-java-client-driver</exclude>-->
+				<!--<exclude>jsystem:selenium-server</exclude>-->
+				<exclude>jsystem:junit</exclude>
+			</excludes>
+        </dependencySet>
+    
+		<dependencySet>
+            <outputDirectory>../</outputDirectory>
+			<outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+			<includes>
+				<include>jsystem:jsystemAgent</include>
+				<include>jsystem:jsystemApp</include>
+				<include>jsystem:jsystemCore</include>
+				<include>jsystem:ant-jsystem</include>
+			</includes>				
+		</dependencySet>
+
+		<!--<dependencySet>
+            <outputDirectory>../thirdparty/selenium</outputDirectory>
+			<outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+			<includes>
+				<include>jsystem:selenium-server</include>				
+			</includes>				
+		</dependencySet>	-->
+
+		<!--<dependencySet>
+            <outputDirectory>../automation-tests-lib</outputDirectory>
+			<outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+			<includes>
+				<include>com.ability.ease.automation:automation-common</include>				
+			</includes>				
+		</dependencySet>	-->
+		
+		
+		<!--<dependencySet>
+            <outputDirectory>../</outputDirectory>
+			<excludes>											
+				<exclude>com.ability.ease.automation:automation-assembly</exclude>				
+			</excludes>	
+		</dependencySet>-->		
+    </dependencySets>
+</assembly>

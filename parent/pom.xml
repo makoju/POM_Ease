@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ability.ease.automation</groupId>
+	<artifactId>automation-parent</artifactId>
+	<packaging>pom</packaging>
+	<name>automation parent</name>
+	<version>0.1-SNAPSHOT</version>
+
+    <modules>
+		<module>../automation-impl</module>
+		<module>../automation-api</module>
+		<module>../automation-common</module>
+		<module>../automation-jsystem</module>		
+	</modules>	
+
+	<!-- Shared version number properties --> 
+	<properties> 
+	    <ability.ease.flow>EASE15</ability.ease.flow>
+	    <maven.compiler.target>1.6</maven.compiler.target>
+        <maven.compiler.source>1.6</maven.compiler.source>
+	    <jsystem.base.version>5.6.57</jsystem.base.version> 
+		<org.springframework.version>3.2.2.RELEASE</org.springframework.version> 
+		<selenium-webdriver.version>2.40.0</selenium-webdriver.version>
+	</properties> 
+   
+	<dependencyManagement>
+		<dependencies>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-ie-driver</artifactId>
+			<version>${selenium-webdriver.version}</version>
+		</dependency>  
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-firefox-driver</artifactId>
+			<version>${selenium-webdriver.version}</version>
+		</dependency>  
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-chrome-driver</artifactId>
+			<version>${selenium-webdriver.version}</version>
+		</dependency> 
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-htmlunit-driver</artifactId>	
+			<version>${selenium-webdriver.version}</version>	
+		</dependency> 
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-support</artifactId>
+			<version>${selenium-webdriver.version}</version>
+		</dependency> 	
+
+			<!-- JSystem -->			
+			<dependency>
+				<groupId>jsystem</groupId>
+				<artifactId>jsystemCore</artifactId>
+				<version>${jsystem.base.version}</version>				
+			</dependency>
+
+			<dependency>
+				<groupId>jsystem</groupId>
+				<artifactId>jsystemAgent</artifactId>
+				<version>${jsystem.base.version}</version>				
+			</dependency>
+
+			<dependency>
+				<groupId>jsystem</groupId>
+				<artifactId>jsystemCommon</artifactId>
+				<version>${jsystem.base.version}</version>
+				
+			</dependency>
+
+			<dependency>
+				<groupId>jsystem</groupId>
+				<artifactId>j2autoit</artifactId>
+				<version>${jsystem.base.version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>jsystem</groupId>
+				<artifactId>cli</artifactId>
+				<version>${jsystem.base.version}</version>				
+			</dependency>
+
+			<dependency>
+				<groupId>jsystem</groupId>
+				<artifactId>filetransfer</artifactId>
+				<version>${jsystem.base.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>jsystem</groupId>
+				<artifactId>jsystemApp</artifactId>
+				<version>${jsystem.base.version}</version>
+				<!--<scope>provided</scope> -->
+			</dependency>
+
+			<dependency>
+				<groupId>jsystem</groupId>
+				<artifactId>ant-jsystem</artifactId>
+				<version>${jsystem.base.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<!--<dependency>
+				<groupId>jsystem</groupId>
+				<artifactId>selenium-java-client-driver</artifactId>
+				<version>1.0.2</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.seleniumhq.selenium</groupId>
+				<artifactId>selenium-server</artifactId>
+				<version>2.32.0</version>
+			</dependency>
+				<dependency>
+				<groupId>org.seleniumhq.selenium</groupId>
+				<artifactId>selenium-java</artifactId>
+				<version>2.32.0</version>
+			</dependency>-->
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.14</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.microsoft.sqlserver</groupId>
+				<artifactId>sqljdbc</artifactId>
+				<version>4</version>
+				<scope>provided</scope>
+			</dependency>
+			<!--<dependency>
+				<groupId>com.eurekify.automation</groupId>
+				<artifactId>automation-jsystem</artifactId>
+				<version>${eurekify.version}</version>
+			</dependency>-->
+           <!-- <dependency>
+				<groupId>com.ability.ease.automation</groupId>
+				<artifactId>imag-automation-jsystem</artifactId>
+                <version>0.1-SNAPSHOT</version>				
+			</dependency> -->
+            <dependency>
+				<groupId>com.ability.ease.automation</groupId>
+				<artifactId>automation-common</artifactId>
+				<version>0.1-SNAPSHOT</version>
+			</dependency>
+			 <dependency>
+				<groupId>com.ability.ease.automation</groupId>
+				<artifactId>automation-jsystem</artifactId>
+				<version>0.1-SNAPSHOT</version>				
+			</dependency>
+			 <dependency>
+				<groupId>com.ability.ease.automation</groupId>
+				<artifactId>automation-impl</artifactId>
+				<version>0.1-SNAPSHOT</version>				
+			</dependency>
+			 <dependency>
+				<groupId>com.ability.ease.automation</groupId>
+				<artifactId>automation-api</artifactId>
+				<version>0.1-SNAPSHOT</version>				
+			</dependency>
+           <dependency>
+				<groupId>commons-httpclient</groupId>
+				<artifactId>commons-httpclient</artifactId>	
+				<version>3.1</version>				
+			</dependency> 
+            <dependency> 
+				<groupId>commons-codec</groupId>   
+				<artifactId>commons-codec</artifactId>   
+				<version>1.7</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>	
+				<version>2.4</version>				
+			</dependency>
+			<dependency>
+				<groupId>de.java2html</groupId>
+				<artifactId>java2html</artifactId>
+				<version>5.0</version>
+			</dependency>
+            <!--<dependency>
+				<groupId>jsystem</groupId>
+				<artifactId>selenium-java-client-driver</artifactId>
+				<version>1.0</version>				
+			</dependency>-->
+			<!--<dependency>   
+				<groupId>org.apache.httpcomponents</groupId>   
+				<artifactId>httpcore</artifactId>  
+				<version>4.1.4</version>
+			</dependency>-->	
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.1.1</version>	
+			</dependency>			
+			<dependency>
+				<groupId>jsystem</groupId>
+				<artifactId>junit</artifactId>
+				<version>1.0</version>		
+			</dependency>
+			<dependency>
+				<groupId>xalan</groupId>
+				<artifactId>xalan</artifactId>			
+				<version>2.7.1</version>
+			</dependency>
+			<dependency>
+				<groupId>ftp4j</groupId>
+				<artifactId>ftp4j</artifactId>			
+				<version>1.7.2</version>
+			</dependency>
+			<dependency>
+				<groupId>com.oracle</groupId>
+				<artifactId>ojdbc5</artifactId>
+				<version>11.2.0.1.0</version>			
+			</dependency>
+			<dependency>    
+				<groupId>org.odata4j</groupId>    
+				<artifactId>odata4j-clientbundle</artifactId>    
+				<version>0.7.0</version>
+			</dependency> 
+		</dependencies>		
+	</dependencyManagement>
+	
+	
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>					
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>${maven.compiler.source}</source>
+						<target>${maven.compiler.target}</target>
+					</configuration>
+				</plugin>
+				<plugin>        
+					<artifactId>maven-shade-plugin</artifactId>
+					<version>1.5</version>
+				</plugin>      
+			</plugins>
+		</pluginManagement>
+	</build>			
+</project>

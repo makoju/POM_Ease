@@ -1,0 +1,7 @@
+<project name="jsystemServices" default="all" basedir=".">
+	<property environment="env"/>
+	<property name="projectName" value="jsystemServices"/>
+	<property name="runnerRoot" value="${env.RUNNER_ROOT}"/>
+	<property name="dist" value="../jsystemServices/lib"/>
+	<import file="${runnerRoot}/dev/buildHelper.xml" />
+</project>

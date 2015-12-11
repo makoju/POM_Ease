@@ -1,0 +1,16 @@
+<project default="make_shortcut" name="Ant make JSystem shortcut for widnows os">
+    <property file="src/shortcut_temp.properties"/>
+	<condition property="os.isWindows">
+		<os family="windows"/> 
+	</condition>
+	
+    <target name="make_shortcut" if="os.isWindows">
+        <echo message="Making desktop shortcut for jsystem"/>	
+    	<exec executable="cmd" dir="src" failonerror="true">
+			<arg value="/c"/>
+			<arg line="cscript.exe make_windows_shortcut.vbs ${shortcut_target} ${shortcut_name}  ${shortcut_icon_location}"/>
+		</exec>
+		<delete file="src/shortcut_temp.properties" />
+    </target>	
+	
+</project>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="tests"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/commons-httpclient-3.0.1.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/commons-net.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/jakarta-oro-2.0.8.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/jcommon-1.0.0.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/jfreechart-1.0.0.jar"/>
+	<classpathentry kind="lib" path="/runner/lib/jsystem-launcher.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/looks.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/qdox.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/serializer.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/xalan.jar"/>
+	<classpathentry kind="lib" path="/runner/lib/cli.jar" sourcepath="/runner/out/lib/cli_src.zip"/>
+	<classpathentry kind="lib" path="/runner/lib/jsystemCommon.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/poi.jar"/>
+	<classpathentry kind="lib" path="/runner/lib/ant-jsystem.jar"/>
+	<classpathentry kind="lib" path="/runner/lib/embeddedCatalina.jar"/>
+	<classpathentry kind="lib" path="/runner/lib/filetransfer.jar" sourcepath="/runner/out/lib/filetransfer_src.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/automation/wireshark/runner/out/lib/filetransfer_doc.zip!/api"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/runner/lib/jsystemAgent.jar"/>
+	<classpathentry kind="lib" path="/runner/lib/jsystemApp.jar" sourcepath="/runner/lib/jsystemApp_src.zip"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/etc/ant-bootstrap.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-antlr.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-apache-bcel.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-apache-bsf.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-apache-log4j.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-apache-oro.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-apache-regexp.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-apache-resolver.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-commons-logging.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-commons-net.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-contrib.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-jai.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-javamail.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-jdepend.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-jmf.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-jsch.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-junit.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-launcher.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-netrexx.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-nodeps.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-starteam.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-stylebook.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-swing.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-testutil.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-trax.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/ant-weblogic.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/dsn.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/imap.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/mail.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/mailapi.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/pop3.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/smtp.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/ant/lib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/annotations-api.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/catalina.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/comm.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/commons-io-1.3.1.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/ftpserver-dev.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/ganymed.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/jasper.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/jsp-api.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/jwizz-0.1.3.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/jython.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/log4j.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/mail-1.4.1.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/mysql-connector-java-3.1.10-bin.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/poi-scratchpad.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/servlet.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/servlet-api-2.3.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/spring.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/tftp4java-client.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/tftp4java-server.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/tomcat-coyote.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/tomcat-juli.jar"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/wrapper.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jsystemCore"/>
+	<classpathentry kind="lib" path="/runner/thirdparty/commonLib/junit.jar" sourcepath="D:/Work/aqua/junit-4.4-src.jar"/>
+	<classpathentry kind="lib" path="/runner/lib/scriptingLanguages.jar"/>
+	<classpathentry kind="output" path="classes"/>
+</classpath>

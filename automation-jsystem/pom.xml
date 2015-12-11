@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<parent>
+		<groupId>com.ability.ease.automation</groupId>
+		<artifactId>automation-parent</artifactId>
+		<version>0.1-SNAPSHOT</version>
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>	
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ability.ease.automation</groupId>
+	<artifactId>automation-jsystem</artifactId>
+	<packaging>jar</packaging>	
+	<name>automation-jsystem module</name>
+	
+	<!--Dependency management-->
+	<dependencies>
+	
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>automation-api</artifactId>		
+		</dependency>
+		
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>automation-common</artifactId>		
+		</dependency>
+	
+		<!-- JSYSTEM JARS -->      
+		<dependency>
+			<groupId>jsystem</groupId>
+			<artifactId>jsystemCore</artifactId>			
+		</dependency>
+
+		<dependency>
+			<groupId>jsystem</groupId>
+			<artifactId>jsystemAgent</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>jsystem</groupId>
+			<artifactId>jsystemCommon</artifactId>
+		</dependency>
+		
+		<dependency>
+				<groupId>de.java2html</groupId>
+				<artifactId>java2html</artifactId>
+		</dependency>
+		<!--<dependency>
+			<groupId>jsystem</groupId>
+			<artifactId>j2autoit</artifactId>
+		</dependency>-->
+
+		<dependency>
+			<groupId>jsystem</groupId>
+			<artifactId>cli</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>jsystem</groupId>
+			<artifactId>filetransfer</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>jsystem</groupId>
+			<artifactId>jsystemApp</artifactId>
+		</dependency>
+		
+		<!--<dependency>
+			<groupId>jsystem</groupId>
+			<artifactId>ant-jsystem</artifactId>
+		</dependency>-->
+		
+		<dependency>
+			<groupId>jsystem</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+       <dependency> 
+			<groupId>commons-codec</groupId>   
+			<artifactId>commons-codec</artifactId>   
+			<!--<version>1.6</version>-->
+		</dependency>
+		<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<!--<version>1.1.1</version>	-->		
+			</dependency>			
+		<!-- 
+		Application Context (depends on spring-core, spring-expression, spring-aop, spring-beans) 
+		This is the central artifact for Spring's Dependency Injection Container and is generally always defined 
+		--> 
+		<dependency> 
+			<groupId>org.springframework</groupId> 
+			<artifactId>spring-context</artifactId> 
+			<version>${org.springframework.version}</version> 
+		</dependency>	
+	</dependencies>
+	
+	<build>
+		<outputDirectory>classes</outputDirectory>
+		<sourceDirectory>${project.basedir}/src</sourceDirectory>
+		<resources>
+			<resource>
+				<filtering>false</filtering>
+				<directory>${project.basedir}/tests</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+			</resource>
+			<resource>
+				<filtering>false</filtering>
+				<directory>${project.basedir}/src</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>tests</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>	
+	</build>
+</project>

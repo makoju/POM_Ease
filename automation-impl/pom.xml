@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<parent>
+		<groupId>com.ability.ease.automation</groupId>
+		<artifactId>automation-parent</artifactId>
+		<version>0.1-SNAPSHOT</version>
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>
+
+    <modelVersion>4.0.0</modelVersion>
+	<groupId>com.ability.ease.automation</groupId>
+	<artifactId>automation-impl</artifactId>
+	<packaging>jar</packaging>	
+	<name>automation-impl module</name>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-ie-driver</artifactId>					
+		</dependency>  
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-firefox-driver</artifactId>
+			<exclusions>
+				<exclusion>  
+					<groupId>org.apache.commons</groupId>
+					<artifactId>commons-io</artifactId>	
+				</exclusion>
+				<exclusion>  
+					<groupId>org.seleniumhq.selenium</groupId>
+					<artifactId>selenium-remote-driver</artifactId>	
+				</exclusion>	
+			</exclusions> 	
+		</dependency>  
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-chrome-driver</artifactId>		
+			<exclusions>
+				<exclusion>  
+					<groupId>org.seleniumhq.selenium</groupId>
+					<artifactId>selenium-remote-driver</artifactId>	
+				</exclusion>	
+			</exclusions> 
+		</dependency>
+		<dependency>
+			<groupId>org.apache.santuario</groupId>
+			<artifactId>xmlsec</artifactId>
+			<version>1.4.3</version>
+		</dependency> 
+		<!--<dependency>
+				<groupId>jsystem</groupId>
+				<artifactId>selenium-java-client-driver</artifactId>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.seleniumhq.selenium</groupId>
+				<artifactId>selenium-server</artifactId>
+			</dependency>
+				<dependency>
+				<groupId>org.seleniumhq.selenium</groupId>
+				<artifactId>selenium-java</artifactId>
+			</dependency> -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-support</artifactId>			
+		</dependency>
+
+		<dependency>
+			 <groupId>webdriver</groupId>  
+			 <artifactId>chromedriver-win</artifactId>  
+			 <version>2.20</version>  
+			<type>zip</type> 		
+		</dependency>
+		<dependency>  
+			<groupId>webdriver</groupId>  
+			<artifactId>ie-driver-server-win32</artifactId>  
+			<version>2.40.0</version>  
+			<type>zip</type>  
+		</dependency> 
+	
+		<dependency>
+			<groupId>com.ability.ease.automation</groupId>
+			<artifactId>automation-api</artifactId>		
+        </dependency>
+		
+		<dependency>
+			<groupId>com.ability.ease.automation</groupId>
+			<artifactId>automation-common</artifactId>		
+        </dependency>		
+</dependencies>	
+	
+	
+	<build>
+		<outputDirectory>classes</outputDirectory>
+		<sourceDirectory>${project.basedir}/src</sourceDirectory>
+		<resources>
+			<resource>
+				<filtering>false</filtering>
+				<directory>${project.basedir}/tests</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>tests</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+         </plugins>			
+	</build>
+</project>

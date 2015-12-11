@@ -1,0 +1,508 @@
+
+environment variable ECLIPSE_WORKSPACE is not defined, using "D:\Automation".
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Maven Stub Project (No POM) 1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-eclipse-plugin:2.9:add-maven-repo (default-cli) @ standalone-pom ---
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 0.517s
+[INFO] Finished at: Thu Nov 26 15:16:50 IST 2015
+[INFO] Final Memory: 4M/8M
+[INFO] ------------------------------------------------------------------------
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.ability.ease.automation:automation-impl:jar:0.1-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.codehaus.mojo:build-helper-maven-plugin is missing. @ line 109, column 12
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.ability.ease.automation:automation-jsystem:jar:0.1-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.codehaus.mojo:build-helper-maven-plugin is missing. @ line 121, column 12
+[WARNING] The expression ${pom.groupId} is deprecated. Please use ${project.groupId} instead.
+[WARNING] The expression ${pom.groupId} is deprecated. Please use ${project.groupId} instead.
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] automation parent
+[INFO] automation-api module
+[INFO] automation-common module
+[INFO] automation-impl module
+[INFO] automation-jsystem module
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building automation parent 0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-install-plugin:2.3.1:install (default-install) @ automation-parent ---
+[INFO] Installing D:\Automation\build\..\parent\pom.xml to C:\Users\Nageswar.Bodduri\.m2\repository\com\ability\ease\automation\automation-parent\0.1-SNAPSHOT\automation-parent-0.1-SNAPSHOT.pom
+[INFO] 
+[INFO] --- maven-eclipse-plugin:2.9:clean (default-cli) @ automation-parent ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building automation-api module 0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:resources (default-resources) @ automation-api ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 17 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.3.2:compile (default-compile) @ automation-api ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:testResources (default-testResources) @ automation-api ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory D:\Automation\automation-api\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.3.2:testCompile (default-testCompile) @ automation-api ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.7.2:test (default-test) @ automation-api ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.3.1:jar (default-jar) @ automation-api ---
+[INFO] Building jar: D:\Automation\automation-api\target\automation-api-0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.3.1:install (default-install) @ automation-api ---
+[INFO] Installing D:\Automation\automation-api\target\automation-api-0.1-SNAPSHOT.jar to C:\Users\Nageswar.Bodduri\.m2\repository\com\ability\ease\automation\automation-api\0.1-SNAPSHOT\automation-api-0.1-SNAPSHOT.jar
+[INFO] Installing D:\Automation\automation-api\pom.xml to C:\Users\Nageswar.Bodduri\.m2\repository\com\ability\ease\automation\automation-api\0.1-SNAPSHOT\automation-api-0.1-SNAPSHOT.pom
+[INFO] 
+[INFO] --- maven-eclipse-plugin:2.9:clean (default-cli) @ automation-api ---
+[INFO] Deleting file: .project
+[INFO] Deleting file: .classpath
+[INFO] Deleting file: .wtpmodules
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building automation-common module 0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:resources (default-resources) @ automation-common ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory D:\Automation\automation-common\src\main\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.3.2:compile (default-compile) @ automation-common ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:testResources (default-testResources) @ automation-common ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory D:\Automation\automation-common\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.3.2:testCompile (default-testCompile) @ automation-common ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.7.2:test (default-test) @ automation-common ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.3.1:jar (default-jar) @ automation-common ---
+[INFO] 
+[INFO] --- maven-install-plugin:2.3.1:install (default-install) @ automation-common ---
+[INFO] Installing D:\Automation\automation-common\target\automation-common-0.1-SNAPSHOT.jar to C:\Users\Nageswar.Bodduri\.m2\repository\com\ability\ease\automation\automation-common\0.1-SNAPSHOT\automation-common-0.1-SNAPSHOT.jar
+[INFO] Installing D:\Automation\automation-common\pom.xml to C:\Users\Nageswar.Bodduri\.m2\repository\com\ability\ease\automation\automation-common\0.1-SNAPSHOT\automation-common-0.1-SNAPSHOT.pom
+[INFO] 
+[INFO] --- maven-eclipse-plugin:2.9:clean (default-cli) @ automation-common ---
+[INFO] Deleting file: .project
+[INFO] Deleting file: .classpath
+[INFO] Deleting file: .wtpmodules
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building automation-impl module 0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- build-helper-maven-plugin:1.9.1:add-source (default) @ automation-impl ---
+[INFO] Source directory: D:\Automation\automation-impl\tests added.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:resources (default-resources) @ automation-impl ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory D:\Automation\automation-impl\tests
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.3.2:compile (default-compile) @ automation-impl ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:testResources (default-testResources) @ automation-impl ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory D:\Automation\automation-impl\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.3.2:testCompile (default-testCompile) @ automation-impl ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.7.2:test (default-test) @ automation-impl ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.3.1:jar (default-jar) @ automation-impl ---
+[INFO] Building jar: D:\Automation\automation-impl\target\automation-impl-0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.3.1:install (default-install) @ automation-impl ---
+[INFO] Installing D:\Automation\automation-impl\target\automation-impl-0.1-SNAPSHOT.jar to C:\Users\Nageswar.Bodduri\.m2\repository\com\ability\ease\automation\automation-impl\0.1-SNAPSHOT\automation-impl-0.1-SNAPSHOT.jar
+[INFO] Installing D:\Automation\automation-impl\pom.xml to C:\Users\Nageswar.Bodduri\.m2\repository\com\ability\ease\automation\automation-impl\0.1-SNAPSHOT\automation-impl-0.1-SNAPSHOT.pom
+[INFO] 
+[INFO] --- maven-eclipse-plugin:2.9:clean (default-cli) @ automation-impl ---
+[INFO] Deleting file: .project
+[INFO] Deleting file: .classpath
+[INFO] Deleting file: .wtpmodules
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building automation-jsystem module 0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- build-helper-maven-plugin:1.9.1:add-source (default) @ automation-jsystem ---
+[INFO] Source directory: D:\Automation\automation-jsystem\tests added.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:resources (default-resources) @ automation-jsystem ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 21 resources
+[INFO] Copying 19 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.3.2:compile (default-compile) @ automation-jsystem ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:testResources (default-testResources) @ automation-jsystem ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory D:\Automation\automation-jsystem\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.3.2:testCompile (default-testCompile) @ automation-jsystem ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.7.2:test (default-test) @ automation-jsystem ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.3.1:jar (default-jar) @ automation-jsystem ---
+[INFO] Building jar: D:\Automation\automation-jsystem\target\automation-jsystem-0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.3.1:install (default-install) @ automation-jsystem ---
+[INFO] Installing D:\Automation\automation-jsystem\target\automation-jsystem-0.1-SNAPSHOT.jar to C:\Users\Nageswar.Bodduri\.m2\repository\com\ability\ease\automation\automation-jsystem\0.1-SNAPSHOT\automation-jsystem-0.1-SNAPSHOT.jar
+[INFO] Installing D:\Automation\automation-jsystem\pom.xml to C:\Users\Nageswar.Bodduri\.m2\repository\com\ability\ease\automation\automation-jsystem\0.1-SNAPSHOT\automation-jsystem-0.1-SNAPSHOT.pom
+[INFO] 
+[INFO] --- maven-eclipse-plugin:2.9:clean (default-cli) @ automation-jsystem ---
+[INFO] Deleting file: .project
+[INFO] Deleting file: .classpath
+[INFO] Deleting file: .wtpmodules
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] automation parent ................................. SUCCESS [0.318s]
+[INFO] automation-api module ............................. SUCCESS [0.416s]
+[INFO] automation-common module .......................... SUCCESS [0.148s]
+[INFO] automation-impl module ............................ SUCCESS [0.242s]
+[INFO] automation-jsystem module ......................... SUCCESS [0.678s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 2.124s
+[INFO] Finished at: Thu Nov 26 15:16:53 IST 2015
+[INFO] Final Memory: 8M/16M
+[INFO] ------------------------------------------------------------------------
+
+Generating Eclipse projects
+
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.ability.ease.automation:automation-impl:jar:0.1-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.codehaus.mojo:build-helper-maven-plugin is missing. @ line 109, column 12
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.ability.ease.automation:automation-jsystem:jar:0.1-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.codehaus.mojo:build-helper-maven-plugin is missing. @ line 121, column 12
+[WARNING] The expression ${pom.groupId} is deprecated. Please use ${project.groupId} instead.
+[WARNING] The expression ${pom.groupId} is deprecated. Please use ${project.groupId} instead.
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] automation parent
+[INFO] automation-api module
+[INFO] automation-common module
+[INFO] automation-impl module
+[INFO] automation-jsystem module
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building automation parent 0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] >>> maven-eclipse-plugin:2.9:eclipse (default-cli) @ automation-parent >>>
+[INFO] 
+[INFO] <<< maven-eclipse-plugin:2.9:eclipse (default-cli) @ automation-parent <<<
+[INFO] 
+[INFO] --- maven-eclipse-plugin:2.9:eclipse (default-cli) @ automation-parent ---
+[INFO] Not running eclipse plugin goal for pom project
+[INFO] Adding support for WTP version 1.5.
+[INFO] Using Eclipse Workspace: D:\Automation
+[WARNING] Workspace defines a VM that does not contain a valid jre/lib/rt.jar: C:\Java\jre7
+[INFO] Adding default classpath container: org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building automation-api module 0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] >>> maven-eclipse-plugin:2.9:eclipse (default-cli) @ automation-api >>>
+[INFO] 
+[INFO] <<< maven-eclipse-plugin:2.9:eclipse (default-cli) @ automation-api <<<
+[INFO] 
+[INFO] --- maven-eclipse-plugin:2.9:eclipse (default-cli) @ automation-api ---
+[INFO] Adding support for WTP version 1.5.
+[INFO] Using Eclipse Workspace: D:\Automation
+[WARNING] Workspace defines a VM that does not contain a valid jre/lib/rt.jar: C:\Java\jre7
+[INFO] Adding default classpath container: org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6
+[INFO] Resource directory's path matches an existing source directory but "test", "filtering" or "output" were different.The resulting eclipse configuration may not accurately reflect the project configuration for src
+[INFO] Wrote Eclipse project for "automation-api" to D:\Automation\automation-api.
+[INFO] 
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building automation-common module 0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] >>> maven-eclipse-plugin:2.9:eclipse (default-cli) @ automation-common >>>
+[INFO] 
+[INFO] <<< maven-eclipse-plugin:2.9:eclipse (default-cli) @ automation-common <<<
+[INFO] 
+[INFO] --- maven-eclipse-plugin:2.9:eclipse (default-cli) @ automation-common ---
+[INFO] Adding support for WTP version 1.5.
+[INFO] Using Eclipse Workspace: D:\Automation
+[WARNING] Workspace defines a VM that does not contain a valid jre/lib/rt.jar: C:\Java\jre7
+[INFO] Adding default classpath container: org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6
+[INFO] Wrote Eclipse project for "automation-common" to D:\Automation\automation-common.
+[INFO] 
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building automation-impl module 0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] >>> maven-eclipse-plugin:2.9:eclipse (default-cli) @ automation-impl >>>
+[INFO] 
+[INFO] --- build-helper-maven-plugin:1.9.1:add-source (default) @ automation-impl ---
+[INFO] Source directory: D:\Automation\automation-impl\tests added.
+[INFO] 
+[INFO] <<< maven-eclipse-plugin:2.9:eclipse (default-cli) @ automation-impl <<<
+[INFO] 
+[INFO] --- maven-eclipse-plugin:2.9:eclipse (default-cli) @ automation-impl ---
+[INFO] Adding support for WTP version 1.5.
+[INFO] Using Eclipse Workspace: D:\Automation
+[WARNING] Workspace defines a VM that does not contain a valid jre/lib/rt.jar: C:\Java\jre7
+[INFO] Adding default classpath container: org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6
+[INFO] Wrote Eclipse project for "automation-impl" to D:\Automation\automation-impl.
+[INFO] 
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building automation-jsystem module 0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] >>> maven-eclipse-plugin:2.9:eclipse (default-cli) @ automation-jsystem >>>
+[INFO] 
+[INFO] --- build-helper-maven-plugin:1.9.1:add-source (default) @ automation-jsystem ---
+[INFO] Source directory: D:\Automation\automation-jsystem\tests added.
+[INFO] 
+[INFO] <<< maven-eclipse-plugin:2.9:eclipse (default-cli) @ automation-jsystem <<<
+[INFO] 
+[INFO] --- maven-eclipse-plugin:2.9:eclipse (default-cli) @ automation-jsystem ---
+[INFO] Adding support for WTP version 1.5.
+[INFO] Using Eclipse Workspace: D:\Automation
+[WARNING] Workspace defines a VM that does not contain a valid jre/lib/rt.jar: C:\Java\jre7
+[INFO] Adding default classpath container: org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6
+[INFO] Resource directory's path matches an existing source directory but "test", "filtering" or "output" were different.The resulting eclipse configuration may not accurately reflect the project configuration for tests
+[INFO] Resource directory's path matches an existing source directory but "test", "filtering" or "output" were different.The resulting eclipse configuration may not accurately reflect the project configuration for src
+[INFO] Wrote Eclipse project for "automation-jsystem" to D:\Automation\automation-jsystem.
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] automation parent ................................. SUCCESS [0.304s]
+[INFO] automation-api module ............................. SUCCESS [0.049s]
+[INFO] automation-common module .......................... SUCCESS [0.179s]
+[INFO] automation-impl module ............................ SUCCESS [0.372s]
+[INFO] automation-jsystem module ......................... SUCCESS [0.081s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 1.289s
+[INFO] Finished at: Thu Nov 26 15:16:55 IST 2015
+[INFO] Final Memory: 7M/14M
+[INFO] ------------------------------------------------------------------------
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building automation-assembly 0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:resources (default-resources) @ automation-assembly ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory D:\Automation\assembly\src\main\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.3.2:compile (default-compile) @ automation-assembly ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:testResources (default-testResources) @ automation-assembly ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory D:\Automation\assembly\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.3.2:testCompile (default-testCompile) @ automation-assembly ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.7.2:test (default-test) @ automation-assembly ---
+[INFO] No tests to run.
+[INFO] Surefire report directory: D:\Automation\assembly\target\surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+There are no tests to run.
+
+Results :
+
+Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] 
+[INFO] --- maven-jar-plugin:2.3.1:jar (default-jar) @ automation-assembly ---
+[WARNING] JAR will be empty - no content was marked for inclusion!
+[INFO] 
+[INFO] --- maven-assembly-plugin:2.2-beta-5:single (make-assembly) @ automation-assembly ---
+[INFO] Reading assembly descriptor: src/assemble/assembly.xml
+[WARNING] The following patterns were never triggered in this artifact exclusion filter:
+o  'org.apache.ws.commons:XmlSchema'
+o  'stax:stax-api'
+o  'jsystem:ant-jsystem'
+o  'jsystem:j2autoit'
+
+[WARNING] The following patterns were never triggered in this artifact inclusion filter:
+o  'jsystem:ant-jsystem'
+
+[INFO] Building zip: D:\Automation\assembly\target\automation-tests-jars.zip
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.3:run (default) @ automation-assembly ---
+[INFO] Executing tasks
+
+deploy:
+     [echo] deploy target/automation-tests-lib
+   [delete] Deleting directory D:\Automation\assembly\target\automation-tests-lib
+    [unzip] Expanding: D:\Automation\assembly\target\automation-tests-jars.zip into D:\Automation\assembly\target\automation-tests-lib
+   [delete] Deleting: D:\Automation\assembly\target\automation-tests-jars.zip
+
+check-if-jsystem-selenium-dir-exists:
+
+delete-jsystem-selenium-dir:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-shade-plugin:1.5:shade (default) @ automation-assembly ---
+[INFO] Including com.ability.ease.automation:automation-impl:jar:0.1-SNAPSHOT in the shaded jar.
+[INFO] Excluding org.seleniumhq.selenium:selenium-ie-driver:jar:2.40.0 from the shaded jar.
+[INFO] Excluding net.java.dev.jna:jna:jar:3.4.0 from the shaded jar.
+[INFO] Excluding net.java.dev.jna:platform:jar:3.4.0 from the shaded jar.
+[INFO] Excluding org.seleniumhq.selenium:selenium-remote-driver:jar:2.40.0 from the shaded jar.
+[INFO] Excluding cglib:cglib-nodep:jar:2.1_3 from the shaded jar.
+[INFO] Excluding org.json:json:jar:20080701 from the shaded jar.
+[INFO] Excluding org.apache.httpcomponents:httpclient:jar:4.3.1 from the shaded jar.
+[INFO] Excluding org.apache.httpcomponents:httpcore:jar:4.3 from the shaded jar.
+[INFO] Excluding com.google.guava:guava:jar:15.0 from the shaded jar.
+[INFO] Excluding org.seleniumhq.selenium:selenium-firefox-driver:jar:2.40.0 from the shaded jar.
+[INFO] Excluding org.apache.commons:commons-exec:jar:1.1 from the shaded jar.
+[INFO] Excluding org.seleniumhq.selenium:selenium-chrome-driver:jar:2.40.0 from the shaded jar.
+[INFO] Excluding org.apache.santuario:xmlsec:jar:1.4.3 from the shaded jar.
+[INFO] Excluding org.seleniumhq.selenium:selenium-support:jar:2.40.0 from the shaded jar.
+[INFO] Excluding org.seleniumhq.selenium:selenium-api:jar:2.40.0 from the shaded jar.
+[INFO] Excluding webdriver:chromedriver-win:zip:2.20 from the shaded jar.
+[INFO] Excluding webdriver:ie-driver-server-win32:zip:2.40.0 from the shaded jar.
+[INFO] Including com.ability.ease.automation:automation-common:jar:0.1-SNAPSHOT in the shaded jar.
+[INFO] Excluding jsystem:junit:jar:1.0 from the shaded jar.
+[INFO] Excluding commons-httpclient:commons-httpclient:jar:3.1 from the shaded jar.
+[INFO] Excluding jsystem:jsystemCommon:jar:5.6.57 from the shaded jar.
+[INFO] Excluding jsystem:jsystemCore:jar:5.6.57 from the shaded jar.
+[INFO] Excluding jsystem:cli:jar:5.6.57 from the shaded jar.
+[INFO] Excluding jsystem:filetransfer:jar:5.6.57 from the shaded jar.
+[INFO] Excluding com.sun.jersey:jersey-client:jar:1.1.5.1 from the shaded jar.
+[INFO] Excluding com.sun.jersey:jersey-core:jar:1.1.5.1 from the shaded jar.
+[INFO] Excluding javax.ws.rs:jsr311-api:jar:1.1.1 from the shaded jar.
+[INFO] Excluding org.freemarker:freemarker:jar:2.3.18 from the shaded jar.
+[INFO] Excluding commons-io:commons-io:jar:2.4 from the shaded jar.
+[INFO] Excluding commons-codec:commons-codec:jar:1.7 from the shaded jar.
+[INFO] Excluding org.apache.commons:commons-lang3:jar:3.1 from the shaded jar.
+[INFO] Excluding xalan:xalan:jar:2.7.1 from the shaded jar.
+[INFO] Excluding xalan:serializer:jar:2.7.1 from the shaded jar.
+[INFO] Excluding xml-apis:xml-apis:jar:1.3.04 from the shaded jar.
+[INFO] Excluding org.apache.ant:ant:jar:1.7.1 from the shaded jar.
+[INFO] Excluding org.apache.ant:ant-launcher:jar:1.7.1 from the shaded jar.
+[INFO] Excluding org.jsoup:jsoup:jar:1.7.2 from the shaded jar.
+[INFO] Excluding com.jcraft:jsch:jar:0.1.49 from the shaded jar.
+[INFO] Excluding axis:axis:jar:1.4 from the shaded jar.
+[INFO] Excluding org.apache.axis:axis-jaxrpc:jar:1.4 from the shaded jar.
+[INFO] Excluding org.apache.axis:axis-saaj:jar:1.4 from the shaded jar.
+[INFO] Excluding axis:axis-wsdl4j:jar:1.5.1 from the shaded jar.
+[INFO] Excluding commons-discovery:commons-discovery:jar:0.2 from the shaded jar.
+[INFO] Excluding javax.mail:javax.mail-api:jar:1.5.0 from the shaded jar.
+[INFO] Excluding javax.activation:activation:jar:1.1 from the shaded jar.
+[INFO] Excluding org.codehaus.jackson:jackson-mapper-asl:jar:1.8.5 from the shaded jar.
+[INFO] Excluding org.codehaus.jackson:jackson-core-asl:jar:1.8.5 from the shaded jar.
+[INFO] Excluding com.ability.ease.automation:automation-jsystem:jar:0.1-SNAPSHOT from the shaded jar.
+[INFO] Excluding jsystem:jsystemAgent:jar:5.6.57 from the shaded jar.
+[INFO] Excluding jsystem:jsystemApp:jar:5.6.57 from the shaded jar.
+[INFO] Excluding commons-logging:commons-logging:jar:1.1.1 from the shaded jar.
+[INFO] Excluding org.springframework:spring-context:jar:3.2.2.RELEASE from the shaded jar.
+[INFO] Excluding org.springframework:spring-aop:jar:3.2.2.RELEASE from the shaded jar.
+[INFO] Excluding aopalliance:aopalliance:jar:1.0 from the shaded jar.
+[INFO] Excluding org.springframework:spring-beans:jar:3.2.2.RELEASE from the shaded jar.
+[INFO] Excluding org.springframework:spring-core:jar:3.2.2.RELEASE from the shaded jar.
+[INFO] Excluding org.springframework:spring-expression:jar:3.2.2.RELEASE from the shaded jar.
+[INFO] Including com.ability.ease.automation:automation-api:jar:0.1-SNAPSHOT in the shaded jar.
+[INFO] Excluding com.microsoft.sqlserver:sqljdbc:jar:4 from the shaded jar.
+[INFO] Excluding log4j:log4j:jar:1.2.14 from the shaded jar.
+[INFO] Excluding de.java2html:java2html:jar:5.0 from the shaded jar.
+[INFO] Replacing D:\Automation\assembly\target\automation-tests-lib\automation-onejar.jar with D:\Automation\assembly\target\automation-tests-lib\automation-assembly-0.1-SNAPSHOT-shaded.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 7.100s
+[INFO] Finished at: Thu Nov 26 15:17:03 IST 2015
+[INFO] Final Memory: 7M/14M
+[INFO] ------------------------------------------------------------------------
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.ability.ease.automation:automation-jsystem:jar:0.1-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.codehaus.mojo:build-helper-maven-plugin is missing. @ line 121, column 12
+[WARNING] The expression ${pom.groupId} is deprecated. Please use ${project.groupId} instead.
+[WARNING] The expression ${pom.groupId} is deprecated. Please use ${project.groupId} instead.
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building automation-jsystem module 0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- build-helper-maven-plugin:1.9.1:add-source (default) @ automation-jsystem ---
+[INFO] Source directory: D:\Automation\automation-jsystem\tests added.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.4.3:resources (default-resources) @ automation-jsystem ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 21 resources
+[INFO] Copying 19 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.3.2:compile (default-compile) @ automation-jsystem ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 0.625s
+[INFO] Finished at: Thu Nov 26 15:17:04 IST 2015
+[INFO] Final Memory: 4M/8M
+[INFO] ------------------------------------------------------------------------
+
+  \|||||/
+ ( ~   ~ )
+@( 0   0 )@
+ (   C   )
+  \ \_/ /
+   |___| 
+    | |
+ 
+Well done! You may now import the automation project into your Eclipse.
+Also, a shortcut was created on your dekstop for JSsytem. Use it to start JSystem.
+

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<parent>
+		<groupId>com.ability.ease.automation</groupId>
+		<artifactId>automation-parent</artifactId>
+		<version>0.1-SNAPSHOT</version>
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>
+
+    <modelVersion>4.0.0</modelVersion>
+	<groupId>com.ability.ease.automation</groupId>
+	<artifactId>automation-common</artifactId>
+	<packaging>jar</packaging>	
+	<name>automation-common module</name>
+	
+
+	<dependencies>
+	    <dependency>
+			<groupId>jsystem</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<exclusions>
+				<exclusion>  
+					<groupId>commons-codec</groupId>
+					<artifactId>commons-codec</artifactId>
+				</exclusion>
+			</exclusions> 	
+		</dependency>
+
+		<!-- JSystem dependencies  -->
+		<dependency>
+			<groupId>jsystem</groupId>
+			<artifactId>jsystemCommon</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>jsystem</groupId>
+			<artifactId>jsystemCore</artifactId>			
+		</dependency>
+
+		<dependency>
+			<groupId>jsystem</groupId>
+			<artifactId>cli</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>jsystem</groupId>
+			<artifactId>filetransfer</artifactId>
+		</dependency>
+		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>1.1.5.1</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!--<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+		</dependency>-->
+
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.18</version>
+		</dependency>
+
+		
+		
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<!--<version>1.3.2</version>-->
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>	
+		
+		<dependency>	
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.1</version>
+		</dependency>
+  
+		<dependency>
+			<groupId>xalan</groupId>
+			<artifactId>xalan</artifactId>			
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant</artifactId>
+			<version>1.7.1</version>
+		</dependency>
+	
+		<dependency>
+		  <!-- jsoup HTML parser library @ http://jsoup.org/ -->
+		  <groupId>org.jsoup</groupId>
+		  <artifactId>jsoup</artifactId>
+		  <version>1.7.2</version>
+	   </dependency>
+	   
+	  <dependency>
+	   <!-- Java Secure Channel @ http://www.jcraft.com/jsch/ -->
+	     <groupId>com.jcraft</groupId>
+	     <artifactId>jsch</artifactId>
+	     <version>0.1.49</version>
+      </dependency>
+	  
+	   <!--<dependency>
+			<groupId>ftp4j</groupId>
+			<artifactId>ftp4j</artifactId>			
+		</dependency>    	-->
+                  
+        <!--<dependency>
+			<groupId>vim</groupId>
+			<artifactId>vim</artifactId>
+			<version>vim</version>
+		</dependency>-->
+		
+	   <!--<dependency>
+			<groupId>apputils</groupId>
+			<artifactId>apputils</artifactId>
+			<version>apputils</version>
+		</dependency>-->
+			
+		<dependency>
+			<groupId>axis</groupId>
+			<artifactId>axis</artifactId>
+			<version>1.4</version>
+		</dependency>            
+		
+		<!--<dependency>    
+			<groupId>org.odata4j</groupId>    
+			<artifactId>odata4j-clientbundle</artifactId> 				
+		</dependency>-->
+		
+		<dependency>     
+			<groupId>javax.mail</groupId>     
+			<artifactId>javax.mail-api</artifactId>    
+			<version>1.5.0</version>
+		 </dependency> 
+		
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.8.5</version>
+    	 </dependency>
+
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>sqljdbc</artifactId>						
+		</dependency>
+		
+	</dependencies>
+	
+		
+	<build>
+		<outputDirectory>classes</outputDirectory>
+		<sourceDirectory>${project.basedir}/src</sourceDirectory>		
+	</build>
+</project>

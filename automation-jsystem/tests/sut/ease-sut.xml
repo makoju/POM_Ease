@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sut validators="">
+    <mySut>
+        <class>com.ability.ease.auto.systemobjects.MySut</class>
+        <workingEnvironment>
+            <class>com.ability.ease.auto.systemobjects.DefaultWorkingEnvironment</class>
+            <host>10.164.2.97</host>
+            <port>8080</port>
+            <mySQLDBHostName>10.164.2.84</mySQLDBHostName>
+            <mySQLDBName>ddez</mySQLDBName>
+            <mySQLDBPort>3306</mySQLDBPort>
+            <mySQLDBUserName>easeweb</mySQLDBUserName>
+            <mySQLDBPassword>web123</mySQLDBPassword>
+        </workingEnvironment>
+        <webdriver>
+            <class>com.ability.ease.auto.systemobjects.WebDriverSystemObject</class>
+            <webDriverType>INTERNET_EXPLORER_DRIVER</webDriverType>
+        </webdriver>
+    </mySut>
+</sut>

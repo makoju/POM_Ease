@@ -12,7 +12,11 @@ public class CommonEaseUIEnum {
 		Link("Link"),
 		SetupAlert("SetupAlert"),
 		Image("Image"),
-		DropDownList("DropDownList");
+		DropDownList("DropDownList"),
+		TextArea("TextArea"),
+		LinkWithNoText("LinkWithNoText"),
+		ClaimLineUB04("ClaimLineUB04"),
+		ConditionOccurruenceCodes("ConditionOccurruenceCodes");
 
 		private String value;
 		private UIAttributeStyle(String value){

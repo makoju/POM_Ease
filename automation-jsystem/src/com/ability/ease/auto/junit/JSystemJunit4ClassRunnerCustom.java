@@ -144,8 +144,6 @@ public class JSystemJunit4ClassRunnerCustom extends JUnit4ClassRunner {
 	/**
 	 * 
 	 * This class converts events from JUnit 4's RunListener to JUnit 3's TestListener.
-	 * 
-	 * @author Gooli
 	 *
 	 */
 	private class TestListenerAdapter extends RunListener implements ExtendTestListener{

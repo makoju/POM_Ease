@@ -110,7 +110,21 @@ public class UIAttributeXMLParser {
 					if(Style.toString().equalsIgnoreCase("Image")){
 						attrStyle= UIAttributeStyle.Image;
 					}
-					
+					if(Style.toString().equalsIgnoreCase("Button")){
+						attrStyle= UIAttributeStyle.Button;
+					}
+					if(Style.toString().equalsIgnoreCase("TextArea")){
+						attrStyle= UIAttributeStyle.TextArea;
+					}
+					if(Style.toString().equalsIgnoreCase("LinkWithNoText")){
+						attrStyle= UIAttributeStyle.LinkWithNoText;
+					}
+					if(Style.toString().equalsIgnoreCase("ClaimLineUB04")){
+						attrStyle= UIAttributeStyle.ClaimLineUB04;
+					}
+					if(Style.toString().equalsIgnoreCase("ConditionOccurruenceCodes")){
+						attrStyle= UIAttributeStyle.ConditionOccurruenceCodes;
+					}
 					attr.setStyle(attrStyle);
 					lsattrs.add(attr);
 					locator=displayName=Style=null;

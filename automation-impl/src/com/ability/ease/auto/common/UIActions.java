@@ -3,6 +3,7 @@ package com.ability.ease.auto.common;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 
 import jsystem.framework.report.Reporter.ReportAttribute;
@@ -19,6 +20,8 @@ import com.ability.ease.selenium.webdriver.AbstractPageObject;
  */
 public class UIActions extends AbstractPageObject {
 
+	public String sValues[];
+
 	/**
 	 * Converts a normal string based JSystem bean into custom data structure bean
 	 * used in the Selenium generic UI actions
@@ -34,7 +37,6 @@ public class UIActions extends AbstractPageObject {
 					typeEditBox(scrAttr.getLocator(), scrAttr.getValue());
 					break;
 				case DropDown:
-
 					if(!scrAttr.getValue().contains("~")){
 						selectByNameOrID(scrAttr.getLocator(), scrAttr.getValue());
 					}else{
@@ -49,7 +51,7 @@ public class UIActions extends AbstractPageObject {
 					}
 					break;
 				case SetupAlert:
-					String[] sValues = scrAttr.getValue().split(",");
+					sValues = scrAttr.getValue().split(",");
 					String onOffFlag = null;
 					String alertOptionXpath = null;
 
@@ -70,7 +72,7 @@ public class UIActions extends AbstractPageObject {
 					clickButton(scrAttr.getLocator());
 					break;
 				case Submit:
-					clickButton(scrAttr.getLocator());
+					clickButtonV2(scrAttr.getLocator());
 					break;
 				case Link:
 					clickLink(scrAttr.getLocator());
@@ -83,6 +85,35 @@ public class UIActions extends AbstractPageObject {
 					}
 					break;
 				case DropDownList:
+					break;
+				case TextArea:
+					sValues = scrAttr.getValue().split(",");
+					WebElement element = driver.findElement(By.id(scrAttr.getLocator()));
+					element.clear();
+					for(String value: sValues){
+						element.sendKeys(value);
+						element.sendKeys(Keys.ENTER);
+					}
+					break;
+				case LinkWithNoText:
+					clickLinkV2(scrAttr.getLocator());
+					break;
+				case ClaimLineUB04:
+					String[] sLocator42To49 = scrAttr.getLocator().split(",");
+					String[] sValue = scrAttr.getValue().split(",");
+					int j=1;
+					
+					for(String str:sValue){
+						String[] sValues42To49 = str.split(":");
+						for(int i=0;i < sLocator42To49.length; i++){
+							typeEditBox(sLocator42To49[i]+"_"+j, sValues42To49[i]);
+						}
+						j++;
+						if( j >= 10){
+							
+						}
+					}
+					
 					break;
 				default:
 					report.report("The attribute Style is not implemented.",

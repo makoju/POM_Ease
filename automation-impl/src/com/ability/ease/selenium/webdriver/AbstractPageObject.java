@@ -547,6 +547,41 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		clickButton(btnName, 8);
 	}
 
+	/**
+	 * Clicks a button after verified that it is visible and that you can click it.This method is to avoid a situation where if we use .sendKeys on button -
+	 * the immediate alert is disappearing from screen , hence this click button uses .click() instead of .sendKeys
+	 * @param btnName -unique representer of the button. E.g, unique name or id. 
+	 * @throws Exception 
+	 */	
+	public static void clickButtonV2(String btnName) throws Exception {
+		String elementLocator = "//button[@value='" + btnName+ "' or text()='" + btnName + "'] | " +
+				"//button[contains(text(),'" + btnName + "')] | "+
+				"//button[@id='"+ btnName +"'] |" +
+				"//input[@type='" + btnName +"'] | "+
+				"//input[@value='" + btnName + "'] | //input[contains(@value,'" + btnName+ "')] | //input[(@title='" + btnName + "')] | //input[(@name='" + btnName + "')] | " +
+				"//input[@id='" + btnName + "'] | //span[@id='" + btnName + "'] | //span[contains(text(),'" + btnName + "')]/following-sibling::span[@role='img'] | "+ 				
+				"//span[contains(text(),'" + btnName + "')][@class='x-btn-inner x-btn-inner-center']";
+
+		WebElement element = null;
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		try {
+			element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(elementLocator)));
+		} catch (org.openqa.selenium.TimeoutException ex) {
+			// ignore exception, return null instead
+		}		
+		if (element!=null) {
+			WebDriverHelper.highlightElement(driver, element);
+			if (WorkingEnvironment.getWebdriverType() == WebDriverType.INTERNET_EXPLORER_DRIVER) {
+				element.click();
+				//sendEnterOnWebElement(element);
+				return;
+			}
+			element.click();
+		} else { 
+			throw new Exception ("Web element not found: " + elementLocator); 
+		}
+	}
+
 	public void clickButtonInGrid(String itemGridName) throws Exception {
 		String btnGridXpath = "//a[.='" + itemGridName + "']/../preceding-sibling::td/span//button";
 		clickOnElement(ByLocator.xpath, btnGridXpath, 5);
@@ -572,7 +607,6 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		String btnXpath = "//button[@value='" + btnName+ "' or text()='" + btnName + "'] | " +
 				"//button[contains(text(),'" + btnName + "')] | "+
 				"//input[@type='" + btnName +"'] | "+
-				btnName + " | "+
 				"//input[@value='" + btnName + "'] | //input[contains(@value,'" + btnName+ "')] | //input[(@title='" + btnName + "')] | //input[(@name='" + btnName + "')] | " +
 				"//input[@id='" + btnName + "'] | //span[@id='" + btnName + "'] | //span[contains(text(),'" + btnName + "')]/following-sibling::span[@role='img'] | "+ 				
 				"//span[contains(text(),'" + btnName + "')][@class='x-btn-inner x-btn-inner-center']";
@@ -664,8 +698,8 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			WebDriverHelper.highlightElement(driver, element);
 
 			if (WorkingEnvironment.getWebdriverType() == WebDriverType.INTERNET_EXPLORER_DRIVER) {
-				element.click();
-				//sendEnterOnWebElement(element);
+				//element.click();
+				sendEnterOnWebElement(element);
 				return;
 			}
 			element.click();
@@ -1503,8 +1537,9 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		return "";
 	}
 
-	/*
-	 * Handle alerts
+	/**
+	 * Handle alerts :: this method reads an alert text from test method and compares with the actuals
+	 * Nageswar.Bodduri
 	 */
 	public boolean verifyAlert(String sExpected){
 
@@ -1524,19 +1559,20 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-
 		return false;
 	}
 
-	/*
+	/**
 	 * get main window handle
+	 * Nageswar.Bodduri
 	 */
 	public String returnMainWindowHandle(){
 		return driver.getWindowHandle();
 	}
 
-	/*
+	/**
 	 * get current active window handle
+	 * Nageswar.Bodduri
 	 */
 	public void returnCurrentWindowHandle(String mainWindowHandle){
 		Set windowHandles=driver.getWindowHandles();
@@ -1553,11 +1589,12 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 
 	}
 
-	/*
-	 * this method is to return the xpath for alert option under My account > setup alerts task
+	/**
+	 * This method is to return the xpath for alert option under My account > setup alerts task
+	 * Nageswar.Bodduri
 	 */
 	public String getAlertOptionXpath(String alertOption){
-		
+
 		StringBuilder sLabelXpath = new StringBuilder("//span[contains(text(),'");
 		String[] alert = alertOption.split(" ");
 		int j = 0;
@@ -1571,6 +1608,48 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 		return sLabelXpath.toString();
 	}
+
+	/**
+	 * Clicks a Link : when you can not locate any anchor element by its text.Use this method to locate an anchor tag with its id or name
+	 * You can add other possible ways to identify an anchor tag without link text to existing xpath
+	 * @author nageswar.bodduri
+	 */
+	public void clickLinkV2(String linkLocator)throws Exception{
+
+		String elementLocator = "//a[@id='" + linkLocator+ "'] | " + " //a[@name='" + linkLocator +"']";
+		WebElement element = null;
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+
+		try {
+			element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(elementLocator)));
+		} catch (org.openqa.selenium.TimeoutException ex) {
+			// ignore exception, return null instead
+		}		
+		if (element!=null) {
+			WebDriverHelper.highlightElement(driver, element);
+			if (WorkingEnvironment.getWebdriverType() == WebDriverType.INTERNET_EXPLORER_DRIVER) {
+				//element.click();
+				sendEnterOnWebElement(element);
+				return;
+			}
+		} else { 
+			throw new Exception ("Web element not found: " + elementLocator); 
+		}
+
+	}
+	
+	/**
+	 * Get all attributes of a HTML element using java script
+	 * @author nageswar.bodduri
+	 */
+	public ArrayList<String> getAllAttributes(WebElement element)throws Exception{
+		String sJavaScript = "var el = document.getElementById(element); "
+				+ "for (var i = 0, atts = el.attributes, n = atts.length, arr = []; i < n; i++){ arr.push(atts[i].nodeName);"
+				+ "}; return arr;"; 
+		ArrayList<String> lsAttributes = (ArrayList<String>)((JavascriptExecutor)driver).executeScript(sJavaScript, element);
+		return lsAttributes;
+	}
+		
 	//#########################################   Getters & Setters ###################################################
 	/**
 	 * 

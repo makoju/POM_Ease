@@ -30,17 +30,17 @@
 	
 		<!-- JSYSTEM JARS -->      
 		<dependency>
-			<groupId>jsystem</groupId>
+			<groupId>com.abilitynetwork.jsystem</groupId>
 			<artifactId>jsystemCore</artifactId>			
 		</dependency>
 
 		<dependency>
-			<groupId>jsystem</groupId>
+			<groupId>com.abilitynetwork.jsystem</groupId>
 			<artifactId>jsystemAgent</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>jsystem</groupId>
+			<groupId>com.abilitynetwork.jsystem</groupId>
 			<artifactId>jsystemCommon</artifactId>
 		</dependency>
 		
@@ -49,32 +49,32 @@
 				<artifactId>java2html</artifactId>
 		</dependency>
 		<!--<dependency>
-			<groupId>jsystem</groupId>
+			<groupId>com.abilitynetwork.jsystem</groupId>
 			<artifactId>j2autoit</artifactId>
 		</dependency>-->
 
 		<dependency>
-			<groupId>jsystem</groupId>
+			<groupId>com.abilitynetwork.jsystem</groupId>
 			<artifactId>cli</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>jsystem</groupId>
+			<groupId>com.abilitynetwork.jsystem</groupId>
 			<artifactId>filetransfer</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>jsystem</groupId>
+			<groupId>com.abilitynetwork.jsystem</groupId>
 			<artifactId>jsystemApp</artifactId>
 		</dependency>
 		
 		<!--<dependency>
-			<groupId>jsystem</groupId>
+			<groupId>com.abilitynetwork.jsystem</groupId>
 			<artifactId>ant-jsystem</artifactId>
 		</dependency>-->
 		
 		<dependency>
-			<groupId>jsystem</groupId>
+			<groupId>com.abilitynetwork.jsystem</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
        <dependency> 
@@ -121,6 +121,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.9.1</version>
 				<executions>
 					<execution>
 						<phase>generate-sources</phase>

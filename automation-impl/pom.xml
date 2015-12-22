@@ -50,33 +50,21 @@
 			<artifactId>xmlsec</artifactId>
 			<version>1.4.3</version>
 		</dependency> 
-		<!--<dependency>
-				<groupId>jsystem</groupId>
-				<artifactId>selenium-java-client-driver</artifactId>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.seleniumhq.selenium</groupId>
-				<artifactId>selenium-server</artifactId>
-			</dependency>
-				<dependency>
-				<groupId>org.seleniumhq.selenium</groupId>
-				<artifactId>selenium-java</artifactId>
-			</dependency> -->
+		
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-support</artifactId>			
 		</dependency>
 
 		<dependency>
-			 <groupId>webdriver</groupId>  
+			 <groupId>com.abilitynetwork.selenium2</groupId> 
 			 <artifactId>chromedriver-win</artifactId>  
 			 <version>2.20</version>  
 			<type>zip</type> 		
 		</dependency>
 		<dependency>  
-			<groupId>webdriver</groupId>  
-			<artifactId>ie-driver-server-win32</artifactId>  
+			<groupId>com.abilitynetwork.selenium2</groupId> 
+			<artifactId>IEDriverServer_Win32</artifactId>  
 			<version>2.40.0</version>  
 			<type>zip</type>  
 		</dependency> 
@@ -109,6 +97,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.9.1</version>
 				<executions>
 					<execution>
 						<phase>generate-sources</phase>

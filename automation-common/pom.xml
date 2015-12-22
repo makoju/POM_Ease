@@ -17,11 +17,7 @@
 	
 
 	<dependencies>
-	    <dependency>
-			<groupId>jsystem</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
-		
+	    
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
@@ -35,23 +31,29 @@
 
 		<!-- JSystem dependencies  -->
 		<dependency>
-			<groupId>jsystem</groupId>
+			<groupId>com.abilitynetwork.jsystem</groupId>
 			<artifactId>jsystemCommon</artifactId>
 		</dependency>
 		
 		<dependency>
-			<groupId>jsystem</groupId>
+			<groupId>com.abilitynetwork.jsystem</groupId>
 			<artifactId>jsystemCore</artifactId>			
 		</dependency>
 
 		<dependency>
-			<groupId>jsystem</groupId>
+			<groupId>com.abilitynetwork.jsystem</groupId>
 			<artifactId>cli</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>jsystem</groupId>
+			<groupId>com.abilitynetwork.jsystem</groupId>
 			<artifactId>filetransfer</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.abilitynetwork.jsystem</groupId>
+			<artifactId>junit</artifactId>
+			<version>1.0</version>
 		</dependency>
 		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -62,19 +64,11 @@
 			<scope>compile</scope>
 		</dependency>
 
-		<!--<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4</version>
-		</dependency>-->
-
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 			<version>2.3.18</version>
 		</dependency>
-
-		
 		
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -118,33 +112,11 @@
 	     <version>0.1.49</version>
       </dependency>
 	  
-	   <!--<dependency>
-			<groupId>ftp4j</groupId>
-			<artifactId>ftp4j</artifactId>			
-		</dependency>    	-->
-                  
-        <!--<dependency>
-			<groupId>vim</groupId>
-			<artifactId>vim</artifactId>
-			<version>vim</version>
-		</dependency>-->
-		
-	   <!--<dependency>
-			<groupId>apputils</groupId>
-			<artifactId>apputils</artifactId>
-			<version>apputils</version>
-		</dependency>-->
-			
 		<dependency>
 			<groupId>axis</groupId>
 			<artifactId>axis</artifactId>
 			<version>1.4</version>
 		</dependency>            
-		
-		<!--<dependency>    
-			<groupId>org.odata4j</groupId>    
-			<artifactId>odata4j-clientbundle</artifactId> 				
-		</dependency>-->
 		
 		<dependency>     
 			<groupId>javax.mail</groupId>     
@@ -158,14 +130,12 @@
 			<version>1.8.5</version>
     	 </dependency>
 
-		<dependency>
+		<!--<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>sqljdbc</artifactId>						
-		</dependency>
-		
+		</dependency>-->
 	</dependencies>
 	
-		
 	<build>
 		<outputDirectory>classes</outputDirectory>
 		<sourceDirectory>${project.basedir}/src</sourceDirectory>		

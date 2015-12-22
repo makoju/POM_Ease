@@ -266,11 +266,11 @@
 			<groupId>com.ability.ease.automation</groupId>
 			<artifactId>automation-api</artifactId>		
         </dependency>
-		<dependency>
+		<!--<dependency>
            	 <groupId>com.microsoft.sqlserver</groupId>
            	 <artifactId>sqljdbc</artifactId>
            	 <scope>compile</scope>
-        </dependency>
+        </dependency>-->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>		

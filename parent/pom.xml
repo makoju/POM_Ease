@@ -55,94 +55,66 @@
 
 			<!-- JSystem -->			
 			<dependency>
-				<groupId>jsystem</groupId>
+				<groupId>com.abilitynetwork.jsystem</groupId>
 				<artifactId>jsystemCore</artifactId>
 				<version>${jsystem.base.version}</version>				
 			</dependency>
 
 			<dependency>
-				<groupId>jsystem</groupId>
+				<groupId>com.abilitynetwork.jsystem</groupId>
 				<artifactId>jsystemAgent</artifactId>
 				<version>${jsystem.base.version}</version>				
 			</dependency>
 
 			<dependency>
-				<groupId>jsystem</groupId>
+				<groupId>com.abilitynetwork.jsystem</groupId>
 				<artifactId>jsystemCommon</artifactId>
 				<version>${jsystem.base.version}</version>
-				
 			</dependency>
 
 			<dependency>
-				<groupId>jsystem</groupId>
+				<groupId>com.abilitynetwork.jsystem</groupId>
 				<artifactId>j2autoit</artifactId>
 				<version>${jsystem.base.version}</version>
 				<scope>provided</scope>
 			</dependency>
 
 			<dependency>
-				<groupId>jsystem</groupId>
+				<groupId>com.abilitynetwork.jsystem</groupId>
 				<artifactId>cli</artifactId>
 				<version>${jsystem.base.version}</version>				
 			</dependency>
 
 			<dependency>
-				<groupId>jsystem</groupId>
+				<groupId>com.abilitynetwork.jsystem</groupId>
 				<artifactId>filetransfer</artifactId>
 				<version>${jsystem.base.version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>jsystem</groupId>
+				<groupId>com.abilitynetwork.jsystem</groupId>
 				<artifactId>jsystemApp</artifactId>
 				<version>${jsystem.base.version}</version>
-				<!--<scope>provided</scope> -->
 			</dependency>
 
 			<dependency>
-				<groupId>jsystem</groupId>
+				<groupId>com.abilitynetwork.jsystem</groupId>
 				<artifactId>ant-jsystem</artifactId>
 				<version>${jsystem.base.version}</version>
 				<scope>provided</scope>
 			</dependency>
-			<!--<dependency>
-				<groupId>jsystem</groupId>
-				<artifactId>selenium-java-client-driver</artifactId>
-				<version>1.0.2</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.seleniumhq.selenium</groupId>
-				<artifactId>selenium-server</artifactId>
-				<version>2.32.0</version>
-			</dependency>
-				<dependency>
-				<groupId>org.seleniumhq.selenium</groupId>
-				<artifactId>selenium-java</artifactId>
-				<version>2.32.0</version>
-			</dependency>-->
 			<dependency>
 				<groupId>log4j</groupId>
 				<artifactId>log4j</artifactId>
 				<version>1.2.14</version>
 				<scope>compile</scope>
 			</dependency>
-			<dependency>
+			<!--<dependency>
 				<groupId>com.microsoft.sqlserver</groupId>
 				<artifactId>sqljdbc</artifactId>
 				<version>4</version>
 				<scope>provided</scope>
-			</dependency>
-			<!--<dependency>
-				<groupId>com.eurekify.automation</groupId>
-				<artifactId>automation-jsystem</artifactId>
-				<version>${eurekify.version}</version>
 			</dependency>-->
-           <!-- <dependency>
-				<groupId>com.ability.ease.automation</groupId>
-				<artifactId>imag-automation-jsystem</artifactId>
-                <version>0.1-SNAPSHOT</version>				
-			</dependency> -->
             <dependency>
 				<groupId>com.ability.ease.automation</groupId>
 				<artifactId>automation-common</artifactId>
@@ -183,23 +155,13 @@
 				<artifactId>java2html</artifactId>
 				<version>5.0</version>
 			</dependency>
-            <!--<dependency>
-				<groupId>jsystem</groupId>
-				<artifactId>selenium-java-client-driver</artifactId>
-				<version>1.0</version>				
-			</dependency>-->
-			<!--<dependency>   
-				<groupId>org.apache.httpcomponents</groupId>   
-				<artifactId>httpcore</artifactId>  
-				<version>4.1.4</version>
-			</dependency>-->	
 			<dependency>
 				<groupId>commons-logging</groupId>
 				<artifactId>commons-logging</artifactId>
 				<version>1.1.1</version>	
 			</dependency>			
 			<dependency>
-				<groupId>jsystem</groupId>
+				<groupId>com.abilitynetwork.jsystem</groupId>
 				<artifactId>junit</artifactId>
 				<version>1.0</version>		
 			</dependency>
@@ -243,5 +205,14 @@
 				</plugin>      
 			</plugins>
 		</pluginManagement>
-	</build>			
+	</build>
+	<distributionManagement>
+		<repository>
+			<id>remote-repo</id>
+			<name>Maven2 Repository</name>
+			<url>http://repoqa.qa.visionshareinc.com/m2/</url>
+		</repository>
+	</distributionManagement>
+	<repositories>
+	</repositories>
 </project>

@@ -12,4 +12,5 @@
 	<bean id="misc" class="com.ability.ease.misc.MiscSelenium2Impl"/>
 	<bean id="elig" class="com.ability.ease.eligibility.EligibilitySelenium2Impl"/>
 	<bean id="admin" class="com.ability.ease.admin.AdminSelenium2Impl"/>
+	<bean id="reports" class="com.ability.ease.mydde.ReportsSelenium2Impl"/>
 </beans>

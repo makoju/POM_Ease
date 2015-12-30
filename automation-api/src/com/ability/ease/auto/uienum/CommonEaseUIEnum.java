@@ -16,7 +16,9 @@ public class CommonEaseUIEnum {
 		TextArea("TextArea"),
 		LinkWithNoText("LinkWithNoText"),
 		ClaimLineUB04("ClaimLineUB04"),
-		ConditionOccurruenceCodes("ConditionOccurruenceCodes");
+		ConditionOccurruenceCodes("ConditionOccurruenceCodes"),
+		Timeframe("Timeframe"),
+		Agency("Agency");
 
 		private String value;
 		private UIAttributeStyle(String value){

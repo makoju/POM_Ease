@@ -1,0 +1,274 @@
+package com.ability.ease.mydde;
+
+import java.util.List;
+import java.util.Map;
+
+import jsystem.framework.report.Reporter;
+import jsystem.framework.report.Reporter.ReportAttribute;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import com.ability.ease.auto.common.TestCommonResource;
+import com.ability.ease.auto.common.UIActions;
+import com.ability.ease.auto.common.Verify;
+import com.ability.ease.auto.dataStructure.common.AttibuteXMLParser.UIAttributeXMLParser;
+import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
+import com.ability.ease.auto.enums.portal.selenium.ByLocator;
+import com.ability.ease.home.HomePage;
+import com.ability.ease.home.HomePage.Menu;
+import com.ability.ease.selenium.webdriver.AbstractPageObject;
+
+public class MyDDEPage extends AbstractPageObject {
+
+    public boolean verifySummaryReportHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception{
+    	boolean istimeframedaterange=false;
+    	int failurecount=0;
+    	String fromdate,todate;
+    	fromdate=todate=null;
+    	
+    	//navigation part
+    	navigateToPage();
+    	UIAttributeXMLParser parser = new UIAttributeXMLParser();
+		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		UIActions mydde = new UIActions();
+		mydde.fillScreenAttributes(lsAttributes);
+		
+		//Verification part
+		//Verify the agency in Summary Report Header
+		String[] actual=null;
+		String[] expected={"Critical","Errors","Normal"};
+		String[] expectedheaders = {"The episode status.","The number of episodes in this category.","The amount Medicare has already paid.",
+											"The total amount at risk (already paid or prospective).", "The remaining amount of money expected from Medicare."};	
+		int i=0;
+		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'EASE SUMMARY REPORT')]"));
+		Attribute agencyattr = getAttribute(lsAttributes, "agency");
+		//To Do - Need to get the From and Todate from Timeframe attributes value
+		Attribute timeframeattr = getAttribute(lsAttributes, "Timeframe");
+		String timeframe = timeframeattr.getValue().toLowerCase();
+		if (timeframe.contains("fromdate")){
+			istimeframedaterange = true;
+			String[] dates=timeframe.split(":");
+			fromdate=dates[0];
+			todate=dates[1];
+			
+			fromdate = fromdate.substring(fromdate.indexOf("(")+1,fromdate.indexOf(")"));
+			todate =  todate.substring(todate.indexOf("(")+1,todate.indexOf(")")); 
+		}
+		
+		report.report("comparing summary report header value Actual:  "+reportText);
+		if (agencyattr!=null){
+		   if (istimeframedaterange && !Verify.StringEquals(reportText, "EASE SUMMARY REPORT FROM "+fromdate+" TO "+todate+", FOR AGENCY "+agencyattr.getValue()))
+			   failurecount++;
+		   else
+			 if(!Verify.StringMatches(reportText, "EASE SUMMARY REPORT FROM * TO *, FOR AGENCY "+agencyattr.getValue()))
+				failurecount++;
+		}
+		//verify the link sections in report
+		List<WebElement> lsel = driver.findElements(By.cssSelector(".formgridheader"));
+		actual=new String[lsel.size()];
+		for(WebElement we:lsel){
+			actual[i++] = new String(getElementText(we));
+		}
+		
+		//Verify the Report links of each section
+		if(!Verify.verifyArrayofStrings(actual,expected,true))
+			failurecount++;
+		//Verify Critical reports section
+		if(!validateReportLinkSectionswithEpisodes("Critical"))
+			failurecount++;
+		//Verify Errors reports section
+		if(!validateReportLinkSectionswithEpisodes("Errors"))
+			failurecount++;
+		//Verify Normal reports section
+		if(!validateReportLinkSectionswithEpisodes("Normal"))
+			failurecount++;
+		
+		//verify the table header tool tips
+		String[] actualheaderscritical = getReportLinkSectionsTableHeaderToolTips("Critical");
+		for(int k=0;k<actualheaderscritical.length;k++){
+			if(!Verify.StringEquals(actualheaderscritical[k], expectedheaders[k]))
+				failurecount++;
+		}
+
+		String[] actualheadersErros = getReportLinkSectionsTableHeaderToolTips("Errors");
+		for(int k=0;k<actualheadersErros.length;k++){
+			if(!Verify.StringEquals(actualheadersErros[k], expectedheaders[k]))
+				failurecount++;
+		}
+		
+		String[] actualheadersNormal = getReportLinkSectionsTableHeaderToolTips("Normal");
+		for(int k=0;k<actualheadersNormal.length;k++){
+			if(!Verify.StringEquals(actualheadersNormal[k], expectedheaders[k]))
+				failurecount++;
+		}
+		report.report("Total number of failures is: "+failurecount, ReportAttribute.BOLD);
+		
+		return failurecount==0?true:false;
+	}
+    
+	public boolean verifySummaryReportExportPDFExcel(Map<String, String> mapAttrValues) throws Exception {
+		int failurecount=0;
+		//navigation part
+		navigateToPage();
+    	UIAttributeXMLParser parser = new UIAttributeXMLParser();
+		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		UIActions mydde = new UIActions();
+		mydde.fillScreenAttributes(lsAttributes);
+		
+		//verification part
+		String[] expected = {"Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF","Save complete report to Excel"}, actual;
+		int i=0;
+		clickLink("Export");
+		List<WebElement> lsexportlinks = getAllExportLinks();
+		actual = new String[lsexportlinks.size()];
+		for(WebElement we:lsexportlinks){
+			actual[i++] = we.getText(); 
+		}
+		
+		if(!Verify.verifyArrayofStrings(actual, expected, true))
+			failurecount++;
+		
+		for(i=0;i<actual.length;i++){
+			navigateExportlink(actual[i]);
+			//To DO - Need to validate whether respective link is opened or not 
+		}
+		
+		return failurecount==0?true:false;
+	}
+	
+	public boolean verifyChangesReportSortHeaderHelp(Map<String, String> mapAttrValues) throws Exception {
+		int failurecount=0;
+		navigateToPage();
+    	UIAttributeXMLParser parser = new UIAttributeXMLParser();
+		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		UIActions mydde = new UIActions();
+		mydde.fillScreenAttributes(lsAttributes);
+		
+	    WebElement changeselement = waitForElementVisibility(By.linkText("Changes"));
+		safeJavaScriptClick(changeselement);
+		
+		//Verification part
+		//Natural Ascending Sort Verification
+		if (!Verify.validateTableColumnSortOrder("datatable", "Change",2))
+		 failurecount++;
+		
+		if (!Verify.validateTableColumnSortOrder("datatable", "S/Loc",4))
+			 failurecount++;
+		
+		if (!Verify.validateTableColumnSortOrder("datatable", "HIC",5))
+			 failurecount++;
+		
+		if (!Verify.validateTableColumnSortOrder("datatable", "Patient",6))
+			 failurecount++;
+		
+		
+		
+		return failurecount==0?true:false;
+	}
+    
+   private void navigateExportlink(String linkText) throws Exception {
+	   WebElement we = waitForElementVisibility(By.partialLinkText(linkText));
+	   if(!we.isEnabled() && !we.isDisplayed()){
+		   clickLink("Export");
+		   we = waitForElementVisibility(By.partialLinkText(linkText));
+	   }   
+	}
+   
+ 
+   public boolean validateReportLinkSectionswithEpisodes(String reportlinksection) throws Exception{
+    		//Verify Critical reports section
+    		List<WebElement> Allreportlinks = getAllReportLinksofSection(reportlinksection);
+    		String[] reportlinks = new String[Allreportlinks.size()];
+    		int row=1,i=0;
+    		boolean isepisodesmatch = true;
+    		/* Store the link text of each element to use later*/
+    		for(WebElement we:Allreportlinks){
+    				reportlinks[i++] = we.getText();
+    		}
+    		/* Iterate over each link to navigate and check the data*/
+    		for(int j=0;j<Allreportlinks.size();j++)
+    		{
+    				WebElement reportlinkelement = waitForElementVisibility(By.linkText(reportlinks[j]));
+    		  		int episodes = Integer.parseInt(Verify.getTableData(reportlinksection, ++row, 2));
+    		  	  if(episodes>0){    		  		
+    				String reportlink = reportlinkelement.getText();
+    				safeJavaScriptClick(reportlinkelement);
+
+    				  int rowcount = Verify.getTotalTableRows("datatable");
+    				  report.report("Validating episodes count of Report link"+reportlink);
+    				  report.report("Expected:" +episodes+ " Actual:"+rowcount);
+    				   if(episodes != rowcount){
+    					 isepisodesmatch = false;
+    					 report.report("episodes count doens't match with the episodes displayed in report table: "+reportlink+" Expected:" +episodes+ " Actual:"+rowcount, Reporter.WARNING);
+    				   }
+
+    				WebElement summaryelement = waitForElementVisibility(By.linkText("Summary"));
+    				safeJavaScriptClick(summaryelement);
+     			  }
+    		 }
+    		return isepisodesmatch;
+    }
+   
+    public void clickTableHeaderElement(int columnnumber){
+    	List<WebElement> lstableheaders = getReportTableHeaders("datatable");
+		WebElement columnelement = lstableheaders.get(columnnumber);
+		if(columnelement!=null)
+			columnelement.click();
+		else{
+			report.report("No element found with the given Column Number: "+columnnumber, Reporter.WARNING);
+			return;
+		}
+	 }
+   
+   public String[] getReportLinkSectionsTableHeaderToolTips(String reportlinksection) throws Exception{
+	   int i=0;
+	   String ReportlinksXpath = "//span[text()='"+reportlinksection+"']/following-sibling::table//tr[@class='tableheaderblue']/td";
+	   waitForElementVisibility(By.xpath(ReportlinksXpath));
+	   List<WebElement> lsHeaders = driver.findElements(By.xpath(ReportlinksXpath));
+	   String[] headertooltips = new String[lsHeaders.size()];
+	   for(WebElement we: lsHeaders){
+		   String tooltiprawtext = we.getAttribute("onmouseover");
+		   if(tooltiprawtext !=null || tooltiprawtext.trim()!=""){
+			   headertooltips[i++] = tooltiprawtext.substring(tooltiprawtext.indexOf("\"")+1, tooltiprawtext.lastIndexOf("\""));
+		   }
+	   }
+		   
+	   return headertooltips;
+   }
+
+	private Attribute getAttribute(List<Attribute> lsAttributes, String attrdisplayname){
+		for(Attribute attr:lsAttributes){
+			if (attr.getDisplayName().equalsIgnoreCase(attrdisplayname))
+				return attr;
+		}
+		return null;
+    }
+    
+	@Override
+	public void assertInPage() {
+	}
+
+	@Override
+	public void navigateToPage() throws Exception {
+		HomePage.getInstance().navigateTo(Menu.MYDDE, null);
+	}
+	
+	//Use this method to get the report links displayed under each report section like, Critical, Errors and Normal  
+	public List<WebElement> getAllReportLinksofSection(String reportsection) throws Exception{
+		String Reportlinksxpath = "//span[text()='"+reportsection+"']/following-sibling::table//td/a";
+		waitForTextVisibility(ByLocator.xpath,"//span[text()='"+reportsection+"']" , reportsection);
+		return driver.findElements(By.xpath(Reportlinksxpath));
+	}
+	
+	public List<WebElement> getAllExportLinks(){
+		String exportlinksxpath = "//ul[@id='reportExportMenu']//li/a";
+		return findElements(By.xpath(exportlinksxpath));
+	}
+	
+	public List<WebElement> getReportTableHeaders(String tableidentifier){
+		String tableheaderxpath = "//table[@id='"+tableidentifier+"']/thead/tr/td";
+		return findElements(By.xpath(tableheaderxpath));
+	}
+
+}

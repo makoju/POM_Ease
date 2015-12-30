@@ -18,7 +18,7 @@ public class HomePage extends AbstractPageObject{
 	}
 
 	public static enum Menu {
-		MyDDE("MY DDE"),
+		MYDDE("MY DDE"),
 		Admin("ADMINISTRATION"),
 		NA("NA");
 		private String value;

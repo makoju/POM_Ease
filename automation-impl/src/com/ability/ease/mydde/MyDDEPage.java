@@ -287,7 +287,36 @@ public class MyDDEPage extends AbstractPageObject {
 						
 		return failurecount==0?true:false;
 	}
-    
+	
+	public boolean verifyHighLevelPaymentSummaryReportExportPDFExcel(Map<String, String> mapAttrValues) throws Exception {
+		int failurecount=0,i=0;
+		String[] expected = {"Save High Lvl Payment Summary report to PDF","Save High Lvl Payment Summary report to Excel"}, actual;
+		//navigation part
+		navigateToPage();
+		fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		WebElement HighLvlPaymentSummary = waitForElementVisibility(By.linkText("High Lvl Payment Summary"));
+		safeJavaScriptClick(HighLvlPaymentSummary);
+		
+		//verification part
+		WebElement export = waitForElementVisibility(By.linkText("Export"));
+		safeJavaScriptClick(export);
+		List<WebElement> lsexportlinks = getAllExportLinks();
+		actual = new String[lsexportlinks.size()];
+			for(WebElement we:lsexportlinks){
+				actual[i++] = we.getText(); 
+			 }
+			if(!Verify.verifyArrayofStrings(actual, expected, true))
+				failurecount++;
+		
+			for(i=0;i<actual.length;i++){
+				navigateExportlink(actual[i]);
+				//To DO - Need to validate whether respective link is opened or not 
+			}
+			
+		 return failurecount==0?true:false;
+	}
+	
+	//Begin: Helper Methods  
    private void navigateExportlink(String linkText) throws Exception {
 	   WebElement we = waitForElementVisibility(By.partialLinkText(linkText));
 	   if(!we.isEnabled() && !we.isDisplayed()){

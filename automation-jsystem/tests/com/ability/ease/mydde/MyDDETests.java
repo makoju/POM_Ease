@@ -106,6 +106,30 @@ public class MyDDETests  extends BaseTest{
 			report.report("Failed to Verify High Level Payment Summary Report Sort Header. Please see the JSystem report log for more details", Reporter.FAIL);
 		}
 	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify High Level Payment Summary Report Export Options", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifyHighLevelPaymentSummaryReportExportPDFExcel() throws Exception{	
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifyHighLevelPaymentSummaryReportExportPDFExcel(mapAttrValues)){
+			report.report("Successfully Verified High Level Payment Summary Report Export Options", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify High Level Payment Summary Report Export Options. Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify High Level Payment Summary Report Export Options", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifyHighLevelPaymentSummaryReportExportPDFExcel() throws Exception{	
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifyHighLevelPaymentSummaryReportExportPDFExcel(mapAttrValues)){
+			report.report("Successfully Verified High Level Payment Summary Report Export Options", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify High Level Payment Summary Report Export Options. Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
 
 	public AttributeNameValueDialogProvider[] getAttributeNameValueDialogProvider() {
 		return AttributeNameValueDialogProvider;

@@ -42,5 +42,11 @@ public class ReportsSelenium2Impl implements IReports{
 			Map<String, String> mapAttrValues) throws Exception {
 		return mydde.verifyHighLevelPaymentSummaryReportSortHeader(mapAttrValues);
 	}
+
+	@Override
+	public boolean verifyHighLevelPaymentSummaryReportExportPDFExcel(
+			Map<String, String> mapAttrValues) throws Exception {
+		return mydde.verifyHighLevelPaymentSummaryReportExportPDFExcel(mapAttrValues);
+	}
    
 }

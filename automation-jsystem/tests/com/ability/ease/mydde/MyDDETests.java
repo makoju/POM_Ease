@@ -65,9 +65,45 @@ public class MyDDETests  extends BaseTest{
 	public void verifyChangesReportSortHeaderHelp() throws Exception{	
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
 		if(reports.verifyChangesReportSortHeaderHelp(mapAttrValues)){
-			report.report("Successfully Verified Header and Help Text of report:", Reporter.ReportAttribute.BOLD);
+			report.report("Successfully Verified Changes report Sort Header and Help Text:", Reporter.ReportAttribute.BOLD);
 		}else{
-			report.report("Failed to Verify Header and Help Text of report.Please see the JSystem report log for more details", Reporter.FAIL);
+			report.report("Failed to Verify Changes report Sort Header and Help Text. Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Agency Changes Report Export Options", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifyChangesReportExportPDFExcel() throws Exception{	
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifyChangesReportExportPDFExcel(mapAttrValues)){
+			report.report("Successfully Verified Changes Report Export Options:", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify Changes Report Export Options. Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Agency Changes Report LastUpdateDate column", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifyChangesReportLastUpdateColumn() throws Exception{	
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifyChangesReportLastUpdateColumn(mapAttrValues)){
+			report.report("Successfully Verified Changes Report LastUpdateDate column of report:", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify Changes Report LastUpdateDate column of report.Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify High Level Payment Summary Report Sort Header", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifyHighLevelPaymentSummaryReportSortHeader() throws Exception{	
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifyHighLevelPaymentSummaryReportSortHeader(mapAttrValues)){
+			report.report("Successfully Verified High Level Payment Summary Report Sort Header", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify High Level Payment Summary Report Sort Header. Please see the JSystem report log for more details", Reporter.FAIL);
 		}
 	}
 

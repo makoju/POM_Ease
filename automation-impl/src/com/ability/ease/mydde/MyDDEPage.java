@@ -111,10 +111,7 @@ public class MyDDEPage extends AbstractPageObject {
 		int failurecount=0;
 		//navigation part
 		navigateToPage();
-    	UIAttributeXMLParser parser = new UIAttributeXMLParser();
-		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		UIActions mydde = new UIActions();
-		mydde.fillScreenAttributes(lsAttributes);
+		fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
 		
 		//verification part
 		String[] expected = {"Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF","Save complete report to Excel"}, actual;
@@ -138,7 +135,10 @@ public class MyDDEPage extends AbstractPageObject {
 	}
 	
 	public boolean verifyChangesReportSortHeaderHelp(Map<String, String> mapAttrValues) throws Exception {
+		boolean istimeframedaterange=false;
 		int failurecount=0;
+		String fromdate,todate;
+		fromdate=todate=null;
 		navigateToPage();
     	UIAttributeXMLParser parser = new UIAttributeXMLParser();
 		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
@@ -162,8 +162,129 @@ public class MyDDEPage extends AbstractPageObject {
 		if (!Verify.validateTableColumnSortOrder("datatable", "Patient",6))
 			 failurecount++;
 		
+		Attribute agencyattr = getAttribute(lsAttributes, "agency");
+		//To Do - Need to get the From and Todate from Timeframe attributes value
+		Attribute timeframeattr = getAttribute(lsAttributes, "Timeframe");
+		String timeframe = timeframeattr.getValue().toLowerCase();
+		if (timeframe.contains("fromdate")){
+			istimeframedaterange = true;
+			String[] dates=timeframe.split(":");
+			fromdate=dates[0];
+			todate=dates[1];
+			
+			fromdate = fromdate.substring(fromdate.indexOf("(")+1,fromdate.indexOf(")"));
+			todate =  todate.substring(todate.indexOf("(")+1,todate.indexOf(")")); 
+		}
 		
+		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'CHANGES REPORT')]"));
 		
+		report.report("comparing summary report header value Actual:  "+reportText);
+		if (agencyattr!=null){
+		   if (istimeframedaterange && !Verify.StringEquals(reportText, "CHANGES REPORT FROM "+fromdate+" TO "+todate+", FOR AGENCY "+agencyattr.getValue()))
+			   failurecount++;
+		   else
+			 if(!Verify.StringMatches(reportText, "CHANGES REPORT FROM * TO *, FOR AGENCY "+agencyattr.getValue()))
+				failurecount++;
+		}
+		
+		return failurecount==0?true:false;
+	}
+	
+	public boolean verifyChangesReportExportPDFExcel(Map<String, String> mapAttrValues) throws Exception {
+		int failurecount=0;
+		//navigation part
+		navigateToPage();
+		fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		
+	    WebElement changeselement = waitForElementVisibility(By.linkText("Changes"));
+		safeJavaScriptClick(changeselement);
+		
+		//verification part
+		String[] expected = {"Save Changes report to PDF","Save Changes report to Excel","Save complete report to PDF","Save complete report to Excel"}, actual;
+		int i=0;
+		clickLink("Export");
+		List<WebElement> lsexportlinks = getAllExportLinks();
+		actual = new String[lsexportlinks.size()];
+		for(WebElement we:lsexportlinks){
+			actual[i++] = we.getText(); 
+		}
+		
+		if(!Verify.verifyArrayofStrings(actual, expected, true))
+			failurecount++;
+		
+		for(i=0;i<actual.length;i++){
+			navigateExportlink(actual[i]);
+			//To DO - Need to validate whether respective link is opened or not 
+		}
+		
+		return failurecount==0?true:false;
+	}
+	
+	public boolean verifyChangesReportLastUpdateColumn(Map<String, String> mapAttrValues) throws Exception {
+		boolean istimeframedaterange=false;
+    	String lastupdatedate,fromdate,todate;
+    	lastupdatedate=fromdate=todate=null;
+    	int failurecount=0;
+    	
+		//navigation part
+		navigateToPage();
+    	UIAttributeXMLParser parser = new UIAttributeXMLParser();
+		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		UIActions mydde = new UIActions();
+		mydde.fillScreenAttributes(lsAttributes);
+		
+	    WebElement changeselement = waitForElementVisibility(By.linkText("Changes"));
+		safeJavaScriptClick(changeselement);
+			
+		lastupdatedate = Verify.getTableData("datatable", 1, 13);
+		
+		//To Do - Need to get the From and Todate from Timeframe attributes value
+		Attribute timeframeattr = getAttribute(lsAttributes, "Timeframe");
+		String timeframe = timeframeattr.getValue().toLowerCase();
+		if (timeframe.contains("fromdate")){
+			istimeframedaterange = true;
+			String[] dates=timeframe.split(":");
+			fromdate=dates[0];
+			todate=dates[1];
+			
+			fromdate = fromdate.substring(fromdate.indexOf("(")+1,fromdate.indexOf(")"));
+			todate =  todate.substring(todate.indexOf("(")+1,todate.indexOf(")")); 
+		}
+		if(istimeframedaterange){
+		  if(!Verify.datewithinDateRange(lastupdatedate, fromdate, todate))
+			failurecount++;
+		}
+		
+		else
+			return false; //To Do - Need to implement the validation for Overnight and weekly reports
+		
+		return failurecount==0?true:false;
+	}
+	
+	public boolean verifyHighLevelPaymentSummaryReportSortHeader(Map<String, String> mapAttrValues) throws Exception{
+		int failurecount=0;
+		// TODO Auto-generated method stub
+		//navigation part
+		navigateToPage();
+		fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		WebElement HighLvlPaymentSummary = waitForElementVisibility(By.linkText("High Lvl Payment Summary"));
+		safeJavaScriptClick(HighLvlPaymentSummary);
+		
+		//Verification part
+		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'HIGH LEVEL PAYMENT')]"));
+		if(!Verify.StringMatches(reportText.trim(), "HIGH LEVEL PAYMENT SUMMARY REPORT FROM *"))
+			failurecount++;
+		
+		//Natural Ascending Sort Verification
+		if (!Verify.validateTableColumnSortOrder("datatable", "Provider",1))
+		 failurecount++;
+		
+		if (!Verify.validateTableColumnSortOrder("datatable", "Day",3))
+			 failurecount++;
+		
+		if (!Verify.validateTableColumnSortOrder("datatable", "Check #",4))
+			 failurecount++;
+						
 		return failurecount==0?true:false;
 	}
     
@@ -254,6 +375,14 @@ public class MyDDEPage extends AbstractPageObject {
 		HomePage.getInstance().navigateTo(Menu.MYDDE, null);
 	}
 	
+	public void fillScreen(String filename, Map<String,String> mapAttrValues) throws Exception{
+		//navigation part
+		UIAttributeXMLParser parser = new UIAttributeXMLParser();
+		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(filename, mapAttrValues);
+		UIActions mydde = new UIActions();
+		mydde.fillScreenAttributes(lsAttributes);
+	}
+	
 	//Use this method to get the report links displayed under each report section like, Critical, Errors and Normal  
 	public List<WebElement> getAllReportLinksofSection(String reportsection) throws Exception{
 		String Reportlinksxpath = "//span[text()='"+reportsection+"']/following-sibling::table//td/a";
@@ -270,5 +399,4 @@ public class MyDDEPage extends AbstractPageObject {
 		String tableheaderxpath = "//table[@id='"+tableidentifier+"']/thead/tr/td";
 		return findElements(By.xpath(tableheaderxpath));
 	}
-
 }

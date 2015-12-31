@@ -1,8 +1,13 @@
 package com.ability.ease.auto.common;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -98,20 +103,33 @@ public class Verify extends AbstractPageObject{
 		return -1;
 	}
 	
-	public static boolean validateTableColumnSortOrder(String tablename, String columnname, int columnnindex){
+   public static boolean validateTableColumnSortOrder(String tablename, String columnname, int columnnindex){
+	   String xpath = "//table[@id='"+tablename+"']"+"//td[contains(text(),'"+columnname+"')] | //table[@id='"+tablename+"']"+"//div[contains(text(),'"+columnname+"')]";
+				
 	   waitForElement(By.xpath("//table[@id='"+tablename+"']"));
-	   WebElement changecolumn = driver.findElement(By.xpath("//table[@id='"+tablename+"']"+"//td[contains(text(),'"+columnname+"')]"));
+	   WebElement changecolumn = driver.findElement(By.xpath(xpath));
 	   if(changecolumn!=null){
-		String sortorder = changecolumn.getAttribute("sortdir");
-		if(!sortorder.equalsIgnoreCase("down")) 
+		   String sortorder = changecolumn.getAttribute("sortdir");
+		
+		   /*Few Table Headers are inside thead under th tag with embeded div elements
+			<th class="datatablecell group-separator tablesorter-header tablesorter-headerAsc" style="width: 100px; -moz-user-select: none;" data-column="0" tabindex="0" scope="col" role="columnheader" aria-disabled="false" aria-controls="datatable" unselectable="on" aria-sort="ascending" aria-label=" Provider : Ascending sort applied, activate to apply a descending sort">
+			<div class="tablesorter-header-inner"> Provider </div>*/
+		   if(sortorder==null){
+			   WebElement changecolumnparent = driver.findElement(By.xpath("//table[@id='"+tablename+"']"+"//div[contains(text(),'"+columnname+"')]/.."));
+			   sortorder = changecolumnparent.getAttribute("aria-sort");
+		   }
+		   if(sortorder!=null && !(sortorder.equalsIgnoreCase("down") || sortorder.equalsIgnoreCase("ascending"))) 
 			changecolumn.click(); //click on Change column to make it in ascending sort order
 		
-		List<String> lsactualcolumndata = getEntireTableColumnData(tablename, columnnindex);
-		List<String> lsexpectedcolumndata = lsactualcolumndata;
-		Collections.sort(lsexpectedcolumndata); //which sorts elements as per natural order for strings alphabet ascending order
-
-		 return Verify.ListEquals(lsactualcolumndata, lsexpectedcolumndata);
-	   }
+		   List<String> lsactualcolumndata = getEntireTableColumnData(tablename, columnnindex);
+		   List<String> lsexpectedcolumndata = new ArrayList<String>();
+		   lsexpectedcolumndata.addAll(lsactualcolumndata);
+		   Collections.sort(lsexpectedcolumndata); //which sorts elements as per natural order for strings alphabet ascending order
+		   report.report("Actual: "+lsactualcolumndata+" Expected: "+lsexpectedcolumndata);
+		   
+		  return Verify.ListEquals(lsactualcolumndata, lsexpectedcolumndata);
+	    }
+	   report.report("Something went wrong with the sorting hence returing false", Reporter.WARNING);
 	   return false;
     }
 	
@@ -161,5 +179,16 @@ public class Verify extends AbstractPageObject{
 			return false;
 		
 		return failurecount>0?false:true;
+	}
+	public static boolean datewithinDateRange(String actualdate,String startdate,String enddate) throws ParseException{
+		DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+		if(actualdate!=null && startdate!=null && enddate!=null){
+			Date actdate = format.parse(actualdate);
+			Date stdate = format.parse(startdate);
+			Date eddate = format.parse(enddate);
+			return !(actdate.before(stdate) || actdate.after(eddate));
+		}
+		report.report("Either of actualdate,startdate and enddate are null: "+actualdate+","+startdate+","+enddate, Reporter.WARNING);
+		return false;
 	}
 }

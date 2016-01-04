@@ -41,9 +41,9 @@ public class MyDDETests  extends BaseTest{
 	public void verifySummaryReportHeaderandHelpText()throws Exception{
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
 		if(reports.verifySummaryReportHeaderandHelpText(mapAttrValues)){
-			report.report("Successfully Verified Header and Help Text of report:", Reporter.ReportAttribute.BOLD);
+			report.report("Successfully Verified Header and Help Text of Summary report:", Reporter.ReportAttribute.BOLD);
 		}else{
-			report.report("Failed to Verify Header and Help Text of report.Please see the JSystem report log for more details", Reporter.FAIL);
+			report.report("Failed to Verify Header and Help Text of Summary report.Please see the JSystem report log for more details", Reporter.FAIL);
 		}
 	}
 	
@@ -53,9 +53,9 @@ public class MyDDETests  extends BaseTest{
 	public void verifySummaryReportExportPDFExcel() throws Exception{	
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
 		if(reports.verifySummaryReportExportPDFExcel(mapAttrValues)){
-			report.report("Successfully Verified Header and Help Text of report:", Reporter.ReportAttribute.BOLD);
+			report.report("Successfully Verified Summary Report Export Options:", Reporter.ReportAttribute.BOLD);
 		}else{
-			report.report("Failed to Verify Header and Help Text of report.Please see the JSystem report log for more details", Reporter.FAIL);
+			report.report("Failed to Verify Summary Report Export Options.Please see the JSystem report log for more details", Reporter.FAIL);
 		}
 	}
 	
@@ -119,15 +119,16 @@ public class MyDDETests  extends BaseTest{
 		}
 	}
 	
+	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify High Level Payment Summary Report Export Options", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
-	public void verifyHighLevelPaymentSummaryReportExportPDFExcel() throws Exception{	
+	@TestProperties(name = "Verify High Level Payment Summary Report Check Amount and Projected Amount", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifyHighLevelPaymentSummaryReportCheckAndProjectedAmount() throws Exception{	
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
-		if(reports.verifyHighLevelPaymentSummaryReportExportPDFExcel(mapAttrValues)){
-			report.report("Successfully Verified High Level Payment Summary Report Export Options", Reporter.ReportAttribute.BOLD);
+		if(reports.verifyHighLevelPaymentSummaryReportCheckAndProjectedAmount(mapAttrValues)){
+			report.report("Successfully Verified High Level Payment Summary Report Check Amount and Projected Amount", Reporter.ReportAttribute.BOLD);
 		}else{
-			report.report("Failed to Verify High Level Payment Summary Report Export Options. Please see the JSystem report log for more details", Reporter.FAIL);
+			report.report("Failed to Verify High Level Payment Summary Report Check Amount and Projected Amount.Please see the JSystem report log for more details", Reporter.FAIL);
 		}
 	}
 

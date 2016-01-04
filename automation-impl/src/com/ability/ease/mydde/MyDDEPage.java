@@ -316,7 +316,30 @@ public class MyDDEPage extends AbstractPageObject {
 		 return failurecount==0?true:false;
 	}
 	
-	//Begin: Helper Methods  
+
+	public boolean verifyHighLevelPaymentSummaryReportCheckAndProjectedAmount(Map<String, String> mapAttrValues) throws Exception{
+		int failurecount=0,i=0;
+		//navigation part
+		navigateToPage();
+		fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		WebElement HighLvlPaymentSummary = waitForElementVisibility(By.linkText("High Lvl Payment Summary"));
+		safeJavaScriptClick(HighLvlPaymentSummary);
+		//verification part
+		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'HIGH LEVEL PAYMENT')]"));
+		if(!Verify.StringMatches(reportText.trim(), "HIGH LEVEL PAYMENT SUMMARY REPORT FROM *"))
+			failurecount++;
+		
+		String totalcheckamount = getElementText(By.id("totalCheckAmount"));
+		String totalprojectedamount = getElementText(By.id("totalProjectedAmount"));
+		if(!Verify.currencyValidator(totalcheckamount))
+			failurecount++;
+		if(!Verify.currencyValidator(totalprojectedamount))
+			failurecount++;
+		
+		return failurecount==0?true:false;
+	}
+	
+   //Begin: Helper Methods 
    private void navigateExportlink(String linkText) throws Exception {
 	   WebElement we = waitForElementVisibility(By.partialLinkText(linkText));
 	   if(!we.isEnabled() && !we.isDisplayed()){
@@ -395,15 +418,6 @@ public class MyDDEPage extends AbstractPageObject {
 		return null;
     }
     
-	@Override
-	public void assertInPage() {
-	}
-
-	@Override
-	public void navigateToPage() throws Exception {
-		HomePage.getInstance().navigateTo(Menu.MYDDE, null);
-	}
-	
 	public void fillScreen(String filename, Map<String,String> mapAttrValues) throws Exception{
 		//navigation part
 		UIAttributeXMLParser parser = new UIAttributeXMLParser();
@@ -428,4 +442,14 @@ public class MyDDEPage extends AbstractPageObject {
 		String tableheaderxpath = "//table[@id='"+tableidentifier+"']/thead/tr/td";
 		return findElements(By.xpath(tableheaderxpath));
 	}
+	
+	@Override
+	public void assertInPage() {
+	}
+
+	@Override
+	public void navigateToPage() throws Exception {
+		HomePage.getInstance().navigateTo(Menu.MYDDE, null);
+	}
+
 }

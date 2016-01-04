@@ -10,4 +10,5 @@ public interface IReports {
 	boolean verifyChangesReportLastUpdateColumn(Map<String, String> mapAttrValues) throws Exception;
 	boolean verifyHighLevelPaymentSummaryReportSortHeader(Map<String, String> mapAttrValues) throws Exception;
 	boolean verifyHighLevelPaymentSummaryReportExportPDFExcel(Map<String, String> mapAttrValues) throws Exception;
+	boolean verifyHighLevelPaymentSummaryReportCheckAndProjectedAmount(Map<String, String> mapAttrValues) throws Exception;
 }

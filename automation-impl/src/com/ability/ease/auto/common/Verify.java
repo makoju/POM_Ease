@@ -1,5 +1,6 @@
 package com.ability.ease.auto.common;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,6 +12,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.validator.routines.BigDecimalValidator;
+import org.apache.commons.validator.routines.CurrencyValidator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -190,5 +193,20 @@ public class Verify extends AbstractPageObject{
 		}
 		report.report("Either of actualdate,startdate and enddate are null: "+actualdate+","+startdate+","+enddate, Reporter.WARNING);
 		return false;
+	}
+	
+	public static boolean currencyValidator(String amountinusdollars){
+	 BigDecimalValidator validator = CurrencyValidator.getInstance();
+
+     BigDecimal amount = validator.validate(amountinusdollars, Locale.US);
+/*     if(amount!=null){
+     //remove the brackets and , since this is something unusual
+     String in = amountinusdollars.replaceAll("\\(", "").replace(')', ' ').trim();
+     in=in.replaceAll(",", "");
+     
+     amount = validator.validate(in, Locale.US);
+     assertNotNull(amount);
+     }*/
+     return amount!=null?true:false;
 	}
 }

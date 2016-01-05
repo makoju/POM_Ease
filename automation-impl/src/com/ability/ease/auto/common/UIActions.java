@@ -141,6 +141,20 @@ public class UIActions extends AbstractPageObject {
 					clickButton("Change Agency");
 					break;
 					
+				case MultiSelectAgency:
+					String[] multiAgencies = scrAttr.getValue().split(",");
+					clickButton(scrAttr.getLocator());
+					waitForTextVisibility(ByLocator.xpath, "//span", "Check all");
+					for(String agency:multiAgencies){
+						if(agency.startsWith("Check all"))
+							clickOnElement(ByLocator.xpath, "//a[@class='ui-multiselect-all']", 5);
+						else if(agency.startsWith("Uncheck all"))
+						   clickOnElement(ByLocator.xpath, "//a[@class='ui-multiselect-none']", 5);
+						else
+							checkChkBox(agency.trim());
+					}
+					break;					
+					
 				default:
 					report.report("The attribute Style is not implemented.",
 							ReportAttribute.BOLD);

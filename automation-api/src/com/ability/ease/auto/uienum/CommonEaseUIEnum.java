@@ -18,7 +18,8 @@ public class CommonEaseUIEnum {
 		ClaimLineUB04("ClaimLineUB04"),
 		ConditionOccurruenceCodes("ConditionOccurruenceCodes"),
 		Timeframe("Timeframe"),
-		Agency("Agency");
+		Agency("Agency"),
+		MultiSelectAgency("MultiSelectAgency");
 
 		private String value;
 		private UIAttributeStyle(String value){

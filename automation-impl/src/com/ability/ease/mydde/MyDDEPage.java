@@ -339,6 +339,58 @@ public class MyDDEPage extends AbstractPageObject {
 		return failurecount==0?true:false;
 	}
 	
+	public boolean verifyHighLevelPaymentSummaryReportMultiAgencySelectAndExportOptions(Map<String, String> mapAttrValues) throws Exception {
+		int failurecount=0,i=0;
+		String[] actual;
+		//navigation part
+		navigateToPage();
+		UIAttributeXMLParser parser = new UIAttributeXMLParser();
+		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		UIActions mydde = new UIActions();
+		mydde.fillScreenAttributes(lsAttributes);
+		
+		WebElement HighLvlPaymentSummary = waitForElementVisibility(By.linkText("High Lvl Payment Summary"));
+		safeJavaScriptClick(HighLvlPaymentSummary);
+		//verification part
+		UIAttribute multiselectagency = getAttribute(lsAttributes, "MultiSelectAgency");
+		String multiselectagencystr = multiselectagency.getValue();
+		int actualcheckedagencies = findElements(By.xpath("//input[@name='multiselect_example' and @checked='checked']")).size();
+		
+		if(multiselectagencystr.toLowerCase().startsWith("check all")){
+			int expectedAgencies = findElements(By.xpath("//input[@name='multiselect_example']")).size();
+			if(expectedAgencies!=actualcheckedagencies){
+				report.report("There should be "+expectedAgencies+" Agencies Selected. But, Only "+actualcheckedagencies+" were Selected");
+				failurecount++;
+			}
+		}
+		else if(multiselectagencystr.toLowerCase().startsWith("uncheck all")){
+			
+			if(actualcheckedagencies!=0){
+				report.report("There should be No Agencies Selected. But, "+actualcheckedagencies+" were Selected");
+				failurecount++;
+			}
+		}
+		else{
+			int expectedAgencies = multiselectagencystr.split(",").length;
+			if(actualcheckedagencies!=expectedAgencies){
+				report.report("There should be "+expectedAgencies+" Agencies Selected. But, "+actualcheckedagencies+" were Selected");
+				failurecount++;
+			}
+		}
+		
+		WebElement export = waitForElementVisibility(By.linkText("Export"));
+		safeJavaScriptClick(export);
+		List<WebElement> lsexportlinks = getAllExportLinks();
+		actual = new String[lsexportlinks.size()];
+	
+			for(i=0;i<actual.length;i++){
+				navigateExportlink(actual[i]);
+				//To DO - Need to validate whether respective link is opened or not 
+			}
+			
+		return failurecount==0?true:false;
+	}
+	
    //Begin: Helper Methods 
    private void navigateExportlink(String linkText) throws Exception {
 	   WebElement we = waitForElementVisibility(By.partialLinkText(linkText));

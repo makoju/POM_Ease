@@ -53,4 +53,17 @@
 		<description>Changes Report link in Advanced Report page just supply any value in value field</description>
 	</UIAttribute>	
 	-->
+	<UIAttribute>
+	    <locator>High Lvl Payment Summary</locator>
+		<style>link</style>
+		<displayName>HighLvlPaymentSummary</displayName>
+		<description>High Lvl Payment Summary link</description>
+	</UIAttribute>
+	<!--This is a dropdown in HighLevel Payment Summary Report for Multi Agency Select-->
+	<UIAttribute>
+	    <locator>ui-multiselect</locator>
+		<style>MultiSelectAgency</style>
+		<displayName>MultiSelectAgency</displayName>
+		<description>Supply multiple Agency Names with comma separated like, {HHA1, HHA2, Hospital, Check all, Uncheck all etc..}</description>
+	</UIAttribute>
 </UIAttributes>	

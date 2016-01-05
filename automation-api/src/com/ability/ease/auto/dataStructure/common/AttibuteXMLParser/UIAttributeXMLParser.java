@@ -125,6 +125,16 @@ public class UIAttributeXMLParser {
 					if(Style.toString().equalsIgnoreCase("ConditionOccurruenceCodes")){
 						attrStyle= UIAttributeStyle.ConditionOccurruenceCodes;
 					}
+					if(Style.toString().equalsIgnoreCase("Timeframe")){
+						attrStyle= UIAttributeStyle.Timeframe;
+					}
+					if(Style.toString().equalsIgnoreCase("Agency")){
+						attrStyle= UIAttributeStyle.Agency;
+					}
+					if(Style.toString().equalsIgnoreCase("MultiSelectAgency")){
+						attrStyle= UIAttributeStyle.MultiSelectAgency;
+					}
+					
 					attr.setStyle(attrStyle);
 					lsattrs.add(attr);
 					locator=displayName=Style=null;

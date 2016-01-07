@@ -397,7 +397,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		String checkBoxXpath = "//input[@type='checkbox' and (@name='" + 
 				checkboxName + "' or @id='" + checkboxName + 
 				"' or @title='" + checkboxName +  
-				"' or @value='" + checkboxName +"' or @title='Select \"" + checkboxName + "\"' or @title='Select " + checkboxName "' or contains(@title,'"+checkboxName+"'))]" +
+				"' or @value='" + checkboxName +"' or @title='Select \"" + checkboxName + "\"' or @title='Select " + checkboxName+"' or contains(@title,'"+checkboxName+"'))]" +
 				" | //span[.='" + checkboxName + "']/preceding-sibling::input"+
 				" | //td[text()='" + checkboxName + "']/preceding-sibling::td/input";
 

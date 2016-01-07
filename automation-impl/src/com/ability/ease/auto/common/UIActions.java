@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import jsystem.framework.report.Reporter.ReportAttribute;
 
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
+import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 

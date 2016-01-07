@@ -14,6 +14,7 @@ import com.ability.ease.auto.common.UIActions;
 import com.ability.ease.auto.common.Verify;
 import com.ability.ease.auto.dataStructure.common.AttibuteXMLParser.UIAttributeXMLParser;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
+import com.ability.ease.auto.dataStructure.common.easeScreens.UIAttribute;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.home.HomePage;
 import com.ability.ease.home.HomePage.Menu;

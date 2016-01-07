@@ -142,6 +142,18 @@ public class MyDDETests  extends BaseTest{
 			report.report("Failed to Verify High Level Payment Summary Report MultiAgency Select and Export Options.Please see the JSystem report log for more details", Reporter.FAIL);
 		}
 	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Payment Summary Report Sort,Header and Help Text", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifyPaymentSummaryReportSortHeaderHelp() throws Exception{	
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifyPaymentSummaryReportSortHeaderHelp(mapAttrValues)){
+			report.report("Successfully Verified Payment Summary Report Sort,Header and Help Text", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify Payment Summary Report Sort, Header and Help Text.Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
 
 	public AttributeNameValueDialogProvider[] getAttributeNameValueDialogProvider() {
 		return AttributeNameValueDialogProvider;

@@ -391,6 +391,55 @@ public class MyDDEPage extends AbstractPageObject {
 		return failurecount==0?true:false;
 	}
 	
+	public boolean verifyPaymentSummaryReportSortHeaderHelp(Map<String, String> mapAttrValues) throws Exception {
+		boolean istimeframedaterange=false;
+		int failurecount=0;
+		String fromdate,todate;
+		fromdate=todate=null;
+		navigateToPage();
+    	UIAttributeXMLParser parser = new UIAttributeXMLParser();
+		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		UIActions mydde = new UIActions();
+		mydde.fillScreenAttributes(lsAttributes);
+		
+	    WebElement paymentsummaryelement = waitForElementVisibility(By.linkText("Payment Summary"));
+		safeJavaScriptClick(paymentsummaryelement);
+		
+		//Verification part
+		//Natural Ascending Sort Verification
+		if (!Verify.validateTableColumnSortOrder("datatable", "Day",2))
+		 failurecount++;
+		
+		if (!Verify.validateTableColumnSortOrder("datatable", "Check #",3))
+			 failurecount++;
+		
+		Attribute agencyattr = getAttribute(lsAttributes, "agency");
+		//To Do - Need to get the From and Todate from Timeframe attributes value
+		Attribute timeframeattr = getAttribute(lsAttributes, "Timeframe");
+		String timeframe = timeframeattr.getValue().toLowerCase();
+		if (timeframe.contains("fromdate")){
+			istimeframedaterange = true;
+			String[] dates=timeframe.split(":");
+			fromdate=dates[0];
+			todate=dates[1];
+			
+			fromdate = fromdate.substring(fromdate.indexOf("(")+1,fromdate.indexOf(")"));
+			todate =  todate.substring(todate.indexOf("(")+1,todate.indexOf(")")); 
+		}
+		
+		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'PAYMENT SUMMARY')]"));
+		
+		report.report("comparing summary report header value Actual:  "+reportText);
+		if (agencyattr!=null){
+		   if (istimeframedaterange && !Verify.StringEquals(reportText, "PAYMENT SUMMARY REPORT FROM "+fromdate+" TO "+todate+", FOR AGENCY "+agencyattr.getValue()))
+			   failurecount++;
+		   else
+			 if(!Verify.StringMatches(reportText, "PAYMENT SUMMARY REPORT FROM * TO *, FOR AGENCY "+agencyattr.getValue()))
+				failurecount++;
+		}		
+		return failurecount==0?true:false;
+	}
+	
    //Begin: Helper Methods 
    private void navigateExportlink(String linkText) throws Exception {
 	   WebElement we = waitForElementVisibility(By.partialLinkText(linkText));

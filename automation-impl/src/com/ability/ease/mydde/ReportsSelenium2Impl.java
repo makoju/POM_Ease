@@ -7,7 +7,7 @@ import com.ability.ease.testapi.IReports;
 
 public class ReportsSelenium2Impl implements IReports{
 
-	private MyDDEPage mydde = new MyDDEPage();
+	private MyDDEReportsPage mydde = new MyDDEReportsPage();
 	
 	@Override
 	public boolean verifySummaryReportHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception{

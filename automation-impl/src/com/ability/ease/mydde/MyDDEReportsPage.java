@@ -147,8 +147,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		UIActions mydde = new UIActions();
 		mydde.fillScreenAttributes(lsAttributes);
 		
-	    WebElement changeselement = waitForElementVisibility(By.linkText("Changes"));
-		safeJavaScriptClick(changeselement);
+	    safeJavaScriptClick("Changes");
 		
 		//Verification part
 		//Natural Ascending Sort Verification
@@ -205,8 +204,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		navigateToPage();
 		fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
 		
-	    WebElement changeselement = waitForElementVisibility(By.linkText("Changes"));
-		safeJavaScriptClick(changeselement);
+		safeJavaScriptClick("Changes");
 		
 		//verification part
 		String[] expected = {"Save Changes report to PDF","Save Changes report to Excel","Save complete report to PDF","Save complete report to Excel"}, actual;
@@ -242,8 +240,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		UIActions mydde = new UIActions();
 		mydde.fillScreenAttributes(lsAttributes);
 		
-	    WebElement changeselement = waitForElementVisibility(By.linkText("Changes"));
-		safeJavaScriptClick(changeselement);
+		safeJavaScriptClick("Changes");
 			
 		lastupdatedate = Verify.getTableData("datatable", 1, 13);
 		
@@ -276,8 +273,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		//navigation part
 		navigateToPage();
 		fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		WebElement HighLvlPaymentSummary = waitForElementVisibility(By.linkText("High Lvl Payment Summary"));
-		safeJavaScriptClick(HighLvlPaymentSummary);
+		safeJavaScriptClick("High Lvl Payment Summary");
 		
 		//Verification part
 		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'HIGH LEVEL PAYMENT')]"));
@@ -303,12 +299,10 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		//navigation part
 		navigateToPage();
 		fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		WebElement HighLvlPaymentSummary = waitForElementVisibility(By.linkText("High Lvl Payment Summary"));
-		safeJavaScriptClick(HighLvlPaymentSummary);
+		safeJavaScriptClick("High Lvl Payment Summary");
 		
 		//verification part
-		WebElement export = waitForElementVisibility(By.linkText("Export"));
-		safeJavaScriptClick(export);
+		safeJavaScriptClick("Export");
 		List<WebElement> lsexportlinks = getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 			for(WebElement we:lsexportlinks){
@@ -331,8 +325,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		//navigation part
 		navigateToPage();
 		fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		WebElement HighLvlPaymentSummary = waitForElementVisibility(By.linkText("High Lvl Payment Summary"));
-		safeJavaScriptClick(HighLvlPaymentSummary);
+		safeJavaScriptClick("High Lvl Payment Summary");
 		//verification part
 		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'HIGH LEVEL PAYMENT')]"));
 		if(!Verify.StringMatches(reportText.trim(), "HIGH LEVEL PAYMENT SUMMARY REPORT FROM *"))
@@ -358,8 +351,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		UIActions mydde = new UIActions();
 		mydde.fillScreenAttributes(lsAttributes);
 		
-		WebElement HighLvlPaymentSummary = waitForElementVisibility(By.linkText("High Lvl Payment Summary"));
-		safeJavaScriptClick(HighLvlPaymentSummary);
+		safeJavaScriptClick("High Lvl Payment Summary");
 		//verification part
 		UIAttribute multiselectagency = getAttribute(lsAttributes, "MultiSelectAgency");
 		String multiselectagencystr = multiselectagency.getValue();
@@ -387,8 +379,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 			}
 		}
 		
-		WebElement export = waitForElementVisibility(By.linkText("Export"));
-		safeJavaScriptClick(export);
+		safeJavaScriptClick("Export");
 		List<WebElement> lsexportlinks = getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 	
@@ -415,8 +406,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		UIActions mydde = new UIActions();
 		mydde.fillScreenAttributes(lsAttributes);
 		
-	    WebElement paymentsummaryelement = waitForElementVisibility(By.linkText("Payment Summary"));
-		safeJavaScriptClick(paymentsummaryelement);
+	    safeJavaScriptClick("Payment Summary");
 		
 		//Verification part
 		//Natural Ascending Sort Verification
@@ -459,6 +449,32 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		report.report("Total number of failures is: "+failurecount, ReportAttribute.BOLD);
 				
 		return failurecount==0?true:false;
+	}
+	
+	public boolean verifyPaymentSummaryReportExportPDFExcel(Map<String, String> mapAttrValues) throws Exception {
+		int failurecount=0,i=0;
+		String[] expected = {"Save Payment Summary report to PDF","Save Payment Summary report to Excel", "Save complete report to PDF", "Save complete report to Excel"}, actual;
+		//navigation part
+		navigateToPage();
+		fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		safeJavaScriptClick("Payment Summary");
+		
+		//verification part
+		safeJavaScriptClick("Export");
+		List<WebElement> lsexportlinks = getAllExportLinks();
+		actual = new String[lsexportlinks.size()];
+			for(WebElement we:lsexportlinks){
+				actual[i++] = we.getText(); 
+			 }
+			if(!Verify.verifyArrayofStrings(actual, expected, true))
+				failurecount++;
+		
+			for(i=0;i<actual.length;i++){
+				navigateExportlink(actual[i]);
+				//To DO - Need to validate whether respective link is opened or not 
+			}
+			
+		 return failurecount==0?true:false;
 	}
 	
    //Begin: Helper Methods 

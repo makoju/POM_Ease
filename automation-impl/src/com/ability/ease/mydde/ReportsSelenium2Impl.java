@@ -63,4 +63,9 @@ public class ReportsSelenium2Impl implements IReports{
 	public boolean verifyPaymentSummaryReportSortHeaderHelp(Map<String, String> mapAttrValues) throws Exception {
 		return mydde.verifyPaymentSummaryReportSortHeaderHelp(mapAttrValues);
 	}
+	
+	@Override
+	public boolean verifyPaymentSummaryReportExportPDFExcel(Map<String, String> mapAttrValues) throws Exception {
+		return mydde.verifyPaymentSummaryReportExportPDFExcel(mapAttrValues);
+	}
 }

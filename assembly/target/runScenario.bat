@@ -24,7 +24,7 @@ set ANT_HOME=thirdparty\ant
 set ANT_CMD=%ANT_HOME%\bin\ant.bat
 set ANT_OPTS=-Djsystem.current.scenario.name=%SCENARIO_NAME% -Dbasedir=. -Dscenarios.base=%PROJECT_CLASSES_PATH% -DsutFile=%SUT_FILE% -Xms32M -Xmx256M
 rem set ANT_OPTS=%ANT_OPTS% -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y
-"%ANT_CMD%" -lib thirdparty\ant\lib -lib thirdparty\commonLib -lib thirdparty\lib -lib thirdparty\selenium  -lib lib -lib customer_lib -lib %PROJECT_CLASSES_PATH%\..\lib -lib %PROJECT_CLASSES_PATH% -listener jsystem.runner.AntExecutionListener -f %PROJECT_CLASSES_PATH%\%SCENARIO_NAME%.xml
+"%ANT_CMD%" -v -lib thirdparty\ant\lib -lib D:\EaseAutomation\EaseTest150\automation-api\target\*.jar -lib D:\EaseAutomation\EaseTest150\automation-common\target\*.jar -lib D:\EaseAutomation\EaseTest150\automation-impl\target\*.jar -lib thirdparty\commonLib -lib thirdparty\lib -lib thirdparty\selenium  -lib lib -lib customer_lib -lib %PROJECT_CLASSES_PATH%\..\lib -lib %PROJECT_CLASSES_PATH% -listener jsystem.runner.AntExecutionListener -f %PROJECT_CLASSES_PATH%\%SCENARIO_NAME%.xml
 
 :help
 echo Expected script arguments:

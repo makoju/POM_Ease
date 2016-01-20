@@ -11,6 +11,9 @@
             <mySQLDBPort>3306</mySQLDBPort>
             <mySQLDBUserName>easeweb</mySQLDBUserName>
             <mySQLDBPassword>web123</mySQLDBPassword>
+	    <userName>empadmin</userName>
+	    <password>Totally#1</password>
+	    <easebuildid>70</easebuildid>
         </workingEnvironment>
         <webdriver>
             <class>com.ability.ease.auto.systemobjects.WebDriverSystemObject</class>

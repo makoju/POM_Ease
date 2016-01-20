@@ -40,7 +40,7 @@ public class ClaimsTests extends BaseTest{
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "Verify UB04 Form Fields", paramsInclude = { "AttributeNameValueDialogProvider, testType" })
-	public void verifyUB04FormFieldss()throws Exception{
+	public void verifyUB04FormFields()throws Exception{
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
 		if(!claims.verifyUB04FormFeatures(mapAttrValues)){
 			report.report("Failed to verify the fields in UB04 form!", Reporter.FAIL);
@@ -51,11 +51,27 @@ public class ClaimsTests extends BaseTest{
 	}
 
 	/*
+	 * Implemented using XML approach 
+	 * @param - AttributeNameValueDialogProvider :: to provide a dialog provider with parsed attributes from xml
+	 */
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Add Remove Claim Lines", paramsInclude = { "AttributeNameValueDialogProvider, testType" })
+	public void verifyAddRemoveClaimLines()throws Exception{
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(!claims.verifyAddRemoveClaimLines(mapAttrValues)){
+			report.report("Failed to verify add or remove claim line functionality in UB04 form!", Reporter.FAIL);
+		}else{
+			report.report("Successfully verified add or remove claim line functionality in UB04 form!", Reporter.ReportAttribute.BOLD);
+		}
+
+	}
+	/*
 	 * Handle UI event method
 	 */
 	public void handleUIEvent(HashMap<String, Parameter> map, String methodName)throws Exception{
 		super.handleUIEvent(map, methodName);
-		if(!methodName.equalsIgnoreCase("verifyUB04FormFields")){
+		if(methodName.equalsIgnoreCase("verifyUB04FormFields")){
 			UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Claims\\UB04.xml");
 		}
 	}

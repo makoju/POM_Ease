@@ -10,6 +10,13 @@ import java.sql.Types;
 
 import com.ability.ease.auto.system.WorkingEnvironment;
 
+/***
+ * This class deals with my sql db actions,it contains methods to read connection arguments from globalparameter section of jsystem,
+ * initialize db connection and some other reusable methods
+ * @author nageswar.bodduri
+ *
+ */
+
 public class MySQLDBUtil {
 
 	//driver and db URI details

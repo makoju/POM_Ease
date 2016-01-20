@@ -26,4 +26,3 @@ rem set DEBUG=-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_sock
 
 if %ERRORLEVEL% == 6 goto launch
 :end
-pause

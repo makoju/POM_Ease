@@ -348,7 +348,7 @@ public class MiscPage extends AbstractPageObject {
 		admin.fillScreenAttributes(lsAttributes);
 		verifyAlert("User alerts updated!");
 
-		//verify whether data is being changed in table
+		//verify whether data got changed in database
 		//getting user id from ddez.user table
 
 		results = MySQLDBUtil.getResultFromMySQLDB("SELECT UserID FROM ddez.user where UserName='"+userName+"'");

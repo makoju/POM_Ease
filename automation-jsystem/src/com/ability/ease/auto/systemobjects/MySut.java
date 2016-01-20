@@ -51,6 +51,9 @@ public class MySut extends SystemObjectImpl{
 			WorkingEnvironment.setMySQLDBUser(workingEnvironment.getMySQLDBUserName());
 			WorkingEnvironment.setMySQLDBPassword(workingEnvironment.getMySQLDBPassword());
 			WorkingEnvironment.setMySQLDBName(workingEnvironment.getMySQLDBName());
+			WorkingEnvironment.setUserName(workingEnvironment.getUserName());
+			WorkingEnvironment.setUserName(workingEnvironment.getPassword());
+			WorkingEnvironment.setEaseBuildId(workingEnvironment.getEaseBuildId());
 		}
 	}
 

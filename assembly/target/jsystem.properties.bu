@@ -1,6 +1,6 @@
 agent.client.list=local
 convert.old.scenarios=true
-currentScenario=scenarios/EASE 1.2_MISC_010_Verify  ADD HICs Options for single HIC under Basic view
+currentScenario=scenarios/EASE_UB04_001_Verify UB04 Form Fields
 handlers=java.util.logging.FileHandler java.util.logging.ConsoleHandler
 htmlReportDir=log
 java.util.logging.ConsoleHandler.formatter=jsystem.framework.logger.BasicFormatter
@@ -30,6 +30,6 @@ sut.tests.tree.sort=false
 sutClassName=jsystem.framework.sut.SutImpl
 sutFile=ease-sut.xml
 test.vm.params=
-tests.dir=..\\..\\automation-jsystem\\classes
-tests.src=..\\..\\automation-jsystem\\tests
+tests.dir=D\:\\EaseAutomation\\EaseTest150\\automation-jsystem\\classes
+tests.src=D\:\\EaseAutomation\\EaseTest150\\automation-jsystem\\tests
 xml.editor=notepad.exe

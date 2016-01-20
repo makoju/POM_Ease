@@ -67,7 +67,11 @@
 			<groupId>com.abilitynetwork.jsystem</groupId>
 			<artifactId>jsystemApp</artifactId>
 		</dependency>
-		
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+
 		<!--<dependency>
 			<groupId>com.abilitynetwork.jsystem</groupId>
 			<artifactId>ant-jsystem</artifactId>

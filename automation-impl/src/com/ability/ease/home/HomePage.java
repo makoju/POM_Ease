@@ -35,6 +35,7 @@ public class HomePage extends AbstractPageObject{
 
 	public static enum SubMenu {
 		AddUser("Add User"),
+		EditUSer("Edit User"),
 		NA("NA");
 		private String value;
 

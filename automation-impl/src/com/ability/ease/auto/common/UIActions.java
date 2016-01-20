@@ -99,22 +99,80 @@ public class UIActions extends AbstractPageObject {
 					clickLinkV2(scrAttr.getLocator());
 					break;
 				case ClaimLineUB04:
-					String[] sLocator42To49 = scrAttr.getLocator().split(",");
-					String[] sValue = scrAttr.getValue().split(",");
+					String[] sLocators42To49 = scrAttr.getLocator().split(",");
+					String[] sValue42To49 = scrAttr.getValue().split(",");
 					int j=1;
-					
-					for(String str:sValue){
+
+					for(String str:sValue42To49){
 						String[] sValues42To49 = str.split(":");
-						for(int i=0;i < sLocator42To49.length; i++){
-							typeEditBox(sLocator42To49[i]+"_"+j, sValues42To49[i]);
+						for(int i=0;i < sLocators42To49.length; i++){
+							typeEditBox(sLocators42To49[i]+"_"+j, sValues42To49[i]);
 						}
 						j++;
 						if( j >= 10){
-							
+
 						}
 					}
-					
+
 					break;
+				case ConditionOccurruenceCodes:
+					String[] sLocators18To28 = scrAttr.getLocator().split(",");
+					String[] sValues18To28 = scrAttr.getValue().split("~~~");
+
+					for(int i=0;i < sValues18To28.length; i++){
+						typeEditBox(sLocators18To28[i], sValues18To28[i]);
+					}
+					break;
+				case SpanCodes:
+					String[] sSpanCodesDates = null;
+					String[] sLocatorsSpanCodes = scrAttr.getLocator().split(",");
+					int k = 0;
+					//report.report("filling span codes dates and values...");
+					if(scrAttr.getValue().contains(",")){
+						sSpanCodesDates = scrAttr.getValue().split(",");
+						fillSpanCodeDates(sLocatorsSpanCodes, sSpanCodesDates);
+					}else{
+						String values[] = scrAttr.getValue().split("~~~");
+						for(String str:values){
+							String[] fillValues = str.split(" ");
+							for(int i=0;i < fillValues.length;i++){
+								typeEditBox(sLocatorsSpanCodes[k], fillValues[i]);
+								k++;
+							}				
+						}
+					}
+					break;
+
+				case FillLocatorValues:
+					//This style fills values which are separated by ~~~ and if locators prefix is unique 
+					String sLocatorID = scrAttr.getLocator();
+					String[] sLocatorValues = scrAttr.getValue().split("~~~");
+
+					if(!sLocatorID.equalsIgnoreCase("ub67")){
+						char ch = 'a';
+						for(int i=0; i< sLocatorValues.length; i++){
+							typeEditBox(sLocatorID+ch, sLocatorValues[i]); // for each iteration ch is replaced with alphabetic chars starting from 'a'
+							ch++;
+						}
+					}else{
+						typeEditBox(sLocatorID, sLocatorValues[0]);
+						char c = 'a';
+						for(int i=1; i< sLocatorValues.length; i++){
+							typeEditBox(sLocatorID+c, sLocatorValues[i]); // for each iteration ch is replaced with alphabetic chars starting from 'a'
+							c++;
+						}
+					}
+					break;
+
+				case FillValuesUB04:
+					//This style fills values and locators values which are separated by comma ','
+					String sLocators[] = scrAttr.getLocator().split(",");
+					String sValues[] = scrAttr.getValue().split(",");		
+					for(int i=0; i<sValues.length; i++){
+						typeEditBox(sLocators[i], sValues[i]);
+					}
+					break;
+
 				default:
 					report.report("The attribute Style is not implemented.",
 							ReportAttribute.BOLD);
@@ -125,6 +183,30 @@ public class UIActions extends AbstractPageObject {
 		}
 	}
 
+	public void fillCodeValues(String[] locators, String[] values) throws Exception{
+		for(String str:values){
+			String[] sValues = str.split(" ");
+			for(int i=0;i < sValues.length; i++){
+				typeEditBox(locators[i], sValues[i]);
+			}
+		}
+	}
+
+	public void fillSpanCodeDates(String[] locators, String[] values)throws Exception{
+		String tempValues[] = null;
+		String fillValues[] = null;
+		//char ch = 'a';
+
+		for(String str:values){
+			tempValues = str.split("~~~");
+			for(int i=0; i< tempValues.length ;i++){
+				fillValues = tempValues[i].split(" ");
+				for(int j=0;j< fillValues.length;j++){
+					typeEditBox(locators[i], fillValues[j]);
+				}				
+			}
+		}
+	}
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub

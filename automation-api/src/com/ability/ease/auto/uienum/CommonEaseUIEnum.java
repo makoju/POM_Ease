@@ -17,7 +17,9 @@ public class CommonEaseUIEnum {
 		LinkWithNoText("LinkWithNoText"),
 		ClaimLineUB04("ClaimLineUB04"),
 		ConditionOccurruenceCodes("ConditionOccurruenceCodes"),
-		SpanCodes("SpanCodes");
+		SpanCodes("SpanCodes"),
+		FillLocatorValues("FillLocatorValues"),
+		FillValuesUB04("FillValuesUB04");
 
 		private String value;
 		private UIAttributeStyle(String value){

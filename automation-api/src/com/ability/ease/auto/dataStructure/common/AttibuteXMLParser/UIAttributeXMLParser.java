@@ -125,6 +125,15 @@ public class UIAttributeXMLParser {
 					if(Style.toString().equalsIgnoreCase("ConditionOccurruenceCodes")){
 						attrStyle= UIAttributeStyle.ConditionOccurruenceCodes;
 					}
+					if(Style.toString().equalsIgnoreCase("SpanCodes")){
+						attrStyle= UIAttributeStyle.SpanCodes;
+					}
+					if(Style.toString().equalsIgnoreCase("FillLocatorValues")){
+						attrStyle= UIAttributeStyle.FillLocatorValues;
+					}
+					if(Style.toString().equalsIgnoreCase("FillValuesUB04")){
+						attrStyle= UIAttributeStyle.FillValuesUB04;
+					}
 					attr.setStyle(attrStyle);
 					lsattrs.add(attr);
 					locator=displayName=Style=null;

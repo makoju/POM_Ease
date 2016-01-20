@@ -576,7 +576,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				//sendEnterOnWebElement(element);
 				return;
 			}
-			element.click();
+			//element.click();
 		} else { 
 			throw new Exception ("Web element not found: " + elementLocator); 
 		}

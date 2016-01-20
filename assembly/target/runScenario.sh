@@ -21,6 +21,6 @@ rm -f ./.run.properties
 export ANT_HOME=./thirdparty/ant
 export ANT_CMD=$ANT_HOME/bin/ant
 export ANT_OPTS="-Djsystem.current.scenario.name=$SCENARIO_NAME -Dbasedir=. -Dscenarios.base=$PROJECT_CLASSES_PATH -DsutFile=$3 -Xms32M -Xmx256M "
-#export ANT_OPTS="$ANT_OPTS -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y"
-$ANT_CMD -listener jsystem.runner.AntExecutionListener -lib thirdparty/ant/lib -lib thirdparty/commonLib -lib thirdparty/lib -lib thirdparty/selenium  -lib lib -lib customer_lib -lib $PROJECT_CLASSES_PATH/../lib -lib $PROJECT_CLASSES_PATH -f $PROJECT_CLASSES_PATH/$SCENARIO_NAME.xml
+export ANT_OPTS="$ANT_OPTS -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y"
+$ANT_CMD -v -listener jsystem.runner.AntExecutionListener -lib thirdparty/ant/lib -lib thirdparty/commonLib -lib thirdparty/lib -lib thirdparty/selenium  -lib lib -lib customer_lib -lib $PROJECT_CLASSES_PATH/../lib -lib $PROJECT_CLASSES_PATH -f $PROJECT_CLASSES_PATH/$SCENARIO_NAME.xml
 

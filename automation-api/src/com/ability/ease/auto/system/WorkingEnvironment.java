@@ -20,6 +20,9 @@ public final class WorkingEnvironment{
 	private static String mySQLDBPort;
 	private static String mySQLDBUser;
 	private static String mySQLDBPassword;
+	private static String userName;
+	private static String password;
+	private static String easeBuildId; 
 	private static String mailServerHost;
 
 	public static String getHost() {
@@ -116,6 +119,23 @@ public final class WorkingEnvironment{
 	public static void setMySQLDBName(String mySQLDBName) {
 		WorkingEnvironment.mySQLDBName = mySQLDBName;
 	}
-	
+	public static String getUserName() {
+		return userName;
+	}
+	public static void setUserName(String userName) {
+		WorkingEnvironment.userName = userName;
+	}
+	public static String getPassword() {
+		return password;
+	}
+	public static void setPassword(String password) {
+		WorkingEnvironment.password = password;
+	}
+	public static String getEaseBuildId() {
+		return easeBuildId;
+	}
+	public static void setEaseBuildId(String easeBuildId) {
+		WorkingEnvironment.easeBuildId = easeBuildId;
+	}
 	
 }

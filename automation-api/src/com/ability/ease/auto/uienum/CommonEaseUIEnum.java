@@ -20,6 +20,9 @@ public class CommonEaseUIEnum {
 		SpanCodes("SpanCodes"),
 		FillLocatorValues("FillLocatorValues"),
 		FillValuesUB04("FillValuesUB04");
+		Timeframe("Timeframe"),
+		Agency("Agency"),
+		MultiSelectAgency("MultiSelectAgency");
 
 		private String value;
 		private UIAttributeStyle(String value){

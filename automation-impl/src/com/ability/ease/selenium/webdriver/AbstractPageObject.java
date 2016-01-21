@@ -22,8 +22,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -39,16 +38,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.ability.ease.auto.enums.common.CommonEnums.ConditionOperator;
-import com.ability.ease.auto.uienum.CommonEaseUIEnum.UIAttributeStyle;
 import com.ability.ease.auto.enums.portal.BrowserType;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.auto.enums.portal.selenium.WebDriverType;
 import com.ability.ease.auto.events.ui.UIEvents;
 import com.ability.ease.auto.system.WorkingEnvironment;
-import com.ability.ease.home.HomePage;
-import com.ability.ease.home.HomePage.Menu;
-import com.ability.ease.home.HomePage.SubMenu;
 
 /**
  * The page object design pattern makes it easier to access HTML elements in a
@@ -403,7 +397,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		String checkBoxXpath = "//input[@type='checkbox' and (@name='" + 
 				checkboxName + "' or @id='" + checkboxName + 
 				"' or @title='" + checkboxName +  
-				"' or @value='" + checkboxName +"' or @title='Select \"" + checkboxName + "\"' or @title='Select " + checkboxName + "')]" +
+				"' or @value='" + checkboxName +"' or @title='Select \"" + checkboxName + "\"' or @title='Select " + checkboxName+"' or contains(@title,'"+checkboxName+"'))]" +
 				" | //span[.='" + checkboxName + "']/preceding-sibling::input"+
 				" | //td[text()='" + checkboxName + "']/preceding-sibling::td/input";
 
@@ -605,7 +599,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 */
 	public static void clickButton(String btnName, long timeoutInSeconds) throws Exception {
 		String btnXpath = "//button[@value='" + btnName+ "' or text()='" + btnName + "'] | " +
-				"//button[contains(text(),'" + btnName + "')] | "+
+				"//button[contains(text(),'" + btnName+"') or contains(@class,'"+btnName+"') or starts-with(@class,'"+btnName+"')] | "+
 				"//input[@type='" + btnName +"'] | "+
 				"//input[@value='" + btnName + "'] | //input[contains(@value,'" + btnName+ "')] | //input[(@title='" + btnName + "')] | //input[(@name='" + btnName + "')] | " +
 				"//input[@id='" + btnName + "'] | //span[@id='" + btnName + "'] | //span[contains(text(),'" + btnName + "')]/following-sibling::span[@role='img'] | "+ 				
@@ -1588,6 +1582,34 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 
 	}
+	
+	public String getElementText(By by){
+		WebElement element = waitForElementVisibility(by);
+		return getElementText(element);
+	}
+	
+	public String getElementText(WebElement e){
+		return e.getText();
+	}
+	
+	/*Click the element with java script*/
+	public void safeJavaScriptClick(WebElement element) throws Exception {
+		try {
+			if (element.isEnabled() && element.isDisplayed()) {
+				System.out.println("Clicking on element using java script click");
+
+				((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+			} else {
+				System.out.println("Unable to click on element");
+			}
+		} catch (StaleElementReferenceException e) {
+			System.out.println("Element is not attached to the page document "+ e.getStackTrace());
+		} catch (NoSuchElementException e) {
+			System.out.println("Element was not found in DOM "+ e.getStackTrace());
+		} catch (Exception e) {
+			System.out.println("Unable to click on element "+ e.getStackTrace());
+		}
+	}
 
 	/**
 	 * This method is to return the xpath for alert option under My account > setup alerts task
@@ -1648,6 +1670,12 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				+ "}; return arr;"; 
 		ArrayList<String> lsAttributes = (ArrayList<String>)((JavascriptExecutor)driver).executeScript(sJavaScript, element);
 		return lsAttributes;
+	}
+	
+	public List<WebElement> findElements(By by){
+		if (waitForElementVisibility(by)!=null)
+			return driver.findElements(by);
+		return null;
 	}
 		
 	//#########################################   Getters & Setters ###################################################

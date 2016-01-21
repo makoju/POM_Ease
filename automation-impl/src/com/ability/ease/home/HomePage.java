@@ -18,7 +18,7 @@ public class HomePage extends AbstractPageObject{
 	}
 
 	public static enum Menu {
-		MyDDE("MY DDE"),
+		MYDDE("MY DDE"),
 		Admin("ADMINISTRATION"),
 		NA("NA");
 		private String value;
@@ -78,12 +78,15 @@ public class HomePage extends AbstractPageObject{
 	}
 
 	public void navigateTo(Menu menuName, SubMenu subMenuName) throws Exception {
-		report.startLevel("Navigating to " + menuName.name() + " > "+ subMenuName.name());
+		if(menuName!=null && subMenuName!=null)
+			report.startLevel("Navigating to " + menuName.name() + " > "+ subMenuName.name());
 		/*clickLinkOnlyIfExists(menuName.toString());
 		Thread.sleep(3000);
 		clickLinkOnlyIfExists(subMenuName.toString());*/
-		clickMenuLinkOnlyIfExists(menuName.toString());
-		clickMenuLinkOnlyIfExists(subMenuName.toString());
+		if(menuName!=null)
+		 clickMenuLinkOnlyIfExists(menuName.toString());
+		if(subMenuName!=null)
+		 clickMenuLinkOnlyIfExists(subMenuName.toString());
 	}
 
 	

@@ -134,6 +134,15 @@ public class UIAttributeXMLParser {
 					if(Style.toString().equalsIgnoreCase("FillValuesUB04")){
 						attrStyle= UIAttributeStyle.FillValuesUB04;
 					}
+					if(Style.toString().equalsIgnoreCase("Timeframe")){
+						attrStyle= UIAttributeStyle.Timeframe;
+					}
+					if(Style.toString().equalsIgnoreCase("Agency")){
+						attrStyle= UIAttributeStyle.Agency;
+					}
+					if(Style.toString().equalsIgnoreCase("MultiSelectAgency")){
+						attrStyle= UIAttributeStyle.MultiSelectAgency;
+					}
 					attr.setStyle(attrStyle);
 					lsattrs.add(attr);
 					locator=displayName=Style=null;

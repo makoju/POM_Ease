@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import jsystem.framework.report.Reporter.ReportAttribute;
 
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
+import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 
@@ -164,6 +165,7 @@ public class UIActions extends AbstractPageObject {
 					}
 					break;
 
+
 				case FillValuesUB04:
 					//This style fills values and locators values which are separated by comma ','
 					String sLocators[] = scrAttr.getLocator().split(",");
@@ -172,6 +174,48 @@ public class UIActions extends AbstractPageObject {
 						typeEditBox(sLocators[i], sValues[i]);
 					}
 					break;
+
+
+				case Timeframe:
+					clickLink(scrAttr.getLocator());
+					String timeframe = scrAttr.getValue().trim();
+					//if the timeframe value starts with fromdate then user is going to set from and todate 
+					if (timeframe.toLowerCase().startsWith("fromdate")){
+						String fromdate="",todate="";
+						String[] dates = timeframe.split(":");
+						//getting the from and todate from the user supplied date string say, "fromdate(MM//DD//YYYY):todate(MM//DD//YYYY)"
+						if(dates.length>1){
+							fromdate = dates[0].substring(dates[0].indexOf("(")+1, dates[0].indexOf(")"));
+							todate = dates[1].substring(dates[1].indexOf("(")+1, dates[1].indexOf(")"));;
+						}
+						typeEditBox("reportCustomDateFrom", fromdate);
+						typeEditBox("reportCustomDateTo", todate);
+						clickButton("reportTimeframeButton");
+					}
+					else 
+						clickLink(timeframe.trim());
+					break;
+					
+				case Agency:
+					clickLink(scrAttr.getLocator());
+					selectByNameOrID("reportAgencySelect", scrAttr.getValue().trim());
+					clickButton("Change Agency");
+					break;
+					
+				case MultiSelectAgency:
+					String[] multiAgencies = scrAttr.getValue().split(",");
+					clickButton(scrAttr.getLocator());
+					waitForTextVisibility(ByLocator.xpath, "//span", "Check all");
+					for(String agency:multiAgencies){
+						if(agency.startsWith("Check all"))
+							clickOnElement(ByLocator.xpath, "//a[@class='ui-multiselect-all']", 5);
+						else if(agency.startsWith("Uncheck all"))
+						   clickOnElement(ByLocator.xpath, "//a[@class='ui-multiselect-none']", 5);
+						else
+							checkChkBox(agency.trim());
+					}
+					break;					
+					
 
 				default:
 					report.report("The attribute Style is not implemented.",

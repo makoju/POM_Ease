@@ -68,6 +68,12 @@
 			<version>2.40.0</version>  
 			<type>zip</type>  
 		</dependency> 
+		
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>1.4.0</version>
+		</dependency>
 	
 		<dependency>
 			<groupId>com.ability.ease.automation</groupId>

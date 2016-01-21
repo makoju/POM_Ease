@@ -13,4 +13,5 @@
 	<bean id="elig" class="com.ability.ease.eligibility.EligibilitySelenium2Impl"/>
 	<bean id="admin" class="com.ability.ease.admin.AdminSelenium2Impl"/>
 	<bean id="claims" class="com.ability.ease.claims.ClaimsSelenium2Impl"/>
+	<bean id="reports" class="com.ability.ease.mydde.ReportsSelenium2Impl"/>
 </beans>

@@ -546,7 +546,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 	   String[] headertooltips = new String[lsHeaders.size()];
 	   for(WebElement we: lsHeaders){
 	     String tooltiprawtext = we.getAttribute("onmouseover");
-	       if(tooltiprawtext !=null || tooltiprawtext.trim()!=""){
+	       if(tooltiprawtext !=null && tooltiprawtext.trim()!=""){
 		      headertooltips[i++] = tooltiprawtext.substring(tooltiprawtext.indexOf("\"")+1, tooltiprawtext.lastIndexOf("\""));
 	       }
 	   }

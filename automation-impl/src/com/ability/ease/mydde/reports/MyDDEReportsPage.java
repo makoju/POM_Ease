@@ -1,4 +1,4 @@
-package com.ability.ease.mydde;
+package com.ability.ease.mydde.reports;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +23,7 @@ import com.ability.ease.selenium.webdriver.AbstractPageObject;
 public class MyDDEReportsPage extends AbstractPageObject {
 	
 	String tableheadersxpath = "//table[@id='datatable']//tr[@class='tableheaderblue']/td";
+	ReportsHelper reportshelper = new ReportsHelper();
 
     public boolean verifySummaryReportHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception{
     	boolean istimeframedaterange=false;
@@ -45,9 +46,9 @@ public class MyDDEReportsPage extends AbstractPageObject {
 											"The total amount at risk (already paid or prospective).", "The remaining amount of money expected from Medicare."};	
 		int i=0;
 		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'EASE SUMMARY REPORT')]"));
-		Attribute agencyattr = getAttribute(lsAttributes, "agency");
+		Attribute agencyattr = reportshelper.getAttribute(lsAttributes, "agency");
 		//To Do - Need to get the From and Todate from Timeframe attributes value
-		Attribute timeframeattr = getAttribute(lsAttributes, "Timeframe");
+		Attribute timeframeattr = reportshelper.getAttribute(lsAttributes, "Timeframe");
 		String timeframe = timeframeattr.getValue().toLowerCase();
 		if (timeframe.contains("fromdate")){
 			istimeframedaterange = true;
@@ -78,25 +79,25 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		if(!Verify.verifyArrayofStrings(actual,expected,true))
 			failurecount++;
 		//Verify Critical reports section
-		if(!validateReportLinkSectionswithEpisodes("Critical"))
+		if(!reportshelper.validateReportLinkSectionswithEpisodes("Critical"))
 			failurecount++;
 		//Verify Errors reports section
-		if(!validateReportLinkSectionswithEpisodes("Errors"))
+		if(!reportshelper.validateReportLinkSectionswithEpisodes("Errors"))
 			failurecount++;
 		//Verify Normal reports section
-		if(!validateReportLinkSectionswithEpisodes("Normal"))
+		if(!reportshelper.validateReportLinkSectionswithEpisodes("Normal"))
 			failurecount++;
 		
 		//verify the table header tool tips
-		String[] actualheaderscritical = getReportLinkSectionsTableHeaderToolTips("Critical");
+		String[] actualheaderscritical = reportshelper.getReportLinkSectionsTableHeaderToolTips("Critical");
 		if(!Verify.verifyArrayofStrings(actualheaderscritical, expectedheaders, true))
 			failurecount++;
 
-		String[] actualheadersErros = getReportLinkSectionsTableHeaderToolTips("Errors");
+		String[] actualheadersErros = reportshelper.getReportLinkSectionsTableHeaderToolTips("Errors");
 		if(!Verify.verifyArrayofStrings(actualheadersErros, expectedheaders, true))
 		  failurecount++;
 		
-		String[] actualheadersNormal = getReportLinkSectionsTableHeaderToolTips("Normal");
+		String[] actualheadersNormal = reportshelper.getReportLinkSectionsTableHeaderToolTips("Normal");
 		if(!Verify.verifyArrayofStrings(actualheadersNormal, expectedheaders, true))
 		  failurecount++;
 		
@@ -109,13 +110,13 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		int failurecount=0;
 		//navigation part
 		navigateToPage();
-		fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
 		
 		//verification part
 		String[] expected = {"Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF","Save complete report to Excel"}, actual;
 		int i=0;
 		clickLink("Export");
-		List<WebElement> lsexportlinks = getAllExportLinks();
+		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for(WebElement we:lsexportlinks){
 			actual[i++] = we.getText(); 
@@ -125,7 +126,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 			failurecount++;
 		
 		for(i=0;i<actual.length;i++){
-			navigateExportlink(actual[i]);
+			reportshelper.navigateExportlink(actual[i]);
 			//To DO - Need to validate whether respective link is opened or not 
 		}
 		
@@ -163,9 +164,9 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		if (!Verify.validateTableColumnSortOrder("datatable", "Patient",6))
 			 failurecount++;
 		
-		Attribute agencyattr = getAttribute(lsAttributes, "agency");
+		Attribute agencyattr = reportshelper.getAttribute(lsAttributes, "agency");
 		//To Do - Need to get the From and Todate from Timeframe attributes value
-		Attribute timeframeattr = getAttribute(lsAttributes, "Timeframe");
+		Attribute timeframeattr = reportshelper.getAttribute(lsAttributes, "Timeframe");
 		String timeframe = timeframeattr.getValue().toLowerCase();
 		if (timeframe.contains("fromdate")){
 			istimeframedaterange = true;
@@ -189,7 +190,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		}
 		
 		//verify the table header tool tips
-		String[] actualheadertooltips = getReportLinkSectionsTableHeaderToolTips(tableheadersxpath);
+		String[] actualheadertooltips = reportshelper.getReportLinkSectionsTableHeaderToolTips(tableheadersxpath);
 		if(!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders, true))
 			failurecount++;
 		
@@ -202,7 +203,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		int failurecount=0;
 		//navigation part
 		navigateToPage();
-		fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
 		
 		safeJavaScriptClick("Changes");
 		
@@ -210,7 +211,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		String[] expected = {"Save Changes report to PDF","Save Changes report to Excel","Save complete report to PDF","Save complete report to Excel"}, actual;
 		int i=0;
 		clickLink("Export");
-		List<WebElement> lsexportlinks = getAllExportLinks();
+		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for(WebElement we:lsexportlinks){
 			actual[i++] = we.getText(); 
@@ -220,7 +221,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 			failurecount++;
 		
 		for(i=0;i<actual.length;i++){
-			navigateExportlink(actual[i]);
+			reportshelper.navigateExportlink(actual[i]);
 			//To DO - Need to validate whether respective link is opened or not 
 		}
 		
@@ -245,7 +246,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		lastupdatedate = Verify.getTableData("datatable", 1, 13);
 		
 		//To Do - Need to get the From and Todate from Timeframe attributes value
-		Attribute timeframeattr = getAttribute(lsAttributes, "Timeframe");
+		Attribute timeframeattr = reportshelper.getAttribute(lsAttributes, "Timeframe");
 		String timeframe = timeframeattr.getValue().toLowerCase();
 		if (timeframe.contains("fromdate")){
 			istimeframedaterange = true;
@@ -272,7 +273,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		// TODO Auto-generated method stub
 		//navigation part
 		navigateToPage();
-		fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
 		safeJavaScriptClick("High Lvl Payment Summary");
 		
 		//Verification part
@@ -298,12 +299,12 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		String[] expected = {"Save High Lvl Payment Summary report to PDF","Save High Lvl Payment Summary report to Excel"}, actual;
 		//navigation part
 		navigateToPage();
-		fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
 		safeJavaScriptClick("High Lvl Payment Summary");
 		
 		//verification part
 		safeJavaScriptClick("Export");
-		List<WebElement> lsexportlinks = getAllExportLinks();
+		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 			for(WebElement we:lsexportlinks){
 				actual[i++] = we.getText(); 
@@ -312,7 +313,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 				failurecount++;
 		
 			for(i=0;i<actual.length;i++){
-				navigateExportlink(actual[i]);
+				reportshelper.navigateExportlink(actual[i]);
 				//To DO - Need to validate whether respective link is opened or not 
 			}
 			
@@ -324,7 +325,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		int failurecount=0;
 		//navigation part
 		navigateToPage();
-		fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
 		safeJavaScriptClick("High Lvl Payment Summary");
 		//verification part
 		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'HIGH LEVEL PAYMENT')]"));
@@ -353,7 +354,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		
 		safeJavaScriptClick("High Lvl Payment Summary");
 		//verification part
-		UIAttribute multiselectagency = getAttribute(lsAttributes, "MultiSelectAgency");
+		UIAttribute multiselectagency = reportshelper.getAttribute(lsAttributes, "MultiSelectAgency");
 		String multiselectagencystr = multiselectagency.getValue();
 		int actualcheckedagencies = findElements(By.xpath("//input[@name='multiselect_example' and @checked='checked']")).size();
 		
@@ -380,11 +381,11 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		}
 		
 		safeJavaScriptClick("Export");
-		List<WebElement> lsexportlinks = getAllExportLinks();
+		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 	
 			for(i=0;i<actual.length;i++){
-				navigateExportlink(actual[i]);
+				reportshelper.navigateExportlink(actual[i]);
 				//To DO - Need to validate whether respective link is opened or not 
 			}
 			
@@ -416,9 +417,9 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		if (!Verify.validateTableColumnSortOrder("datatable", "Check #",3))
 			 failurecount++;
 		
-		Attribute agencyattr = getAttribute(lsAttributes, "agency");
+		Attribute agencyattr = reportshelper.getAttribute(lsAttributes, "agency");
 		//To Do - Need to get the From and Todate from Timeframe attributes value
-		Attribute timeframeattr = getAttribute(lsAttributes, "Timeframe");
+		Attribute timeframeattr = reportshelper.getAttribute(lsAttributes, "Timeframe");
 		String timeframe = timeframeattr.getValue().toLowerCase();
 		if (timeframe.contains("fromdate")){
 			istimeframedaterange = true;
@@ -442,7 +443,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		}
 		
 		//verify the table header tool tips
-		String[] actualheadertooltips = getReportLinkSectionsTableHeaderToolTips(tableheadersxpath);
+		String[] actualheadertooltips = reportshelper.getReportLinkSectionsTableHeaderToolTips(tableheadersxpath);
 		if(!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders, true))
 			failurecount++;
 		
@@ -456,12 +457,12 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		String[] expected = {"Save Payment Summary report to PDF","Save Payment Summary report to Excel", "Save complete report to PDF", "Save complete report to Excel"}, actual;
 		//navigation part
 		navigateToPage();
-		fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
 		safeJavaScriptClick("Payment Summary");
 		
 		//verification part
 		safeJavaScriptClick("Export");
-		List<WebElement> lsexportlinks = getAllExportLinks();
+		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 			for(WebElement we:lsexportlinks){
 				actual[i++] = we.getText(); 
@@ -470,120 +471,11 @@ public class MyDDEReportsPage extends AbstractPageObject {
 				failurecount++;
 		
 			for(i=0;i<actual.length;i++){
-				navigateExportlink(actual[i]);
+				reportshelper.navigateExportlink(actual[i]);
 				//To DO - Need to validate whether respective link is opened or not 
 			}
 			
 		 return failurecount==0?true:false;
-	}
-	
-   //Begin: Helper Methods 
-   private void navigateExportlink(String linkText) throws Exception {
-	   WebElement we = waitForElementVisibility(By.partialLinkText(linkText));
-	   if(!we.isEnabled() && !we.isDisplayed()){
-		   clickLink("Export");
-		   we = waitForElementVisibility(By.partialLinkText(linkText));
-	   }   
-	}
-   
- 
-   public boolean validateReportLinkSectionswithEpisodes(String reportlinksection) throws Exception{
-    		//Verify Critical reports section
-    		List<WebElement> Allreportlinks = getAllReportLinksofSection(reportlinksection);
-    		String[] reportlinks = new String[Allreportlinks.size()];
-    		int row=1,i=0;
-    		boolean isepisodesmatch = true;
-    		/* Store the link text of each element to use later*/
-    		for(WebElement we:Allreportlinks){
-    				reportlinks[i++] = we.getText();
-    		}
-    		/* Iterate over each link to navigate and check the data*/
-    		for(int j=0;j<Allreportlinks.size();j++)
-    		{
-    				WebElement reportlinkelement = waitForElementVisibility(By.linkText(reportlinks[j]));
-    		  		int episodes = Integer.parseInt(Verify.getTableData(reportlinksection, ++row, 2));
-    		  	  if(episodes>0){    		  		
-    				String reportlink = reportlinkelement.getText();
-    				safeJavaScriptClick(reportlinkelement);
-
-    				  int rowcount = Verify.getTotalTableRows("datatable");
-    				  report.report("Validating episodes count of Report link"+reportlink);
-    				  report.report("Expected:" +episodes+ " Actual:"+rowcount);
-    				   if(episodes != rowcount){
-    					 isepisodesmatch = false;
-    					 report.report("episodes count doens't match with the episodes displayed in report table: "+reportlink+" Expected:" +episodes+ " Actual:"+rowcount, Reporter.WARNING);
-    				   }
-
-    				WebElement summaryelement = waitForElementVisibility(By.linkText("Summary"));
-    				safeJavaScriptClick(summaryelement);
-     			  }
-    		 }
-    		return isepisodesmatch;
-    }
-   
-    public void clickTableHeaderElement(int columnnumber){
-    	List<WebElement> lstableheaders = getReportTableHeaders("datatable");
-		WebElement columnelement = lstableheaders.get(columnnumber);
-		if(columnelement!=null)
-			columnelement.click();
-		else{
-			report.report("No element found with the given Column Number: "+columnnumber, Reporter.WARNING);
-			return;
-		}
-	 }
-   
-   //Get the ToolTips of Tables Display under Critical, Error, Normal Sections of Summary Report 
-   public String[] getReportLinkSectionsTableHeaderToolTips(String reportlinksection) throws Exception{
-	   String ReportlinksXpath = "//span[text()='"+reportlinksection+"']/following-sibling::table//tr[@class='tableheaderblue']/td";
-	   return getTableHeaderToolTips(ReportlinksXpath);
-   }
-   
-   public String[] getTableHeaderToolTips(String tableheadersxpath)
-   {
-	   int i=0;
-	   waitForElementVisibility(By.xpath(tableheadersxpath));
-	   List<WebElement> lsHeaders = driver.findElements(By.xpath(tableheadersxpath));
-	   String[] headertooltips = new String[lsHeaders.size()];
-	   for(WebElement we: lsHeaders){
-	     String tooltiprawtext = we.getAttribute("onmouseover");
-	       if(tooltiprawtext !=null && tooltiprawtext.trim()!=""){
-		      headertooltips[i++] = tooltiprawtext.substring(tooltiprawtext.indexOf("\"")+1, tooltiprawtext.lastIndexOf("\""));
-	       }
-	   }
-	   return headertooltips;
-   }
-
-	private Attribute getAttribute(List<Attribute> lsAttributes, String attrdisplayname){
-		for(Attribute attr:lsAttributes){
-			if (attr.getDisplayName().equalsIgnoreCase(attrdisplayname))
-				return attr;
-		}
-		return null;
-    }
-    
-	public void fillScreen(String filename, Map<String,String> mapAttrValues) throws Exception{
-		//navigation part
-		UIAttributeXMLParser parser = new UIAttributeXMLParser();
-		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(filename, mapAttrValues);
-		UIActions mydde = new UIActions();
-		mydde.fillScreenAttributes(lsAttributes);
-	}
-	
-	//Use this method to get the report links displayed under each report section like, Critical, Errors and Normal  
-	public List<WebElement> getAllReportLinksofSection(String reportsection) throws Exception{
-		String Reportlinksxpath = "//span[text()='"+reportsection+"']/following-sibling::table//td/a";
-		waitForTextVisibility(ByLocator.xpath,"//span[text()='"+reportsection+"']" , reportsection);
-		return driver.findElements(By.xpath(Reportlinksxpath));
-	}
-	
-	public List<WebElement> getAllExportLinks(){
-		String exportlinksxpath = "//ul[@id='reportExportMenu']//li/a";
-		return findElements(By.xpath(exportlinksxpath));
-	}
-	
-	public List<WebElement> getReportTableHeaders(String tableidentifier){
-		String tableheaderxpath = "//table[@id='"+tableidentifier+"']/thead/tr/td";
-		return findElements(By.xpath(tableheaderxpath));
 	}
 	
 	@Override

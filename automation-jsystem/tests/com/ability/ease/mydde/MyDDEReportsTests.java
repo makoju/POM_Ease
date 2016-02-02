@@ -166,8 +166,153 @@ public class MyDDEReportsTests  extends BaseTest{
 			report.report("Failed to Verify Payment Summary Report Export Options. Please see the JSystem report log for more details", Reporter.FAIL);
 		}
 	}
+	
 
-
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Payment Summary Report LastUpdateDate column", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifyPaymentSummaryReportLastUpdateColumn() throws Exception{	
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifyPaymentSummaryReportLastUpdateColumn(mapAttrValues)){
+			report.report("Successfully Verified Payment Summary Report LastUpdateDate column", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify Payment Summary Report LastUpdateDate column. Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Payment Report Sort, Header and HelpText", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifyPaymentReportSortHeaderHelp() throws Exception{	
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifyPaymentReportHeaderandHelpText(mapAttrValues)){
+			report.report("Successfully Verified Payment Report Sort, Header and HelpText", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify Payment Report Sort, Header and HelpText. Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Payment Report Export Options", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifyPaymentReportExportPDFExcel() throws Exception{	
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifyPaymentReportExportPDFExcel(mapAttrValues)){
+			report.report("Successfully Verified Payment Report Export Options", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify Payment Report Export Options. Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Payment Report LastUpdateDate column", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifyPaymentReportLastUpdateColumn() throws Exception{	
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifyPaymentReportLastUpdateColumn(mapAttrValues)){
+			report.report("Successfully Verified Payment Report LastUpdateDate column", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify Payment Report LastUpdateDate column. Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Submitted Claims Report Sort Header and HelpText", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifySubmittedClaimsSortHeaderHelp() throws Exception{	
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifySubmittedClaimsHeaderandHelpText(mapAttrValues)){
+			report.report("Successfully Verified Submitted Claims Report Sort, Header and Help", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify Submitted Claims Report Sort, Header and Help. Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Submitted Claims Report Export Options", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifySubmittedClaimsExportPDFExcel() throws Exception{	
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifySubmittedClaimsExportPDFExcel(mapAttrValues)){
+			report.report("Successfully Verified Submitted Claims Report Export Options", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify Submitted Claims Report Export Options. Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Unpaid Claims Report Sort Header and HelpText", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifyUnpaidClaimsSortHeaderHelp() throws Exception{	
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifyUnpaidClaimsHeaderandHelpText(mapAttrValues)){
+			report.report("Successfully Verified Submitted Claims Report Sort Header and HelpText", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify Submitted Claims Report Sort Header and HelpText. Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Unpaid Claims Report Export Options", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifyUnpaidClaimsExportPDFExcel() throws Exception{	
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifyUnpaidClaimsHeaderandHelpText(mapAttrValues)){
+			report.report("Successfully Verified Submitted Claims Report Export Options", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify Submitted Claims Report Export Options. Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Active Episodes Sort Header and HelpText", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifyActiveEpisodesSortHeaderHelp() throws Exception{
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifyActiveEpisodesHeaderandHelpText(mapAttrValues)){
+			report.report("Successfully Verified Active Episodes Sort Header and HelpText", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify Active Episodes Sort Header and HelpText. Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Active Episodes Export Options", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifyActiveEpisodesExportPDFExcel() throws Exception{	
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifyActiveEpisodesExportPDFExcel(mapAttrValues)){
+			report.report("Successfully Verified Active Episodes Export Options", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify Active Episodes Export Options. Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Episodes Sort Header and HelpText", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifyEpisodesSortHeaderHelp() throws Exception{
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifyEpisodesHeaderandHelpText(mapAttrValues)){
+			report.report("Successfully Verified Episodes Sort Header and HelpText", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify Episodes Sort Header and HelpText. Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Episodes Export Options", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	public void verifyEpisodesExportPDFExcel() throws Exception{	
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(reports.verifyEpisodesExportPDFExcel(mapAttrValues)){
+			report.report("Successfully Verified Episodes Export Options", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Verify Episodes Export Options. Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
+	
+	
 	public AttributeNameValueDialogProvider[] getAttributeNameValueDialogProvider() {
 		return AttributeNameValueDialogProvider;
 	}

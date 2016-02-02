@@ -88,7 +88,8 @@ public class WebDriverFactory {
 			System.setProperty("webdriver.ie.driver",WorkingEnvironment.getWebdriverIEServerEXEPath());
 
 			DesiredCapabilities ieCapabilities = DesiredCapabilities.internetExplorer();
-		/*	ieCapabilities.setCapability("nativeEvents", false);    
+			ieCapabilities.setCapability("enablePersistentHover", false);
+			/*ieCapabilities.setCapability("nativeEvents", true);    
 			ieCapabilities.setCapability("unexpectedAlertBehaviour", "accept");
 			ieCapabilities.setCapability("ignoreProtectedModeSettings", true);
 			ieCapabilities.setCapability("disable-popup-blocking", true);

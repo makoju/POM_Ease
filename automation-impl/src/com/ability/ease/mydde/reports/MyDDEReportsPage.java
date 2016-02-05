@@ -87,7 +87,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 				failurecount++;
 			else if (!Verify.StringMatches(
 					reportText,
-					"EASE SUMMARY REPORT FROM * TO *, FOR AGENCY "
+					"EASE SUMMARY REPORT FROM.*TO.*FOR AGENCY "
 							+ agencyattr.getValue()))
 				failurecount++;
 		}
@@ -159,11 +159,10 @@ public class MyDDEReportsPage extends AbstractPageObject {
 
 		if (!Verify.verifyArrayofStrings(actual, expected, true))
 			failurecount++;
-
-		for (i = 0; i < actual.length; i++) {
+		// To DO - Need to validate whether respective link is opened or not
+		/*for (i = 0; i < actual.length; i++) {
 			reportshelper.navigateExportlink(actual[i]);
-			// To DO - Need to validate whether respective link is opened or not
-		}
+		}*/
 
 		return failurecount == 0 ? true : false;
 	}
@@ -192,14 +191,14 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		UIActions mydde = new UIActions();
 		mydde.fillScreenAttributes(lsAttributes);
 
-		safeJavaScriptClick("Changes");
+		clickLink("Changes");
 
 		// Verification part
 		// Natural Ascending Sort Verification
 		if (!Verify.validateTableColumnSortOrder("datatable", "Change", 2))
 			failurecount++;
 
-		if (!Verify.validateTableColumnSortOrder("datatable", "S/Loc", 4))
+		if (!Verify.validateTableColumnSortOrder("datatable", "Loc", 4))
 			failurecount++;
 
 		if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 5))
@@ -240,7 +239,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 				failurecount++;
 			else if (!Verify.StringMatches(
 					reportText,
-					"CHANGES REPORT FROM * TO *, FOR AGENCY "
+					"CHANGES REPORT FROM.*TO.*FOR AGENCY "
 							+ agencyattr.getValue()))
 				failurecount++;
 		}
@@ -265,8 +264,9 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		navigateToPage();
 		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()
 				+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-
-		safeJavaScriptClick("Changes");
+		
+		
+		clickLink("Changes");
 
 		// verification part
 		String[] expected = { "Save Changes report to PDF",
@@ -282,11 +282,11 @@ public class MyDDEReportsPage extends AbstractPageObject {
 
 		if (!Verify.verifyArrayofStrings(actual, expected, true))
 			failurecount++;
-
-		for (i = 0; i < actual.length; i++) {
+		// To DO - Need to validate whether respective link is opened or not
+		/*for (i = 0; i < actual.length; i++) {
 			reportshelper.navigateExportlink(actual[i]);
-			// To DO - Need to validate whether respective link is opened or not
-		}
+			
+		}*/
 
 		return failurecount == 0 ? true : false;
 	}
@@ -307,7 +307,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		UIActions mydde = new UIActions();
 		mydde.fillScreenAttributes(lsAttributes);
 
-		safeJavaScriptClick("Changes");
+		clickLink("Changes");
 
 		lastupdatedate = Verify.getTableData("datatable", 1, 13);
 
@@ -347,7 +347,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		navigateToPage();
 		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()
 				+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		safeJavaScriptClick("High Lvl Payment Summary");
+		clickLink("High Lvl Payment Summary");
 
 		// Verification part
 		String reportText = getElementText(By
@@ -381,10 +381,10 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		navigateToPage();
 		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()
 				+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		safeJavaScriptClick("High Lvl Payment Summary");
+		clickLink("High Lvl Payment Summary");
 
 		// verification part
-		safeJavaScriptClick("Export");
+		clickLink("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -392,11 +392,10 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		}
 		if (!Verify.verifyArrayofStrings(actual, expected, true))
 			failurecount++;
-
-		for (i = 0; i < actual.length; i++) {
+		// To DO - Need to validate whether respective link is opened or not
+		/*for (i = 0; i < actual.length; i++) {
 			reportshelper.navigateExportlink(actual[i]);
-			// To DO - Need to validate whether respective link is opened or not
-		}
+		}*/
 
 		return failurecount == 0 ? true : false;
 	}
@@ -408,12 +407,12 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		navigateToPage();
 		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()
 				+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		safeJavaScriptClick("High Lvl Payment Summary");
+
 		// verification part
 		String reportText = getElementText(By
 				.xpath("//div[@id='reportarea']//td[contains(text(),'HIGH LEVEL PAYMENT')]"));
 		if (!Verify.StringMatches(reportText.trim(),
-				"HIGH LEVEL PAYMENT SUMMARY REPORT FROM *"))
+				"HIGH LEVEL PAYMENT SUMMARY REPORT FROM.*"))
 			failurecount++;
 
 		String totalcheckamount = getElementText(By.id("totalCheckAmount"));
@@ -429,7 +428,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 
 	public boolean verifyHighLevelPaymentSummaryReportMultiAgencySelectAndExportOptions(
 			Map<String, String> mapAttrValues) throws Exception {
-		int failurecount = 0, i = 0;
+		int failurecount = 0, i = 0,actualcheckedagencies=0;
 		String[] actual;
 		// navigation part
 		navigateToPage();
@@ -440,18 +439,34 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		UIActions mydde = new UIActions();
 		mydde.fillScreenAttributes(lsAttributes);
 
-		safeJavaScriptClick("High Lvl Payment Summary");
+		clickLink("High Lvl Payment Summary");
+		//This is a click on multi-agency select dropdown. Which should be opened for subsequent calls to succeed
+		clickButton("ui-multiselect"); 
 		// verification part
 		UIAttribute multiselectagency = reportshelper.getAttribute(
 				lsAttributes, "MultiSelectAgency");
 		String multiselectagencystr = multiselectagency.getValue();
-		int actualcheckedagencies = findElements(
-				By.xpath("//input[@name='multiselect_example' and @checked='checked']"))
-				.size();
-
+		List<WebElement> lscheckedAgencies = findElements(
+				By.xpath("//div[contains(@style, 'block')]//input[@name='multiselect_example' and @checked='checked']"));
+		if(lscheckedAgencies!=null)
+			actualcheckedagencies = lscheckedAgencies.size();
+		
+		else if(!multiselectagencystr.toLowerCase().startsWith("uncheck all")){
+			report.report("actual selected agencies are null", Reporter.WARNING);
+			failurecount++;
+		}
+		
 		if (multiselectagencystr.toLowerCase().startsWith("check all")) {
-			int expectedAgencies = findElements(
-					By.xpath("//input[@name='multiselect_example']")).size();
+			int expectedAgencies = 0;
+			List<WebElement> lsexpectedagencies = findElements(
+					By.xpath("//div[contains(@style, 'block')]//input[@name='multiselect_example']"));
+			if(lsexpectedagencies!=null)
+				expectedAgencies = lsexpectedagencies.size();
+			else{
+				report.report("expected agencies are null", Reporter.WARNING);
+				failurecount++;
+			}
+			
 			if (expectedAgencies != actualcheckedagencies) {
 				report.report("There should be " + expectedAgencies
 						+ " Agencies Selected. But, Only "
@@ -475,15 +490,18 @@ public class MyDDEReportsPage extends AbstractPageObject {
 			}
 		}
 
-		safeJavaScriptClick("Export");
+		clickLink("Export");
+		
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
-
-		for (i = 0; i < actual.length; i++) {
-			reportshelper.navigateExportlink(actual[i]);
-			// To DO - Need to validate whether respective link is opened or not
+		for (WebElement we : lsexportlinks) {
+			actual[i++] = we.getText();
 		}
-
+		// To DO - Need to validate whether respective link is opened or not
+		/*for (i = 0; i < actual.length; i++) {
+			reportshelper.navigateExportlink(actual[i]);
+		}
+		 */
 		return failurecount == 0 ? true : false;
 	}
 
@@ -510,7 +528,6 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		UIActions mydde = new UIActions();
 		mydde.fillScreenAttributes(lsAttributes);
 
-//		safeJavaScriptClick("Payment Summary");
 		clickLink("Payment Summary");
 
 		// Verification part
@@ -554,14 +571,14 @@ public class MyDDEReportsPage extends AbstractPageObject {
 									+ agencyattr.getValue()))
 				failurecount++;
 			else if (!Verify.StringMatches(reportText,
-					"PAYMENT SUMMARY REPORT FROM * TO *, FOR AGENCY "
+					"PAYMENT SUMMARY REPORT FROM.*TO.*FOR AGENCY "
 							+ agencyattr.getValue()))
 				failurecount++;
 		}
 
 		// verify the table header tool tips
 		String[] actualheadertooltips = reportshelper
-				.getReportLinkSectionsTableHeaderToolTips(tableheadersxpath);
+				.getTableHeaderToolTips(tableheadersxpath);
 		if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders,
 				true))
 			failurecount++;
@@ -582,11 +599,10 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		navigateToPage();
 		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()
 				+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		safeJavaScriptClick("Payment Summary");
+		clickLink("Payment Summary");
 
 		// verification part
-		// clickLink("Export");
-		safeJavaScriptClick("Export");
+		clickLink("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -594,11 +610,10 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		}
 		if (!Verify.verifyArrayofStrings(actual, expected, true))
 			failurecount++;
-
-		for (i = 0; i < actual.length; i++) {
+		// To DO - Need to validate whether respective link is opened or not
+		/*for (i = 0; i < actual.length; i++) {
 			reportshelper.navigateExportlink(actual[i]);
-			// To DO - Need to validate whether respective link is opened or not
-		}
+		}*/
 
 		return failurecount == 0 ? true : false;
 	}
@@ -619,7 +634,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		UIActions mydde = new UIActions();
 		mydde.fillScreenAttributes(lsAttributes);
 
-		safeJavaScriptClick("Payment Summary");
+		clickLink("Payment Summary");
 
 		lastupdatedate = Verify.getTableData("datatable", 1, 8);
 		// To Do - Need to get the From and Todate from Timeframe attributes
@@ -673,7 +688,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		UIActions mydde = new UIActions();
 		mydde.fillScreenAttributes(lsAttributes);
 
-		safeJavaScriptClick("Payment");
+		clickLink("Payment");
 
 		// Verification part
 		// Natural Ascending Sort Verification
@@ -715,7 +730,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 				failurecount++;
 			else if (!Verify.StringMatches(
 					reportText,
-					"PAYMENT REPORT FROM * TO *, FOR AGENCY "
+					"PAYMENT REPORT FROM.*TO.*FOR AGENCY "
 							+ agencyattr.getValue()))
 				failurecount++;
 		}
@@ -746,12 +761,10 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		navigateToPage();
 		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()
 				+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		safeJavaScriptClick("Payment");
+		clickLink("Payment");
 
 		// verification part
-
-		// clickLink("Export");
-		safeJavaScriptClick("Export");
+		clickLink("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		if (lsexportlinks == null) {
 			((JavascriptExecutor) driver)
@@ -767,10 +780,10 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		if (!Verify.verifyArrayofStrings(actual, expected, true))
 			failurecount++;
 
-		for (i = 0; i < actual.length; i++) {
-			reportshelper.navigateExportlink(actual[i]);
+		/*for (i = 0; i < actual.length; i++) {
+			//reportshelper.navigateExportlink(actual[i]);
 			// To DO - Need to validate whether respective link is opened or not
-		}
+		}*/
 
 		return failurecount == 0 ? true : false;
 	}
@@ -791,7 +804,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		UIActions mydde = new UIActions();
 		mydde.fillScreenAttributes(lsAttributes);
 
-		safeJavaScriptClick("Payment");
+		clickLink("Payment");
 
 		lastupdatedate = Verify.getTableData("datatable", 1, 10);
 		// To Do - Need to get the From and Todate from Timeframe attributes
@@ -854,7 +867,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		UIActions mydde = new UIActions();
 		mydde.fillScreenAttributes(lsAttributes);
 
-		safeJavaScriptClick("Submitted Claims");
+		clickLink("Submitted Claims");
 
 		// Verification part
 		// Natural Ascending Sort Verification
@@ -894,7 +907,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 									+ agencyattr.getValue()))
 				failurecount++;
 			else if (!Verify.StringMatches(reportText,
-					"SUBMITTED CLAIMS REPORT FROM * TO *, FOR AGENCY "
+					"SUBMITTED CLAIMS REPORT FROM.*.TO.*FOR AGENCY "
 							+ agencyattr.getValue()))
 				failurecount++;
 		}
@@ -922,27 +935,14 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		navigateToPage();
 		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()
 				+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		safeJavaScriptClick("Submitted Claims");
+		clickLink("Submitted Claims");
 
 		// verification part
-		// safeJavaScriptClick("Export");
-		clickOnElement(ByLocator.xpath, "//a[@id='reportExport']", 5);
-
+		clickLink("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		WebElement element = (WebElement) ((JavascriptExecutor) driver).executeScript("$('ul#reportExportMenu li').each(function(){$(this).text();});");
 		report.report("???????????????????????????"+element);
 		if (lsexportlinks == null) {
-			/*
-			 * Thread.sleep(5000); safeJavaScriptClick("Export");
-			 */
-			// ((JavascriptExecutor)
-			// driver).executeScript("$($('a:contains('Export')')[0]).trigger('click');");
-
-			// ((JavascriptExecutor)
-			// driver).executeScript("$('#reportExport')[0]).click();");
-//			((JavascriptExecutor) driver).executeScript("$('ul#reportExportMenu li').each(function(){$(this).text();});");
-//			((JavascriptExecutor) driver).executeScript("alert('hiii');");
-			
 			Thread.sleep(5000);
 			WebElement we = driver
 					.findElement(By
@@ -951,7 +951,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 			action.moveToElement(we).click().build().perform();
 			lsexportlinks = reportshelper.getAllExportLinks();
 		}
-		/*
+		
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
 			actual[i++] = we.getText();
@@ -959,11 +959,10 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		if (!Verify.verifyArrayofStrings(actual, expected, true))
 			failurecount++;
 
-		for (i = 0; i < actual.length; i++) {
+		/*for (i = 0; i < actual.length; i++) {
 			reportshelper.navigateExportlink(actual[i]);
 			// To DO - Need to validate whether respective link is opened or not
-		}
-*/
+		}*/
 		return failurecount == 0 ? true : false;
 	}
 
@@ -1041,7 +1040,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 									+ agencyattr.getValue()))
 				failurecount++;
 			else if (!Verify.StringMatches(reportText,
-					"UNPAID CLAIMS REPORT FROM * TO *, FOR AGENCY "
+					"UNPAID CLAIMS REPORT FROM.*TO.*FOR AGENCY "
 							+ agencyattr.getValue()))
 				failurecount++;
 		}
@@ -1069,12 +1068,10 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		navigateToPage();
 		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()
 				+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		safeJavaScriptClick("Unpaid Claims");
+		clickLink("Unpaid Claims");
 
 		// verification part
-		// safeJavaScriptClick("Export");
-		clickOnElement(ByLocator.xpath, "//a[@id='reportExport']", 5);
-
+		clickLink("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -1083,10 +1080,10 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		if (!Verify.verifyArrayofStrings(actual, expected, true))
 			failurecount++;
 
-		for (i = 0; i < actual.length; i++) {
+		/*for (i = 0; i < actual.length; i++) {
 			reportshelper.navigateExportlink(actual[i]);
 			// To DO - Need to validate whether respective link is opened or not
-		}
+		}*/
 
 		return failurecount == 0 ? true : false;
 	}
@@ -1112,7 +1109,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		UIActions mydde = new UIActions();
 		mydde.fillScreenAttributes(lsAttributes);
 
-		safeJavaScriptClick("Active Episodes");
+		clickLink("Active Episodes");
 
 		// Verification part
 		// Natural Ascending Sort Verification
@@ -1154,7 +1151,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 									+ agencyattr.getValue()))
 				failurecount++;
 			else if (!Verify.StringMatches(reportText,
-					"ACTIVE EPISODES REPORT FROM * TO *, FOR AGENCY "
+					"ACTIVE EPISODES REPORT FROM.*.TO.*FOR AGENCY "
 							+ agencyattr.getValue()))
 				failurecount++;
 		}
@@ -1182,12 +1179,9 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		navigateToPage();
 		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()
 				+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		safeJavaScriptClick("Active Episodes");
+		clickLink("Active Episodes");
 
-		// verification part
-		// safeJavaScriptClick("Export");
-		clickOnElement(ByLocator.xpath, "//a[@id='reportExport']", 5);
-
+		clickLink("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -1196,10 +1190,10 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		if (!Verify.verifyArrayofStrings(actual, expected, true))
 			failurecount++;
 
-		for (i = 0; i < actual.length; i++) {
-			reportshelper.navigateExportlink(actual[i]);
+		/*for (i = 0; i < actual.length; i++) {
+			//reportshelper.navigateExportlink(actual[i]);
 			// To DO - Need to validate whether respective link is opened or not
-		}
+		}*/
 
 		return failurecount == 0 ? true : false;
 	}
@@ -1228,7 +1222,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		UIActions mydde = new UIActions();
 		mydde.fillScreenAttributes(lsAttributes);
 
-		safeJavaScriptClick("Episodes");
+		clickLink("Episodes");
 
 		// Verification part
 		// Natural Ascending Sort Verification
@@ -1269,7 +1263,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 				failurecount++;
 			else if (!Verify.StringMatches(
 					reportText,
-					"EPISODES REPORT FROM * TO *, FOR AGENCY "
+					"EPISODES REPORT FROM.*TO.*FOR AGENCY "
 							+ agencyattr.getValue()))
 				failurecount++;
 		}
@@ -1297,12 +1291,10 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		navigateToPage();
 		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()
 				+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		safeJavaScriptClick("Active Episodes");
+		clickLink("Active Episodes");
 
 		// verification part
-		// safeJavaScriptClick("Export");
-		clickOnElement(ByLocator.xpath, "//a[@id='reportExport']", 5);
-
+		clickLink("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -1311,10 +1303,10 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		if (!Verify.verifyArrayofStrings(actual, expected, true))
 			failurecount++;
 
-		for (i = 0; i < actual.length; i++) {
-			reportshelper.navigateExportlink(actual[i]);
+		/*for (i = 0; i < actual.length; i++) {
+			//reportshelper.navigateExportlink(actual[i]);
 			// To DO - Need to validate whether respective link is opened or not
-		}
+		}*/
 
 		return failurecount == 0 ? true : false;
 	}
@@ -1325,7 +1317,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 
 	@Override
 	public void navigateToPage() throws Exception {
-		// HomePage.getInstance().navigateTo(Menu.MYDDE, null);
+		HomePage.getInstance().navigateTo(Menu.MYDDE, null);
 	}
 
 }

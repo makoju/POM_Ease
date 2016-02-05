@@ -7,15 +7,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Set;
 
 import org.apache.commons.validator.routines.BigDecimalValidator;
 import org.apache.commons.validator.routines.CurrencyValidator;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -66,8 +65,11 @@ public class Verify extends AbstractPageObject{
 		/*Pattern p=Pattern.compile(regex);
 		Matcher m=p.matcher(reportText);
 		return m.matches();*/
-		return reportText.matches(regex);
+		boolean matched = reportText.matches(regex);
+		if(!matched)
+			report.report("Actual String: "+reportText+" doesn't match with expected String: "+regex, Reporter.WARNING);
 		
+		return matched;
 	}
 
 	public static String getTableData(String tableidentifier, int row, int column){
@@ -77,6 +79,7 @@ public class Verify extends AbstractPageObject{
 		boolean bFlag = false;
 		if(we != null){
 			while( !bFlag ) {
+				waitForElement(By.xpath("tbody/tr["+row+"]"+"/td["+column+"]"));
 				WebElement dataelement = we.findElement(By.xpath("tbody/tr["+row+"]"+"/td["+column+"]"));
 				text = dataelement.getAttribute("innerText");
 				if(text.isEmpty()){
@@ -93,16 +96,17 @@ public class Verify extends AbstractPageObject{
 	}
 
 	public static List<String> getEntireTableColumnData(String tableidentifier, int column){
-		List<String> actual=new ArrayList<String>();
+		//using linkedhashset to preserve the order and to avoid duplicates
+		Set<String> actual=new LinkedHashSet<String>();
 		WebElement we = getTable(tableidentifier);
 		if(we!=null){
-			List<WebElement> dataelement = we.findElements(By.xpath("tbody/tr/td["+column+"][@class='datatablecell']"));
+			List<WebElement> dataelement = we.findElements(By.xpath("tbody//tr/td["+column+"][contains(@class,'datatablecell')]"));
 			for(WebElement element:dataelement){
-				if(element.getText().trim().matches("[a-zA-Z0-9]+"))
+				if(element.getText().trim().matches("[a-zA-Z0-9\\s+]+"))
 					actual.add(element.getText());
 			}
 		}
-		return actual;
+		return new ArrayList<String>(actual); //converting set into list
 	}
 
 	public static int getTotalTableRows(String tableidentifier){
@@ -132,16 +136,32 @@ public class Verify extends AbstractPageObject{
 				sortorder = changecolumnparent.getAttribute("aria-sort");
 			}
 			if(sortorder!=null){
-				if(!sortorder.equalsIgnoreCase("ascending"))
+				int count = 0;
+				while(!sortorder.equalsIgnoreCase("ascending") && count++ <10){
 					changecolumn.click(); //click on Change column to make it in ascending sort order
-
-				List<String> lsactualcolumndata = getEntireTableColumnData(tablename, columnnindex);
-				List<String> lsexpectedcolumndata = new ArrayList<String>();
-				lsexpectedcolumndata.addAll(lsactualcolumndata);
-				Collections.sort(lsexpectedcolumndata); //which sorts elements as per natural order for strings alphabet ascending order
-				report.report("Actual: "+lsactualcolumndata+" Expected: "+lsexpectedcolumndata);
-				return Verify.ListEquals(lsactualcolumndata, lsexpectedcolumndata);
-			}else{
+					changecolumnparent = driver.findElement(By.xpath("//table[@id='"+tablename+"']"+"//div[contains(text(),'"+columnname+"')]/.."));
+					sortorder = changecolumnparent.getAttribute("aria-sort");
+				}
+				if(sortorder.equalsIgnoreCase("ascending")){
+					List<String> lsactualcolumndata = getEntireTableColumnData(tablename, columnnindex);
+					if(lsactualcolumndata.size()>0){
+						List<String> lsexpectedcolumndata = new ArrayList<String>();
+						lsexpectedcolumndata.addAll(lsactualcolumndata);
+						Collections.sort(lsexpectedcolumndata); //which sorts elements as per natural order for strings alphabet ascending order
+						report.report("Actual: "+lsactualcolumndata+" Expected: "+lsexpectedcolumndata);
+						return Verify.ListEquals(lsactualcolumndata, lsexpectedcolumndata);
+					}
+					else
+					{
+						report.report("Unable to fetch data for column: "+ columnname+"  It returns empty", Reporter.WARNING);
+					}
+				}
+				else{
+				report.report("Unable to sort the column in ascending order: "+ columnname, Reporter.WARNING);
+				}
+				
+			}
+			else{
 				report.report("Unable to click on column"+columnname, Reporter.WARNING);
 			}
 		}
@@ -151,23 +171,41 @@ public class Verify extends AbstractPageObject{
 	public static boolean validateTableColumnSortOrder(String tablename, String columnname, int columnnindex) throws Exception{
 
 		String xpath="//table[@id='"+tablename+"']"+"//td[contains(text(),'"+columnname+"')]";
-		waitForElement(By.xpath("//table[@id='"+tablename+"']"));
+		waitForElement(By.xpath(xpath));
 		WebElement changecolumn = driver.findElement(By.xpath(xpath));
 		if(changecolumn!=null){
 			String sortorder = changecolumn.getAttribute("sortdir");
-			if(sortorder==null){
+			if(sortorder==null){ //we reach this case when the column is in unsorted state 
 				safeJavaScriptClick(changecolumn);
 				sortorder = changecolumn.getAttribute("sortdir");
 			}
-			if(sortorder!=null){
-				if (!sortorder.equalsIgnoreCase("down"))
+			if(sortorder!=null){ //This is when the column is in s
+				int count = 0;
+				//This while loop is to make sure that column is in ascending sort. sortoder down means it's in ascending sort
+				while (!sortorder.equalsIgnoreCase("down") && count++ <10){ //Try for 10 times before give it up
 					safeJavaScriptClick(changecolumn); //click on Change column to make it in ascending sort order
-				List<String> lsactualcolumndata = getEntireTableColumnData(tablename, columnnindex);
-				List<String> lsexpectedcolumndata = new ArrayList<String>();
-				lsexpectedcolumndata.addAll(lsactualcolumndata);
-				Collections.sort(lsexpectedcolumndata); //which sorts elements as per natural order for strings alphabet ascending order
-				report.report("Actual: "+lsactualcolumndata+" Expected: "+lsexpectedcolumndata);
-				return Verify.ListEquals(lsactualcolumndata, lsexpectedcolumndata);
+					changecolumn = driver.findElement(By.xpath(xpath));
+					sortorder = changecolumn.getAttribute("sortdir");
+				}
+				if(sortorder.equalsIgnoreCase("down")){
+					List<String> lsactualcolumndata = getEntireTableColumnData(tablename, columnnindex);
+					if(lsactualcolumndata.size()>0){
+						List<String> lsexpectedcolumndata = new ArrayList<String>();
+						lsexpectedcolumndata.addAll(lsactualcolumndata);
+						Collections.sort(lsexpectedcolumndata); //which sorts elements as per natural order for strings alphabet ascending order
+						report.report("Actual: "+lsactualcolumndata+" Expected: "+lsexpectedcolumndata);
+						return Verify.ListEquals(lsactualcolumndata, lsexpectedcolumndata);
+					}
+					else
+					{
+						report.report("Unable to fetch data for column: "+ columnname+"  It returns empty", Reporter.WARNING);
+					}
+				}
+				else
+				{
+					report.report("Unable to sort the column in ascending order: "+ columnname, Reporter.WARNING);
+				}
+				
 			}else{
 				report.report("Unable to click on column"+columnname, Reporter.WARNING);
 			}

@@ -119,6 +119,10 @@ public class BaseTest extends  SystemTestCase4Custom { /*SystemTestCase4*/
 		if (testType == null){
 			throw new Exception ("Please set the test type !!!!" );
 		}
+		
+		if (mySut == null) {
+			mySut = (MySut)system.getSystemObject("mySut");
+		}
 
 		switch (testType) {
 		case Selenium2: 		   
@@ -131,11 +135,6 @@ public class BaseTest extends  SystemTestCase4Custom { /*SystemTestCase4*/
 		default: 
 			RunProperties.getInstance().setRunProperty(testType.name() + "_count", Integer.toString(++otherCount));
 		}
-
-		if (mySut == null) {
-			mySut = (MySut)system.getSystemObject("mySut");
-		}
-
 
 		// handle ignore rules	
 		IgnoreTest.ignoreIf(shouldIgnoreTest()); 

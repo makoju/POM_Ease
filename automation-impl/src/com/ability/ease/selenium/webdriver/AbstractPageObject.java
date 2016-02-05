@@ -1592,13 +1592,13 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		return e.getText();
 	}
 	
-	public static void safeJavaScriptClick(String linktext) throws Exception {
+	public void safeJavaScriptClick(String linktext) throws Exception {
 		WebElement element = waitForElementVisibility(By.linkText(linktext));
 		safeJavaScriptClick(element);
 	}
 	
 	/*Click the element with java script*/
-	public void safeJavaScriptClick(WebElement element) throws Exception {
+	public static void safeJavaScriptClick(WebElement element) throws Exception {
 		try {
 			if (element.isEnabled() && element.isDisplayed()) {
 				System.out.println("Clicking on element using java script click");

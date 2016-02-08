@@ -134,6 +134,23 @@
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>sqljdbc</artifactId>						
 		</dependency>-->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-support</artifactId>			
+		</dependency>
+
+		<dependency>
+			 <groupId>com.abilitynetwork.selenium2</groupId> 
+			 <artifactId>chromedriver-win</artifactId>  
+			 <version>2.20</version>  
+			<type>zip</type> 		
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.1</version>
+		</dependency>
 	</dependencies>
 	
 	<build>

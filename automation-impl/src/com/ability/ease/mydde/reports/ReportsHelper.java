@@ -22,7 +22,8 @@ public class ReportsHelper extends AbstractPageObject{
 		   if(!we.isEnabled() && !we.isDisplayed()){
 			   clickLink("Export");
 			   we = waitForElementVisibility(By.partialLinkText(linkText));
-		   }   
+		   }
+		   we.click();
 		}
 	   public boolean validateReportLinkSectionswithEpisodes(String reportlinksection) throws Exception{
 	    		//Verify Critical reports section
@@ -100,10 +101,12 @@ public class ReportsHelper extends AbstractPageObject{
 	    
 		public void fillScreen(String filename, Map<String,String> mapAttrValues) throws Exception{
 			//navigation part
-			UIAttributeXMLParser parser = new UIAttributeXMLParser();
-			List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(filename, mapAttrValues);
-			UIActions mydde = new UIActions();
-			mydde.fillScreenAttributes(lsAttributes);
+			if(mapAttrValues.size()>0){
+				UIAttributeXMLParser parser = new UIAttributeXMLParser();
+				List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(filename, mapAttrValues);
+				UIActions mydde = new UIActions();
+				mydde.fillScreenAttributes(lsAttributes);
+			}
 		}
 		
 		//Use this method to get the report links displayed under each report section like, Critical, Errors and Normal  

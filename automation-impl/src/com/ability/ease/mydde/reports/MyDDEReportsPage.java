@@ -4,6 +4,7 @@ package com.ability.ease.mydde.reports;
 import java.util.List;
 import java.util.Map;
 
+import jsystem.framework.report.Reporter;
 import jsystem.framework.report.Reporter.ReportAttribute;
 
 import org.openqa.selenium.By;
@@ -18,6 +19,8 @@ import com.ability.ease.auto.dataStructure.common.AttibuteXMLParser.UIAttributeX
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
 import com.ability.ease.auto.dataStructure.common.easeScreens.UIAttribute;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
+import com.ability.ease.home.HomePage;
+import com.ability.ease.home.HomePage.Menu;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 public class MyDDEReportsPage extends AbstractPageObject {
@@ -249,11 +252,6 @@ public class MyDDEReportsPage extends AbstractPageObject {
 
 	public boolean verifyChangesReportExportPDFExcel(Map<String, String> mapAttrValues) throws Exception {
 		int failurecount = 0;
-<<<<<<< HEAD
-		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-
-		safeJavaScriptClick("Changes");
-=======
 		// navigation part
 		navigateToPage();
 		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()
@@ -261,7 +259,6 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		
 		
 		clickLink("Changes");
->>>>>>> 8a244cfaa759688a77cb36388fb765baac0c0aa2
 
 		// verification part
 		String[] expected = { "Save Changes report to PDF","Save Changes report to Excel", "Save complete report to PDF","Save complete report to Excel" }, actual;
@@ -521,10 +518,6 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		UIActions mydde = new UIActions();
 		mydde.fillScreenAttributes(lsAttributes);
 
-<<<<<<< HEAD
-		// safeJavaScriptClick("Payment Summary");
-=======
->>>>>>> 8a244cfaa759688a77cb36388fb765baac0c0aa2
 		clickLink("Payment Summary");
 
 		// Verification part
@@ -928,35 +921,15 @@ public class MyDDEReportsPage extends AbstractPageObject {
 				"Save complete report to PDF", "Save complete report to Excel" }, actual;
 		// navigation part
 		navigateToPage();
-<<<<<<< HEAD
-		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		safeJavaScriptClick("Submitted Claims");
-=======
 		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()
 				+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
 		clickLink("Submitted Claims");
->>>>>>> 8a244cfaa759688a77cb36388fb765baac0c0aa2
 
 		// verification part
 		clickLink("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		WebElement element = (WebElement) ((JavascriptExecutor) driver).executeScript("$('ul#reportExportMenu li').each(function(){$(this).text();});");
 		if (lsexportlinks == null) {
-<<<<<<< HEAD
-			/*
-			 * Thread.sleep(5000); safeJavaScriptClick("Export");
-			 */
-			// ((JavascriptExecutor)
-			// driver).executeScript("$($('a:contains('Export')')[0]).trigger('click');");
-
-			// ((JavascriptExecutor)
-			// driver).executeScript("$('#reportExport')[0]).click();");
-			// ((JavascriptExecutor)
-			// driver).executeScript("$('ul#reportExportMenu li').each(function(){$(this).text();});");
-			// ((JavascriptExecutor) driver).executeScript("alert('hiii');");
-
-=======
->>>>>>> 8a244cfaa759688a77cb36388fb765baac0c0aa2
 			Thread.sleep(5000);
 			WebElement we = driver
 					.findElement(By
@@ -965,18 +938,6 @@ public class MyDDEReportsPage extends AbstractPageObject {
 			action.moveToElement(we).click().build().perform();
 			lsexportlinks = reportshelper.getAllExportLinks();
 		}
-<<<<<<< HEAD
-		/*
-		 * actual = new String[lsexportlinks.size()]; for (WebElement we :
-		 * lsexportlinks) { actual[i++] = we.getText(); } if
-		 * (!Verify.verifyArrayofStrings(actual, expected, true))
-		 * failurecount++;
-		 * 
-		 * for (i = 0; i < actual.length; i++) {
-		 * reportshelper.navigateExportlink(actual[i]); // To DO - Need to
-		 * validate whether respective link is opened or not }
-		 */
-=======
 		
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -989,7 +950,6 @@ public class MyDDEReportsPage extends AbstractPageObject {
 			reportshelper.navigateExportlink(actual[i]);
 			// To DO - Need to validate whether respective link is opened or not
 		}*/
->>>>>>> 8a244cfaa759688a77cb36388fb765baac0c0aa2
 		return failurecount == 0 ? true : false;
 	}
 
@@ -1263,14 +1223,9 @@ public class MyDDEReportsPage extends AbstractPageObject {
 							+ fromdate + " TO " + todate + ", FOR AGENCY "
 							+ agencyattr.getValue()))
 				failurecount++;
-<<<<<<< HEAD
-			else if (!Verify.StringMatches(
-					reportText,
-					"EPISODES REPORT FROM * TO *, FOR AGENCY "
-=======
+
 			else if (!Verify.StringMatches(reportText,
 					"ACTIVE EPISODES REPORT FROM.*.TO.*FOR AGENCY "
->>>>>>> 8a244cfaa759688a77cb36388fb765baac0c0aa2
 							+ agencyattr.getValue()))
 				failurecount++;
 		}
@@ -1344,11 +1299,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		UIActions mydde = new UIActions();
 		mydde.fillScreenAttributes(lsAttributes);
 
-<<<<<<< HEAD
-		safeJavaScriptClick("Claims");
-=======
 		clickLink("Episodes");
->>>>>>> 8a244cfaa759688a77cb36388fb765baac0c0aa2
 
 		// Verification part
 		// Natural Ascending Sort Verification
@@ -1496,7 +1447,6 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		return failurecount == 0 ? true : false;
 	}
 
-<<<<<<< HEAD
 	public boolean verifyStuckInSuspenseExportPDFExcel(Map<String, String> mapAttrValues) throws Exception {
 		int failurecount = 0, i = 0;
 		String[] expected = { "Save Payment Summary report to PDF","Save Payment Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
@@ -1524,11 +1474,6 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		}
 
 		return failurecount == 0 ? true : false;
-=======
-	@Override
-	public void navigateToPage() throws Exception {
-		HomePage.getInstance().navigateTo(Menu.MYDDE, null);
->>>>>>> 8a244cfaa759688a77cb36388fb765baac0c0aa2
 	}
 
 	public boolean verifyRAPSuspenseHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception {
@@ -3361,6 +3306,6 @@ public class MyDDEReportsPage extends AbstractPageObject {
 
 	@Override
 	public void navigateToPage() throws Exception {
-		// HomePage.getInstance().navigateTo(Menu.MYDDE, null);
+		HomePage.getInstance().navigateTo(Menu.MYDDE, null);
 	}
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sut validators="">
+    <mySut>
+        <class>com.ability.ease.auto.systemobjects.MySut</class>
+        <workingEnvironment>
+            <class>com.ability.ease.auto.systemobjects.DefaultWorkingEnvironment</class>
+            <host>localhost</host>
+            <port>8080</port>
+        </workingEnvironment>
+         <webdriver>
+            <class>com.ca.auto.systemobjects.WebDriverSystemObject</class>
+            <webDriverType>FIREFOX_DRIVER</webDriverType>
+        </webdriver>
+    </mySut>
+</sut>

@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UIAttributes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="UIAttributes.xsd">
+   <!--Below fields are disabled in UB04 form-->
+   <!--2,7,8a,9e,38-->
+   <!--Top anchor links start-->
+   <UIAttribute>
+      <locator>claimHome</locator>
+      <style>LinkWithNoText</style>
+      <displayName>Claim Home</displayName>
+      <description>Claim Home Link...no input required</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>claimSave</locator>
+      <style>LinkWithNoText</style>
+      <displayName>Claim Save</displayName>
+      <description>Claim Save Link...no input required</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>claimUndoReset</locator>
+      <style>LinkWithNoText</style>
+      <displayName>Claim Undo Reset</displayName>
+      <description>Claim Undo Reset Link...no input required</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>claimNew</locator>
+      <style>LinkWithNoText</style>
+      <displayName>Claim New</displayName>
+      <description>Claim New Status...no input required</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>claimPrint</locator>
+      <style>LinkWithNoText</style>
+      <displayName>Claim Print</displayName>
+      <description>Claim Print Link...no input required</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>claimSubmit</locator>
+      <style>LinkWithNoText</style>
+      <displayName>Claim Submit</displayName>
+      <description>Claim Submit Link...no input required</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>reportNewUB04</locator>
+      <style>LinkWithNoText</style>
+      <displayName>UB04</displayName>
+      <description>This is just a reference to UB04 link...no input required</description>
+   </UIAttribute>
+    
+   <!--Top anchor links end-->
+   <!--My DDE - UB04 Claim Form Fields :: Start-->
+   <!-- Filed Locator1 start-->
+   <UIAttribute>
+      <locator>ub1_1</locator>
+      <style>Text</style>
+      <displayName>Billing Provider Name</displayName>
+      <description>Provide billing provider name for the validation...ex., HHA1</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub1_2</locator>
+      <style>Text</style>
+      <displayName>Billing Provider Street Address</displayName>
+      <description>Provide billing provider street address for validation...ex., 101 Test Lane</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub1_3</locator>
+      <style>Text</style>
+      <displayName>Billing Provider City</displayName>
+      <description>Provide billing provider city for validation...ex., St Paul</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub1_4</locator>
+      <style>Text</style>
+      <displayName>Billing Provider City ZIP</displayName>
+      <description>Provide billing provider city ZIP for validation...ex., 55551</description>
+   </UIAttribute>
+   <!-- Filed Locator1 end-->
+   <!-- Filed Locator2 start-->
+   <UIAttribute>
+      <locator>ub2_1</locator>
+      <style>Text</style>
+      <displayName>Billing Provider Designated Pay-to Name</displayName>
+      <description>Provide billing provider designated pay-to name</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub2_2</locator>
+      <style>Text</style>
+      <displayName>Billing Provider Designated Pay-to Address</displayName>
+      <description>Provide billing provider designated pay-to address</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub2_3</locator>
+      <style>Text</style>
+      <displayName>Billing Provider Designated Pay-to City</displayName>
+      <description>Provide billing provider designated pay-to city</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub2_4</locator>
+      <style>Text</style>
+      <displayName>Billing Provider Designated Pay-to ID</displayName>
+      <description>Provide billing provider designated pay-to ID</description>
+   </UIAttribute>
+   <!-- Filed Locator2 end-->
+   <!-- Filed Locator3 start-->
+   <UIAttribute>
+      <locator>ub3a</locator>
+      <style>Text</style>
+      <displayName>Patient Control Number</displayName>
+      <description>Provide patient control number (PCN) ex., PCN004669</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub3b</locator>
+      <style>Text</style>
+      <displayName>Medical Record Number</displayName>
+      <description>Provide medical record number (MRN) ex., 4112218</description>
+   </UIAttribute>
+   <!-- Filed Locator3 end-->
+   <!-- Filed Locator4 start-->
+   <UIAttribute>
+      <locator>ub4</locator>
+      <style>Text</style>
+      <displayName>TYPE OF BILL</displayName>
+      <description>Provide type of bill ex., 143</description>
+   </UIAttribute>
+   <!-- Filed Locator4 end-->
+   <!-- Filed Locator5 start-->
+   <UIAttribute>
+      <locator>ub5</locator>
+      <style>Text</style>
+      <displayName>Federal Tax No</displayName>
+      <description>Provide federal tax no for validation...ex., 123XXXXXXX</description>
+   </UIAttribute>
+   <!-- Filed Locator5 end-->
+   <!-- Filed Locator6 start-->
+   <UIAttribute>
+      <locator>ub6a</locator>
+      <style>Text</style>
+      <displayName>Statement from which period</displayName>
+      <description>Provide date in MMDDYY format ex., 092915</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub6b</locator>
+      <style>Text</style>
+      <displayName>Statement to which period</displayName>
+      <description>Provide date in MMDDYY format ex., 092915</description>
+   </UIAttribute>
+   <!-- Filed Locator6 end-->
+   <!-- (Note : Filed 7 and 8a are not used )Filed Locator8 start-->
+   <UIAttribute>
+      <locator>ub8b</locator>
+      <style>Text</style>
+      <displayName>PATIENT NAME</displayName>
+      <description>Provide patient name ex., Walley James</description>
+   </UIAttribute>
+   <!-- Filed Locator8 end-->
+   <!-- Filed Locator9 start-->
+   <UIAttribute>
+      <locator>ub9</locator>
+      <style>FillLocatorValues</style>
+      <displayName>Patient Adress</displayName>
+      <description>Provide patient street address {Street Address~~~Patient City Name~~~State}ex., E 45TH PL~~~CHICAGO~~~J5</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub9d</locator>
+      <style>Text</style>
+      <displayName>Patient ZIP</displayName>
+      <description>Provide patient city Zip code ex., 60290</description>
+   </UIAttribute>
+   <!-- Filed Locator9 end-->
+   <!-- Filed Locator10 start-->
+   <UIAttribute>
+      <locator>ub10</locator>
+      <style>Text</style>
+      <displayName>Patient DOB</displayName>
+      <description>Provide patient DOB in mmddyyyy format ex., 02181950</description>
+   </UIAttribute>
+   <!-- Filed Locator10 end-->
+   <!-- Filed Locator11 start-->
+   <UIAttribute>
+      <locator>ub11</locator>
+      <style>Text</style>
+      <displayName>Patient SEX</displayName>
+      <description>Provide patient sex M for male , F for female ex., M</description>
+   </UIAttribute>
+   <!-- Filed Locator11 end-->
+   <!-- Filed Locator12 start-->
+   <UIAttribute>
+      <locator>ub12</locator>
+      <style>Text</style>
+      <displayName>Patient Admission Date</displayName>
+      <description>Provide admission/start care date in MMDDYY format ex., 092915</description>
+   </UIAttribute>
+   <!-- Filed Locator12 end-->
+   <!-- Filed Locator13 start-->
+   <UIAttribute>
+      <locator>ub13</locator>
+      <style>Text</style>
+      <displayName>Patient Admission Hour</displayName>
+      <description>Provide admission hour ex., 01</description>
+   </UIAttribute>
+   <!-- Filed Locator13 end-->
+   <!-- Filed Locator14 start-->
+   <UIAttribute>
+      <locator>ub14</locator>
+      <style>Text</style>
+      <displayName>Patient Admission Type</displayName>
+      <description>Provide admission type. 1 = Emergency 2 = Urgent 3 = Elective 4 = Newborn 5 = Trauma 9 = Information Not Available ex., 1</description>
+   </UIAttribute>
+   <!-- Filed Locator14 end-->
+   <!-- Filed Locator15 start-->
+   <UIAttribute>
+      <locator>ub15</locator>
+      <style>Text</style>
+      <displayName>Patient Admission Source</displayName>
+      <description>Provide admission source. 1 = Physician Referral 2 = Clinic Referral 3 = HMO Referral etc., ex., 1</description>
+   </UIAttribute>
+   <!-- Filed Locator15 end-->
+   <!-- Filed Locator16 start-->
+   <UIAttribute>
+      <locator>ub16</locator>
+      <style>Text</style>
+      <displayName>Discharge Hour</displayName>
+      <description>Provide discharge hour ex., 1</description>
+   </UIAttribute>
+   <!-- Filed Locator16 end-->
+   <!-- Filed Locator17 start-->
+   <UIAttribute>
+      <locator>ub17</locator>
+      <style>Text</style>
+      <displayName>Discharge Status</displayName>
+      <description>Provide discharge status 01 = Discharged to home or self care routine discharge 02 = Discharged or transferred to another short-term general hospital ex., 01</description>
+   </UIAttribute>
+   <!-- Filed Locator17 end-->
+   <!-- Filed Locator18-28 Condition Code start-->
+   <!-- Fill the Field Locators 18-28 Condition Codes(Enter two digit alpha numeric codes up to eleven occurrences to identify conditions that may affect processing of this claim.)-->
+   <UIAttribute>
+      <locator>ub18,ub19,ub20,ub21,ub22,ub23,ub24,ub25,ub26,ub27,ub28</locator>
+      <style>ConditionOccurruenceCodes</style>
+      <displayName>Condition Codes</displayName>
+      <description>Provide ~~~ seperated condition codes ex., 8c~~~9y~~~4r~~~6k~~~4g~~~3w~~~2h~~~5m~~~2s~~~3b~~~4n</description>
+   </UIAttribute>
+   <!-- Filed Locator18-28 Condition Codes end-->
+   <!-- Filed Locator30 start-->
+   <UIAttribute>
+      <locator>ub30</locator>
+      <style>Text</style>
+      <displayName>ADJ-Reason Code</displayName>
+      <description>Provide adj reason code ex., A4</description>
+   </UIAttribute>
+   <!-- Filed Locator30 end-->
+ 
+ <!-- Filed Locator31-34 start:: OCCURRENCE Codes and Date-->
+	<UIAttribute>
+      <locator>ub31a1,ub31a2,ub32a1,ub32a2,ub33a1,ub33a2,ub34a1,ub34a2</locator>
+      <style>SpanCodes</style>
+      <displayName>OCCURRENCE Codes and Dates</displayName>
+      <description>Provide ~~~ seperated occurrence codes and dates in form of xx MMDDYY~~~xx MMDDYY...ex.,01 030115~~~02 032915~~~03 042915~~~08 052915</description>
+   </UIAttribute>
+   <!-- Filed Locator31-34 End:: OCCURRENCE Codes and Date-->
+   <!-- Filed Locator35-36 start:: OCCURRENCE SPAN CODE FROM THROUGH-->
+   <UIAttribute>
+      <locator>ub35a1,ub35a2,ub35a3,ub36a1,ub36a2,ub36a3</locator>
+      <style>SpanCodes</style>
+      <displayName>OCCURRENCE Span Codes</displayName>
+      <description>Provide occurence span codes and dates in code mmddyy mmddyy format separted by ~~~ ex., A1 060215 060215~~~B2 070215 070215</description>
+   </UIAttribute>
+   <!-- Filed Locator35-36 End:: OCCURRENCE SPAN CODE FROM THROUGH-->
+   <!--Filed Locator39-41 start:: Value Codes-->
+   <UIAttribute>
+      <locator>ub39a1,ub39a2,ub40a1,ub40a2,ub41a1,ub41a2</locator>
+      <style>SpanCodes</style>
+      <displayName>Value Codes</displayName>
+      <description>Provide value code ex., 7U 23000.00~~~5V 12000.00~~~2D 5000.00</description>
+   </UIAttribute>
+   <!--Filed Locator39-41 end:: Value Codes-->
+   <!--Filed Locator42-49 start(Note Filed 43,49 are disabled) all are mandatory for DDE-->
+   <UIAttribute>
+      <locator>ub42,ub44,ub45,ub46,ub47,ub48</locator>
+      <style>ClaimLineUB04</style>
+      <displayName>ClaimLineEntries</displayName>
+      <description>Provide comma seperated claim details ex., 0230:testhipps:09/29/2015:00001:300:34.11,0231:testh:09/29/2015:00002:6000:366.11</description>
+   </UIAttribute>
+   <!--Filed Locator42-49 end-->
+   <!--Filed Locator50-55 (Note Feild 50 is disabled start-->
+   <UIAttribute>
+      <locator>preub50</locator>
+      <style>FillLocatorValues</style>
+      <displayName>Payer Codes</displayName>
+      <description>Payer ID codes seperated by ~~~ ex.,  Z~~~A~~~G</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub50</locator>
+      <style>FillLocatorValues</style>
+      <displayName>Payer Names</displayName>
+      <description>Payer names seperated by ~~~ this is dependednt on Payer Codes input ex., MEDICARE~~~WORKING AGED~~~ESRD</description>
+   </UIAttribute>
+   
+   <UIAttribute>
+      <locator>ub52</locator>
+      <style>FillLocatorValues</style>
+      <displayName>Release of Information</displayName>
+      <description>Provide payer release of infomraiton seperating with ~~~ this is also dependednt on Payer Codes input ex., Y~~~Y~~~Y</description>
+   </UIAttribute>
+   
+   <UIAttribute>
+      <locator>ub53</locator>
+      <style>FillLocatorValues</style>
+      <displayName>Payer Assignment of Benefits</displayName>
+      <description>Provide payer assignment of benefits seperating with ~~~ this is also dependednt on Payer Codes input ex., Y~~~Y~~~Y</description>
+   </UIAttribute>
+   
+   <UIAttribute>
+      <locator>ub55</locator>
+      <style>FillLocatorValues</style>
+      <displayName>Payer Estimated Ammount</displayName>
+      <description>Provide payer estimated ammount seperating with ~~~ this is also dependednt on Payer Codes input ex., 300.00~~~600.00~~~700.00</description>
+   </UIAttribute>
+   <!--Filed Locator50-55 (Note Feild 50 is disabled start-->
+   <!--Filed Locator56 start:: NPI ID-->
+   <UIAttribute>
+      <locator>ub56</locator>
+      <style>Text</style>
+      <displayName>National Provider ID</displayName>
+      <description>National provider ID auto populated...no input required</description>
+   </UIAttribute>
+   <!--Filed Locator56 end:: NPI ID-->
+   <!--Filed Locator57 start:: NPI ID-->
+   <UIAttribute>
+      <locator>ub57a</locator>
+      <style>Text</style>
+      <displayName>Other Provider ID</displayName>
+      <description>Provide other provider NPI (apyer oscar)...ex., 000001</description>
+   </UIAttribute>
+  
+   <!--Filed Locator58-62 start-->
+   <UIAttribute>
+      <locator>ub58a1</locator>
+      <style>Text</style>
+      <displayName>Insurance Insureds Last Name</displayName>
+      <description>Provide Insurance Insureds Last Name ex., VANHUSEN</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub58a2</locator>
+      <style>Text</style>
+      <displayName>Insurance Insureds First Name</displayName>
+      <description>Provide Insurance Insureds First Nameex., VERA</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub59a</locator>
+      <style>Text</style>
+      <displayName>Patient's Relation to Insured</displayName>
+      <description>Provide patient's relation to insured 01 = Spouse 18 = Self 19= Child 20 = Employee 21 = Unknown 39 = Organ Donor 40 = Cadaver Donor 53 = Life Partner G8 = Other Relationship ex., 01</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub60a</locator>
+      <style>Text</style>
+      <displayName>Insureds Unique ID Primary</displayName>
+      <description>Provide insureds unique ID primary ex., XX45J00</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub61a</locator>
+      <style>Text</style>
+      <displayName>Insurance Group Name Primary</displayName>
+      <description>Provide insurance group name ex., XYZ123</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub62a</locator>
+      <style>Text</style>
+      <displayName>Insurance Group No Primary</displayName>
+      <description>Provide insurance group ID ex., XY300</description>
+   </UIAttribute>
+   <!--Filed Locator58-62 End-->
+   <!--Filed Locator63-65 start (Note - Filed Locator 64 is disabled)-->
+   <UIAttribute>
+      <locator>ub63a</locator>
+      <style>Text</style>
+      <displayName>Treatment Authorization Number</displayName>
+      <description>Provide treatment authorization number ex., 123PP</description>
+   </UIAttribute>
+   <!--Filed Locator63-65 End-->
+   <!--Filed Locator66-68 start(Note Filed Locators 66,68 is disabled)-->
+   <UIAttribute>
+      <locator>ub67</locator>
+      <style>FillLocatorValues</style>
+      <displayName>Principal Diagnosis Code on Admission</displayName>
+      <description>Provide principal diagnosis code on admission separated by ~~~ ex., ABC12341XY~~~ABC12342XY~~~ABC12343XY~~~ABC12344XY~~~ABC12345XY~~~ABC12346XY~~~ABC12347XY~~~ABC12348XY</description>
+   </UIAttribute>
+   <!--Filed Locator66-68 End-->
+   <!--Filed Locator69-73 ( Note Filed Locator 73 is not used)-->
+   <UIAttribute>
+      <locator>ub69</locator>
+      <style>Text</style>
+      <displayName>Admitting Diagnosis Code</displayName>
+      <description>Enter the ICD 9 CM diagnosis code that describes the patient’s condition at the time of admission ex., 01A</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub70</locator>
+      <style>FillLocatorValues</style>
+      <displayName>Patient's Reason for Visit</displayName>
+      <description>Enter the ICD 9 CM diagnosis codes that describes the patient’s reason for visit by separating with ~~~., 01A~~~09AS~~~SD0F9</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub72a</locator>
+      <style>Text</style>
+      <displayName>External Cause of Injury Code</displayName>
+      <description>External cause of injury code ex., 17H8A01</description>
+   </UIAttribute>
+   <!--Filed Locator66-73 End-->
+   <!--Filed Locator74-79(Note Filed Locator 75 is disabled)-->
+   <UIAttribute>
+      <locator>ub74_1,ub74_2,ub74a1,ub74a2,ub74b1,ub74b2,ub74c1,ub74c2,ub74d1,ub74d2,ub74e1,ub74e2</locator>
+      <style>SpanCodes</style>
+      <displayName>Principal Procedure Codes and Dates</displayName>
+      <description>Provide Principal procedure codes and dates separating with ~~~ ex., 17H8A01 121515~~~17H8A01 121515~~~ASD 120215~~~ASD 121415~~~SAD 120815~~~ASD 121515</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub76a</locator>
+      <style>Text</style>
+      <displayName>Attending Provider NPI</displayName>
+      <description>Attending provider NPI ex., 1928376655</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub76c</locator>
+      <style>Text</style>
+      <displayName>Attending Provider Last Name</displayName>
+      <description>Attending provider last name ex., KITCHEN</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub76d</locator>
+      <style>Text</style>
+      <displayName>Attending Provider First Name</displayName>
+      <description>Attending provider first name ex., LINDA</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub77a</locator>
+      <style>Text</style>
+      <displayName>Operating Provider NPI</displayName>
+      <description>Operating provider NPI ex., 1928376655</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub77c</locator>
+      <style>Text</style>
+      <displayName>Operating Provider Last Name</displayName>
+      <description>Operating provider last name ex., KITCHEN</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub77d</locator>
+      <style>Text</style>
+      <displayName>Operating Provider First Name</displayName>
+      <description>Operating provider first name ex., LINDA</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub78a</locator>
+      <style>Text</style>
+      <displayName>Other Provider NPI</displayName>
+      <description>Other provider NPI ex., 1928376655</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub78c</locator>
+      <style>Text</style>
+      <displayName>Other Provider Last Name</displayName>
+      <description>Other provider last name ex., KITCHEN</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub78d</locator>
+      <style>Text</style>
+      <displayName>Other Provider First Name</displayName>
+      <description>Other provider first name ex., LINDA</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub79a</locator>
+      <style>Text</style>
+      <displayName>Rendering Provider NPI</displayName>
+      <description>Rendering provider NPI ex., 1928376655</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub79c</locator>
+      <style>Text</style>
+      <displayName>Rendering Provider Last Name</displayName>
+      <description>Rendering provider last name ex., KITCHEN</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub79d</locator>
+      <style>Text</style>
+      <displayName>Rendering Provider First Name</displayName>
+      <description>Rendering provider first name ex., LINDA</description>
+   </UIAttribute>
+   <!--Filed Locator74-79(Note Filed Locator 75 is disabled)-->
+   <!--Filed Locator80-81 Start-->
+   <UIAttribute>
+      <locator>ub80</locator>
+      <style>Remarks</style>
+      <displayName>Remarks</displayName>
+      <description>Enter remarks and signature</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub81a</locator>
+      <style>Text</style>
+      <displayName>Code Code Field</displayName>
+      <description>Code Code field qualifier ex., B3</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub81b</locator>
+      <style>Text</style>
+      <displayName>Code Code Field</displayName>
+      <description>Code Code field code ex., 282N00000X</description>
+   </UIAttribute>
+   <UIAttribute>
+      <locator>ub81c</locator>
+      <style>Text</style>
+      <displayName>Code Code Field</displayName>
+      <description>Code Code field value ex., 282N00000X</description>
+   </UIAttribute>
+   <!--Filed Locator80-81 End-->
+</UIAttributes>

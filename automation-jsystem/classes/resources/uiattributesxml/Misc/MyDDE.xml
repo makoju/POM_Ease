@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<UIAttributes 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xsi:schemaLocation="UIAttributes.xsd">
+	
+	<!--My DDE - Add HICs in Basic View-->
+	
+	<UIAttribute>
+		<locator>MY DDE</locator>
+		<style>Link</style>
+		<displayName>MY DDE</displayName>
+		<description>This is reference to MY DDE link...no input required</description>
+	</UIAttribute>
+		
+	<UIAttribute>
+		<locator>Add HICs</locator>
+		<style>Link</style>
+		<displayName>Add HICs</displayName>
+		<description>This is reference to Add HICs link...no input required</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>user_prov_id</locator>
+		<style>DropDown</style>
+		<displayName>SELECT AGENCY</displayName>
+		<description>Provide Agency to be selected eg., SNF</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>SingleHIC</locator>
+		<style>Text</style>
+		<displayName>Input a single HIC</displayName>
+		<description>Provide 10 digit unique HIC id  make sure last digit is alphabetic eg., 000000409D</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>//*[@id='SingleHIC']/../img</locator>
+		<style>Image</style>
+		<displayName>Add button</displayName>
+		<description>This is reference to Add button...no input required</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>hics</locator>
+		<style>DropDownList</style>
+		<displayName>Ready to submit</displayName>
+		<description>Ready to submit list</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>//*[@id='hics']/../img</locator>
+		<style>Image</style>
+		<displayName>Remove button</displayName>
+		<description>This is a reference to remove button...no input required</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>button</locator>
+		<style>Button</style>
+		<displayName>Submit</displayName>
+		<description>This is a submit button...no input required</description>
+	</UIAttribute>
+</UIAttributes>

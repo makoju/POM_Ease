@@ -104,6 +104,7 @@ public class UIActions extends AbstractPageObject {
 					String[] sValue42To49 = scrAttr.getValue().split(",");
 					int j=1;
 
+					report.report("Filling "+ scrAttr.getDisplayName() + " Values");
 					for(String str:sValue42To49){
 						String[] sValues42To49 = str.split(":");
 						for(int i=0;i < sLocators42To49.length; i++){
@@ -117,9 +118,11 @@ public class UIActions extends AbstractPageObject {
 
 					break;
 				case ConditionOccurruenceCodes:
+
 					String[] sLocators18To28 = scrAttr.getLocator().split(",");
 					String[] sValues18To28 = scrAttr.getValue().split("~~~");
 
+					report.report("Filling "+ scrAttr.getDisplayName() + " Values");
 					for(int i=0;i < sValues18To28.length; i++){
 						typeEditBox(sLocators18To28[i], sValues18To28[i]);
 					}
@@ -128,7 +131,8 @@ public class UIActions extends AbstractPageObject {
 					String[] sSpanCodesDates = null;
 					String[] sLocatorsSpanCodes = scrAttr.getLocator().split(",");
 					int k = 0;
-					//report.report("filling span codes dates and values...");
+
+					report.report("Filling "+ scrAttr.getDisplayName() + " Values");
 					if(scrAttr.getValue().contains(",")){
 						sSpanCodesDates = scrAttr.getValue().split(",");
 						fillSpanCodeDates(sLocatorsSpanCodes, sSpanCodesDates);
@@ -149,6 +153,7 @@ public class UIActions extends AbstractPageObject {
 					String sLocatorID = scrAttr.getLocator();
 					String[] sLocatorValues = scrAttr.getValue().split("~~~");
 
+					report.report("Filling "+ scrAttr.getDisplayName() + " Values");
 					if(!sLocatorID.equalsIgnoreCase("ub67")){
 						char ch = 'a';
 						for(int i=0; i< sLocatorValues.length; i++){
@@ -170,6 +175,7 @@ public class UIActions extends AbstractPageObject {
 					//This style fills values and locators values which are separated by comma ','
 					String sLocators[] = scrAttr.getLocator().split(",");
 					String sValues[] = scrAttr.getValue().split(",");		
+					report.report("Filling "+ scrAttr.getDisplayName() + " Values");
 					for(int i=0; i<sValues.length; i++){
 						typeEditBox(sLocators[i], sValues[i]);
 					}
@@ -195,13 +201,13 @@ public class UIActions extends AbstractPageObject {
 					else 
 						clickLink(timeframe.trim());
 					break;
-					
+
 				case Agency:
 					clickLink(scrAttr.getLocator());
 					selectByNameOrID("reportAgencySelect", scrAttr.getValue().trim());
 					clickButton("Change Agency");
 					break;
-					
+
 				case MultiSelectAgency:
 					String[] multiAgencies = scrAttr.getValue().split(",");
 					clickButton(scrAttr.getLocator());
@@ -210,12 +216,12 @@ public class UIActions extends AbstractPageObject {
 						if(agency.startsWith("Check all"))
 							clickOnElement(ByLocator.xpath, "//a[@class='ui-multiselect-all']", 5);
 						else if(agency.startsWith("Uncheck all"))
-						   clickOnElement(ByLocator.xpath, "//a[@class='ui-multiselect-none']", 5);
+							clickOnElement(ByLocator.xpath, "//a[@class='ui-multiselect-none']", 5);
 						else
 							checkChkBox(agency.trim());
 					}
 					break;					
-					
+
 
 				default:
 					report.report("The attribute Style is not implemented.",

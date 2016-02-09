@@ -38,6 +38,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
 import com.ability.ease.auto.enums.portal.BrowserType;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.auto.enums.portal.selenium.WebDriverType;
@@ -226,7 +227,8 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 					driver.manage().deleteAllCookies();
 				}
 			} catch (Exception ex) {
-				report.report("fail to open browser: " + ex.getMessage(), Reporter.FAIL);
+				report.report("Exception while opening a open browser: " + ex.getMessage());
+				report.report("Retrying...");
 			}
 		}
 	}
@@ -1582,21 +1584,21 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 
 	}
-	
+
 	public String getElementText(By by){
 		WebElement element = waitForElementVisibility(by);
 		return getElementText(element);
 	}
-	
+
 	public String getElementText(WebElement e){
 		return e.getText();
 	}
-	
+
 	public void safeJavaScriptClick(String linktext) throws Exception {
 		WebElement element = waitForElementVisibility(By.linkText(linktext));
 		safeJavaScriptClick(element);
 	}
-	
+
 	/*Click the element with java script*/
 	public void safeJavaScriptClick(WebElement element) throws Exception {
 		try {
@@ -1658,31 +1660,69 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				//element.click();
 				sendEnterOnWebElement(element);
 				return;
+			}else{
+				element.click();
 			}
+
 		} else { 
 			throw new Exception ("Web element not found: " + elementLocator); 
 		}
 
 	}
-	
+
 	/**
 	 * Get all attributes of a HTML element using java script
 	 * @author nageswar.bodduri
 	 */
-	public ArrayList<String> getAllAttributes(WebElement element)throws Exception{
-		String sJavaScript = "var el = document.getElementById(element); "
-				+ "for (var i = 0, atts = el.attributes, n = atts.length, arr = []; i < n; i++){ arr.push(atts[i].nodeName);"
-				+ "}; return arr;"; 
-		ArrayList<String> lsAttributes = (ArrayList<String>)((JavascriptExecutor)driver).executeScript(sJavaScript, element);
-		return lsAttributes;
+
+	@SuppressWarnings("unchecked")
+	public String[] getAllAttributes(WebElement element)throws Exception{
+
+		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+		String attrs[] = null ;
+		List<Object> response = null;
+
+
+		StringBuilder sJScript = new StringBuilder();
+		sJScript.append("var x = document.getElementsByClassName(\"ub65 defaultText upper ub04changed\");\n");
+		sJScript.append("var i = 0; \n");
+		sJScript.append("var arr = []; \n");
+		sJScript.append("var attrs = x[0].attributes;\n");
+		sJScript.append("for (i = 0; i < attrs.length; i++) {\n");
+		sJScript.append(" arr.push(attrs[i].name);\n");
+		sJScript.append("}\n");
+		sJScript.append("return arr;\n");
+
+		if (driver instanceof JavascriptExecutor) {
+
+			if( response == null)
+				while(response != null) {
+					response = (List<Object>) jsExecutor.executeScript(sJScript.toString());
+					report.report("Executing javascript....");
+				}
+		}
+		report.report("Inside getAllAttributes Method..." + response.toString());
+		return attrs;
 	}
-	
+
 	public List<WebElement> findElements(By by){
 		if (waitForElementVisibility(by)!=null)
 			return driver.findElements(by);
 		return null;
 	}
-		
+
+	//This method will return corresponding value of the UI Attribute displayName passed from JSYSTEM
+	public static String getValueFromJSystem(List<Attribute> lsAttributes, String displayName){
+		String sValueFromJsystem = null;
+		for(Attribute scrAttr:lsAttributes){
+			if(scrAttr.getDisplayName().equalsIgnoreCase(displayName)){
+				sValueFromJsystem = scrAttr.getValue();
+				break;
+			}
+		}
+		return sValueFromJsystem;
+	}
+
 	//#########################################   Getters & Setters ###################################################
 	/**
 	 * 

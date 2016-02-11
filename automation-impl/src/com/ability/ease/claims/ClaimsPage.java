@@ -42,7 +42,6 @@ import com.ability.ease.auto.common.UB04FormXMLParser;
 import com.ability.ease.auto.common.UIActions;
 import com.ability.ease.auto.dataStructure.common.AttibuteXMLParser.UIAttributeXMLParser;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
-import com.ability.ease.mydde.MyDDEReportsPage;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 public class ClaimsPage extends AbstractPageObject{

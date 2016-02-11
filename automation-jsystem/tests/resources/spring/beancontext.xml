@@ -15,4 +15,5 @@
 	<bean id="claims" class="com.ability.ease.claims.ClaimsSelenium2Impl"/>
 	<bean id="reports" class="com.ability.ease.mydde.reports.ReportsSelenium2Impl"/>
 	<bean id="nonhhareports" class="com.ability.ease.mydde.reports.NonHHAReportsSeleniumImpl"/>
+	<bean id="mydde" class="com.ability.ease.mydde.MyDDESelenium2Impl"/>
 </beans>

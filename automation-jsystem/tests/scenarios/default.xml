@@ -20,7 +20,7 @@
     </target>
     <target name="t0">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="6dbaffee-46ab-4fe1-8386-2d379957e5ce"/>
+            <sysproperty key="jsystem.uuid" value="385c4456-d4ab-49f8-bd4f-8954ede97bb3"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.misc.MiscTests.loginToEase"/>
@@ -28,10 +28,10 @@
     </target>
     <target name="t1">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="f66a6e04-fded-4b55-8d17-a0277a8e8c46"/>
+            <sysproperty key="jsystem.uuid" value="8532af16-b35b-4773-9a67-58b49704b19f"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-            <test name="com.ability.ease.misc.MiscTests.verifyAlertOptions"/>
+            <test name="com.ability.ease.mydde.MyDDETests.verifySaveProfileOption"/>
         </jsystem>
     </target>
 </project>

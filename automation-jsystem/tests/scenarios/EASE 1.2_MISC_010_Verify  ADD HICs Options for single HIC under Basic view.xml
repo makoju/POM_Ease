@@ -28,10 +28,10 @@
     </target>
     <target name="t1">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="d063a36e-86d0-4cd5-96b5-af439a38f028"/>
+            <sysproperty key="jsystem.uuid" value="f835dfe8-3544-4f48-a3af-813d4be0fb56"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-            <test name="com.ability.ease.mydde.MyDDENonHHAReportsTests.verifyNonHHASummaryReportLastUpdateColumn"/>
+            <test name="com.ability.ease.mydde.MyDDETests.verifyPageView"/>
         </jsystem>
     </target>
 </project>

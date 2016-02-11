@@ -1589,6 +1589,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	}
 	
 	public String getElementText(WebElement e){
+		report.report("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& "+e.getText());
 		return e.getText();
 	}
 	

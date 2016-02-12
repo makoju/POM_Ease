@@ -9,6 +9,7 @@ import jsystem.framework.report.Reporter.ReportAttribute;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
@@ -141,7 +142,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 				"Save Full Summary report to Excel",
 				"Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -260,7 +261,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		// verification part
 		String[] expected = { "Save Changes report to PDF","Save Changes report to Excel", "Save complete report to PDF","Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -369,9 +370,9 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()
 				+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
 		clickLink("High Lvl Payment Summary");
-
+		waitForElementVisibility(By.linkText("Export"), 60);
 		// verification part
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -477,8 +478,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 			}
 		}
 
-		clickLink("Export");
-		
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -588,7 +588,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		clickLink("Payment Summary");
 
 		// verification part
-		clickLink("Export");
+		moveToElement("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -749,7 +749,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		clickLink("Payment");
 
 		// verification part
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		if (lsexportlinks == null) {
 			((JavascriptExecutor) driver)
@@ -923,7 +923,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		clickLink("Submitted Claims");
 
 		// verification part
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		WebElement element = (WebElement) ((JavascriptExecutor) driver).executeScript("$('ul#reportExportMenu li').each(function(){$(this).text();});");
 		if (lsexportlinks == null) {
@@ -1053,7 +1053,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		clickLink("Unpaid Claims");
 
 		// verification part
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -1251,8 +1251,8 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()
 				+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
 		clickLink("Active Episodes");
-
-		clickLink("Export");
+		
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -1368,7 +1368,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		clickLink("Active Episodes");
 
 		// verification part
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -3280,7 +3280,9 @@ public class MyDDEReportsPage extends AbstractPageObject {
 
 		// verification part
 		// safeJavaScriptClick("Export");
-		clickOnElement(ByLocator.xpath, "//a[@id='reportExport']", 5);
+		waitForElementVisibility(By.linkText("Export"), 60);
+		moveByOffset("Export");
+		//clickOnElement(ByLocator.xpath, "//a[@id='reportExport']", 5);
 
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];

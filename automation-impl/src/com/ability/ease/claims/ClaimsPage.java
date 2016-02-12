@@ -2,13 +2,10 @@ package com.ability.ease.claims;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringReader;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -27,8 +24,6 @@ import jsystem.framework.report.Reporter.ReportAttribute;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -42,7 +37,10 @@ import com.ability.ease.auto.common.UB04FormXMLParser;
 import com.ability.ease.auto.common.UIActions;
 import com.ability.ease.auto.dataStructure.common.AttibuteXMLParser.UIAttributeXMLParser;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
+<<<<<<< HEAD
 import com.ability.ease.mydde.reports.MyDDEReportsPage;
+=======
+>>>>>>> cd3addbfca9092e11a47c637cfd9665ecf2dfb0e
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 public class ClaimsPage extends AbstractPageObject{
@@ -87,8 +85,6 @@ public class ClaimsPage extends AbstractPageObject{
 		String startTime = getCurrentTimeFromEaseDB();
 		//filling all screen attribute values in UB04 form
 		admin.fillScreenAttributes(lsAttributes);
-
-		//***validations****//
 		//validation 1 :: verify field locator 1 values
 		if(!verifyFiledLocator1Values(lsAttributes)){
 			falseCounter++;
@@ -206,7 +202,7 @@ public class ClaimsPage extends AbstractPageObject{
 		clickMYDDELink();
 		//filling screen attribute values
 		admin.fillScreenAttributes(lsAttributes);
-
+		verifyTotalsV2();
 		//validations
 		return true;
 	}
@@ -267,14 +263,6 @@ public class ClaimsPage extends AbstractPageObject{
 	public boolean verifyTotals(List<Attribute> lsAttributes, String sFile)throws Exception{
 		float totalCharges = 0;
 		float nonCoveredCharges = 0;
-
-		/*String sTotalChargesLocator = "//*[contains(text(),'TOTALS')]/following-sibling::li[1]";
-		WebElement actualTotalCharge = driver.findElement(By.xpath(sTotalChargesLocator));
-		String sActualTotlaCharges = getElementValueJS(actualTotalCharge, "prevval");
-		String sTotalNonCoveredChargesLocator = "//*[contains(text(),'TOTALS')]/following-sibling::li[2]";
-		WebElement actualNonCoveredTotalCharge = driver.findElement(By.xpath(sTotalNonCoveredChargesLocator));
-		String sActualNonCoveredCharges = getElementValueJS(actualNonCoveredTotalCharge, "prevval");
-		 */
 		float[] claimTotals = UB04FormXMLParser.getInstance().getClaimTotals(sFile);
 
 		for(Attribute scrAttr:lsAttributes){
@@ -425,15 +413,20 @@ public class ClaimsPage extends AbstractPageObject{
 	}
 
 
-	/*	public String getElementValueJS(WebElement element, String attributeName) throws Exception {
-		String sValue = null;
-		if (element.isEnabled() && element.isDisplayed()) {
-			sValue = (String) ((JavascriptExecutor) driver).executeScript("arguments[0].getAttribute(argument[1]);", element, attributeName);
-		} else {
-			report.report("");
+	public void verifyTotalsV2()throws Exception{
+		String sTotalChargesLocator = "//*[contains(text(),'TOTALS')]/following-sibling::li[1]";
+		String sTotalNonCoveredChargesLocator = "//*[contains(text(),'TOTALS')]/following-sibling::li[2]";
+		WebElement actualTotalCharge,actualNonCoveredTotalCharge;
+		
+		String sActualTotals = null;
+		if( !isElementPresent(By.xpath(sTotalChargesLocator))){
+			
+		}else{
+			actualTotalCharge = driver.findElement(By.xpath(sTotalChargesLocator));
+			sActualTotals = actualTotalCharge.getAttribute("prevval");
 		}
-		return sValue;
-	}*/
+		report.report("Actual Totals is: " + sActualTotals);
+	}
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub
@@ -445,5 +438,4 @@ public class ClaimsPage extends AbstractPageObject{
 		// TODO Auto-generated method stub
 
 	}
-
 }

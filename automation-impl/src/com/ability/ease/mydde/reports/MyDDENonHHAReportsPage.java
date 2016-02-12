@@ -86,7 +86,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -204,7 +204,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 		safeJavaScriptClick("Payment Summary");
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -324,7 +324,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 		safeJavaScriptClick("Payment");
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -443,7 +443,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 		safeJavaScriptClick("Submitted Claims");
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -525,7 +525,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 		safeJavaScriptClick("Unpaid Claims");
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -602,7 +602,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 		safeJavaScriptClick("Stuck In Suspense");
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -680,7 +680,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 		safeJavaScriptClick("On Hold");
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -762,7 +762,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 		safeJavaScriptClick("ADR");
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -883,7 +883,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 		safeJavaScriptClick("Eligibility Issues");
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -965,7 +965,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 		safeJavaScriptClick("Patients");
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -1043,7 +1043,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 		safeJavaScriptClick("Eligibility Errors");
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -1121,7 +1121,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 		safeJavaScriptClick("MSP Patients");
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -1198,7 +1198,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 		safeJavaScriptClick("HHA Patients");
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -1277,7 +1277,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 		safeJavaScriptClick("Overlapping Hospice");
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -1356,7 +1356,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 		safeJavaScriptClick("Suspense");
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -1435,7 +1435,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 		safeJavaScriptClick("Error");
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -1515,7 +1515,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 		safeJavaScriptClick("Cancelled");
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
@@ -1595,7 +1595,7 @@ public class MyDDENonHHAReportsPage extends AbstractPageObject {
 		safeJavaScriptClick("Paid");
 		String[] expected = { "Save Summary report to PDF","Save Full Summary report to Excel","Save complete report to PDF", "Save complete report to Excel" }, actual;
 		int i = 0;
-		clickLink("Export");
+		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {

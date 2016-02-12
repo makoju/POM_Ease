@@ -152,7 +152,7 @@ public class MiscPage extends AbstractPageObject {
 					report.report( "Login to Ease as:" + sUserName);
 					typeEditBox("txtUser", sUserName);						
 					typeEditBox("txtPassword", sPassword);
-					clickButton("loginbutton");
+					clickButtonV2("loginbutton");
 					result = verifyAlert("Access denied!");
 					return result;
 				}
@@ -227,9 +227,9 @@ public class MiscPage extends AbstractPageObject {
 		String sXpathFwd = "//a[@id='forwardNav']";
 		boolean flag1, flag2 = false;
 
-		clickLink("MY DDE");
+		safeJavaScriptClick("MY DDE");
 		Thread.sleep(5000);
-		clickLink("ELIG.");
+		safeJavaScriptClick("ELIG.");
 		Thread.sleep(5000);
 		isElementPresent(By.xpath(sXpathBack));
 		driver.findElement(By.xpath(sXpathBack)).click();
@@ -257,7 +257,7 @@ public class MiscPage extends AbstractPageObject {
 		Thread.sleep(3000);
 		WebElement link = waitForElementVisibility(By.linkText("MY ACCOUNT"));
 		if ( link != null) {
-			clickLink("MY ACCOUNT");
+			safeJavaScriptClick("MY ACCOUNT");
 		}else{
 			report.report("MY ACCOUNT link is not visible");
 			return false;
@@ -298,26 +298,37 @@ public class MiscPage extends AbstractPageObject {
 		String sXpathContainer = "//div[@id='sbarcontainer']/ul/li";
 		String sXpathTabHead = "//*[@id='mainPageArea']/div/table/tbody/tr/td";
 		List<WebElement> menuItem = new ArrayList<WebElement>();
+		String sElementText = null;
 
 		Thread.sleep(5000);
 		WebElement link = waitForElementVisibility(By.linkText("MY ACCOUNT"));
 		if ( link != null) {
-			clickLink("MY ACCOUNT");
-			waitForElementVisibility(By.xpath(sXpathContainer));
-			//get all menu item into one list object
-
-			menuItem = driver.findElements(By.xpath(sXpathContainer));
-			for(int i=1; i<menuItem.size(); i++){
-				WebElement subItem = driver.findElement(By.xpath(sXpathContainer+"["+i+"]"));
-				if(subItem.getText().trim().equals(subMenuItem.toString().trim())){
-					Thread.sleep(5000);
-					clickLink(subItem.getText());
-					Thread.sleep(5000);
+			safeJavaScriptClick("MY ACCOUNT");
+		}
+		waitForElementVisibility(By.xpath(sXpathContainer), 60);
+		//get all menu item into one list object
+		menuItem = driver.findElements(By.xpath(sXpathContainer));
+		int i = 1;
+		for(WebElement we: menuItem){
+			WebElement subItem = driver.findElement(By.xpath(sXpathContainer+"["+i+"]"));
+			if( subItem != null){
+				String sActual = subItem.getText().trim();
+				String sExpected = subMenuItem.toString().trim();
+				if(sActual.equals(sExpected)){
+					if(isElementPresent(By.xpath(sXpathContainer+"["+i+"]")))
+						sElementText = subItem.getText();
+					report.report("Clicking on " + sElementText + " option");
+					safeJavaScriptClick(sElementText);
+					Thread.sleep(10000);
 					if(driver.findElement(By.xpath(sXpathTabHead)).getText().equalsIgnoreCase(sExpectedOutput)){
+						report.report("verified left menu option '" + subMenuItem.toString() + "' under My Account tab");
 						return true;
 					}
 				}
+			}else{
+				report.report("Subitem in left menu items is null");
 			}
+			i++;
 		}
 		return false;
 	}
@@ -340,10 +351,10 @@ public class MiscPage extends AbstractPageObject {
 		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Misc\\Misc.xml", mapAttrVal);
 
 		UIActions admin = new UIActions();
-		Thread.sleep(3000);
+		//Thread.sleep(3000);
 		WebElement link = waitForElementVisibility(By.linkText("MY ACCOUNT"));
 		if ( link != null) {
-			clickLink("MY ACCOUNT");
+			safeJavaScriptClick("MY ACCOUNT");
 		}
 		admin.fillScreenAttributes(lsAttributes);
 		verifyAlert("User alerts updated!");
@@ -406,15 +417,15 @@ public class MiscPage extends AbstractPageObject {
 	 * @throws exception
 	 */
 	public boolean verifyAddHICs(Map<String, String> mapAttrVal)throws Exception{
-		
+
 		UIAttributeXMLParser parser = new UIAttributeXMLParser();
 		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Misc\\MyDDE.xml", mapAttrVal);
 		UIActions admin = new UIActions();
 		admin.fillScreenAttributes(lsAttributes);
 		return false;
 	}
-	
-	
+
+
 
 	/*
 	 * This method is used as part of forward and backward buttons functionalities 

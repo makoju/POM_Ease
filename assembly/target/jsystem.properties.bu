@@ -5,7 +5,11 @@ agent.client.list=local
 auto.delete.no.confirmation=true
 auto.save.no.confirmation=true
 convert.old.scenarios=true
+<<<<<<< HEAD
 currentScenario=scenarios/MyDDE
+=======
+currentScenario=scenarios/default
+>>>>>>> cd3addbfca9092e11a47c637cfd9665ecf2dfb0e
 handlers=java.util.logging.FileHandler java.util.logging.ConsoleHandler
 htmlReportDir=log
 java.util.logging.ConsoleHandler.formatter=jsystem.framework.logger.BasicFormatter

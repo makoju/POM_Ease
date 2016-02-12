@@ -17,6 +17,7 @@
     <target name="execute scenario">
         <antcallback target="t0"/>
         <antcallback target="t1"/>
+        <antcallback target="t2"/>
     </target>
     <target name="t0">
         <jsystem showoutput="true">
@@ -28,10 +29,25 @@
     </target>
     <target name="t1">
         <jsystem showoutput="true">
+<<<<<<< HEAD
             <sysproperty key="jsystem.uuid" value="f835dfe8-3544-4f48-a3af-813d4be0fb56"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.mydde.MyDDETests.verifyPageView"/>
+=======
+            <sysproperty key="jsystem.uuid" value="2b217176-6d77-4f8f-837c-af44961a9b9e"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.misc.MiscTests.verifyAddHICs"/>
+        </jsystem>
+    </target>
+    <target name="t2">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="4b775839-908d-496b-9fa0-6c9cf8f62992"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.misc.MiscTests.verifyAddHICs"/>
+>>>>>>> 05d23fd5a924881fd24af136c74ce037ff14fa9f
         </jsystem>
     </target>
 </project>

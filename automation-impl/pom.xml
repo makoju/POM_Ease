@@ -65,7 +65,7 @@
 		<dependency>  
 			<groupId>com.abilitynetwork.selenium2</groupId> 
 			<artifactId>IEDriverServer_Win32</artifactId>  
-			<version>2.40.0</version>  
+			<version>2.49.0</version>  
 			<type>zip</type>  
 		</dependency> 
 		
@@ -74,7 +74,16 @@
 			<artifactId>commons-validator</artifactId>
 			<version>1.4.0</version>
 		</dependency>
+		
+		 <dependency>
+			<groupId>jdom</groupId>
+			<artifactId>jdom</artifactId>
+		</dependency>
 	
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.ability.ease.automation</groupId>
 			<artifactId>automation-api</artifactId>		

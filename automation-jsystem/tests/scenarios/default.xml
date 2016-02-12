@@ -28,10 +28,17 @@
     </target>
     <target name="t1">
         <jsystem showoutput="true">
+<<<<<<< HEAD
             <sysproperty key="jsystem.uuid" value="8532af16-b35b-4773-9a67-58b49704b19f"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.mydde.MyDDETests.verifySaveProfileOption"/>
+=======
+            <sysproperty key="jsystem.uuid" value="0464ff00-26c1-4348-aaec-5ce758c4830c"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.mydde.MyDDEReportsTests.verifyChangesReportSortHeaderHelp"/>
+>>>>>>> 05d23fd5a924881fd24af136c74ce037ff14fa9f
         </jsystem>
     </target>
 </project>

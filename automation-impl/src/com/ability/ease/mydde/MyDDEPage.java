@@ -1,17 +1,14 @@
 package com.ability.ease.mydde;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
-import com.ability.ease.auto.common.TestCommonResource;
-import com.ability.ease.auto.common.UIActions;
 import com.ability.ease.auto.common.Verify;
-import com.ability.ease.auto.dataStructure.common.AttibuteXMLParser.UIAttributeXMLParser;
-import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
+import com.ability.ease.auto.enums.tests.Status;
 import com.ability.ease.home.HomePage;
 import com.ability.ease.home.HomePage.Menu;
 import com.ability.ease.mydde.reports.ReportsHelper;
@@ -21,15 +18,7 @@ public class MyDDEPage extends AbstractPageObject{
 
 	ReportsHelper reportshelper = new ReportsHelper();
 
-	@Override
-	public void assertInPage() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void navigateToPage() throws Exception {
-		HomePage.getInstance().navigateTo(Menu.MYDDE, null);
-	}
+	
 
 	public boolean verifyPageViewAndOptions() {
 
@@ -64,16 +53,11 @@ public class MyDDEPage extends AbstractPageObject{
 		return failurecount == 0 ? true : false;
 	}
 
-	public boolean verifyOptionsUnderReports(Map<String, String> mapAttrValues) throws Exception {
+	public boolean verifyOptionsUnderReportsForHHA() throws Exception {
 
 		int failurecount = 0;
 		String[] expected = {"ADR","RAPs At Risk","Stuck In Suspense","Eligibility Issues","T Status Report"};
 
-		UIAttributeXMLParser parser = new UIAttributeXMLParser();
-		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		UIActions mydde = new UIActions();
-		mydde.fillScreenAttributes(lsAttributes);
-		
 		/*//Hover on reports and get the links by clicking on each sub link
 		boolean compare = reportshelper.verifySubMenuLinksAndClick(expected, "Reports", "reportListMenu");
 		if(compare){
@@ -92,7 +76,7 @@ public class MyDDEPage extends AbstractPageObject{
 		//For Sorting in Overnight Summary Report
 		if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 5))
 			failurecount++;
-		
+
 		//Loop through ADR,RAP's at Risk,Stuck In Suspense & Eligibility Issues
 		for(int i=0;i<4;i++){
 			String headerText = getElementText(By.xpath("//td[@class='headerblue']"));
@@ -101,10 +85,10 @@ public class MyDDEPage extends AbstractPageObject{
 			if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 1))
 				failurecount++;
 		}*/
-		
+
 		//Click on T-Status Report
 		((JavascriptExecutor) driver).executeScript("$('#Report_4').click();");
-		
+
 		String expectedText = "ADVANCED SEARCH";
 		String advancedSearchText = getElementText(By.xpath("//td[@class='headerblue'"));
 		if(advancedSearchText.equals(expectedText)){
@@ -115,11 +99,11 @@ public class MyDDEPage extends AbstractPageObject{
 		return failurecount == 0 ? true : false;
 	}
 
-	public boolean verifyOptionsUnderTimeframe(Map<String, String> mapAttrValues) throws Exception {
-		
+	public boolean verifyOptionsUnderTimeframe() throws Exception {
+
 		int failurecount = 0;
 		String[] expected = {"Overnight","Weekly"};
-		
+
 		boolean compare = reportshelper.verifySubMenuLinksAndClick(expected, "Timeframe", "timeframeListMenu");
 		if(compare){
 			report.report("Actual and expected values are equal.");
@@ -128,29 +112,127 @@ public class MyDDEPage extends AbstractPageObject{
 			failurecount++;
 		}
 		//verify From and To
-		UIAttributeXMLParser parser = new UIAttributeXMLParser();
-		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		UIActions mydde = new UIActions();
-		mydde.fillScreenAttributes(lsAttributes);
+
 		//To-Do
+
+		return failurecount == 0 ? true : false;
+	}
+
+	public boolean verifyOptionsUnderAgency(String agency) throws Exception {
+		int failurecount = 0;
+		String[] expectedFromJsystem = agency.split(",");
+		String[] actual = selectGetOptions("reportAgencySelect");
+		
+		if (!Verify.verifyArrayofStrings(actual, expectedFromJsystem, true))
+			failurecount++;
 		
 		return failurecount == 0 ? true : false;
 	}
 
-	public boolean verifyOptionsUnderAgency(Map<String, String> mapAttrValues) throws Exception {
-		
-		
-		
-		
-		return false;
+	public boolean verifySaveProfileOption() throws Exception {
+
+		int failurecount = 0;
+		String saveProfileNameAS = "Search Result";
+		//To-Do mouse hover on Live Search option.....then click on Advanced Search
+		Thread.sleep(5000);
+		((JavascriptExecutor) driver).executeScript("$('#reportAdvanceSearch').click();");
+		selectByNameOrID("UserProvider","1013999473");
+		selectByNameOrID("UserProvider","1245347632");
+		checkChkBox("SaveProfile");
+		typeEditBox("SaveProfileName",saveProfileNameAS);
+		clickButtonV2("submit");
+		if(verifyAlert("OK to overwrite profile Search Result?")){
+			report.report("Save Profile is overwritten.");
+		}
+		Thread.sleep(5000);	
+		report.report("SEARCH RESULTS RECORD COUNT :"+getElementText(By.id("totalRows")));
+		clickLinkV2("backNav"); //Hitting back button 5 times, because of while loop in this method
+
+		List<WebElement> savedProfileOptions = driver.findElements(By.xpath("//select[@id='UserProvider']/option"));
+		for(WebElement option : savedProfileOptions){
+			if(option.getText().equals(saveProfileNameAS)){
+				report.report("Verify the Saved Profile details.");
+			}else{
+				report.report("Failed to verify the Saved Profile details.");
+				failurecount++;
+			}
+		}
+		return failurecount == 0 ? true : false;
 	}
 
-	public boolean verifySaveProfileOption() throws Exception {
-		
+	public boolean verifyOptionsUnderReportsForNonHHA() {
 		int failurecount = 0;
-//		clickLink("reportHICSearch");
-		((JavascriptExecutor) driver).executeScript("$('#reportHICSearch').click();");
-		Thread.sleep(5000);
-		return false;
+		
+		
+		
+		
+		return failurecount == 0 ? true : false;
 	}
+
+	public boolean verifyTimeFrameOptionsUnderAdvanced() throws Exception {
+		int failurecount = 0;
+		String[] expected = {"Overnight","Weekly","All (up to 18 mos ago)"};
+		//Click Advanced using Advanced building block
+		waitForElementVisibility(By.id("reportTimeframe"));
+
+		boolean compare = reportshelper.verifySubMenuLinksAndClick(expected, "Timeframe", "timeframeListMenu");
+		if(compare){
+			report.report("Actual and expected values are equal.");
+		}
+		else{
+			failurecount++;
+		}
+		((JavascriptExecutor) driver).executeScript("$('#reportAll').click();");
+		//How to verify that data displayed is under 18 months timespan
+		//Custom dates verify
+		return failurecount == 0 ? true : false;
+	}
+
+	public boolean verifyAdvanceSearchForMAXFields(String hic,String monthsAgo,Status status,String location) throws Exception {
+		List<String> checkboxNames = Arrays.asList("ClaimRap", "ClaimFinal", "ClaimOther");
+
+		Thread.sleep(5000);
+		((JavascriptExecutor) driver).executeScript("$('#reportAdvanceSearch').click();");
+
+		selectByNameOrID("UserProvider","All");
+		typeEditBox("HIC", hic);
+		checkCheckboxes(checkboxNames);
+		typeEditBox("ClaimSubmittedLookbackMonths", monthsAgo);
+		selectByNameOrID("Status", status.getStatus());
+		typeEditBox("Location", location);
+		clickButtonV2("submit");
+		Thread.sleep(5000);
+		WebElement billed = waitForElementVisibility(By.xpath("//thead[@id='datatableheader']/tr[1]/th[14]/div"));
+		WebElement reimb = waitForElementVisibility(By.xpath("//thead[@id='datatableheader']/tr[1]/th[15]/div"));
+		return (billed!=null && reimb!=null) ? true : false;
+	}
+
+	public boolean verifyAdvancedSearchForStatusLocation() throws Exception {
+		
+		Thread.sleep(5000);
+		((JavascriptExecutor) driver).executeScript("$('#reportAdvanceSearch').click();");
+
+		selectByNameOrID("UserProvider","All");
+		selectByNameOrID("Status", "Suspense");
+		typeEditBox("Location", "B6001");
+		clickButtonV2("submit");
+		Thread.sleep(5000);
+		WebElement dueDate = waitForElementVisibility(By.xpath("//thead[@id='datatableheader']/tr[1]/th[16]/div"));
+		WebElement dayDueDate = waitForElementVisibility(By.xpath("//thead[@id='datatableheader']/tr[1]/th[17]/div"));
+		WebElement daysLeft = waitForElementVisibility(By.xpath("//thead[@id='datatableheader']/tr[1]/th[18]/div"));
+		
+		return (dueDate!=null && dayDueDate!=null && daysLeft!=null) ? true : false;
+	}
+	
+	@Override
+	public void assertInPage() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void navigateToPage() throws Exception {
+		HomePage.getInstance().navigateTo(Menu.MYDDE, null);
+	}
+	
+	
 }

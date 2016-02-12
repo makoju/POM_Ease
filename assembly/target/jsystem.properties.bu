@@ -1,8 +1,11 @@
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=05d23fd5a924881fd24af136c74ce037ff14fa9f
 agent.client.list=local
 auto.delete.no.confirmation=true
 auto.save.no.confirmation=true
 convert.old.scenarios=true
-currentScenario=scenarios/default
+currentScenario=scenarios/MyDDE
 handlers=java.util.logging.FileHandler java.util.logging.ConsoleHandler
 htmlReportDir=log
 java.util.logging.ConsoleHandler.formatter=jsystem.framework.logger.BasicFormatter

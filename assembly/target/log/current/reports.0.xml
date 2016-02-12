@@ -1,5 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<reports Browser="FIREFOX_DRIVER" Date="Wed Feb 10 19:19:32 IST 2016" Scenario="default" Setup="ease-sut.xml" Station="208.79.197.169" User="abhilash.chavva" Version="unknown" startTime="1455112366635" status="true">
-    <test count="1" documentaion="" endTime="1455112398204" failCause="" name="MiscTests.loginToEase" package="com.ability.ease.misc" params="UserName=bpeters&#13;&#10;Password=test1234\!@\#$&#13;&#10;jsystem.should.ignore.scenario=false&#13;&#10;TestType=Selenium2&#13;&#10;" properties="" startTime="1455112374622" status="true" steps="" testIndex="0"/>
-    <test count="1" documentaion="" endTime="1455112446853" failCause="Failed to Verify Options under Agency.Please see the JSystem report log for more details&#10;" name="MyDDETests.verifySaveProfileOption" package="com.ability.ease.mydde" params="TestType=Selenium2&#13;&#10;jsystem.should.ignore.scenario=false&#13;&#10;AttributeNameValueDialogProvider=com.ability.ease.auto.dlgproviders.AttributeNameValueDialogProvider;\#Wed Feb 10 19\:22\:50 IST 2016\r\n0.AttributeName\=Agency\r\n0.AttributeValue\=HHA1\r\n0.Description\=Supply the Agency Name like {HHA1, HHA2, Hospital etc..}\r\n&#13;&#10;" properties="" startTime="1455112398264" status="false" steps="" testIndex="1"/>
-</reports>
+<reports/>

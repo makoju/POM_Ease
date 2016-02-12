@@ -183,7 +183,8 @@ public class UIActions extends AbstractPageObject {
 
 
 				case Timeframe:
-					clickLink(scrAttr.getLocator());
+					//safeJavaScriptClick(scrAttr.getLocator());
+					moveToElement(scrAttr.getLocator());
 					String timeframe = scrAttr.getValue().trim();
 					//if the timeframe value starts with fromdate then user is going to set from and todate 
 					if (timeframe.toLowerCase().startsWith("fromdate")){
@@ -203,7 +204,7 @@ public class UIActions extends AbstractPageObject {
 					break;
 
 				case Agency:
-					clickLink(scrAttr.getLocator());
+					moveToElement(scrAttr.getLocator());
 					selectByNameOrID("reportAgencySelect", scrAttr.getValue().trim());
 					clickButton("Change Agency");
 					break;

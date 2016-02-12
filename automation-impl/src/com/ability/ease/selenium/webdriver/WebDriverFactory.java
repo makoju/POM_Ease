@@ -88,16 +88,19 @@ public class WebDriverFactory {
 			System.setProperty("webdriver.ie.driver",WorkingEnvironment.getWebdriverIEServerEXEPath());
 
 			DesiredCapabilities ieCapabilities = DesiredCapabilities.internetExplorer();
-			ieCapabilities.setCapability("enablePersistentHover", false);
-			/*ieCapabilities.setCapability("nativeEvents", true);    
+			//ieCapabilities.setCapability("nativeEvents", true);    
+			//ieCapabilities.setCapability("enablePersistentHover", true);
+			ieCapabilities.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
+			ieCapabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+			
+			/*ieCapabilities.setCapability("ignoreProtectedModeSettings", true);
 			ieCapabilities.setCapability("unexpectedAlertBehaviour", "accept");
-			ieCapabilities.setCapability("ignoreProtectedModeSettings", true);
+			ieCapabilities.setCapability("enablePersistentHover", false);
 			ieCapabilities.setCapability("disable-popup-blocking", true);
-			ieCapabilitiesc.setCapability("enablePersistentHover", true);
 			ieCapabilities.setCapability("ie.ensureCleanSession", true);
 			ieCapabilities.setCapability("ie.enableElementCacheCleanup", true);
 			ieCapabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);*/
-			ieCapabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+			
 			if (ignoreCertificateErrors) {
 				ieCapabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 			}

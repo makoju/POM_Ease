@@ -22,6 +22,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -1474,6 +1475,23 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 * 
 	 * @param element A WebElement
 	 */
+	public void moveToElement(WebElement element) {
+		Actions builder = new Actions(driver);
+		Action moveAndClick = builder.moveToElement(element).build();
+		moveAndClick.perform();	
+	}
+	public void moveToElement(String sElementText){
+		WebElement we = waitForElementVisibility(By.linkText(sElementText));
+		moveToElement(we);
+		//moveToElementAndClick(we);
+	}
+	public void moveByOffset(String sElementText){
+		WebElement we = waitForElementVisibility(By.linkText(sElementText), 60);
+		Actions builder = new Actions(driver);
+		Action moveAndClick = builder.moveToElement(we, -10, 0).build();
+		moveAndClick.perform();
+	}
+	
 	public void moveToElementAndClick(WebElement element) {
 		Actions builder = new Actions(driver);
 		Action moveAndClick = builder.moveToElement(element)
@@ -1543,12 +1561,13 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		try{
 			//Wait 10 seconds till alert is present
 			report.report("Inside verify alert method....");
-			WebDriverWait wait = new WebDriverWait(driver, 60);
+			WebDriverWait wait = new WebDriverWait(driver, 5);
 			//Alert alert = driver.switchTo().alert();
 			Alert alert = wait.until(ExpectedConditions.alertIsPresent());
 			sActual = alert.getText().toString();
-			report.report(sActual);
+			report.report("Expected text on alert box is :" +sActual);
 			if( sActual.equalsIgnoreCase(sExpected)){
+				report.report("Actual text on alert box is : "+ sExpected);
 				alert.accept();
 				return true;
 			}

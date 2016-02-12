@@ -5,11 +5,11 @@ import java.util.Map;
 import com.ability.ease.testapi.IEligibility;
 
 public class EligibilitySelenium2Impl implements IEligibility{
-
+	EligibilityPage eligPage = new EligibilityPage();
+	
 	@Override
 	public boolean verifyEligibility(Map<String, String> mapAttrVal)
 			throws Exception {
-		EligibilityPage eligPage = new EligibilityPage();
 		return eligPage.verifyEligibility(mapAttrVal);
 	}
 	

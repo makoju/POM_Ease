@@ -732,10 +732,19 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		try {
 			int count = 0 ;
 			while (element.isEnabled() && count < 5){//Special case for IE9 
-				report.report("Sending Enter to WebElement");
+				report.report("Sending Enter to WebElement. Attempt Number: "+count);
 				element.sendKeys(Keys.ENTER);
 				count ++ ;
 				Thread.sleep(2000);
+				try{
+				Alert alert = driver.switchTo().alert();
+				if(alert.getText().contains("I am still processing"))
+					alert.accept();
+				}
+				catch(Exception e)
+				{
+					//ignoring exception 
+				}
 			}
 		} catch (Exception e) {
 		}	

@@ -221,8 +221,34 @@ public class UIActions extends AbstractPageObject {
 						else
 							checkChkBox(agency.trim());
 					}
-					break;					
-
+					break;			
+					
+				case ServiceDate:
+					//safeJavaScriptClick(scrAttr.getLocator());
+					String servicedate = scrAttr.getValue().trim();
+					//if the serivedate value starts with fromdate then user is going to set from and todate 
+					if (servicedate.toLowerCase().startsWith("fromdate")){
+						String fromdate="",todate="";
+						String[] dates = servicedate.split(":");
+						//getting the from and todate from the user supplied date string say, "fromdate(MM//DD//YYYY):todate(MM//DD//YYYY)"
+						if(dates.length>1){
+							fromdate = dates[0].substring(dates[0].indexOf("(")+1, dates[0].indexOf(")"));
+							todate = dates[1].substring(dates[1].indexOf("(")+1, dates[1].indexOf(")"));;
+						}
+						WebElement custom = waitForElementVisibility(By.xpath("//input[@value='custom']"));
+						safeJavaScriptClick(custom);
+						typeEditBox("reportCustomDateFrom", fromdate);
+						typeEditBox("reportCustomDateTo", todate);
+					}
+					else if(servicedate.toLowerCase().startsWith("all")){
+						WebElement all = waitForElementVisibility(By.xpath("//input[@value='all']"));
+						safeJavaScriptClick(all);
+					}
+					else{
+						WebElement currenteligibility = waitForElementVisibility(By.xpath("//input[@value='today']"));
+						safeJavaScriptClick(currenteligibility);
+					}
+					break;				
 
 				default:
 					report.report("The attribute Style is not implemented.",

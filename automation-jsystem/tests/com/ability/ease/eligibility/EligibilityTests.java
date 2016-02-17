@@ -2,6 +2,7 @@ package com.ability.ease.eligibility;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import jsystem.framework.ParameterProperties;
 import jsystem.framework.TestProperties;
@@ -27,7 +28,7 @@ public class EligibilityTests extends BaseTest{
 	private IEligibility elig;
 	private AttributePair[] attrpair;
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
-
+	private String hic,agency,firstname,lastname;
 
 	//Constructor
 	public EligibilityTests()throws Exception{
@@ -38,23 +39,86 @@ public class EligibilityTests extends BaseTest{
 	public void setupTests()throws Exception{
 		elig = (IEligibility)context.getBean("elig");
 	}
+	
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Submit Eligibility Check", paramsInclude = { "AttributeNameValueDialogProvider, testType" })
+	public void submitEligibilityCheck() throws Exception {
+		report.report("Inside submitEligibilityCheck tests method");
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		globalParamMap.put("hic", mapAttrValues.get("HIC"));
+		globalParamMap.put("agency", mapAttrValues.get("Agency"));
+		globalParamMap.put("lastname", mapAttrValues.get("Last Name"));
+		globalParamMap.put("firstname", mapAttrValues.get("First Name"));
+		
+		if(!elig.submitEligibilityCheck(mapAttrValues)) {
+			report.report("Failed to Submit eligibility Check!!!",	Reporter.FAIL);
+		} else {
+			report.report("Eligibility Check Successfully Submitted !!!", Reporter.PASS);
+		}
+	}
 
 	/**
 	 * 
 	 */
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
-	@TestProperties(name = "Verify Eligibility", paramsInclude = { "AttributeNameValueDialogProvider, testType" })
+	@TestProperties(name = "Verify Eligibility", paramsInclude = { "hic,agency,firstname,lastname,testType" })
 	public void verifyEligibility() throws Exception {
 		report.report("Inside verifyEligibility tests method");
-		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
-		if(!elig.verifyEligibility(mapAttrValues)) {
-			report.report("Failed to verify eligibility !!!",	Reporter.FAIL);
+		if(!elig.verifyEligibility(hic,agency,firstname,lastname)) {
+			report.report("Failed to verify eligibility !!!", Reporter.FAIL);
 		} else {
 			report.report("Eligibility verified !!!", Reporter.PASS);
 		}	
 	}
 
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify HETS Activities Completed Status", paramsInclude = { "hic,agency,firstname,lastname,testType" })
+	public void verifyHETSActivitiesCompletedStatusReport() throws Exception {
+		report.report("Inside verifyHETSActivitiesCompletedStatusReport tests method");
+		if(!elig.verifyHETSActivitiesCompletedStatusReport(hic, agency, firstname, lastname)) {
+			report.report("Failed to verify HETS Activities Completed!!!",	Reporter.FAIL);
+		} else {
+			report.report("HETS Activities Completed is verified !!!", Reporter.PASS);
+		}	
+	}
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify Navigation to UB04", paramsInclude = { "hic,agency,firstname,lastname,testType" })
+	public void verifyNavigationToUB04FromPatientInfoScreen() throws Exception {
+		report.report("Inside verifyNavigationToUB04FromPatientInfoScreen tests method");
+		if(!elig.verifyNavigationToUB04FromPatientInfoScreen(hic, agency, firstname, lastname)) {
+			report.report("Failed to verify Navigation to UB04 !!!",	Reporter.FAIL);
+		} else {
+			report.report("Navigation to UB04 is verified !!!", Reporter.PASS);
+		}	
+	}
+	
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify Navigation to Claim Info Screen", paramsInclude = { "hic,agency,firstname,lastname,testType" })
+	public void verifyNavigationToClaimInfoFromPatientInfoScreen() throws Exception {
+		report.report("Inside verifyNavigationToClaimInfoFromPatientInfoScreen tests method");
+		if(!elig.verifyNavigationToClaimInfoFromPatientInfoScreen(hic, agency, firstname, lastname)) {
+			report.report("Failed to verify Navigation to Claim Info Screnn!!!",	Reporter.FAIL);
+		} else {
+			report.report("Navigation to Claim Info Page is verified !!!", Reporter.PASS);
+		}	
+	}
 	
 	@Override
 	public void handleUIEvent(HashMap<String, Parameter> map, String methodName) throws Exception {	
@@ -74,6 +138,38 @@ public class EligibilityTests extends BaseTest{
 	@ParameterProperties(description = "AttributeNames, AttributeValues container")
 	public void setAttrpair(AttributePair[] attrpair) {
 		this.attrpair = attrpair;
+	}
+	
+	public String getHic() {
+		return hic;
+	}
+
+	public void setHic(String hic) {
+		this.hic = hic;
+	}
+
+	public String getAgency() {
+		return agency;
+	}
+
+	public void setAgency(String agency) {
+		this.agency = agency;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 
 	public AttributeNameValueDialogProvider[] getAttributeNameValueDialogProvider() {

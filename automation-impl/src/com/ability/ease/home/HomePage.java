@@ -20,6 +20,7 @@ public class HomePage extends AbstractPageObject{
 	public static enum Menu {
 		MYDDE("MY DDE"),
 		Admin("ADMINISTRATION"),
+		ELIGIBILITY("ELIG."),
 		NA("NA");
 		private String value;
 

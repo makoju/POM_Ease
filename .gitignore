@@ -1,0 +1,9 @@
+assembly/**
+automation-api/classes
+automation-api/classes/**
+automation-impl/classes
+automation-impl/classes/**
+automation-common/classes
+automation-common/classes/**
+automation-jsystem/classes
+automation-jsystem/classes/**

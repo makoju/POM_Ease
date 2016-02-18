@@ -28,7 +28,7 @@ public class EligibilityTests extends BaseTest{
 	private IEligibility elig;
 	private AttributePair[] attrpair;
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
-	private String hic,agency,firstname,lastname;
+	private String hic,agency,firstname,lastname,description;
 
 	//Constructor
 	public EligibilityTests()throws Exception{
@@ -66,7 +66,7 @@ public class EligibilityTests extends BaseTest{
 	 */
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
-	@TestProperties(name = "Verify Eligibility", paramsInclude = { "hic,agency,firstname,lastname,testType" })
+	@TestProperties(name = "Verify Eligibility ${description}", paramsInclude = { "description,hic,agency,firstname,lastname,testType" })
 	public void verifyEligibility() throws Exception {
 		report.report("Inside verifyEligibility tests method");
 		if(!elig.verifyEligibility(hic,agency,firstname,lastname)) {
@@ -170,6 +170,14 @@ public class EligibilityTests extends BaseTest{
 
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public AttributeNameValueDialogProvider[] getAttributeNameValueDialogProvider() {

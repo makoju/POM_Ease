@@ -192,14 +192,25 @@ public class EligibilityPage extends AbstractPageObject{
 			return true;
 	}
 	
-	public boolean verifyEligibility(String hic, String agency,String firstname, String lastname) throws Exception {
-		int failurecount=0;
+	public boolean verifyEligibilityStatus(String firstname, String lastname, String status) throws Exception {
 		navigateToPage();
 		//validation
 		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname: (firstlastname = lastname +", "+firstname);
 
-		if(!verifyEligibilityRequestStatus(firstlastname))
-			return false;
+		if(status.equalsIgnoreCase("pending")){
+			if(!verifyEligibilityRequestStatusPending(firstlastname))
+				return false;
+		}
+		else if(status.equalsIgnoreCase("completed")){
+			if(!verifyEligibilityRequestStatusCompleted(firstlastname))
+				return false;
+		}
+		return true;
+	}
+	
+	public boolean navigatetoClaimDetails(String firstname, String lastname, String hic) throws InterruptedException{
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname: (firstlastname = lastname +", "+firstname);
+
 		//To Do - we've to get the first record from the table not any record matches with the given name
 		if(!navigatetoclaimdetails(firstlastname))
 			return false;
@@ -209,26 +220,41 @@ public class EligibilityPage extends AbstractPageObject{
 		String expectedclaimdetails = "CLAIM CHANGE REQUEST STATUS - "+firstlastname+" ("+hic+")";
 
 		if(!Verify.StringEquals(claimdetails, expectedclaimdetails))
-			failurecount++;
-
+			return false;
+		
+		return true;
+	}
+	
+	public boolean acknoweldgeEligibility(String firstname, String lastname) throws InterruptedException{
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname: (firstlastname = lastname +", "+firstname);
+		WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
 		//Acknowledge the Request - To do - we've to get the first record from the table not any record matches with the given name
 		int goodactivitycountprev = getActivitycount("tdGoodActivity");
-		acknowledgerequest(firstlastname);
-		Thread.sleep(3000);
-		int goodactivitycountlatest = getActivitycount("tdGoodActivity");
+	
+		moveToElement(tblcompletedactivity);
+		WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstlastname+"')]/../td[1]/a"));
+		  if(we!=null){
+			  we.click();
+		  }
+		  else
+		  {
+			  report.report("Specified activity was not found in good activity table", Reporter.WARNING);
+			  return false;
+		  }
+			Thread.sleep(3000);
+			int goodactivitycountlatest = getActivitycount("tdGoodActivity");
 
-		if(goodactivitycountprev-1!=goodactivitycountlatest){
-			report.report("actual and expected activity count doesn't match in good activity table. actual: "+goodactivitycountlatest+ "Expected: "+(goodactivitycountprev-1));
-			failurecount++;
-		}
-		return failurecount==0?true:false;
+			if(goodactivitycountprev-1!=goodactivitycountlatest){
+				report.report("actual and expected activity count doesn't match in good activity table. actual: "+goodactivitycountlatest+ "Expected: "+(goodactivitycountprev-1));
+			}
+		  return true;
 	}
 
 	public boolean verifyHETSActivitiesCompletedStatusReport(String hic,String agency, String firstname, String lastname) throws Exception {
 		int failurecount=0;
 		navigateToPage();
 		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname: (firstlastname = lastname +", "+firstname);
-		if(!verifyEligibilityRequestStatus(firstlastname))
+		if(!verifyEligibilityRequestStatusCompleted(firstlastname))
 			failurecount++;
 		
 		//Handle the report link of Eligibility Check Request and data validation
@@ -342,21 +368,6 @@ public class EligibilityPage extends AbstractPageObject{
 		  return true;
 	}
 	
-	private boolean acknowledgerequest(String firstlastname){
-		WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
-		moveToElement(tblcompletedactivity);
-		WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstlastname+"')]/../td[1]/a"));
-		  if(we!=null){
-			  we.click();
-		  }
-		  else
-		  {
-			  report.report("Specified activity was not found in good activity table", Reporter.WARNING);
-			  return false;
-		  }
-		  return true;
-	}
-	
 	private boolean navigatetoEligibilityReport(String firstlastname) {
 		  WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
 		  moveToElement(tblcompletedactivity);
@@ -403,28 +414,36 @@ public class EligibilityPage extends AbstractPageObject{
 		return Integer.parseInt(getElementText(By.xpath("//table[@id='activityTable']//td[@id='"+activitytablename+"']")));
 	}
 	
-	private boolean verifyEligibilityRequestStatus(String lastname){
+	private boolean verifyEligibilityRequestStatusPending(String lastname){
 		//clickOnElement(ByLocator.id, "tdPendingActivity", 10);
 		WebElement tblpendingactivity = waitForElementVisibility(By.id("tdPendingActivity"));
 		moveToElement(tblpendingactivity);
 
 		String firstlastname = Verify.getTableData("pendingActivity", 1, 5);
-		if (firstlastname!=null && firstlastname.contains(lastname))
-			report.report("Submitted Patient Eligibility was found in pending table(Orange).", ReportAttribute.BOLD);		
+		if (firstlastname!=null && firstlastname.contains(lastname)){
+			report.report("Submitted Patient Eligibility was found in pending table(Orange).", ReportAttribute.BOLD);
+			return true;
+		}
 		else{
-			report.report("Submitted Patient Eligibility was not found in pending table(Orange). Trying in Good Activity (Green) table!!!!", Reporter.WARNING);
+			report.report("Submitted Patient Eligibility was not found in pending table(Orange).", Reporter.WARNING);
+			return false;
+		}
+	}
+	
+	private boolean verifyEligibilityRequestStatusCompleted(String lastname){
+			
 			WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
 			moveToElement(tblcompletedactivity);
 
-			firstlastname = Verify.getTableData("goodActivity", 1, 5);
-			if (firstlastname!=null && firstlastname.contains(lastname))
+			String firstlastname = Verify.getTableData("goodActivity", 1, 5);
+			if (firstlastname!=null && firstlastname.contains(lastname)){
 				report.report("Submitted Patient Eligibility was found in Good Activity table(Green).", ReportAttribute.BOLD);
+				return true;
+			}
 			else{
-				report.report("Submitted Patient Eligibility was not found in neither Pending Activity Table(Orange) nor Good Activity table(Green).", Reporter.WARNING);
+				report.report("Submitted Patient Eligibility was not found in Good Activity table(Green).", Reporter.WARNING);
 				return false;
 			}
-		}
-		return true;
 	}
 	
 	@Override

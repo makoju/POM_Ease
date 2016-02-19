@@ -12,12 +12,10 @@ public class EligibilitySelenium2Impl implements IEligibility{
 			throws Exception {
 		return eligPage.submitEligibilityCheck(mapAttrVal);
 	}
-
+	
 	@Override
-	public boolean verifyEligibility(String hic, String agency,
-			String firstname, String lastname) throws Exception {
-		
-		return eligPage.verifyEligibility(hic, agency,firstname,lastname);
+	public boolean verifyEligibilityStatus(String firstname, String lastname,String status) throws Exception {
+		return eligPage.verifyEligibilityStatus(firstname, lastname, status);
 	}
 
 	@Override
@@ -34,6 +32,15 @@ public class EligibilitySelenium2Impl implements IEligibility{
 	public boolean verifyNavigationToClaimInfoFromPatientInfoScreen(String hic,String agency, String firstname, String lastname) throws Exception {
 		return eligPage.verifyNavigationToClaimInfoFromPatientInfoScreen(hic, agency,firstname,lastname);
 	}
-	
+
+	@Override
+	public boolean navigatetoClaimDetails(String firstname, String lastname,String hic) throws InterruptedException {
+		return eligPage.navigatetoClaimDetails(firstname, lastname, hic);
+	}
+
+	@Override
+	public boolean acknoweldgeEligibility(String firstname, String lastname) throws InterruptedException {
+		return eligPage.acknoweldgeEligibility(firstname, lastname);
+	}
 
 }

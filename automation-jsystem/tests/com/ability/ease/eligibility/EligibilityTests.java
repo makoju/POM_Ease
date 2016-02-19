@@ -28,7 +28,7 @@ public class EligibilityTests extends BaseTest{
 	private IEligibility elig;
 	private AttributePair[] attrpair;
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
-	private String hic,agency,firstname,lastname,description;
+	private String hic,agency,firstname,lastname,description, status;
 
 	//Constructor
 	public EligibilityTests()throws Exception{
@@ -38,6 +38,13 @@ public class EligibilityTests extends BaseTest{
 	@Before
 	public void setupTests()throws Exception{
 		elig = (IEligibility)context.getBean("elig");
+	}
+	
+	
+	@Override
+	public void handleUIEvent(HashMap<String, Parameter> map, String methodName) throws Exception {	
+		super.handleUIEvent(map, methodName);
+			UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Eligibility\\Eligibility.xml");
 	}
 	
 	/**
@@ -66,13 +73,43 @@ public class EligibilityTests extends BaseTest{
 	 */
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
-	@TestProperties(name = "Verify Eligibility ${description}", paramsInclude = { "description,hic,agency,firstname,lastname,testType" })
-	public void verifyEligibility() throws Exception {
+	@TestProperties(name = "Verify Eligibility ${description}", paramsInclude = { "description,firstname,lastname,status, testType" })
+	public void verifyEligibilityStatus() throws Exception {
 		report.report("Inside verifyEligibility tests method");
-		if(!elig.verifyEligibility(hic,agency,firstname,lastname)) {
+		if(!elig.verifyEligibilityStatus(firstname, lastname, status)) {
 			report.report("Failed to verify eligibility !!!", Reporter.FAIL);
 		} else {
 			report.report("Eligibility verified !!!", Reporter.PASS);
+		}	
+	}
+	
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify Navigation to Claim Details Screen", paramsInclude = { "hic,agency,firstname,lastname,testType" })
+	public void navigatetoClaimDetails() throws Exception {
+		report.report("Inside verifyNavigationToClaimDetailsScreen test method");
+		if(!elig.navigatetoClaimDetails(firstname, lastname,hic)) {
+			report.report("Failed to verify Navigation to Claim Details Screen!!!",	Reporter.FAIL);
+		} else {
+			report.report("Successfully Navigated to Claim Details Screen!!!", Reporter.PASS);
+		}	
+	}
+	
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify Eligibility acknowledge", paramsInclude = { "hic,agency,firstname,lastname,testType" })
+	public void acknoweldgeEligibility() throws Exception {
+		report.report("Inside acknowledge eligibility test method");
+		if(!elig.acknoweldgeEligibility(firstname, lastname)) {
+			report.report("Failed to acknowledge Eligibility!!!",	Reporter.FAIL);
+		} else {
+			report.report("Eligibility is successfully acknowledged!!!", Reporter.PASS);
 		}	
 	}
 
@@ -118,14 +155,6 @@ public class EligibilityTests extends BaseTest{
 		} else {
 			report.report("Navigation to Claim Info Page is verified !!!", Reporter.PASS);
 		}	
-	}
-	
-	@Override
-	public void handleUIEvent(HashMap<String, Parameter> map, String methodName) throws Exception {	
-		super.handleUIEvent(map, methodName);
-		if(methodName.matches("verifyEligibility")) {
-			UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Eligibility\\Eligibility.xml");
-		}
 	}
 	
 	/*######
@@ -178,6 +207,14 @@ public class EligibilityTests extends BaseTest{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public AttributeNameValueDialogProvider[] getAttributeNameValueDialogProvider() {

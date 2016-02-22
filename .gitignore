@@ -1,9 +1,17 @@
 assembly/**
 automation-api/classes
 automation-api/classes/**
+automation-api/target/**
+automation-api/\.*
 automation-impl/classes
 automation-impl/classes/**
+automation-impl/target/**
+automation-impl/\.*
 automation-common/classes
 automation-common/classes/**
+automation-common/target/**
+automation-common/\.*
 automation-jsystem/classes
 automation-jsystem/classes/**
+automation-jsystem/target/**
+automation-jsystem/\.*

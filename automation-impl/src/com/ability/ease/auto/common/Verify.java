@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -284,5 +285,22 @@ public class Verify extends AbstractPageObject{
      assertNotNull(amount);
      }*/
 		return amount!=null?true:false;
+	}
+	
+	/**
+	 * nageswar.bodduri
+	 * @param array1
+	 * @param array2
+	 * @return true if both arrays are identical; false otherwise
+	 */
+	public static boolean compareFloatArrays(float[] array1,float[] array2){
+		boolean result = false;
+		if( array1.length > 0 && array2.length > 0) {
+			result =  Arrays.equals(array1, array2);
+		}else{
+			report.report("One or both arrays are empty, hence can not compare");
+			result = false;
+		}
+		return result;
 	}
 }

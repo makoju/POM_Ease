@@ -12,6 +12,22 @@ public interface IClaims {
 	/*
 	 * method to verify add/remove claim lines in UB04 form
 	 */
-	abstract public boolean verifyAddRemoveClaimLines(Map<String, String> mapAttrVal)throws Exception;
+	abstract public boolean verifyAddRemoveClaimLines(Map<String, String> mapAttrVal,String claimLineNumberToDelete,
+			String claimLineNumberToAdd, String newClaimLineEntry)throws Exception;
+	
+	/*
+	 * method to select S/Loc in advance search page
+	 */
+	abstract public boolean selectStatusLocationInAdvanceSearchPageAndSearch(String statusLocationToSelect)throws Exception;
+	
+	/*
+	 * method to select claim record from search result page based on PCN
+	 */
+	abstract public boolean selectClaimRecordFromSearchResults(String patientControlNumber)throws Exception;
+	
+	/*
+	 * method to select claim record from search result page based on PCN
+	 */
+	abstract public boolean verifyDataInEditClaimLinePopUpWindow(Map<String, String> mapAttrValues,String claimLineNumberToEdit)throws Exception;
 
 }

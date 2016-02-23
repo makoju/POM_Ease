@@ -732,19 +732,10 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		try {
 			int count = 0 ;
 			while (element.isEnabled() && count < 5){//Special case for IE9 
-				report.report("Sending Enter to WebElement. Attempt Number: "+count);
+				report.report("Sending Enter to WebElement");
 				element.sendKeys(Keys.ENTER);
 				count ++ ;
 				Thread.sleep(2000);
-				try{
-				Alert alert = driver.switchTo().alert();
-				if(alert.getText().contains("I am still processing"))
-					alert.accept();
-				}
-				catch(Exception e)
-				{
-					//ignoring exception 
-				}
 			}
 		} catch (Exception e) {
 		}	
@@ -1068,7 +1059,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		setSelectedField(we, valueToSelect);
 		// sendEnterOnWebElement(we);
 
-		try {
+/*		try {
 
 			if (we.getAttribute("onchange")!= null){
 				report.report("firing 'onchange' event");
@@ -1085,7 +1076,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	/**
 	 * Use this method to select from drop-down list using WebElement parameter
@@ -1494,11 +1485,18 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		moveToElement(we);
 		//moveToElementAndClick(we);
 	}
+	public void moveByOffset(WebElement element,int xCo,int yCo){
+		Actions builder = new Actions(driver);
+		Action moveAndClick = builder.moveToElement(element, xCo, yCo).build();
+		moveAndClick.perform();
+	}
+	public void moveByOffset(String sElementText,int xCo, int yCo){
+		WebElement we = waitForElementVisibility(By.linkText(sElementText), 60);
+		moveByOffset(we,xCo,yCo);
+	}
 	public void moveByOffset(String sElementText){
 		WebElement we = waitForElementVisibility(By.linkText(sElementText), 60);
-		Actions builder = new Actions(driver);
-		Action moveAndClick = builder.moveToElement(we, -10, 0).build();
-		moveAndClick.perform();
+		moveByOffset(we,-10,0);
 	}
 	
 	public void moveToElementAndClick(WebElement element) {
@@ -1751,6 +1749,14 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		return sValueFromJsystem;
 	}
 
+	//mouse hover alternative approach 
+	protected void mouseOver(WebElement element) {
+	    String code = "var fireOnThis = arguments[0];"
+	                + "var evObj = document.createEvent('MouseEvents');"
+	                + "evObj.initEvent( 'mouseover', true, true );"
+	                + "fireOnThis.dispatchEvent(evObj);";
+	    ((JavascriptExecutor) driver).executeScript(code, element);
+	}
 	//#########################################   Getters & Setters ###################################################
 	/**
 	 * 

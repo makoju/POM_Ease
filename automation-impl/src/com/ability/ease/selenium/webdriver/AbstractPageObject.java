@@ -658,7 +658,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		waitForElementToBeClickable(ByLocator.xpath, btnXpath, timeoutInSeconds);
 	}
 
-	private static void waitForElementToBeClickable(ByLocator by, String elementLocator,long timeoutInSeconds)throws Exception{
+	public static WebElement waitForElementToBeClickable(ByLocator by, String elementLocator,long timeoutInSeconds)throws Exception{
 		WebElement element = null;
 		WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
 		switch (by) {
@@ -669,12 +669,49 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				// ignore exception, return null instead
 			}
 			break;
+		case id:	
+			try {
+				element = wait.until(ExpectedConditions.elementToBeClickable(By.id(elementLocator)));
+			} catch (org.openqa.selenium.TimeoutException ex) {
+				// ignore exception, return null instead
+			}
+			break;
+		case linktext:	
+			try {
+				element = wait.until(ExpectedConditions.elementToBeClickable(By.linkText(elementLocator)));
+			} catch (org.openqa.selenium.TimeoutException ex) {
+				// ignore exception, return null instead
+			}
+			break;
+		case  css:	
+			try {
+				element = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(elementLocator)));
+			} catch (org.openqa.selenium.TimeoutException ex) {
+				// ignore exception, return null instead
+			}
+			break;
+		case  classname:	
+			try {
+				element = wait.until(ExpectedConditions.elementToBeClickable(By.className(elementLocator)));
+			} catch (org.openqa.selenium.TimeoutException ex) {
+				// ignore exception, return null instead
+			}
+			break;
+		case  name:	
+			try {
+				element = wait.until(ExpectedConditions.elementToBeClickable(By.name(elementLocator)));
+			} catch (org.openqa.selenium.TimeoutException ex) {
+				// ignore exception, return null instead
+			}
+			break;
+
 		default:
 			break;
 		}		
 		if (element == null) {
 			throw new Exception ("Web element not found: " + elementLocator); 
 		}
+		return element;
 	}
 
 	public static void clickOnElement(ByLocator by, String elementLocator,long timeoutInSeconds) throws Exception {

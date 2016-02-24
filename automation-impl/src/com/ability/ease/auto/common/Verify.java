@@ -89,12 +89,13 @@ public class Verify extends AbstractPageObject{
 	public static String getTableData(String tableidentifier, int row, int column){
 		String text="";
 		WebElement we = getTable(tableidentifier);
-
+		String columnxpath="//table[@id='"+tableidentifier+"']//tbody/tr["+row+"]"+"/td["+column+"] | //span[text()='"+tableidentifier+"']/following-sibling::table//tbody/tr["+row+"]"+"/td["+column+"]";
+		
 		boolean bFlag = false;
 		if(we != null){
 			while( !bFlag ) {
 				waitForElement(By.xpath("tbody/tr["+row+"]"+"/td["+column+"]"));
-				WebElement dataelement = we.findElement(By.xpath("tbody/tr["+row+"]"+"/td["+column+"]"));
+				WebElement dataelement = driver.findElement(By.xpath(columnxpath));
 				text = dataelement.getAttribute("innerText");
 				if(text.isEmpty()){
 					row++;

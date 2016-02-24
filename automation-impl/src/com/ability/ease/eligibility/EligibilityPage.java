@@ -49,21 +49,21 @@ public class EligibilityPage extends AbstractPageObject{
 	public boolean verifyEligibilityStatus(String firstname, String lastname, String status) throws Exception {
 		navigateToPage();
 		//validation
-		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname: (firstlastname = lastname +", "+firstname);
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 
 		if(status.equalsIgnoreCase("pending")){
-			if(!verifyEligibilityRequestStatusPending(firstlastname))
+			if(!verifyEligibilityRequestStatusPending(firstlastname.toUpperCase()))
 				return false;
 		}
 		else if(status.equalsIgnoreCase("completed")){
-			if(!verifyEligibilityRequestStatusCompleted(firstlastname))
+			if(!verifyEligibilityRequestStatusCompleted(firstlastname.toUpperCase()))
 				return false;
 		}
 		return true;
 	}
 	
 	public boolean navigatetoClaimDetails(String firstname, String lastname, String hic) throws Exception{
-		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname: (firstlastname = lastname +", "+firstname);
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 		navigateToPage();
 		//To Do - we've to get the first record from the table not any record matches with the given name
 		if(!navigatetoclaimdetails(firstlastname))
@@ -80,7 +80,7 @@ public class EligibilityPage extends AbstractPageObject{
 	}
 	
 	public boolean acknoweldgeEligibility(String firstname, String lastname) throws Exception{
-		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname: (firstlastname = lastname +", "+firstname);
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 		navigateToPage();
 		WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
 		//Acknowledge the Request - To do - we've to get the first record from the table not any record matches with the given name
@@ -108,7 +108,7 @@ public class EligibilityPage extends AbstractPageObject{
 	public boolean verifyHETSActivitiesCompletedStatusReport(String hic,String agency, String firstname, String lastname) throws Exception {
 		int failurecount=0;
 		navigateToPage();
-		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname: (firstlastname = lastname +", "+firstname);
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 		if(!verifyEligibilityRequestStatusCompleted(firstlastname))
 			failurecount++;
 		
@@ -151,7 +151,7 @@ public class EligibilityPage extends AbstractPageObject{
 	public boolean verifyNavigationToUB04FromPatientInfoScreen(String hic,String agency, String firstname, String lastname) throws Exception {
 		int failurecount=0;
 		navigateToPage();
-		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname: (firstlastname = lastname +", "+firstname);
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 		if(!navigatetoPatientInfoScreen(firstlastname, hic))
 			return false;
 		
@@ -175,7 +175,7 @@ public class EligibilityPage extends AbstractPageObject{
 		int failurecount=0;
 		navigateToPage();
 		
-		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname: (firstlastname = lastname +", "+firstname);
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 		if(!navigatetoPatientInfoScreen(firstlastname, hic))
 			return false;
 		
@@ -381,7 +381,7 @@ public class EligibilityPage extends AbstractPageObject{
 		moveToElement(tblpendingactivity);
 
 		String firstlastname = Verify.getTableData("pendingActivity", 1, 5);
-		if (firstlastname!=null && firstlastname.contains(lastname)){
+		if (firstlastname!=null && firstlastname.toLowerCase().contains(lastname.toLowerCase())){
 			report.report("Submitted Patient Eligibility was found in pending table(Orange).", ReportAttribute.BOLD);
 			return true;
 		}
@@ -397,7 +397,7 @@ public class EligibilityPage extends AbstractPageObject{
 			moveToElement(tblcompletedactivity);
 
 			String firstlastname = Verify.getTableData("goodActivity", 1, 5);
-			if (firstlastname!=null && firstlastname.contains(lastname)){
+			if (firstlastname!=null && firstlastname.toLowerCase().contains(lastname.toLowerCase())){
 				report.report("Submitted Patient Eligibility was found in Good Activity table(Green).", ReportAttribute.BOLD);
 				return true;
 			}

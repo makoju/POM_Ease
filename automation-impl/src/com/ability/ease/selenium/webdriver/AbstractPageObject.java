@@ -736,6 +736,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				element.sendKeys(Keys.ENTER);
 				count ++ ;
 				Thread.sleep(2000);
+				checkandignoremodaldialog();
 			}
 		} catch (Exception e) {
 		}	
@@ -1355,8 +1356,22 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			webElement = wait.until(ExpectedConditions.visibilityOfElementLocated(by));
 		} catch (org.openqa.selenium.TimeoutException ex) {
 			// ignore exception, return null instead
+		}		
+		catch(Exception e){
+			checkandignoremodaldialog();
 		}
 		return webElement;
+	}
+	
+	private static void checkandignoremodaldialog(){
+		try{
+			Alert alert = driver.switchTo().alert();
+			if(alert.getText().contains("I am still processing"))
+				alert.accept();
+		}
+		catch(Exception e1){
+			//ignore
+		}
 	}
 
 	/**
@@ -1756,6 +1771,39 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	                + "evObj.initEvent( 'mouseover', true, true );"
 	                + "fireOnThis.dispatchEvent(evObj);";
 	    ((JavascriptExecutor) driver).executeScript(code, element);
+	}
+	
+	/**
+	 * Use this method to check whether the top level menu items like MY DDE, ELIG., MY ACCOUNT etc.. were selected or not
+	 * @param linktext
+	 * @return
+	 */
+	public boolean istopNavAnchorSelected(String linktext){
+		WebElement topNavAnchor = waitForElementVisibility(By.linkText(linktext));
+		if(topNavAnchor!=null){
+			String s = topNavAnchor.getAttribute("class");
+			 if(s!=null)
+				 return s.contains("topNavAnchorSelected");
+			 else
+				 return false;
+		}
+		return false;
+	}
+	/**
+	 * Use this method to check whether the Menu items inside a page like Eligibility Check, Personal Information etc.. were selected or not
+	 * @param linktext
+	 * @return
+	 */
+	public boolean isMenuSelected(String linktext){
+		WebElement menu = waitForElementVisibility(By.linkText(linktext));
+		if(menu!=null){
+			String s = menu.getAttribute("class");
+			 if(s!=null)
+				 return s.contains("menuSelected");
+			 else
+				 return false;
+		}
+		return false;
 	}
 	//#########################################   Getters & Setters ###################################################
 	/**

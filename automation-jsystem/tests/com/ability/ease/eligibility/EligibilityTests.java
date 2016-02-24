@@ -151,9 +151,53 @@ public class EligibilityTests extends BaseTest{
 	public void verifyNavigationToClaimInfoFromPatientInfoScreen() throws Exception {
 		report.report("Inside verifyNavigationToClaimInfoFromPatientInfoScreen tests method");
 		if(!elig.verifyNavigationToClaimInfoFromPatientInfoScreen(hic, agency, firstname, lastname)) {
-			report.report("Failed to verify Navigation to Claim Info Screnn!!!",	Reporter.FAIL);
+			report.report("Failed to verify Navigation to Claim Info Screen!!!",	Reporter.FAIL);
 		} else {
 			report.report("Navigation to Claim Info Page is verified !!!", Reporter.PASS);
+		}	
+	}
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify Options Under Pending Activity Log Screen", paramsInclude = { "testType" })
+	public void verifyOptionsUnderPendingActivityLogScreen() throws Exception {
+		report.report("Inside verifyOptionsUnderPendingActivityLogScreen tests method");
+		if(!elig.verifyOptionsUnderPendingActivityLogScreen()) {
+			report.report("Failed to verify Options Under Pending Activity Log Screen!!!",	Reporter.FAIL);
+		} else {
+			report.report("Successfully verified Options Under Pending Activity Log Screen!!!", Reporter.PASS);
+		}	
+	}
+	
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify Options Under Completed Activity Log Screen", paramsInclude = { "testType" })
+	public void verifyOptionsUnderCompletedActivityLogScreen() throws Exception {
+		report.report("Inside verifyOptionsUnderCompletedActivityLogScreen tests method");
+		if(!elig.verifyOptionsUnderCompletedActivityLogScreen()) {
+			report.report("Failed to verify Options Under Completed Activity Log Screen!!!",	Reporter.FAIL);
+		} else {
+			report.report("Successfully verified Options Under Completed Activity Log Screen!!!", Reporter.PASS);
+		}	
+	}
+	
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify Options Under Failed Activity Log Screen", paramsInclude = { "testType" })
+	public void verifyOptionsUnderFailedActivityLogScreen() throws Exception {
+		report.report("Inside verifyOptionsUnderFailedActivityLogScreen tests method");
+		if(!elig.verifyOptionsUnderFailedActivityLogScreen()) {
+			report.report("Failed to verify Options Under Failed Activity Log Screen!!!",	Reporter.FAIL);
+		} else {
+			report.report("Successfully verified Options Under Failed Activity Log Screen!!!", Reporter.PASS);
 		}	
 	}
 	

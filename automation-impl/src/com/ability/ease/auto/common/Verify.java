@@ -38,13 +38,26 @@ public class Verify extends AbstractPageObject{
 		{
 			for(int i=0;i<actual.length;i++)
 			{
-				if(actual[i].equals(expected[i])){
-					report.report("Actual and Expected string are equal. Actual: "+ actual[i]+ "  Expected: "+expected[i], ReportAttribute.BOLD);
-					continue;
+				if(ignorecase){
+					if(actual[i].equalsIgnoreCase(expected[i])){
+						report.report("Actual and Expected string are equal. Actual: "+ actual[i]+ "  Expected: "+expected[i], ReportAttribute.BOLD);
+						continue;
+					}
+					else{
+						isTrue=false;
+						report.report("Actual and Expected string are not equal. Actual: "+ actual[i]+ "  Expected: "+expected[i], Reporter.WARNING);
+					}
 				}
-				else{
-					isTrue=false;
-					report.report("Actual and Expected string are not equal. Actual: "+ actual[i]+ "  Expected: "+expected[i], Reporter.WARNING);
+				else
+				{
+					if(actual[i].equals(expected[i])){
+						report.report("Actual and Expected string are equal. Actual: "+ actual[i]+ "  Expected: "+expected[i], ReportAttribute.BOLD);
+						continue;
+					}
+					else{
+						isTrue=false;
+						report.report("Actual and Expected string are not equal. Actual: "+ actual[i]+ "  Expected: "+expected[i], Reporter.WARNING);
+					}
 				}
 			}
 		}

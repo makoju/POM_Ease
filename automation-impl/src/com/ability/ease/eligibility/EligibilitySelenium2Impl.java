@@ -34,13 +34,27 @@ public class EligibilitySelenium2Impl implements IEligibility{
 	}
 
 	@Override
-	public boolean navigatetoClaimDetails(String firstname, String lastname,String hic) throws InterruptedException {
+	public boolean navigatetoClaimDetails(String firstname, String lastname,String hic) throws Exception {
 		return eligPage.navigatetoClaimDetails(firstname, lastname, hic);
 	}
 
 	@Override
-	public boolean acknoweldgeEligibility(String firstname, String lastname) throws InterruptedException {
+	public boolean acknoweldgeEligibility(String firstname, String lastname) throws Exception {
 		return eligPage.acknoweldgeEligibility(firstname, lastname);
 	}
 
+	@Override
+	public boolean verifyOptionsUnderPendingActivityLogScreen() throws Exception {
+		return eligPage.verifyOptionsUnderPendingActivityLogScreen();
+	}
+	
+	@Override
+	public boolean verifyOptionsUnderCompletedActivityLogScreen() throws Exception {
+		return eligPage.verifyOptionsUnderCompletedActivityLogScreen();
+	}
+
+	@Override
+	public boolean verifyOptionsUnderFailedActivityLogScreen() throws Exception {
+		return eligPage.verifyOptionsUnderFailedActivityLogScreen(); 
+	}
 }

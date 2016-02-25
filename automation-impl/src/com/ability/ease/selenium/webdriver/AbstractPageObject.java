@@ -1,5 +1,6 @@
 package com.ability.ease.selenium.webdriver;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,6 +40,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.ability.ease.auto.common.TestCommonResource;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
 import com.ability.ease.auto.enums.portal.BrowserType;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
@@ -1756,6 +1758,39 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	                + "evObj.initEvent( 'mouseover', true, true );"
 	                + "fireOnThis.dispatchEvent(evObj);";
 	    ((JavascriptExecutor) driver).executeScript(code, element);
+	}
+	
+	/**
+	 * 
+	 * @param xpath - Xpath of webelement
+	 * @param retries - number of retries 
+	 * @author nageswar
+	 */
+	public WebElement retryUntilElementIsVisible(String xpath,int retries){	
+		int count = 0;
+		WebElement we = null;
+		do{
+			we = driver.findElement(By.xpath(xpath));
+			count++;
+			if(we != null){
+				break;
+			}
+		}while(we == null || count < retries);
+
+		return we;
+	}
+
+	public void uploadFileAutoIT(String sFilePath){
+		String autoITScriptPath = TestCommonResource.getTestResoucresDirPath()+"fileuploadutil\\FileUploadAutoIT.exe";
+		try {
+			report.report("Invoking autoit script...");
+			Runtime.getRuntime().exec(autoITScriptPath + " " + sFilePath);
+			report.report("Fileupload is successfully completed");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	//#########################################   Getters & Setters ###################################################
 	/**

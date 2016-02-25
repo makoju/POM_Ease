@@ -39,7 +39,7 @@ public class EaseSubMenuItems {
 			return value;
 		}
 	};
-	
+
 	public static enum ClaimStatusType{
 		Any("Any"),
 		Denied("Denied"),
@@ -48,7 +48,7 @@ public class EaseSubMenuItems {
 		Suspense("Suspense"),
 		Paid("Paid"),
 		NotPaid("Not Paid");
-		
+
 		private String value;
 
 		private ClaimStatusType(String value) {
@@ -59,7 +59,42 @@ public class EaseSubMenuItems {
 		public String toString() {
 			return value;
 		}
-		
+
 	};
+
+	public static enum ADRFileFomat{
+		PDF("PDF"),
+		TIFF("TIFF"),
+		TIF("TIF"),
+		PDFandTIFF("PDFandTIFF");	
+		
+		private String value;
+		private ADRFileFomat(String value) {
+			this.value = value;
+		}
+
+		@Override
+		public String toString() {
+			return value;
+		}
+
+	};
+	
+	public static enum ADRFilesSize{
+		LessThan35MB("<35MB"),
+		GreaterThan35MB(">35MB");
+		
+		private String value;
+		private ADRFilesSize(String value) {
+			this.value = value;
+		}
+
+		@Override
+		public String toString() {
+			return value;
+		}
+
+	};
+
 
 }

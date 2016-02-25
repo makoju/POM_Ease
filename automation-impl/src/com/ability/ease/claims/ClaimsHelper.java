@@ -394,19 +394,6 @@ public class ClaimsHelper extends AbstractPageObject{
 		}
 	}
 
-	public WebElement retryUntilElementIsVisible(String xpath,int retries){	
-		int count = 0;
-		WebElement we = null;
-		do{
-			we = driver.findElement(By.xpath(xpath));
-			count++;
-			if(we != null){
-				break;
-			}
-		}while(we == null || count < retries);
-		return we;
-	}
-
 	public List<String> getFiledValuesFromEditClaimLineModelDailogWindow()throws Exception{
 		String sRevCode = null;
 		String sHIPPSCode = null;

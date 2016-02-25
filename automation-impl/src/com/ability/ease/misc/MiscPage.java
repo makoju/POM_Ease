@@ -87,7 +87,7 @@ public class MiscPage extends AbstractPageObject {
 						report.report( "Login to Ease as:" + sUserName);
 						typeEditBox("txtUser", sUserName);						
 						typeEditBox("txtPassword", sPassword);
-						clickButton("loginbutton");
+						clickButtonV2("loginbutton");
 						mainWindowHanlder = returnMainWindowHandle();
 						returnCurrentWindowHandle(mainWindowHanlder);
 					}

@@ -7,6 +7,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.ability.ease.auto.system.WorkingEnvironment;
 
@@ -68,6 +70,19 @@ public class MySQLDBUtil {
 		}
 		return resultSet;
 	}
+	
+	public static int getUpdateResultFromMySQLDB(String sQueryName){
+		readConnParamsFromWE();
+		initializeDBConnection();
+		int noOfrowsUpdated = 0;
+		try {
+			noOfrowsUpdated = statement.executeUpdate(sQueryName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return noOfrowsUpdated;
+	}
+	
 
 	/*
 	 * Method to return a specific column value
@@ -104,6 +119,59 @@ public class MySQLDBUtil {
 		}
 		return null;
 	}
+	
+	/* Added to fetch all column values from database*/
+	public static List<String> getMultipleColumnValues(ResultSet oResultSet, String[] sColumnNames){
+		String sColumnValue = null;
+		int iColumnValue = 0;
+		int j = 0;
+		List<String> lsValues=new ArrayList<String>();
+		ResultSetMetaData metaData=null;
+		try {
+			metaData = oResultSet.getMetaData();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			while(oResultSet.next()){
+				//check whether getColumncount and Number column names are equal or not
+				for (int i = 1; i <= metaData.getColumnCount(); i++)  {
+					j = i-1;
+					//for(String sColumnName: sColumnNames){
+					int type = metaData.getColumnType(i);
+					if (type == Types.VARCHAR) {
+						sColumnValue = oResultSet.getString(sColumnNames[j]);
+						lsValues.add(sColumnValue);
+					} else if (type == Types.INTEGER) {
+						iColumnValue = oResultSet.getInt(sColumnNames[j]);
+						lsValues.add(String.valueOf(iColumnValue));
+					} else if (type == Types.TINYINT) {
+						iColumnValue = oResultSet.getInt(sColumnNames[j]);
+						lsValues.add(String.valueOf(iColumnValue));
+					}
+					else if (type == Types.DATE) {
+						iColumnValue = oResultSet.getInt(sColumnNames[j]);
+						lsValues.add(String.valueOf(iColumnValue));
+					}
+					else if (type == Types.BIT) {
+						iColumnValue = oResultSet.getInt(sColumnNames[j]);
+						lsValues.add(String.valueOf(iColumnValue));
+					}					
+					else if (type == Types.BIGINT) {
+						iColumnValue = oResultSet.getInt(sColumnNames[j]);
+						lsValues.add(String.valueOf(iColumnValue));
+					}
+				}
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return lsValues;
+	}
+
 
 	public static void closeAllDBConnections(){
 		try {

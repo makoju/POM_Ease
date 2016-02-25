@@ -21,6 +21,7 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -34,6 +35,7 @@ import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.events.WebDriverEventListener;
 import org.openqa.selenium.support.pagefactory.Annotations;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -692,8 +694,11 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			WebDriverHelper.highlightElement(driver, element);
 
 			if (WorkingEnvironment.getWebdriverType() == WebDriverType.INTERNET_EXPLORER_DRIVER) {
+				element.click();
+				//sendEnterOnWebElement(element);
+				//element.sendKeys(Keys.ENTER);
 				//element.click();
-				sendEnterOnWebElement(element);
+				//sendEnterOnWebElement(element);
 				return;
 			}
 			element.click();
@@ -709,7 +714,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 */	
 	public void clickImage(String imageIdentifier) {
 		String imgXpath = "//input[@type='image'][@alt='" + imageIdentifier + "' or @title='" + imageIdentifier + "'] | " +
-				" //input[@type='image'][contains(@alt,'" + imageIdentifier + "')]";
+				" //input[@type='image'][contains(@alt,'" + imageIdentifier + "')]" ;
 		WebDriverWait wait = new WebDriverWait(driver, 3); // for links that become enable by client-side js
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(imgXpath)));
 		WebElement button = driver.findElement(By.xpath(imgXpath));
@@ -729,7 +734,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		try {
 			int count = 0 ;
 			while (element.isEnabled() && count < 5){//Special case for IE9 
-				report.report("Sending Enter to WebElement");
+				report.report("Sending Enter to WebElement: "+ element.getText());
 				element.sendKeys(Keys.ENTER);
 				count ++ ;
 				Thread.sleep(2000);
@@ -1054,7 +1059,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 
 		WebDriverHelper.highlightElement(driver, we);
 		setSelectedField(we, valueToSelect);
-		// sendEnterOnWebElement(we);
+	/*	sendEnterOnWebElement(we);
 
 		try {
 
@@ -1073,7 +1078,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	/**
 	 * Use this method to select from drop-down list using WebElement parameter
@@ -1635,6 +1640,19 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 		return sLabelXpath.toString();
 	}
+	
+	public boolean isAlertPresent() 
+	{ 
+	    try 
+	    { 
+	        driver.switchTo().alert(); 
+	        return true; 
+	    }   // try 
+	    catch (NoAlertPresentException Ex) 
+	    { 
+	        return false; 
+	    }   // catch 
+	} 
 
 	/**
 	 * Clicks a Link : when you can not locate any anchor element by its text.Use this method to locate an anchor tag with its id or name
@@ -1643,7 +1661,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 */
 	public void clickLinkV2(String linkLocator)throws Exception{
 
-		String elementLocator = "//a[@id='" + linkLocator+ "'] | " + " //a[@name='" + linkLocator +"']";
+		String elementLocator = "//a[@id='" + linkLocator+"' or @name='" + linkLocator +"' or text()='"+linkLocator+"']";
 		WebElement element = null;
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 
@@ -1655,8 +1673,17 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		if (element!=null) {
 			WebDriverHelper.highlightElement(driver, element);
 			if (WorkingEnvironment.getWebdriverType() == WebDriverType.INTERNET_EXPLORER_DRIVER) {
-				//element.click();
-				sendEnterOnWebElement(element);
+				int count=0;
+				element.click();
+
+				/*while(isAlertPresent() && count++ < 10){
+					report.report("We have found an alert handling it and try again!!!");
+					driver.switchTo().alert().accept();
+					Thread.sleep(2000);
+					element.click();
+				}
+				if(count > 0)
+					element.click();*/
 				return;
 			}
 		} else { 
@@ -1664,7 +1691,8 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 
 	}
-	
+
+
 	/**
 	 * Get all attributes of a HTML element using java script
 	 * @author nageswar.bodduri

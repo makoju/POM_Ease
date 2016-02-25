@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class UB04FormXMLMap {
 	
-	private static final Map<String, String> ub04FormXMLMap;
+	static Map<String, String> ub04FormXMLMap = null;
 	
 	static {
 		ub04FormXMLMap = new HashMap<String, String>();
@@ -17,11 +17,10 @@ public class UB04FormXMLMap {
 		ub04FormXMLMap.put("medical_record_nbr", "Medical Record Number");
 		ub04FormXMLMap.put("tob", "TYPE OF BILL");
 		ub04FormXMLMap.put("facility_zip", "Billing Provider City ZIP");
-		ub04FormXMLMap.put("patient_tax_num", "Federal Tax Nor");
+		ub04FormXMLMap.put("patient_tax_num", "Federal Tax No");
 		ub04FormXMLMap.put("from", "Statement from which period");
 		ub04FormXMLMap.put("through", "Statement to which period");
 		ub04FormXMLMap.put("patient_last_name", "PATIENT NAME");
-		//gaps need to fill
 		ub04FormXMLMap.put("patient_zip", "Patient ZIP");
 		ub04FormXMLMap.put("patient_dob", "Patient DOB");
 		ub04FormXMLMap.put("patient_sex", "Patient SEX");
@@ -42,8 +41,9 @@ public class UB04FormXMLMap {
 		ub04FormXMLMap.put("payer_ri", "Release of Information");
 		ub04FormXMLMap.put("payer_assignment_benefits", "Payer Assignment of Benefits");
 		ub04FormXMLMap.put("payer_est_amt", "Payer Estimated Ammount");
-		//Payer oscar value need to be fill
-		ub04FormXMLMap.put("insurance_insured_last_name", "Insurance Insureds Name");
+		ub04FormXMLMap.put("payer_oscar", "Other Provider ID");
+		ub04FormXMLMap.put("insurance_insured_last_name", "Insurance Insureds Last Name");
+		ub04FormXMLMap.put("insurance_insured_first_name", "Insurance Insureds First Name");
 		ub04FormXMLMap.put("insurance_insured_rel", "Patient's Relation to Insured");
 		ub04FormXMLMap.put("insurance_hic", "Insureds Unique ID Primary");
 		ub04FormXMLMap.put("hic", "Insureds Unique ID Primary");
@@ -53,7 +53,7 @@ public class UB04FormXMLMap {
 		ub04FormXMLMap.put("diagnosis_codes", "Principal Diagnosis Code on Admission");
 		ub04FormXMLMap.put("admit_diagnosis", "Admitting Diagnosis Code");
 		ub04FormXMLMap.put("reason_for_visit_code", "Patient's Reason for Visit");
-		ub04FormXMLMap.put("e_code", "Patient's Reason for Visit");
+		ub04FormXMLMap.put("e_code", "External Cause of Injury Code");
 		ub04FormXMLMap.put("att_phys_npi", "Attending Provider NPI");
 		ub04FormXMLMap.put("procedure_codes_dates", "Principal Procedure Codes and Dates");
 		ub04FormXMLMap.put("att_phys_ln", "Attending Provider Last Name");
@@ -67,4 +67,5 @@ public class UB04FormXMLMap {
 		ub04FormXMLMap.put("patient_addr", "Patient Adress");
 	}
 
+	
 }

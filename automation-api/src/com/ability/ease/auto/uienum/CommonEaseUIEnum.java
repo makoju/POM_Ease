@@ -24,7 +24,8 @@ public class CommonEaseUIEnum {
 		Agency("Agency"),
 		MultiSelectAgency("MultiSelectAgency"),
 		ProvidersInformation("ProvidersInformation"),
-		SetUpAgency("SetUpAgency");
+		SetUpAgency("SetUpAgency"),
+		ServiceDate("ServiceDate");
 
 		private String value;
 		private UIAttributeStyle(String value){

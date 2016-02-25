@@ -23,6 +23,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -40,6 +41,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
 import com.ability.ease.auto.enums.portal.BrowserType;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.auto.enums.portal.selenium.WebDriverType;
@@ -228,7 +230,8 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 					driver.manage().deleteAllCookies();
 				}
 			} catch (Exception ex) {
-				report.report("fail to open browser: " + ex.getMessage(), Reporter.FAIL);
+				report.report("Exception while opening a open browser: " + ex.getMessage());
+				report.report("Retrying...");
 			}
 		}
 	}
@@ -657,7 +660,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		waitForElementToBeClickable(ByLocator.xpath, btnXpath, timeoutInSeconds);
 	}
 
-	private static void waitForElementToBeClickable(ByLocator by, String elementLocator,long timeoutInSeconds)throws Exception{
+	public static WebElement waitForElementToBeClickable(ByLocator by, String elementLocator,long timeoutInSeconds)throws Exception{
 		WebElement element = null;
 		WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
 		switch (by) {
@@ -668,12 +671,49 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				// ignore exception, return null instead
 			}
 			break;
+		case id:	
+			try {
+				element = wait.until(ExpectedConditions.elementToBeClickable(By.id(elementLocator)));
+			} catch (org.openqa.selenium.TimeoutException ex) {
+				// ignore exception, return null instead
+			}
+			break;
+		case linktext:	
+			try {
+				element = wait.until(ExpectedConditions.elementToBeClickable(By.linkText(elementLocator)));
+			} catch (org.openqa.selenium.TimeoutException ex) {
+				// ignore exception, return null instead
+			}
+			break;
+		case  css:	
+			try {
+				element = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(elementLocator)));
+			} catch (org.openqa.selenium.TimeoutException ex) {
+				// ignore exception, return null instead
+			}
+			break;
+		case  classname:	
+			try {
+				element = wait.until(ExpectedConditions.elementToBeClickable(By.className(elementLocator)));
+			} catch (org.openqa.selenium.TimeoutException ex) {
+				// ignore exception, return null instead
+			}
+			break;
+		case  name:	
+			try {
+				element = wait.until(ExpectedConditions.elementToBeClickable(By.name(elementLocator)));
+			} catch (org.openqa.selenium.TimeoutException ex) {
+				// ignore exception, return null instead
+			}
+			break;
+
 		default:
 			break;
 		}		
 		if (element == null) {
 			throw new Exception ("Web element not found: " + elementLocator); 
 		}
+		return element;
 	}
 
 	public static void clickOnElement(ByLocator by, String elementLocator,long timeoutInSeconds) throws Exception {
@@ -738,6 +778,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				element.sendKeys(Keys.ENTER);
 				count ++ ;
 				Thread.sleep(2000);
+				checkandignoremodaldialog();
 			}
 		} catch (Exception e) {
 		}	
@@ -1061,7 +1102,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		setSelectedField(we, valueToSelect);
 	/*	sendEnterOnWebElement(we);
 
-		try {
+/*		try {
 
 			if (we.getAttribute("onchange")!= null){
 				report.report("firing 'onchange' event");
@@ -1357,8 +1398,22 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			webElement = wait.until(ExpectedConditions.visibilityOfElementLocated(by));
 		} catch (org.openqa.selenium.TimeoutException ex) {
 			// ignore exception, return null instead
+		}		
+		catch(Exception e){
+			checkandignoremodaldialog();
 		}
 		return webElement;
+	}
+	
+	private static void checkandignoremodaldialog(){
+		try{
+			Alert alert = driver.switchTo().alert();
+			if(alert.getText().contains("I am still processing"))
+				alert.accept();
+		}
+		catch(Exception e1){
+			//ignore
+		}
 	}
 
 	/**
@@ -1477,6 +1532,30 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 * 
 	 * @param element A WebElement
 	 */
+	public void moveToElement(WebElement element) {
+		Actions builder = new Actions(driver);
+		Action moveAndClick = builder.moveToElement(element).build();
+		moveAndClick.perform();	
+	}
+	public void moveToElement(String sElementText){
+		WebElement we = waitForElementVisibility(By.linkText(sElementText));
+		moveToElement(we);
+		//moveToElementAndClick(we);
+	}
+	public void moveByOffset(WebElement element,int xCo,int yCo){
+		Actions builder = new Actions(driver);
+		Action moveAndClick = builder.moveToElement(element, xCo, yCo).build();
+		moveAndClick.perform();
+	}
+	public void moveByOffset(String sElementText,int xCo, int yCo){
+		WebElement we = waitForElementVisibility(By.linkText(sElementText), 60);
+		moveByOffset(we,xCo,yCo);
+	}
+	public void moveByOffset(String sElementText){
+		WebElement we = waitForElementVisibility(By.linkText(sElementText), 60);
+		moveByOffset(we,-10,0);
+	}
+	
 	public void moveToElementAndClick(WebElement element) {
 		Actions builder = new Actions(driver);
 		Action moveAndClick = builder.moveToElement(element)
@@ -1546,12 +1625,13 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		try{
 			//Wait 10 seconds till alert is present
 			report.report("Inside verify alert method....");
-			WebDriverWait wait = new WebDriverWait(driver, 60);
+			WebDriverWait wait = new WebDriverWait(driver, 5);
 			//Alert alert = driver.switchTo().alert();
 			Alert alert = wait.until(ExpectedConditions.alertIsPresent());
 			sActual = alert.getText().toString();
-			report.report(sActual);
+			report.report("Expected text on alert box is :" +sActual);
 			if( sActual.equalsIgnoreCase(sExpected)){
+				report.report("Actual text on alert box is : "+ sExpected);
 				alert.accept();
 				return true;
 			}
@@ -1587,21 +1667,21 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 
 	}
-	
+
 	public String getElementText(By by){
 		WebElement element = waitForElementVisibility(by);
 		return getElementText(element);
 	}
-	
+
 	public String getElementText(WebElement e){
 		return e.getText();
 	}
-	
+
 	public void safeJavaScriptClick(String linktext) throws Exception {
 		WebElement element = waitForElementVisibility(By.linkText(linktext));
 		safeJavaScriptClick(element);
 	}
-	
+
 	/*Click the element with java script*/
 	public static void safeJavaScriptClick(WebElement element) throws Exception {
 		try {
@@ -1685,32 +1765,110 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				if(count > 0)
 					element.click();*/
 				return;
+			}else{
+				element.click();
 			}
+
 		} else { 
 			throw new Exception ("Web element not found: " + elementLocator); 
 		}
 
 	}
 
-
 	/**
 	 * Get all attributes of a HTML element using java script
 	 * @author nageswar.bodduri
 	 */
-	public ArrayList<String> getAllAttributes(WebElement element)throws Exception{
-		String sJavaScript = "var el = document.getElementById(element); "
-				+ "for (var i = 0, atts = el.attributes, n = atts.length, arr = []; i < n; i++){ arr.push(atts[i].nodeName);"
-				+ "}; return arr;"; 
-		ArrayList<String> lsAttributes = (ArrayList<String>)((JavascriptExecutor)driver).executeScript(sJavaScript, element);
-		return lsAttributes;
+
+	@SuppressWarnings("unchecked")
+	public String[] getAllAttributes(WebElement element)throws Exception{
+
+		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+		String attrs[] = null ;
+		List<Object> response = null;
+
+
+		StringBuilder sJScript = new StringBuilder();
+		sJScript.append("var x = document.getElementsByClassName(\"ub65 defaultText upper ub04changed\");\n");
+		sJScript.append("var i = 0; \n");
+		sJScript.append("var arr = []; \n");
+		sJScript.append("var attrs = x[0].attributes;\n");
+		sJScript.append("for (i = 0; i < attrs.length; i++) {\n");
+		sJScript.append(" arr.push(attrs[i].name);\n");
+		sJScript.append("}\n");
+		sJScript.append("return arr;\n");
+
+		if (driver instanceof JavascriptExecutor) {
+
+			if( response == null)
+				while(response != null) {
+					response = (List<Object>) jsExecutor.executeScript(sJScript.toString());
+					report.report("Executing javascript....");
+				}
+		}
+		report.report("Inside getAllAttributes Method..." + response.toString());
+		return attrs;
 	}
-	
+
 	public List<WebElement> findElements(By by){
 		if (waitForElementVisibility(by)!=null)
 			return driver.findElements(by);
 		return null;
 	}
-		
+
+	//This method will return corresponding value of the UI Attribute displayName passed from JSYSTEM
+	public static String getValueFromJSystem(List<Attribute> lsAttributes, String displayName){
+		String sValueFromJsystem = null;
+		for(Attribute scrAttr:lsAttributes){
+			if(scrAttr.getDisplayName().equalsIgnoreCase(displayName)){
+				sValueFromJsystem = scrAttr.getValue();
+				break;
+			}
+		}
+		return sValueFromJsystem;
+	}
+
+	//mouse hover alternative approach 
+	protected void mouseOver(WebElement element) {
+	    String code = "var fireOnThis = arguments[0];"
+	                + "var evObj = document.createEvent('MouseEvents');"
+	                + "evObj.initEvent( 'mouseover', true, true );"
+	                + "fireOnThis.dispatchEvent(evObj);";
+	    ((JavascriptExecutor) driver).executeScript(code, element);
+	}
+	
+	/**
+	 * Use this method to check whether the top level menu items like MY DDE, ELIG., MY ACCOUNT etc.. were selected or not
+	 * @param linktext
+	 * @return
+	 */
+	public boolean istopNavAnchorSelected(String linktext){
+		WebElement topNavAnchor = waitForElementVisibility(By.linkText(linktext));
+		if(topNavAnchor!=null){
+			String s = topNavAnchor.getAttribute("class");
+			 if(s!=null)
+				 return s.contains("topNavAnchorSelected");
+			 else
+				 return false;
+		}
+		return false;
+	}
+	/**
+	 * Use this method to check whether the Menu items inside a page like Eligibility Check, Personal Information etc.. were selected or not
+	 * @param linktext
+	 * @return
+	 */
+	public boolean isMenuSelected(String linktext){
+		WebElement menu = waitForElementVisibility(By.linkText(linktext));
+		if(menu!=null){
+			String s = menu.getAttribute("class");
+			 if(s!=null)
+				 return s.contains("menuSelected");
+			 else
+				 return false;
+		}
+		return false;
+	}
 	//#########################################   Getters & Setters ###################################################
 	/**
 	 * 

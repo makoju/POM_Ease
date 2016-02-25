@@ -172,10 +172,9 @@ public class MiscTests extends BaseTest{
 	
 	public void handleUIEvent(HashMap<String, Parameter> map, String methodName)throws Exception{
 		super.handleUIEvent(map, methodName);
-		if(!methodName.equalsIgnoreCase("verifyAddHICs")){
+		if(methodName.equalsIgnoreCase("verifyPersonalInfo")){
 			UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Misc\\Misc.xml");
 		}
-		UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Misc\\MyDDE.xml");
 	}
 	/*####
 	##Getters and Setters methods

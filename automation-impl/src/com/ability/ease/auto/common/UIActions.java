@@ -104,6 +104,7 @@ public class UIActions extends AbstractPageObject {
 					String[] sValue42To49 = scrAttr.getValue().split(",");
 					int j=1;
 
+					report.report("Filling "+ scrAttr.getDisplayName() + " Values");
 					for(String str:sValue42To49){
 						String[] sValues42To49 = str.split(":");
 						for(int i=0;i < sLocators42To49.length; i++){
@@ -117,10 +118,10 @@ public class UIActions extends AbstractPageObject {
 
 					break;
 				case ConditionOccurruenceCodes:
+
 					String[] sLocators18To28 = scrAttr.getLocator().split(",");
 					String[] sValues18To28 = scrAttr.getValue().split("~~~");
-
-
+					report.report("Filling "+ scrAttr.getDisplayName() + " Values");
 					for(int i=0;i < sValues18To28.length; i++){
 						typeEditBox(sLocators18To28[i], sValues18To28[i]);
 					}
@@ -176,7 +177,8 @@ public class UIActions extends AbstractPageObject {
 					String[] sSpanCodesDates = null;
 					String[] sLocatorsSpanCodes = scrAttr.getLocator().split(",");
 					int k = 0;
-					//report.report("filling span codes dates and values...");
+
+					report.report("Filling "+ scrAttr.getDisplayName() + " Values");
 					if(scrAttr.getValue().contains(",")){
 						sSpanCodesDates = scrAttr.getValue().split(",");
 						fillSpanCodeDates(sLocatorsSpanCodes, sSpanCodesDates);
@@ -197,6 +199,7 @@ public class UIActions extends AbstractPageObject {
 					String sLocatorID = scrAttr.getLocator();
 					String[] sLocatorValues = scrAttr.getValue().split("~~~");
 
+					report.report("Filling "+ scrAttr.getDisplayName() + " Values");
 					if(!sLocatorID.equalsIgnoreCase("ub67")){
 						char ch = 'a';
 						for(int i=0; i< sLocatorValues.length; i++){
@@ -218,6 +221,7 @@ public class UIActions extends AbstractPageObject {
 					//This style fills values and locators values which are separated by comma ','
 					String sLocators[] = scrAttr.getLocator().split(",");
 					String sValues[] = scrAttr.getValue().split(",");		
+					report.report("Filling "+ scrAttr.getDisplayName() + " Values");
 					for(int i=0; i<sValues.length; i++){
 						typeEditBox(sLocators[i], sValues[i]);
 					}
@@ -225,7 +229,8 @@ public class UIActions extends AbstractPageObject {
 
 
 				case Timeframe:
-					clickLink(scrAttr.getLocator());
+					//safeJavaScriptClick(scrAttr.getLocator());
+					moveToElement(scrAttr.getLocator());
 					String timeframe = scrAttr.getValue().trim();
 					//if the timeframe value starts with fromdate then user is going to set from and todate 
 					if (timeframe.toLowerCase().startsWith("fromdate")){
@@ -245,7 +250,7 @@ public class UIActions extends AbstractPageObject {
 					break;
 
 				case Agency:
-					clickLink(scrAttr.getLocator());
+					moveToElement(scrAttr.getLocator());
 					selectByNameOrID("reportAgencySelect", scrAttr.getValue().trim());
 					clickButton("Change Agency");
 					break;
@@ -263,9 +268,35 @@ public class UIActions extends AbstractPageObject {
 							checkChkBox(agency.trim());
 					}
 					break;					
+					
+				case ServiceDate:
+					//safeJavaScriptClick(scrAttr.getLocator());
+					String servicedate = scrAttr.getValue().trim();
+					//if the serivedate value starts with fromdate then user is going to set from and todate 
+					if (servicedate.toLowerCase().startsWith("fromdate")){
+						String fromdate="",todate="";
+						String[] dates = servicedate.split(":");
+						//getting the from and todate from the user supplied date string say, "fromdate(MM//DD//YYYY):todate(MM//DD//YYYY)"
+						if(dates.length>1){
+							fromdate = dates[0].substring(dates[0].indexOf("(")+1, dates[0].indexOf(")"));
+							todate = dates[1].substring(dates[1].indexOf("(")+1, dates[1].indexOf(")"));;
+						}
+						WebElement custom = waitForElementVisibility(By.xpath("//input[@value='custom']"));
+						safeJavaScriptClick(custom);
+						typeEditBox("reportCustomDateFrom", fromdate);
+						typeEditBox("reportCustomDateTo", todate);
+					}
+					else if(servicedate.toLowerCase().startsWith("all")){
+						WebElement all = waitForElementVisibility(By.xpath("//input[@value='all']"));
+						safeJavaScriptClick(all);
+					}
+					else{
+						WebElement currenteligibility = waitForElementVisibility(By.xpath("//input[@value='today']"));
+						safeJavaScriptClick(currenteligibility);
+					}
+					break;				
 
-
-				default:
+					default:
 					report.report("The attribute Style is not implemented.",
 							ReportAttribute.BOLD);
 					break;

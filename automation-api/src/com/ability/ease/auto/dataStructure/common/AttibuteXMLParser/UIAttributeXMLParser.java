@@ -149,6 +149,9 @@ public class UIAttributeXMLParser {
 					if(Style.toString().equalsIgnoreCase("SetUpAgency")){
 						attrStyle= UIAttributeStyle.SetUpAgency;
 					}
+					if(Style.toString().equalsIgnoreCase("ServiceDate")){
+						attrStyle= UIAttributeStyle.ServiceDate;
+					}
 					attr.setStyle(attrStyle);
 					lsattrs.add(attr);
 					locator=displayName=Style=null;

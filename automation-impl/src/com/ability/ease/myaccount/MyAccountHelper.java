@@ -65,11 +65,11 @@ public class MyAccountHelper extends AbstractPageObject{
 		return listOfXMLs;
 	}
 	
-	public ArrayList< Dbcolumnsvalidatation> getCronScheduleXMLFilesFromDB(String sAgencyName){	
+	/*public ArrayList<Dbcolumnsvalidatation> getCronScheduleXMLFilesFromDB(String sAgencyName){	
 		
 		
 
-		ArrayList< Dbcolumnsvalidatation> listofDbvalues = new  ArrayList< Dbcolumnsvalidatation>();
+		ArrayList<Dbcolumnsvalidatation> listofDbvalues = new  ArrayList<Dbcolumnsvalidatation>();
 
 			String agencyName = String.valueOf(sAgencyName);
 
@@ -113,7 +113,7 @@ public class MyAccountHelper extends AbstractPageObject{
 				
 			}
 			return null;
-	}
+	}*/
 
 	@Override
 	public void assertInPage() {

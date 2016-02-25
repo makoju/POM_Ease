@@ -278,75 +278,7 @@ public class UIActions extends AbstractPageObject {
 						selectcredential.selectByVisibleText(schedule[3].trim());
 					}
 					break;				
-<<<<<<< .mine
-				case CustomSchedule:
-					clickButton("Custom");
-					String[] customschedulevalue = scrAttr.getValue().split(";");
-					int count = Integer.parseInt(customschedulevalue[0]);
-					for(int i=1;i<=count;i++){
-						//click on addscheduler to get the new row of schedule from 4th scheduler onwards; by default 3 rows present
-						if(i>3)
-							clickButton("Add Scheduler");
-						
-						String[] schedule = customschedulevalue[i].split(",");
-						
-						String startxpath = "//table[@id='schedulerTable']//tr[@class='tableline1']["+(i+1)+"]//input[@name='schedule_start']";
-						String endxpath = "//table[@id='schedulerTable']//tr[@class='tableline1']["+(i+1)+"]//input[@name='schedule_end']";
-						String runtime = "//table[@id='schedulerTable']//tr[@class='tableline1']["+(i+1)+"]//select[@name='schedule_runtime']";
-						String credential =  "//table[@id='schedulerTable']//tr[@class='tableline1']["+(i+1)+"]//select[@name='schedule_credential']";
-						
-						typeEditBoxByWebElement(waitForElementVisibility(By.xpath(startxpath)), schedule[0].trim());
-						typeEditBoxByWebElement(waitForElementVisibility(By.xpath(endxpath)), schedule[1].trim());
-						
-						WebElement weruntime = waitForElementVisibility(By.xpath(runtime));
-						Select selectruntime = new Select(weruntime);
-						selectruntime.selectByVisibleText(schedule[2].trim());
-						
-						WebElement wecredential = waitForElementVisibility(By.xpath(credential));
-						Select selectcredential = new Select(wecredential);
-						selectcredential.selectByVisibleText(schedule[3].trim());
-					}
-=======
-					
-				case ServiceDate:
-					//safeJavaScriptClick(scrAttr.getLocator());
-					String servicedate = scrAttr.getValue().trim();
-					//if the serivedate value starts with fromdate then user is going to set from and todate 
-					if (servicedate.toLowerCase().startsWith("fromdate")){
-						String fromdate="",todate="";
-						String[] dates = servicedate.split(":");
-						//getting the from and todate from the user supplied date string say, "fromdate(MM//DD//YYYY):todate(MM//DD//YYYY)"
-						if(dates.length>1){
-							fromdate = dates[0].substring(dates[0].indexOf("(")+1, dates[0].indexOf(")"));
-							todate = dates[1].substring(dates[1].indexOf("(")+1, dates[1].indexOf(")"));;
-						}
-						WebElement custom = waitForElementVisibility(By.xpath("//input[@value='custom']"));
-						safeJavaScriptClick(custom);
-						typeEditBox("reportCustomDateFrom", fromdate);
-						typeEditBox("reportCustomDateTo", todate);
-					}
-					else if(servicedate.toLowerCase().startsWith("all")){
-						WebElement all = waitForElementVisibility(By.xpath("//input[@value='all']"));
-						safeJavaScriptClick(all);
-					}
-					else{
-						WebElement currenteligibility = waitForElementVisibility(By.xpath("//input[@value='today']"));
-						safeJavaScriptClick(currenteligibility);
-					}
-					break;				
->>>>>>> .theirs
 
-<<<<<<< .mine
-					break;
-					
-				
-
-=======
-
-
-
-
->>>>>>> .theirs
 				default:
 					report.report("The attribute Style is not implemented.",
 							ReportAttribute.BOLD);

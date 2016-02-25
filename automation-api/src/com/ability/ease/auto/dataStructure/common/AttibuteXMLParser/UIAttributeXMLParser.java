@@ -143,6 +143,9 @@ public class UIAttributeXMLParser {
 					if(Style.toString().equalsIgnoreCase("MultiSelectAgency")){
 						attrStyle= UIAttributeStyle.MultiSelectAgency;
 					}
+					if(Style.toString().equalsIgnoreCase("CustomSchedule")){
+						attrStyle= UIAttributeStyle.CustomSchedule;
+					}
 					attr.setStyle(attrStyle);
 					lsattrs.add(attr);
 					locator=displayName=Style=null;

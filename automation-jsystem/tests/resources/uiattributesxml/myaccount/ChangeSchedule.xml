@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<UIAttributes>
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xsi:schemaLocation="UIAttributes.xsd">
+	<UIAttribute>
+		<locator>user_timezone</locator>
+		<style>DropDown</style>
+		<displayName>Timezone</displayName>
+		<description>Provide a timezone value out of {Eastern, Central, Mountain, Pacific} ex., Pacific</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>user_prov_id</locator>
+		<style>DropDown</style>
+		<displayName>Agency</displayName>
+		<description>Select one Agency from AgencyDropdown out of{HHA1,HHA2,HHA3,HSOPICE,SNF,Hospitals} ex-HHA3</description>
+	</UIAttribute>
+	
+	
+	<UIAttribute>
+		<locator>submit</locator>
+		<style>Button</style>
+		<displayName>Edit Another Agency</displayName>
+		<description>Edit Another Agency button inside ChangeSchedule Page after selecting agency</description>
+	</UIAttribute>
+	
+	<!-- <UIAttribute>
+		<locator>schedule_onoff_0</locator>
+		<style>checkbox</style>
+		<displayName>claimsCheckbox</displayName>
+		<description>Claims checkbox should be checked-Just Verify if the check box is checked or not </description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>schedule_onoff_1</locator>
+		<style>checkbox</style>
+		<displayName>EligibiltyCheckbox</displayName>
+		<description>-Eligibility checkbox should be checked-Just Verify if the check box is checked </description>
+	</UIAttribute>
+	<UIAttribute>
+		<locator>schedule_onoff_2</locator>
+		<style>checkbox</style>
+		<displayName>EFTCheckbox</displayName>
+		<description>EFT checkbox should be checked-Just Verify if the check box is checked </description>
+	</UIAttribute>
+	 -->
+	
+	<UIAttribute>
+		<locator>schedule_hour_0</locator>
+		<style>DropDown</style>
+		<displayName>claimsTimeDropDown</displayName>
+		<description>-provide one time from  claims dropdown box{12:00PM,12:30PM etc} Ex: Run claims everyday on or after 3:00PM </description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>schedule_hour_1</locator>
+		<style>DropDown</style>
+		<displayName>EligibilityTimeDropDown</displayName>
+		<description>provide one time from  Eligibility dropdown box{12:00PM,12:30PM etc} Ex: Run Eligibility every Friday or after 4:00PM</description>
+	</UIAttribute>
+	<UIAttribute>
+		<locator>schedule_hour_2</locator>
+		<style>DropDown</style>
+		<displayName>EFTTimeDropDown</displayName>
+		<description>-provide one time from EFT dropdown box{12:00PM,12:30PM etc} Ex: Run EFT everyday on or after 3:00PM </description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>customSchedule</locator>
+		<style>CustomSchedule</style>
+		<displayName>Custom</displayName>
+		<description>Provide custom schedule values as count;start1,end1,runtime,credential;start2,end2,runtime2,credential2;etc.....</description>
+	</UIAttribute>
+	
+<!-- 	
+	<UIAttribute>
+		<locator>//table[@id='schedulerTable']//tr[@class='tableline1'][2]//input[@name='schedule_start']</locator>
+		<style>Text</style>
+		<displayName>Start</displayName>
+		<description>Enter 10 in start text box for first row</description>
+	</UIAttribute>
+	<UIAttribute>
+		<locator>//table[@id='schedulerTable']//tr[@class='tableline1'][2]//input[@name='schedule_end']</locator>
+		<style>Text</style>
+		<displayName>end</displayName>
+		<description>Enter 1 in end Text box for first row</description>
+	</UIAttribute>
+	<UIAttribute>
+		<locator>.//*[@id='schedulerTable']/tbody/tr[3]/td[3]/select</locator>
+		<style>DropDown</style>
+		<displayName>Runtime</displayName>
+		<description>Select one time from  runtime dropdown from{12:00 PM, 1:00 AM}:- ex:- 11:00 PM for first row</description>
+	</UIAttribute>
+	<UIAttribute>
+		<locator>.//*[@id='schedulerTable']/tbody/tr[3]/td[4]/select</locator>
+		<style>DropDown</style>
+		<displayName>Credentials</displayName>
+		<description>Select one user from  credentials dropdown from{test.customer,t3llu1}:- ex:- test.customer for first row</description>
+	</UIAttribute>
+		<UIAttribute>
+		<locator>//table[@id='schedulerTable']//tr[@class='tableline1'][3]//input[@name='schedule_start']</locator>
+		<style>Text</style>
+		<displayName>Start</displayName>
+		<description>Enter 20 in start text box for second row</description>
+	</UIAttribute>
+	<UIAttribute>
+		<locator>//table[@id='schedulerTable']//tr[@class='tableline1'][3]//input[@name='schedule_end']</locator>
+		<style>Text</style>
+		<displayName>end</displayName>
+		<description>Enter 11 in end Text box for Second row</description>
+	</UIAttribute>
+	<UIAttribute>
+		<locator>//*[@id='schedulerTable']/tbody/tr[4]/td[3]/select</locator>
+		<style>DropDown</style>
+		<displayName>Runtime</displayName>
+		<description>Select one time from  runtime dropdown from{12:00 PM, 1:00 AM}:- ex:- 11:00 PM for Second row</description>
+	</UIAttribute>
+	<UIAttribute>
+		<locator>.//*[@id='schedulerTable']/tbody/tr[4]/td[4]/select</locator>
+		<style>DropDown</style>
+		<displayName>Credentials</displayName>
+		<description>Select one user from  credentials dropdown from{test.customer,t3llu1}:- ex:- test.customer for Second row</description>
+	</UIAttribute>
+	
+	
+	
+	
+	<UIAttribute>
+		<locator>//table[@id='schedulerTable']//tr[@class='tableline1'][4]//input[@name='schedule_start']</locator>
+		<style>Text</style>
+		<displayName>Start</displayName>
+		<description>Enter 30 in start text box for third row</description>
+	</UIAttribute>
+	<UIAttribute>
+		<locator>//table[@id='schedulerTable']//tr[@class='tableline1'][4]//input[@name='schedule_end']</locator>
+		<style>Text</style>
+		<displayName>end</displayName>
+		<description>Enter 21 in end Text box for third row</description>
+	</UIAttribute>
+	<UIAttribute>
+		<locator>//*[@id='schedulerTable']/tbody/tr[5]/td[3]/select</locator>
+		<style>DropDown</style>
+		<displayName>Runtime</displayName>
+		<description>Select one time from  runtime dropdown from{12:00 PM, 1:00 AM}:- ex:- 11:00 PM for Third row</description>
+	</UIAttribute>
+	<UIAttribute>
+		<locator>.//*[@id='schedulerTable']/tbody/tr[5]/td[4]/select</locator>
+		<style>DropDown</style>
+		<displayName>Credentials</displayName>
+		<description>Select one user from  credentials dropdown from{test.customer,t3llu1}:- ex:- test.customer for Third row</description>
+	</UIAttribute> -->
+	
+	<UIAttribute>
+		<locator>Save</locator>
+		<style>Button</style>
+		<displayName>SAVE</displayName>
+		<description>Click on SAVE button once you configure credentials</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>deleteCustSched</locator>
+		<style>Button</style>
+		<displayName>DeleteAll</displayName>
+		<description>Click on DeleteAll button if you want delete all credentials</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>Next</locator>
+		<style>Button</style>
+		<displayName>Next</displayName>
+		<description>Next button inside ChangeSchedule Page after selecting agency</description>
+	</UIAttribute>
+	
+	
+	
+	</UIAttributes>

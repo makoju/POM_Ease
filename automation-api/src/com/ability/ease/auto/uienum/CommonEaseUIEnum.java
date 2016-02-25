@@ -22,7 +22,9 @@ public class CommonEaseUIEnum {
 		FillValuesUB04("FillValuesUB04"),
 		Timeframe("Timeframe"),
 		Agency("Agency"),
-		MultiSelectAgency("MultiSelectAgency");
+		MultiSelectAgency("MultiSelectAgency"),
+		CustomSchedule("CustomSchedule");
+		
 
 		private String value;
 		private UIAttributeStyle(String value){

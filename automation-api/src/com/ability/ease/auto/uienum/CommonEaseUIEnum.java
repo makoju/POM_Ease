@@ -23,9 +23,8 @@ public class CommonEaseUIEnum {
 		Timeframe("Timeframe"),
 		Agency("Agency"),
 		MultiSelectAgency("MultiSelectAgency"),
+		ServiceDate("ServiceDate"),
 		CustomSchedule("CustomSchedule");
-		
-
 		private String value;
 		private UIAttributeStyle(String value){
 			this.value = value;

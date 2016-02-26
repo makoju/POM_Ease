@@ -31,8 +31,7 @@ public class HmoTests extends BaseTest{
 	private String sFirstName;
 	private String sDob;
 	private String sSex;
-	private AttributePair[] attrpair;
-	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
+
 
 	@Before
 	public void setupTests()throws Exception{
@@ -53,9 +52,9 @@ public class HmoTests extends BaseTest{
 
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2} )
-	@TestProperties(name = "Add Patient To HMO Duplicate", paramsInclude =  { "Agency,HIC,Lname,Fname,DOB,sex,testType" })
+	@TestProperties(name = "Add Existing Patient To HMO", paramsInclude =  { "Agency,HIC,Lname,Fname,DOB,sex,testType" })
 	public void addToHMODuplicate()throws Exception{
-		if(hmo.addToHMODuplicate(sAgency, sHIC, sLastName, sFirstName, sDob, sSex)){
+		if(hmo.addToHMODuplicatePatient(sAgency, sHIC, sLastName, sFirstName, sDob, sSex)){
 			report.report("patient is already being tracked by HMO,hence not added", Reporter.ReportAttribute.BOLD);
 		}else{
 			report.report("patient is not tracked", Reporter.FAIL);
@@ -65,16 +64,64 @@ public class HmoTests extends BaseTest{
 	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2} )
-	@TestProperties(name = "ExtendHMO",paramsInclude = { "testType" })
-	public void ExtendHMO()throws Exception{
-		if(hmo.extendHMO()){
-			report.report("HMO is extend by some days", Reporter.ReportAttribute.BOLD);
+	@TestProperties(name = "Extending the Days in HMO",paramsInclude = { "HIC,testType" })
+	public void extendHMO()throws Exception{
+		if(hmo.extendHMO(sHIC)){
+			report.report("HMO Track days of a patient is extend", Reporter.ReportAttribute.BOLD);
 		}else{
-			report.report("HMO is not extend by some days", Reporter.FAIL);
+			report.report("HMO Track days is not extend", Reporter.FAIL);
 		}
 	}
 	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2} )
+	@TestProperties(name = "Add Patient to HMO from Patient info Page",paramsInclude = { "HIC,testType" })
+	public void addtoHMOFromPatientInfo()throws Exception{
+		if(hmo.addtoHMOFromPatientInfo(sHIC)){
+			report.report("Successfully added patient to HMO from Patient Info Page", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to add patient to HMO  from patient Info Page", Reporter.FAIL);
+		}
+	}
 	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2} )
+	@TestProperties(name = "Remove Patient from HMO Catcher",paramsInclude = { "HIC,testType" })
+	public void trashHMOPatient()throws Exception{
+		if(hmo.trashHMOPatient(sHIC)){
+			report.report("Patient is removed from HMO Catcher", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Patient is removed from HMO Catcher", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2} )
+	@TestProperties(name = "Add Existing Patient to HMO from Patient info Page",paramsInclude = { "HIC,testType" })
+	public void addDuplicateToHMOFromPatientInfo()throws Exception{
+		if(hmo.addDuplicatePatientToHMOFromPatientInfo(sHIC)){
+			report.report("patient is already being tracked by HMO,hence not added", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("patient is not tracked", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2} )
+	@TestProperties(name = "Verifing LiveSearch,Print functionality ",paramsInclude = { "HIC,testType" })
+	public void printAndAdvanceSearchFromHMO()throws Exception{
+		if(hmo.addDuplicatePatientToHMOFromPatientInfo(sHIC)){
+			report.report("LiveSearch and Print Functionlality from HMO are working", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("LiveSearch and Print Functionlality from HMO are not working", Reporter.FAIL);
+		}
+	}
+
+	
+	
+	/*
+	Getters and Setters methods
+	*/
 	public IHMO getHmo() {
 		return hmo;
 	}

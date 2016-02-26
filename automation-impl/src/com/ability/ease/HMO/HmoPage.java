@@ -3,6 +3,7 @@ package com.ability.ease.HMO;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -26,35 +28,17 @@ import com.ability.ease.selenium.webdriver.AbstractPageObject;
 import com.ability.ease.testapi.IHMO;
 
 public class HmoPage extends AbstractPageObject  {
-	
-	/*
-	 * Entering Patient details into HMO Catcher Page
-	 */
-	public void FillHmo(String  sAgency,String sHIC,String sLastName, String sFirstName,String sDob,String sSex) throws Exception{
-		clickLink("ELIG.");
-		clickLink("Add to HMO/Adv. Catcher");
-		selectByNameOrID("ProvID", sAgency);
-		typeEditBox("hic", sHIC);
-		typeEditBox("lname",sLastName);
-		typeEditBox("fname",sFirstName);
-		typeEditBox("dob",sDob);
-		selectByNameOrID("sex", sSex);
-		clickButton("submit");
-	}
 
+	HMOHelper hhp=new HMOHelper();
+	boolean alertverify;
+	String daysVal;
 	/*
 	 * Adding a Patient to HMO Catcher
 	 */
 	public boolean addToHMO(String  sAgency,String sHIC,String sLastName, String sFirstName,String sDob,String sSex)throws Exception{
-		boolean alertverify;
-		FillHmo(sAgency, sHIC, sLastName,sFirstName, sDob, sSex);
+		hhp.FillHmo(sAgency, sHIC, sLastName, sFirstName, sDob, sSex);
 		alertverify=verifyAlert("Patient was successfully added to HMO Advantage Move Catcher!");
-		String sQueryToGetDays = "SELECT DATEDIFF(Termination,createdate) as Days from ddez.hmocatcherpatient where providerid=" + sAgency +" and HIC='"+sHIC+"'";
-		ResultSet results = MySQLDBUtil.getResultFromMySQLDB(sQueryToGetDays);
-		String daysVal="";
-		while(results.next()){
-			daysVal = results.getString("Days");	
-		}
+		daysVal=hhp.HMODBConnection(sHIC);
 		if(alertverify && daysVal.equalsIgnoreCase("75"))   {		
 			return true;
 		}
@@ -67,54 +51,103 @@ public class HmoPage extends AbstractPageObject  {
 	/*
 	 * Adding a Patient to HMO Catcher, which already being tracked
 	 */
-	public boolean addToHMODuplicate(String  sAgency,String sHIC,String sLastName, String sFirstName,String sDob,String sSex)throws Exception{
-		FillHmo(sAgency, sHIC, sLastName,sFirstName, sDob, sSex);
+	public boolean addToHMODuplicatePatient(String  sAgency,String sHIC,String sLastName, String sFirstName,String sDob,String sSex)throws Exception{
+		hhp.FillHmo(sAgency, sHIC, sLastName,sFirstName, sDob, sSex);
 		return verifyAlert("Your request to add this patient to the HMO Advantage Move Catcher was not accepted because this patient is already being tracked by HMO Advantage Move Catcher!");		
 	}
 	/*
 	 * Extending the HMO Catcher by 75 days,need to have data with less than 10 days in the application
 	 */
-	public boolean extendHMO() throws Exception{
-		int iRowCount; 
-		String sHmoTrackDays = null;
-		String sHmoExtendDays;
-		int iHmoTrackDays = 0;
-		int iHmoExtendDays = 0;
+	public boolean extendHMO(String sHIC) throws Exception{
 		boolean isExtended=false;
-		String sHIC = null;
-		String sAgency = null;
-		clickLink("ELIG.");
+		int idays;
+		hhp.navigateToHMOCatcherExtendPage();
+		idays=Integer.parseInt(driver.findElement(By.xpath(".//*[contains(text(),"+"'"+sHIC+"'"+")]/../following-sibling::td[4]")).getText())+75;
+		driver.findElement(By.xpath(".//*[contains(text(),"+"'"+sHIC+"'"+")]/../preceding-sibling::td/input")).click();
+		clickLink("Extend");
+		isExtended=verifyAlert("Patient(s) successfully changed on HMO Advantage Catcher!");
+		String extendedDays=daysVal=hhp.HMODBConnection(sHIC);
+		if( Integer.parseInt(extendedDays)==idays && isExtended ){
+
+			return true;
+		}
+		else
+			return false;
+		}
+	/*
+	 * Adding a Patient to HMO Catcher from patient info page
+	 */	
+	public boolean addtoHMOFromPatientInfo(String sHIC) throws Exception {
+		hhp.navigateToPatientInfoPage(sHIC);
+		boolean bHICinHMOCatcher;
+		alertverify=verifyAlert("Patient was successfully added to HMO Advantage Move Catcher!");
 		clickLink("HMO/Adv Catcher Patients");
-		WebElement hmoWebTable=driver.findElement(By.xpath("//*[@id='datatable']/tbody"));
-		hmoWebTable.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
-		iRowCount=hmoWebTable.findElements(By.xpath("//*[@id='datatable']/tbody/tr")).size();
-		for(int i=1;i<=iRowCount;i++){
-		sHmoTrackDays=hmoWebTable.findElement(By.xpath("//*[@id='datatable']/tbody/tr["+i+"]/td[6]")).getText();
-		iHmoTrackDays=Integer.parseInt(sHmoTrackDays);	
-		if(iHmoTrackDays<10){
-			hmoWebTable.findElement(By.xpath("//*[@id='datatable']/tbody/tr["+i+"]/td[1]/input")).sendKeys(Keys.SPACE);
-			sHmoExtendDays=hmoWebTable.findElement(By.xpath("//*[@id='datatable']/tbody/tr["+i+"]/td[6]")).getText();
-			iHmoExtendDays=Integer.parseInt(sHmoTrackDays);
-			sHIC=hmoWebTable.findElement(By.xpath("//*[@id='datatable']/tbody/tr["+i+"]/td[2]")).getText();
-//			((JavascriptExecutor) driver).executeScript("$('#reportExport').click();");
-			clickLinkV2("Extend");
-			isExtended = verifyAlert("Patient(s) successfully changed on HMO Advantage Catcher!");
+		bHICinHMOCatcher=isTextPresent("spatientdays");
+		String spatientdays=hhp.HMODBConnection(sHIC);
+		if(bHICinHMOCatcher && alertverify && spatientdays.equals("75")){
+			return true;
+		}
+		else{
+			return false;
+	}
 		}
 
-			break;	
-		}
-		String sQueryToGetDays = "SELECT DATEDIFF(Termination,createdate) as Days from ddez.hmocatcherpatient where providerid=" + sAgency +" and HIC='"+sHIC+"'";
-		ResultSet results = MySQLDBUtil.getResultFromMySQLDB(sQueryToGetDays);
-		String sExtendedVals="";
-		while(results.next()){
-		sExtendedVals = results.getString("Days");	
-		}
-		return(isExtended && Integer.parseInt(sExtendedVals)==iHmoExtendDays+75);			
-		}
+	/*
+	 * Adding a Patient to HMO Catcher from patient info page,which is already being tracked
+	 */		
+	public boolean addDuplicatePatientToHMOFromPatientInfo(String sHIC) throws Exception{
+		hhp.navigateToPatientInfoPage(sHIC);
+		return verifyAlert("Your request to add this patient to the HMO Advantage Move Catcher was not accepted because this patient is already being tracked by HMO Advantage Move Catcher!");
 		
+	}
+	public boolean trashHMOPatient(String sHIC) throws Exception{
+		hhp.navigateToHMOCatcherExtendPage();
+		checkChkBox(".//*[contains(text(),"+"'"+sHIC+"'"+")]/../preceding-sibling::td/input");
+		clickLink("reportDelete");
+		return(isTextExistInTable(".//*[contains(text(),"+"'"+sHIC+"'"+")]"));
 		
+	}
 	
-
+	public boolean printAndAdvanceSearchFromHMO(String sHIC) throws Exception{
+		int ifailCount=0;
+		hhp.navigateToHMOCatcherExtendPage();
+		moveToElement("reportHICSearch");
+		selectByNameOrID("reportHICEntry", sHIC);
+		clickButton("reportHICButton");
+		boolean bliveSearcheligcheck=isTextExistInTable(".//*[@id='mainPageArea']/div/table/tbody/tr/td");
+		boolean bliveSearchPatientInfo=isTextExistInTable(".//*[@id='mainPageArea']/div/table/tbody/tr/td");
+		if(bliveSearcheligcheck == false || bliveSearchPatientInfo == false){
+			ifailCount++;
+		}
+		hhp.navigateToHMOCatcherExtendPage();
+		moveToElement("reportHICSearch");
+		selectByNameOrID("reportAdvanceSearch", sHIC);
+		boolean bliveSearchAdvance= isTextExistInTable(".//*[@id='mainPageArea']/div/table/tbody/tr/td");
+		if(bliveSearchAdvance==false){
+			ifailCount++;
+		}
+		hhp.navigateToHMOCatcherExtendPage();
+		clickButton("reportPrint");
+		
+		if(ifailCount>0){
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub

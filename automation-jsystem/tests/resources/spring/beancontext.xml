@@ -10,6 +10,7 @@
            http://www.springframework.org/schema/context/spring-context-3.2.xsd">		   
 	
 	<bean id="misc" class="com.ability.ease.misc.MiscSelenium2Impl"/>
+	<bean id="hmo" class="com.ability.ease.HMO.HmoSelenium2Impl"/>
 	<bean id="elig" class="com.ability.ease.eligibility.EligibilitySelenium2Impl"/>
 	<bean id="admin" class="com.ability.ease.admin.AdminSelenium2Impl"/>
 	<bean id="claims" class="com.ability.ease.claims.ClaimsSelenium2Impl"/>

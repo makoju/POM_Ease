@@ -15,4 +15,26 @@ public interface IAuditDoc {
 
 	public boolean verifyADRDocumentUploadFileFormats(String agency,String reviewContractorName, String claimIDorDCN, 
 			String caseID, ADRFileFomat adrFileType, ADRFilesSize adrFileSize)throws Exception;
+	
+	/*
+	 * method to verify CMS status screen 
+	 */
+
+	public boolean verifyCMSStatusScreenAfterADRSubmission(String expectedCMSStatusTableHeaders,String reviewContractorName, String claimIDorDCN, 
+			String caseID, ADRFileFomat adrFileType, ADRFilesSize adrFileSize)throws Exception;
+	
+	
+	/*
+	 * method to verify the esmd report recods count
+	 */
+	public boolean verifyRecordsPresenUnderESMDreport()throws Exception; 
+
+	
+	
+	
+	/*
+	 * Use this BB to generate a random number which is of length your wish
+	 */
+	public long generateRandomInteger(int length)throws Exception;
+	
 }

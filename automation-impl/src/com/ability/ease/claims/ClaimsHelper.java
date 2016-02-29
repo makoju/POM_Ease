@@ -148,7 +148,7 @@ public class ClaimsHelper extends AbstractPageObject{
 
 
 
-	public String getCurrentTimeFromEaseDB(){
+	public static String getCurrentTimeFromEaseDB(){
 		String currentTimeStamp = null;
 		ResultSet rs = MySQLDBUtil.getResultFromMySQLDB("Select now()");
 		try {

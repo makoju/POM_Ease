@@ -23,4 +23,23 @@ public class AuditDocSelenium2Impl implements IAuditDoc{
 		return auditdocpage.verifyADRDocumentUploadFileFormats(agency, reviewContractorName, claimIDorDCN, caseID, adrFileType, adrFileSize);
 	}
 
+	@Override
+	public boolean verifyCMSStatusScreenAfterADRSubmission(String expectedCMSStatusTableHeaders,String reviewContractorName, String claimIDorDCN, 
+			String caseID, ADRFileFomat adrFileType,ADRFilesSize adrFileSize) throws Exception {
+		return auditdocpage.verifyCMSStatusScreenAfterADRSubmission(expectedCMSStatusTableHeaders,reviewContractorName,claimIDorDCN,caseID,adrFileType,adrFileSize);
+	}
+
+	@Override
+	public long generateRandomInteger(int length) throws Exception {
+		return auditdocpage.generateRandomInteger(length);
+	}
+
+	@Override
+	public boolean verifyRecordsPresenUnderESMDreport() throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	
+
 }

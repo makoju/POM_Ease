@@ -25,6 +25,8 @@ public class AuditDocTests extends BaseTest{
 	private String claimIDDCN;
 	private String caseID;
 	private String agency;
+	private String expectedCMSStatusTableHeaders;
+	private int length;
 	
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
 
@@ -33,24 +35,52 @@ public class AuditDocTests extends BaseTest{
 		auditdoc = (IAuditDoc)context.getBean("auditdoc");
 	}
 
-	/*
-	 * Implemented using XML approach 
-	 * @param - AttributeNameValueDialogProvider :: to provide a dialog provider with parsed attributes from xml
-	 */
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "Verify ADR Response Document Upload Accepting PDF,TIFF / TIF Formats", 
-	paramsInclude = { "reviewContractorName, claimIDDCN, caseID, adrFileFormat, adrFileSize, testType" })
+	paramsInclude = { "agency, reviewContractorName, length, caseID, adrFileFormat, adrFileSize, testType" })
 	public void verifyADRDocumentUploadFileFormats()throws Exception{
-
+		claimIDDCN = String.valueOf(auditdoc.generateRandomInteger(length));
+		keepAsGloablParameter("reviewContractorName", reviewContractorName);
+		keepAsGloablParameter("claimIDDCN", claimIDDCN);
+		keepAsGloablParameter("caseID", caseID);
+		keepAsGloablParameter("adrFileFormat", adrFileFormat.toString());
+		keepAsGloablParameter("adrFileSize", adrFileSize.toString());
+		
 		if(!auditdoc.verifyADRDocumentUploadFileFormats(agency, reviewContractorName, claimIDDCN, caseID, adrFileFormat, adrFileSize)){
 			report.report("Failed to upload ADR response document of type " + adrFileFormat + " with size " + adrFileSize , Reporter.FAIL);
 		}else{
 			report.report("Successfully uploaded ADR response document of type " + adrFileFormat + " with size " + adrFileSize, Reporter.ReportAttribute.BOLD);
 		}
 	}
+	
 
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify CMS Status Screen Details", 
+	paramsInclude = { "expectedCMSStatusTableHeaders, reviewContractorName, claimIDDCN, caseID, adrFileFormat, adrFileSize, testType" })
+	public void verifyCMSStatusScreenAfterADRSubmission()throws Exception{
 
+		if(!auditdoc.verifyCMSStatusScreenAfterADRSubmission(expectedCMSStatusTableHeaders, reviewContractorName, claimIDDCN, caseID, adrFileFormat, adrFileSize)){
+			report.report("Failed to validate CMS screen details after submitting the ADR" , Reporter.FAIL);
+		}else{
+			report.report("Successfully validated CMS screen details", Reporter.ReportAttribute.BOLD);
+		}
+	}
+
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Records Presen Under eSMDreport", 
+	paramsInclude = { "expectedCMSStatusTableHeaders, reviewContractorName, claimIDDCN, caseID, adrFileFormat, adrFileSize, testType" })
+	public void verifyRecordsPresenUnderESMDreport()throws Exception{
+
+		if(!auditdoc.verifyRecordsPresenUnderESMDreport()){
+			report.report("Records present under ADR report and records present under eSMD status report are not equal" , Reporter.FAIL);
+		}else{
+			report.report("Records present under ADR report and records present under eSMD status report are equal", Reporter.ReportAttribute.BOLD);
+		}
+	}
+	
 	/*###
 	# Getters and Setters
 	###*/
@@ -115,11 +145,29 @@ public class AuditDocTests extends BaseTest{
 		return agency;
 	}
 
-	@ParameterProperties(description = "Provide agency name to select {HHA1,HHA2,SNF,HOSPICE etc.,")
+	@ParameterProperties(description = "Provide agency name to select {HHA1,HHA2,SNF,HOSPICE etc.,}")
 	public void setAgency(String agency) {
 		this.agency = agency;
 	}
-	
+
+	public String getExpectedCMSStatusTableHeaders() {
+		return expectedCMSStatusTableHeaders;
+	}
+
+	@ParameterProperties(description = "Provide table headers expected on CMS status screen by separating with ,")
+	public void setExpectedCMSStatusTableHeaders(
+			String expectedCMSStatusTableHeaders) {
+		this.expectedCMSStatusTableHeaders = expectedCMSStatusTableHeaders;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	@ParameterProperties(description = "Provide length of claimIDDCN you want to generate it should be 13,14,15")
+	public void setLength(int length) {
+		this.length = length;
+	}
 	
 	
 }

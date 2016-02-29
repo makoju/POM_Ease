@@ -1207,7 +1207,8 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 * @throws Exception
 	 */
 	public boolean isTextExistInTable(String text, long waitTimeInSeconds) throws Exception {
-		String xpath = "//td[text() ='"+text+"'] | //td/span[text() ='"+text+"']" ;
+		//String xpath = "//td[text() ='"+text+"'] | //td/span[text() ='"+text+"']" ;
+		String xpath = "//td[text() ='"+text+"'] | //td/span[text() ='"+text+"']| //a[text() ='"+text+"']";
 		WebDriverWait wait = new WebDriverWait(driver, waitTimeInSeconds); // for links that become enable by client-side js
 		try{
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));

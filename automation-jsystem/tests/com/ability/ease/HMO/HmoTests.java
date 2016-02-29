@@ -108,16 +108,36 @@ public class HmoTests extends BaseTest{
 	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2} )
-	@TestProperties(name = "Verifing LiveSearch,Print functionality ",paramsInclude = { "HIC,testType" })
-	public void printAndAdvanceSearchFromHMO()throws Exception{
-		if(hmo.addDuplicatePatientToHMOFromPatientInfo(sHIC)){
-			report.report("LiveSearch and Print Functionlality from HMO are working", Reporter.ReportAttribute.BOLD);
+	@TestProperties(name = "Verifing LiveSearch and Print functionality ",paramsInclude = { "HIC,testType" })
+	public void AdvanceSearchFromHMO()throws Exception{
+		if(hmo.AdvanceSearchFromHMO(sHIC)){
+			report.report("LiveSearch Functionlality from HMO is  working", Reporter.ReportAttribute.BOLD);
 		}else{
-			report.report("LiveSearch and Print Functionlality from HMO are not working", Reporter.FAIL);
+			report.report("LiveSearch  Functionlality from HMO is not working", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2} )
+	@TestProperties(name = "Verifing  Print functionality ",paramsInclude = { "testType" })
+	public void printFromHMO()throws Exception{
+		if(hmo.printFromHMO()){
+			report.report("Print Functionlality from HMO is  working", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Print  Functionlality from HMO is not working", Reporter.FAIL);
 		}
 	}
 
-	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2} )
+	@TestProperties(name = "Verifing Acknowledge Functionality ",paramsInclude = { "HIC,testType" })
+	public void acknowledgeHMO()throws Exception{
+		if(hmo.acknowledgeHMO(sHIC)){
+			report.report("Patient is  acknowledged from HMO", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Patient is not acknowledged from HMO", Reporter.FAIL);
+		}
+	}
 	
 	/*
 	Getters and Setters methods

@@ -17,7 +17,9 @@ public interface IHMO {
 	abstract public boolean addtoHMOFromPatientInfo(String sHIC) throws Exception;
 	abstract public boolean addDuplicatePatientToHMOFromPatientInfo(String sHIC) throws Exception;
 	abstract public boolean trashHMOPatient(String sHIC) throws Exception;
-	abstract public boolean printAndAdvanceSearchFromHMO(String sHIC) throws Exception;
+	abstract public boolean AdvanceSearchFromHMO(String sHIC) throws Exception;
+	abstract public boolean acknowledgeHMO(String sHIC) throws Exception;
+	abstract public boolean printFromHMO() throws Exception;
 	
 	
 

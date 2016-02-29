@@ -21,6 +21,7 @@ import com.ability.ease.auto.common.TestCommonResource;
 import com.ability.ease.auto.common.UIActions;
 import com.ability.ease.auto.dataStructure.common.AttibuteXMLParser.UIAttributeXMLParser;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
+import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.home.HomePage;
 import com.ability.ease.home.HomePage.Menu;
 import com.ability.ease.home.HomePage.SubMenu;
@@ -79,12 +80,10 @@ public class HmoPage extends AbstractPageObject  {
 	 */	
 	public boolean addtoHMOFromPatientInfo(String sHIC) throws Exception {
 		hhp.navigateToPatientInfoPage(sHIC);
-		boolean bHICinHMOCatcher;
 		alertverify=verifyAlert("Patient was successfully added to HMO Advantage Move Catcher!");
-		clickLink("HMO/Adv Catcher Patients");
-		bHICinHMOCatcher=isTextPresent("spatientdays");
+		safeJavaScriptClick("HMO/Adv Catcher Patients");
 		String spatientdays=hhp.HMODBConnection(sHIC);
-		if(bHICinHMOCatcher && alertverify && spatientdays.equals("75")){
+		if(alertverify && spatientdays.equals("75")){
 			return true;
 		}
 		else{
@@ -100,19 +99,44 @@ public class HmoPage extends AbstractPageObject  {
 		return verifyAlert("Your request to add this patient to the HMO Advantage Move Catcher was not accepted because this patient is already being tracked by HMO Advantage Move Catcher!");
 		
 	}
+	/*
+	 * Removing a patient from HMO Catcher
+	 */	
 	public boolean trashHMOPatient(String sHIC) throws Exception{
 		hhp.navigateToHMOCatcherExtendPage();
-		checkChkBox(".//*[contains(text(),"+"'"+sHIC+"'"+")]/../preceding-sibling::td/input");
-		clickLink("reportDelete");
-		return(isTextExistInTable(".//*[contains(text(),"+"'"+sHIC+"'"+")]"));
+		if(isTextExistInTable(sHIC,5)){	
+			driver.findElement(By.xpath(".//*[contains(text(),'"+sHIC+"')]/../preceding-sibling::td/input")).click();
+			clickLinkV2("reportDelete");
+			return true;
+		}
+		else{
+			return false;
+		}
 		
 	}
-	
-	public boolean printAndAdvanceSearchFromHMO(String sHIC) throws Exception{
+	/*
+	 * Acknowledge Patient from HMO Catcher
+	 */	
+	public boolean acknowledgeHMO(String sHIC) throws Exception{
+		safeJavaScriptClick("ELIG.");
+		waitForElementToBeClickable(ByLocator.linktext,"HMO/Adv. Catcher Report",5);
+		safeJavaScriptClick("HMO/Adv. Catcher Report");
+		driver.findElement(By.xpath(".//*[contains(text(),'"+sHIC+"')]/../preceding-sibling::td")).click();
+		if(isTextExistInTable(sHIC,5)){
+			return false;
+		}
+			else{
+			return true;
+		}
+
+	}
+	public boolean AdvanceSearchFromHMO(String sHIC) throws Exception{
 		int ifailCount=0;
 		hhp.navigateToHMOCatcherExtendPage();
-		moveToElement("reportHICSearch");
-		selectByNameOrID("reportHICEntry", sHIC);
+		WebElement searchIcon = driver.findElement(By.id("reportHICSearch"));
+		moveToElementAndClick(searchIcon);
+		typeEditBox("reportHICEntry", sHIC);
+		
 		clickButton("reportHICButton");
 		boolean bliveSearcheligcheck=isTextExistInTable(".//*[@id='mainPageArea']/div/table/tbody/tr/td");
 		boolean bliveSearchPatientInfo=isTextExistInTable(".//*[@id='mainPageArea']/div/table/tbody/tr/td");
@@ -136,18 +160,26 @@ public class HmoPage extends AbstractPageObject  {
 		{
 			return true;
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 	}
+	
+	public boolean printHMO() throws Exception{
+		hhp.navigateToHMOCatcherExtendPage();
+		driver.findElement(By.xpath(".//*[@id='reportPrint']")).click();
+		Thread.sleep(1000);
+  
+		return true;
+	}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub

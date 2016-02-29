@@ -17,10 +17,11 @@
     <target name="execute scenario">
         <antcallback target="t0"/>
         <antcallback target="t1"/>
+        <antcallback target="t2"/>
     </target>
     <target name="t0">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="04268b5f-f8c7-4005-a266-09e2f861e6e0"/>
+            <sysproperty key="jsystem.uuid" value="d3228aeb-99f2-4217-89b1-9de5e09096a9"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.misc.MiscTests.loginToEase"/>
@@ -28,7 +29,15 @@
     </target>
     <target name="t1">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="1a8aedfc-eb16-40c7-8111-d8e15e2d3d64"/>
+            <sysproperty key="jsystem.uuid" value="6d5da933-95d5-479f-9eef-c55d47ea460c"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.HMO.HmoTests.addToHMODuplicate"/>
+        </jsystem>
+    </target>
+    <target name="t2">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="4914ac50-2ea3-410e-a650-3438ea1d47b1"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.HMO.HmoTests.addDuplicateToHMOFromPatientInfo"/>

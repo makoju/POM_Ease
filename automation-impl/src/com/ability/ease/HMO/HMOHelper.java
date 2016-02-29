@@ -6,8 +6,10 @@ import java.sql.Savepoint;
 import java.util.Map;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import com.ability.ease.auto.common.MySQLDBUtil;
+import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 public class HMOHelper extends AbstractPageObject {
@@ -17,7 +19,7 @@ public class HMOHelper extends AbstractPageObject {
 	 */
 	public void FillHmo(String  sAgency,String sHIC,String sLastName, String sFirstName,String sDob,String sSex) throws Exception{
 		safeJavaScriptClick("ELIG.");
-		waitForElementVisibility(By.linkText("Add to HMO/Adv. Catcher"));
+		waitForElementToBeClickable(ByLocator.linktext,"Add to HMO/Adv. Catcher",5);
 		safeJavaScriptClick("Add to HMO/Adv. Catcher");
 		selectByNameOrID("ProvID", sAgency);
 		typeEditBox("hic", sHIC);
@@ -59,9 +61,11 @@ public class HMOHelper extends AbstractPageObject {
 	 * Navigate to Patient info from Eligibility-report link
 	 */	
 	public void navigateToPatientInfoPage(String sHIC) throws Exception	{
-		clickLinkV2("tdGoodActivity");
-		driver.findElement(By.xpath(".//*[contains(text(),"+"'"+sHIC+"'"+")]/../following-sibling::td/a[text()='Report']")).click();
-		clickLinkV2("Add patient to my HMO Move Catcher list.");
+		String xpathToGreenBoxAQB = "//td[@id='tdGoodActivity']";
+		WebElement greenBox = waitForElementToBeClickable(ByLocator.xpath, xpathToGreenBoxAQB, 10);
+		greenBox.click();
+		driver.findElement(By.xpath("//*[contains(text(),'"+sHIC+"')]/../following-sibling::td/a[text()='Report']")).click();
+		clickLink("Add patient to my HMO Move Catcher list.");
 	}
 	
 	/*
@@ -69,7 +73,7 @@ public class HMOHelper extends AbstractPageObject {
 	 */	
 	public void navigateToHMOCatcherExtendPage() throws Exception	{
 		safeJavaScriptClick("ELIG.");
-		waitForButtonToBeClickable("ELIG.",1000);
+		waitForElementToBeClickable(ByLocator.linktext,"ELIG.",8);
 		safeJavaScriptClick("HMO/Adv Catcher Patients");
 	}
 	@Override

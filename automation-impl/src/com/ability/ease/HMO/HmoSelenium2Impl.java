@@ -46,9 +46,21 @@ public class HmoSelenium2Impl implements IHMO{
 	}
 
 	@Override
-	public boolean printAndAdvanceSearchFromHMO(String sHIC) throws Exception {
+	public boolean AdvanceSearchFromHMO(String sHIC) throws Exception {
 		// TODO Auto-generated method stub
-		return false;
+		return hp.AdvanceSearchFromHMO(sHIC);
+	}
+
+	@Override
+	public boolean acknowledgeHMO(String sHIC) throws Exception {
+		// TODO Auto-generated method stub
+		return hp.acknowledgeHMO(sHIC);
+	}
+
+	@Override
+	public boolean printFromHMO() throws Exception {
+		// TODO Auto-generated method stub
+		return hp.printHMO();
 	}
 
 	

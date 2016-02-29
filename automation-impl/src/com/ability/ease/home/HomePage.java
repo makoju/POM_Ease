@@ -21,6 +21,7 @@ public class HomePage extends AbstractPageObject{
 		MYDDE("MY DDE"),
 		Admin("ADMINISTRATION"),
 		ELIGIBILITY("ELIG."),
+		MYACCOUNT("MY ACCOUNT"),
 		NA("NA");
 		private String value;
 

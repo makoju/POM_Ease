@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jsystem.framework.report.Reporter;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -132,40 +134,60 @@ public class HmoPage extends AbstractPageObject  {
 	}
 	public boolean AdvanceSearchFromHMO(String sHIC) throws Exception{
 		int ifailCount=0;
+		List<String>  al=new ArrayList();
+		int iflag=1;
 		hhp.navigateToHMOCatcherExtendPage();
 		WebElement searchIcon = driver.findElement(By.id("reportHICSearch"));
-		moveToElementAndClick(searchIcon);
+		moveToElement(searchIcon);
 		typeEditBox("reportHICEntry", sHIC);
-		
 		clickButton("reportHICButton");
-		boolean bliveSearcheligcheck=isTextExistInTable(".//*[@id='mainPageArea']/div/table/tbody/tr/td");
-		boolean bliveSearchPatientInfo=isTextExistInTable(".//*[@id='mainPageArea']/div/table/tbody/tr/td");
-		if(bliveSearcheligcheck == false || bliveSearchPatientInfo == false){
-			ifailCount++;
+		boolean bliveSearcheligcheck=driver.getPageSource().contains("ELIGIBILITY CHECK AND CLAIMS SCRAPE");
+		waitForElementVisibility(By.xpath(".//*[@id='reportarea']/div[1]/table/tbody/tr/td"),4);
+		boolean bliveSearchPatientInfo=driver.getPageSource().contains("PATIENT INFORMATION ");
+		if(bliveSearcheligcheck == true || bliveSearchPatientInfo == true){
+			al.add("Pass");
+			report.report("Live Search from HMO is working fine" ,Reporter.ReportAttribute.BOLD);
+		}
+		else{
+			al.add("Fail");
+			report.report("Live Search from HMO is not working fine", Reporter.FAIL);
+			
 		}
 		hhp.navigateToHMOCatcherExtendPage();
-		moveToElement("reportHICSearch");
-		selectByNameOrID("reportAdvanceSearch", sHIC);
-		boolean bliveSearchAdvance= isTextExistInTable(".//*[@id='mainPageArea']/div/table/tbody/tr/td");
-		if(bliveSearchAdvance==false){
-			ifailCount++;
-		}
-		hhp.navigateToHMOCatcherExtendPage();
-		clickButton("reportPrint");
+		moveToElement(searchIcon);
+		WebElement advanceSearch = driver.findElement(By.xpath("//*[@id='reportAdvanceSearch']"));
+		safeJavaScriptClick(advanceSearch);
+		boolean bliveSearchAdvance= driver.getPageSource().contains("ADVANCED SEARCH");
 		
-		if(ifailCount>0){
-			return false;
+		if(bliveSearchAdvance==true){
+			al.add("Pass");
+			report.report("Advance Search Navigation from HMO is working fine", Reporter.ReportAttribute.BOLD);
 		}
 		else
 		{
+			al.add("Fail");
+			report.report("Advance Search Navigation from HMO is not working fine", Reporter.FAIL);
+		}
+	
+		for(int i=0;i<al.size();i++){
+			if(al.get(i).equals("Fail")){
+				iflag=0;
+				break;
+			}
+			
+		}
+		if(iflag==1){
 			return true;
 		}
+		else{
+			return false;
+		}
+		
 	}
 	
 	public boolean printHMO() throws Exception{
 		hhp.navigateToHMOCatcherExtendPage();
 		driver.findElement(By.xpath(".//*[@id='reportPrint']")).click();
-		Thread.sleep(1000);
   
 		return true;
 	}

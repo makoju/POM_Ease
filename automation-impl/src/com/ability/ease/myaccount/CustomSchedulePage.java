@@ -1,22 +1,10 @@
 package com.ability.ease.myaccount;
 
-import java.io.ByteArrayInputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
-import org.w3c.dom.Document;
 
 import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.TestCommonResource;
@@ -48,24 +36,15 @@ public class CustomSchedulePage extends AbstractPageObject {
 		UIActions changeSchedule = new UIActions();
 		changeSchedule.fillScreenAttributes(lsAttributes);
 		
-		clickButton("Save");
-		if(!verifyAlert("Custom Schedule Added successfully!")){
+		clickButtonV2("Save");
+		if(!verifyAlert("Custom Schedule saved successfully!")){
 			report.report("Custom schedule setup was unsuccessful");
 			return false;
 		}
 		return true;
-		
-
-		/*Thread.sleep(5000);
-		Dbcolumnsvalidatation dbcolumnsvalidatationRows = new Dbcolumnsvalidatation();
-
-		// validations
-		String sTimeZone = mapAttrValues.get("Timezone");// mapAttrValues.get("Timezone");
-		report.report("Timezone is added");
-		ArrayList<Dbcolumnsvalidatation> xmlFileMap = helper.getCronScheduleXMLFilesFromDB(sTimeZone);*/
 	}
 	
-	public boolean verifyCustomSchedule(String agencyName,String schedulername, String sDay, String EndDay, String runtime, String credential,String timezone, int rownumber) throws ParseException, SQLException{
+	public boolean verifyCustomSchedule(String agencyName, String sDay, String EndDay, String runtime, String credential,String timezone, int rownumber) throws ParseException, SQLException{
 		
 		int actStartDay=0;
 		int actEndDay=0;
@@ -73,8 +52,8 @@ public class CustomSchedulePage extends AbstractPageObject {
 		int failurecount=0;
 		
 		
-		String query1 = "Select ps.StartDay,ps.EndDay,ps.cronschedule from ddez.provider p join ddez.providerschedule ps ON p.id = ps.providerid where p.DisplayName='"
-				+ agencyName + "' and p.JobType=10";
+		String query1 = "Select ps.StartDay,ps.EndDay,ps.cronschedule,ps.OnOff,ps.Schedule from ddez.provider p join ddez.providerschedule ps ON p.id = ps.providerid where p.DisplayName='"
+				+ agencyName + "' and ps.JobType=10";
 		ResultSet rs = MySQLDBUtil.getResultFromMySQLDB(query1);
 		int count = 1;
 		while(rs.next()){
@@ -84,6 +63,7 @@ public class CustomSchedulePage extends AbstractPageObject {
 				actCronSchedule = rs.getString(3);
 				break;
 			}
+			count++;
 		}
 		
 		if(!(Integer.parseInt(sDay) == actStartDay)){
@@ -101,10 +81,24 @@ public class CustomSchedulePage extends AbstractPageObject {
 			report.report("Actual and expected cronschedulers do not match", Reporter.WARNING);
 			failurecount++;
 		}
+		
 		return failurecount==0?true:false;
 	}
-		
+	
+	public boolean verifyJobScheduleCurrentAction(String agencyName){
+		String query1 = "INSERT INTO ddez.jobschedule select p.customerid,p.id, 10, @rownum := @rownum+1, now(),0,null,null,null,null,null,null,null,-102,null,null from provider p where p.DisplayName='"+agencyName+"'";
 
+		if(!(MySQLDBUtil.getInsertUpdateRowsCount(query1)>0)){
+			report.report("Failed to insert record into Job Schedule Table", Reporter.WARNING);
+			return false;
+		}
+		String sQueryName = "SELECT * FROM ddez.jobschedule js where js.JobType=10 limit 1"; 
+		ResultSet rs1 = MySQLDBUtil.getResultFromMySQLDB(sQueryName);
+		String currentaction = MySQLDBUtil.getColumnValue(rs1, "CurrentAction");
+		return (currentaction!=null && currentaction.equalsIgnoreCase("Initializing connection"))?true:false;
+	}
+		
+/*
 	// Start day and endday validation from DB
 	public boolean verifyStartDayEndDay(Map<String, String> mapAttrValues,String startDayEnddayConfValue, String agencyName) throws Exception {
 		UIAttributeXMLParser parser = UIAttributeXMLParser.getInstance();
@@ -137,7 +131,7 @@ public class CustomSchedulePage extends AbstractPageObject {
 		return startDayEnddayConfValue.equals(DBtmpData.toString());
 	}
 
-	/*// validation for Cronformat to CST
+	// validation for Cronformat to CST
 	public boolean verifyRuntimeCronscheduleToCST(int hours ,String agency ){
 					String customschedule = scrAttr.getLocator();
 					String[] customschedulevalue = scrAttr.getValue().split(";");
@@ -191,7 +185,7 @@ public class CustomSchedulePage extends AbstractPageObject {
 					
 					
 					}
-			}*/
+			}
 
 	public int booleanToInt(boolean input) {
 		if (input)
@@ -200,7 +194,6 @@ public class CustomSchedulePage extends AbstractPageObject {
 			return 0;
 
 	}
-
 
 	private static Document convertStringToDocument(String xmlStr) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -215,7 +208,7 @@ public class CustomSchedulePage extends AbstractPageObject {
 		}
 		return null;
 
-	}
+	}*/
 
 	@Override
 	public void assertInPage() {
@@ -225,7 +218,9 @@ public class CustomSchedulePage extends AbstractPageObject {
 
 	@Override
 	public void navigateToPage() throws Exception {
-		HomePage.getInstance().navigateTo(Menu.MYACCOUNT, null);
-
+		int count=0;
+		while(!isTextPresent("Change Schedule") && count++ < 3){
+			HomePage.getInstance().navigateTo(Menu.MYACCOUNT, null);
+		}
 	}
 }

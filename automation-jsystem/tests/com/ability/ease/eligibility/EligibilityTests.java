@@ -201,6 +201,49 @@ public class EligibilityTests extends BaseTest{
 		}	
 	}
 	
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Get the count of ${status} Activites", paramsInclude = { "status,testType" })
+	public void getActivityCount(String status) throws Exception {
+		report.report("Inside getActivityCount test method");
+		keepAsGloablParameter("activitycount", Integer.toString(elig.getActivityCount(status)));
+	}
+	
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify ${status} Activities CountIncreasedByOne", paramsInclude = { "status,testType" })
+	public void VerifyActivityCountIncreasedByOne(String status) throws Exception {
+		report.report("Inside VerifyActivityCountIncreasedByOne test method");
+		int activitycount = Integer.parseInt(globalParamMap.get("activitycount"));
+		int latestactivitycount = elig.getActivityCount(status);
+		if(activitycount+1 == latestactivitycount)
+			report.report("Activity: "+status+" count increased by one", Reporter.PASS);
+		else
+			report.report("Activity: "+status+" count was not increased by one Actual: "+latestactivitycount+" Expected: "+(activitycount+1), Reporter.FAIL);
+	}
+	
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify ${status} Activities CountDecreasedByOne", paramsInclude = { "status,testType" })
+	public void VerifyActivityCountDecreasedByOne(String status) throws Exception {
+		report.report("Inside VerifyActivityCountDecreasedByOne test method");
+		int activitycount = Integer.parseInt(globalParamMap.get("activitycount"));
+		int latestactivitycount = elig.getActivityCount(status);
+		if(activitycount-1 == latestactivitycount)
+			report.report("Activity: "+status+" count decreased by one", Reporter.PASS);
+		else
+			report.report("Activity: "+status+" count was not decreased by one Actual: "+latestactivitycount+" Expected: "+(activitycount-1), Reporter.FAIL);
+	}
+	
 	/*######
 	Getters and Setters
 	######*/

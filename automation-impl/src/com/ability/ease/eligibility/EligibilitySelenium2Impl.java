@@ -57,4 +57,9 @@ public class EligibilitySelenium2Impl implements IEligibility{
 	public boolean verifyOptionsUnderFailedActivityLogScreen() throws Exception {
 		return eligPage.verifyOptionsUnderFailedActivityLogScreen(); 
 	}
+
+	@Override
+	public int getActivityCount(String status) throws Exception {
+		return eligPage.getActivityCount(status);
+	}
 }

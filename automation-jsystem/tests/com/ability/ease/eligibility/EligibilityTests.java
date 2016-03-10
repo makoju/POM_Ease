@@ -51,10 +51,13 @@ public class EligibilityTests extends BaseTest{
 	public void submitEligibilityCheck() throws Exception {
 		report.report("Inside submitEligibilityCheck tests method");
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
-		globalParamMap.put("hic", mapAttrValues.get("HIC"));
-		globalParamMap.put("agency", mapAttrValues.get("Agency"));
-		globalParamMap.put("lastname", mapAttrValues.get("Last Name"));
-		globalParamMap.put("firstname", mapAttrValues.get("First Name"));
+		//adding milliseconds to firstname to avoid data duplicate problems
+		mapAttrValues.put("First Name", mapAttrValues.get("First Name")+System.currentTimeMillis());
+
+		keepAsGloablParameter("hic", mapAttrValues.get("HIC"));
+		keepAsGloablParameter("agency", mapAttrValues.get("Agency"));
+		keepAsGloablParameter("lastname", mapAttrValues.get("Last Name"));
+		keepAsGloablParameter("firstname", mapAttrValues.get("First Name"));
 		
 		if(!elig.submitEligibilityCheck(mapAttrValues)) {
 			report.report("Failed to Submit eligibility Check!!!",	Reporter.FAIL);
@@ -270,7 +273,8 @@ public class EligibilityTests extends BaseTest{
 	public String getFirstname() {
 		return firstname;
 	}
-
+	
+	@ParameterProperties(description = "Provide the FirstName Value it suffix current time in milliseconds to it")
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}

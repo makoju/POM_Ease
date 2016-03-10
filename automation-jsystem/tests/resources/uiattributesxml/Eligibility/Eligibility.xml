@@ -27,7 +27,7 @@
 		<locator>fname</locator>
 		<style>Text</style>
 		<displayName>First Name</displayName>
-		<description>First name of the patient</description>
+		<description>Provide the FirstName Value it suffix current time in milliseconds in back end to avoid duplicate problems</description>
 	</UIAttribute>
 	
 	<UIAttribute>

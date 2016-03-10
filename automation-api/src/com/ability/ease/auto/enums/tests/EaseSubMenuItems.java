@@ -39,5 +39,27 @@ public class EaseSubMenuItems {
 			return value;
 		}
 	};
+	
+	public static enum ClaimStatusType{
+		Any("Any"),
+		Denied("Denied"),
+		Rejected("Rejected"),
+		RTP("RTP"),
+		Suspense("Suspense"),
+		Paid("Paid"),
+		NotPaid("Not Paid");
+		
+		private String value;
+
+		private ClaimStatusType(String value) {
+			this.value = value;
+		}
+
+		@Override
+		public String toString() {
+			return value;
+		}
+		
+	};
 
 }

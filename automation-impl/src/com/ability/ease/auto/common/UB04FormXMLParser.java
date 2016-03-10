@@ -8,6 +8,11 @@ import java.math.BigDecimal;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import jsystem.framework.report.Reporter.ReportAttribute;
 
@@ -146,47 +151,56 @@ public class UB04FormXMLParser extends AbstractPageObject{
 		return doc;
 	}
 
-	public float[] getClaimTotals(String sFile){
+	@SuppressWarnings("static-access")
+	public float[] getClaimTotals(String sFile)throws Exception{
 
-		float totalCharges = 0,nonCoveredCharges = 0,tempTotalCharges = 0,tempNonCoveredCharges=0;
+		String sTotalCharges = null, sNonCoveredCharges = null;
+		float claimTotals[] = null;
 
-		String sFieldName = null, sActualFieldValue = null;
-		Document doc = createDOMDocument(sFile);
-		NodeList nList = doc.getElementsByTagName("field");
-		List<String> claimFiled = new ArrayList<String>();
-		claimFiled.add("rev");claimFiled.add("ndcNumPrefix");claimFiled.add("HCPC");claimFiled.add("service_date");claimFiled.add("total_units");
-		claimFiled.add("tot_charge");claimFiled.add("ncov_charge");
-		for (int i = 0; i < nList.getLength(); i++) {
-			Node nNode = nList.item(i);
-			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-				Element eElement = (Element) nNode;
-				sFieldName = eElement.getAttribute("name");
-				sActualFieldValue = eElement.getAttribute("new");
-				if(claimFiled.contains(sFieldName)){
-					if(sFieldName.equalsIgnoreCase("tot_charge")){
-						tempTotalCharges = Float.valueOf(sActualFieldValue);
-						totalCharges = totalCharges + tempTotalCharges;
-					}else if(sFieldName.equalsIgnoreCase("ncov_charge")){
-						tempNonCoveredCharges = Float.valueOf(sActualFieldValue);
-						nonCoveredCharges = nonCoveredCharges + tempNonCoveredCharges;
-					}
-				}else{
-					continue;
-				}
-			}
+		String sXpathExpression = "//field[@name='rev' and @new='0001']/../field[@name='tot_charge']/@new";
+		sTotalCharges = getValueOfXpathExpression(sFile, sXpathExpression);
+
+		String sXpathExpression2 = "//field[@name='rev' and @new='0001']/../field[@name='ncov_charge']/@new";
+		sNonCoveredCharges = getValueOfXpathExpression(sFile, sXpathExpression2);
+
+		if( sTotalCharges != null && sNonCoveredCharges != null) {
+			report.report("Actual total charges from XML file are:" + sTotalCharges);
+			report.report("Actual total non covered charges from XML file are:" + sNonCoveredCharges);
+			claimTotals = new float[]{Float.valueOf(sTotalCharges), Float.valueOf(sNonCoveredCharges)};
+		}else{
+			report.report("Can not read claims totals from XML file", report.WARNING);
 		}
-		totalCharges = totalCharges - tempTotalCharges;
-		nonCoveredCharges = nonCoveredCharges - tempNonCoveredCharges;
-		report.report("Actual total charges are:" + String.valueOf(round(totalCharges,2)));
-		report.report("Actual total non covered charges are:" + String.valueOf(round(nonCoveredCharges,2)));
-		float claimTotals[] = new float[]{round(totalCharges,2), round(nonCoveredCharges,2)};
 		return claimTotals;
 	}
 
-	public static float round(float d, int decimalPlace) {
-		BigDecimal bd = new BigDecimal(Float.toString(d));
-		bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
-		return bd.floatValue();
+	public String getValueOfXpathExpression(String sXMLFile, String sXpathExpression){
+
+		String sValue = null;
+		DocumentBuilderFactory documentumentBuilderFactory = DocumentBuilderFactory.newInstance();
+		documentumentBuilderFactory.setNamespaceAware(true);
+		DocumentBuilder documentumentBuilder;
+		try {
+			documentumentBuilder = documentumentBuilderFactory.newDocumentBuilder();
+			Document document = documentumentBuilder.parse(sXMLFile);
+			XPathFactory xpathFactory = XPathFactory.newInstance();
+			XPath xpath = xpathFactory.newXPath();
+			XPathExpression expr1 = xpath.compile(sXpathExpression);
+			sValue = (String) expr1.evaluate(document, XPathConstants.STRING);
+
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sValue;
 	}
 
 	@Override

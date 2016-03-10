@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -39,13 +40,26 @@ public class Verify extends AbstractPageObject{
 		{
 			for(int i=0;i<actual.length;i++)
 			{
-				if(actual[i].equals(expected[i])){
-					report.report("Actual and Expected string are equal. Actual: "+ actual[i]+ "  Expected: "+expected[i], ReportAttribute.BOLD);
-					continue;
+				if(ignorecase){
+					if(actual[i].equalsIgnoreCase(expected[i])){
+						report.report("Actual and Expected string are equal. Actual: "+ actual[i]+ "  Expected: "+expected[i], ReportAttribute.BOLD);
+						continue;
+					}
+					else{
+						isTrue=false;
+						report.report("Actual and Expected string are not equal. Actual: "+ actual[i]+ "  Expected: "+expected[i], Reporter.WARNING);
+					}
 				}
-				else{
-					isTrue=false;
-					report.report("Actual and Expected string are not equal. Actual: "+ actual[i]+ "  Expected: "+expected[i], Reporter.WARNING);
+				else
+				{
+					if(actual[i].equals(expected[i])){
+						report.report("Actual and Expected string are equal. Actual: "+ actual[i]+ "  Expected: "+expected[i], ReportAttribute.BOLD);
+						continue;
+					}
+					else{
+						isTrue=false;
+						report.report("Actual and Expected string are not equal. Actual: "+ actual[i]+ "  Expected: "+expected[i], Reporter.WARNING);
+					}
 				}
 			}
 		}
@@ -77,12 +91,13 @@ public class Verify extends AbstractPageObject{
 	public static String getTableData(String tableidentifier, int row, int column){
 		String text="";
 		WebElement we = getTable(tableidentifier);
-
+		String columnxpath="//table[@id='"+tableidentifier+"']//tbody/tr["+row+"]"+"/td["+column+"] | //span[text()='"+tableidentifier+"']/following-sibling::table//tbody/tr["+row+"]"+"/td["+column+"]";
+		
 		boolean bFlag = false;
 		if(we != null){
 			while( !bFlag ) {
 				waitForElement(By.xpath("tbody/tr["+row+"]"+"/td["+column+"]"));
-				WebElement dataelement = we.findElement(By.xpath("tbody/tr["+row+"]"+"/td["+column+"]"));
+				WebElement dataelement = driver.findElement(By.xpath(columnxpath));
 				text = dataelement.getAttribute("innerText");
 				if(text.isEmpty()){
 					row++;
@@ -333,5 +348,21 @@ public class Verify extends AbstractPageObject{
 			isColFound = false;
 		}
 		return faliureCount == 0? true:false;
+	}
+	/**
+	 * nageswar.bodduri
+	 * @param array1
+	 * @param array2
+	 * @return true if both arrays are identical; false otherwise
+	 */
+	public static boolean compareFloatArrays(float[] array1,float[] array2){
+		boolean result = false;
+		if( array1.length > 0 && array2.length > 0) {
+			result =  Arrays.equals(array1, array2);
+		}else{
+			report.report("One or both arrays are empty, hence can not compare");
+			result = false;
+		}
+		return result;
 	}
 }

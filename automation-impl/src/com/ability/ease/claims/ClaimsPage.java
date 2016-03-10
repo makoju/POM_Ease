@@ -427,7 +427,7 @@ public class ClaimsPage extends AbstractPageObject{
 				report.report("Fail : Fail to validate edit claim line model dailog window header");
 			}
 		}
-		if(Verify.ListEquals(editClaimLineModelDailogBoxDataExpected, editClaimLineModelDailogBoxDataActual)){
+		if(Verify.listEquals(editClaimLineModelDailogBoxDataExpected, editClaimLineModelDailogBoxDataActual)){
 			report.report("Data in edit claim line model dailog box is validated successfully", ReportAttribute.BOLD);
 		}else{
 			report.report("Fail : there is a mismatch in data on edit claim line model dailog window");

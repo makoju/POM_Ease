@@ -30,11 +30,6 @@ public class EligibilityTests extends BaseTest{
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
 	private String hic,agency,firstname,lastname,description, status;
 
-	//Constructor
-	public EligibilityTests()throws Exception{
-		super();
-	}
-
 	@Before
 	public void setupTests()throws Exception{
 		elig = (IEligibility)context.getBean("elig");
@@ -44,7 +39,7 @@ public class EligibilityTests extends BaseTest{
 	@Override
 	public void handleUIEvent(HashMap<String, Parameter> map, String methodName) throws Exception {	
 		super.handleUIEvent(map, methodName);
-			UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Eligibility\\Eligibility.xml");
+		UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Eligibility\\Eligibility.xml");
 	}
 	
 	/**
@@ -118,7 +113,7 @@ public class EligibilityTests extends BaseTest{
 	 */
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
-	@TestProperties(name = "Verify HETS Activities Completed Status", paramsInclude = { "hic,agency,firstname,lastname,testType" })
+	@TestProperties(name = "Verify HETS Activities Completed Status Report", paramsInclude = { "hic,agency,firstname,lastname,testType" })
 	public void verifyHETSActivitiesCompletedStatusReport() throws Exception {
 		report.report("Inside verifyHETSActivitiesCompletedStatusReport tests method");
 		if(!elig.verifyHETSActivitiesCompletedStatusReport(hic, agency, firstname, lastname)) {
@@ -199,6 +194,49 @@ public class EligibilityTests extends BaseTest{
 		} else {
 			report.report("Successfully verified Options Under Failed Activity Log Screen!!!", Reporter.PASS);
 		}	
+	}
+	
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Get the count of ${status} Activites", paramsInclude = { "status,testType" })
+	public void getActivityCount() throws Exception {
+		report.report("Inside getActivityCount test method");
+		keepAsGloablParameter(status+"activitycount", Integer.toString(elig.getActivityCount(status)));
+	}
+	
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify ${status} Activities CountIncreasedByOne", paramsInclude = { "status,testType" })
+	public void VerifyActivityCountIncreasedByOne() throws Exception {
+		report.report("Inside VerifyActivityCountIncreasedByOne test method");
+		int activitycount = Integer.parseInt(globalParamMap.get(status+"activitycount"));
+		int latestactivitycount = elig.getActivityCount(status);
+		if(activitycount+1 == latestactivitycount)
+			report.report("Activity: "+status+" count increased by one", Reporter.PASS);
+		else
+			report.report("Activity: "+status+" count was not increased by one Actual: "+latestactivitycount+" Expected: "+(activitycount+1), Reporter.FAIL);
+	}
+	
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify ${status} Activities CountDecreasedByOne", paramsInclude = { "status,testType" })
+	public void VerifyActivityCountDecreasedByOne() throws Exception {
+		report.report("Inside VerifyActivityCountDecreasedByOne test method");
+		int activitycount = Integer.parseInt(globalParamMap.get("activitycount"));
+		int latestactivitycount = elig.getActivityCount(status);
+		if(activitycount-1 == latestactivitycount)
+			report.report("Activity: "+status+" count decreased by one", Reporter.PASS);
+		else
+			report.report("Activity: "+status+" count was not decreased by one Actual: "+latestactivitycount+" Expected: "+(activitycount-1), Reporter.FAIL);
 	}
 	
 	/*######

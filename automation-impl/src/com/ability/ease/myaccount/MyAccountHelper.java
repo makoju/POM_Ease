@@ -2,16 +2,11 @@ package com.ability.ease.myaccount;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
-
 import jsystem.framework.report.Reporter;
-import jsystem.framework.report.Reporter.ReportAttribute;
 
 public class MyAccountHelper extends AbstractPageObject{
 
@@ -45,7 +40,6 @@ public class MyAccountHelper extends AbstractPageObject{
 
 	public Map<Integer, String> getScheduleXMLFilesFromDB(String sAgencyNumber){		
 		Map<Integer, String> listOfXMLs = new HashMap<Integer, String>();
-		String agencyNumber = String.valueOf(sAgencyNumber);
 
 		String  sSQLQueryToGetTheXMLFile ="Select ps.JobType, ps.Schedule from ddez.provider p join ddez.providerschedule ps ON p.id = ps.providerid where p.DisplayName='"+sAgencyNumber+"'"; 
 		ResultSet rs =MySQLDBUtil.getResultFromMySQLDB(sSQLQueryToGetTheXMLFile);

@@ -18,10 +18,7 @@ import com.ability.ease.auto.common.UIActions;
 import com.ability.ease.auto.common.Verify;
 import com.ability.ease.auto.dataStructure.common.AttibuteXMLParser.UIAttributeXMLParser;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
-<<<<<<< HEAD
 import com.ability.ease.mydde.reports.MyDDEReportsPage;
-=======
->>>>>>> cd3addbfca9092e11a47c637cfd9665ecf2dfb0e
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 public class ClaimsPage extends AbstractPageObject{

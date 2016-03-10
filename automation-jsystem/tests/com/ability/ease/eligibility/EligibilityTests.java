@@ -113,7 +113,7 @@ public class EligibilityTests extends BaseTest{
 	 */
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
-	@TestProperties(name = "Verify HETS Activities Completed Status", paramsInclude = { "hic,agency,firstname,lastname,testType" })
+	@TestProperties(name = "Verify HETS Activities Completed Status Report", paramsInclude = { "hic,agency,firstname,lastname,testType" })
 	public void verifyHETSActivitiesCompletedStatusReport() throws Exception {
 		report.report("Inside verifyHETSActivitiesCompletedStatusReport tests method");
 		if(!elig.verifyHETSActivitiesCompletedStatusReport(hic, agency, firstname, lastname)) {
@@ -204,7 +204,7 @@ public class EligibilityTests extends BaseTest{
 	@TestProperties(name = "Get the count of ${status} Activites", paramsInclude = { "status,testType" })
 	public void getActivityCount() throws Exception {
 		report.report("Inside getActivityCount test method");
-		keepAsGloablParameter("activitycount", Integer.toString(elig.getActivityCount(status)));
+		keepAsGloablParameter(status+"activitycount", Integer.toString(elig.getActivityCount(status)));
 	}
 	
 	/**
@@ -215,7 +215,7 @@ public class EligibilityTests extends BaseTest{
 	@TestProperties(name = "Verify ${status} Activities CountIncreasedByOne", paramsInclude = { "status,testType" })
 	public void VerifyActivityCountIncreasedByOne() throws Exception {
 		report.report("Inside VerifyActivityCountIncreasedByOne test method");
-		int activitycount = Integer.parseInt(globalParamMap.get("activitycount"));
+		int activitycount = Integer.parseInt(globalParamMap.get(status+"activitycount"));
 		int latestactivitycount = elig.getActivityCount(status);
 		if(activitycount+1 == latestactivitycount)
 			report.report("Activity: "+status+" count increased by one", Reporter.PASS);

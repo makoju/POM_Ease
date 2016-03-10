@@ -22,7 +22,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -673,7 +672,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			break;
 		}		
 		if (element == null) {
-			throw new Exception ("Web element not found: " + elementLocator); 
+			throw new Exception ("Web element not found: " + elementLocator);
 		}
 	}
 
@@ -1057,7 +1056,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 
 		WebDriverHelper.highlightElement(driver, we);
 		setSelectedField(we, valueToSelect);
-		// sendEnterOnWebElement(we);
+	/*	// sendEnterOnWebElement(we);
 
 		try {
 
@@ -1076,7 +1075,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	/**
 	 * Use this method to select from drop-down list using WebElement parameter
@@ -1115,7 +1114,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			List<WebElement> getAllOptions = dropDown.getOptions();
 			actual = new String[getAllOptions.size()];
 			for(WebElement getOption : getAllOptions){
-				actual[i++] = getOption.getText();
+				actual[i++] = getOption.getText().trim();
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -1168,7 +1167,6 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		try {
 			dropDown.selectByVisibleText(value);
 		} catch (Exception ex) {
-
 			dropDown.selectByValue(value);
 		} 
 	}
@@ -1585,11 +1583,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		try{
 			//Wait 10 seconds till alert is present
 			report.report("Inside verify alert method....");
-<<<<<<< HEAD
-			WebDriverWait wait = new WebDriverWait(driver, 10);
-=======
 			WebDriverWait wait = new WebDriverWait(driver, 5);
->>>>>>> cd3addbfca9092e11a47c637cfd9665ecf2dfb0e
 			//Alert alert = driver.switchTo().alert();
 			Alert alert = wait.until(ExpectedConditions.alertIsPresent());
 			sActual = alert.getText().toString();
@@ -1768,6 +1762,17 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			}
 		}
 		return sValueFromJsystem;
+	}
+	
+	public static String getLocatorFromXML(List<Attribute> lsAttributes, String displayName){
+		String sLocator = null;
+		for(Attribute scrAttr:lsAttributes){
+			if(scrAttr.getDisplayName().equalsIgnoreCase(displayName)){
+				sLocator = scrAttr.getLocator();
+				break;
+			}
+		}
+		return sLocator;
 	}
 
 	//#########################################   Getters & Setters ###################################################

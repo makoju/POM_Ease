@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<UIAttributes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="UIAttributes.xsd">
+	
+	<UIAttribute>
+		<locator>SelectedProfileName</locator>
+		<style>DropDown</style>
+		<displayName>Saved Profile</displayName>
+		<description>Saved Profile dropdown</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>UserProvider</locator>
+		<style>DropDown</style>
+		<displayName>Agency</displayName>
+		<description>Select an agency/agencies from dropdown</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>HIC</locator>
+		<style>Text</style>
+		<displayName>HIC</displayName>
+		<description>Provide a HIC</description>
+	</UIAttribute>
+	
+	
+	<UIAttribute>
+		<locator>TOBT0</locator>
+		<style>Text</style>
+		<displayName>Tob1</displayName>
+		<description>Provide TOB</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>TOBT1</locator>
+		<style>Text</style>
+		<displayName>Tob2</displayName>
+		<description>Provide TOB</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>ClaimSubmittedLookbackMonths</locator>
+		<style>Text</style>
+		<displayName>Months Ago</displayName>
+		<description>Provide a value in Months Ago field</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>Status</locator>
+		<style>Select</style>
+		<displayName>Status</displayName>
+		<description>Select the status {Denied,Rejected,RTP,Suspense,Paid,Not Paid}</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>Location</locator>
+		<style>Text</style>
+		<displayName>Location</displayName>
+		<description>Select the status from the dropdown</description>
+	</UIAttribute>
+	
+	<UIAttribute>
+		<locator>SaveProfileName</locator>
+		<style>Text</style>
+		<displayName>Save this search profile as :</displayName>
+		<description>Save this search profile as</description>
+	</UIAttribute>
+</UIAttributes>	

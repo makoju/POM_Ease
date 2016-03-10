@@ -1,7 +1,12 @@
 package com.ability.ease.mydde.reports;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import jsystem.framework.report.Reporter;
 
@@ -19,7 +24,7 @@ public class ReportsHelper extends AbstractPageObject{
 
 
 	//ReportsHelper reportshelper = new ReportsHelper();
-	
+
 	//Begin: Helper Methods 
 	public void navigateExportlink(String linkText) throws Exception {
 		WebElement we = waitForElementVisibility(By.partialLinkText(linkText));
@@ -124,37 +129,73 @@ public class ReportsHelper extends AbstractPageObject{
 		String exportlinksxpath = "//ul[@id='reportExportMenu']//li/a";
 		return findElements(By.xpath(exportlinksxpath));
 	}
-	
+
 	public List<WebElement> getAllSubMenuLinks(String mainMenuID){
 		String exportlinksxpath = "//ul[@id='"+mainMenuID+"']//li/a";
 		return findElements(By.xpath(exportlinksxpath));
 	}
 
 	public List<WebElement> getReportTableHeaders(String tableidentifier){
-		String tableheaderxpath = "//table[@id='"+tableidentifier+"']/thead/tr/td";
-		return findElements(By.xpath(tableheaderxpath));
+		WebElement table = waitForElementVisibility(By.xpath("//table[@id='"+tableidentifier+"']"));
+		if(table != null){
+			String tableheaderxpath = "//table[@id='"+tableidentifier+"']/thead/tr/td";
+			return findElements(By.xpath(tableheaderxpath));
+		}
+		else{
+			report.report("There are no records under this.",Reporter.WARNING);
+			return null;
+		}
 	}
-
-	public boolean verifySubMenuLinksAndClick(String[] expected, String mainMenuLinkText, String mainMenuID) throws Exception{
+	
+	public String[] verifySubMenuLinks(String[] expected, String mainMenuLinkText, String mainMenuID) throws Exception{
 		String[] actual;
 		int i = 0;
-		clickLink(mainMenuLinkText);
+		Thread.sleep(3000);
+		moveToElement(mainMenuLinkText);
 		List<WebElement> lsexportlinks = getAllSubMenuLinks(mainMenuID);
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
 			actual[i++] = we.getText();
-			we.click(); //To click on each link
-			WebElement headerText = waitForElementVisibility(By.xpath("//td[@class='headerblue' or @class='headergreen'"));
-			report.report(headerText.getText());
 		}
+		return actual;
+	}
 
-		if (!Verify.verifyArrayofStrings(actual, expected, true)){
-			return false;
-		}else{
-			return true;	
+	public void clickSubMenuLinks(String[] actual, String mainMenuLinkText) throws InterruptedException{
+		for(String option : actual){
+			moveToElement(mainMenuLinkText);
+			WebElement we = waitForElementVisibility(By.linkText(option));
+			we.click(); //To click on each link
+			Thread.sleep(3000);
+			waitForElementVisibility(By.xpath("//td[@class='headerblue' or @class='headergreen']"));
+			String headerText = driver.findElement(By.xpath("//td[@class='headerblue' or @class='headergreen']")).getText();
+			report.report(headerText);
 		}
 	}
+
+	public String[] regExpToGetDates(String headerText){
+		
+		Pattern p = Pattern.compile("\\d{2}/\\d{2}/\\d{4}");
+		Matcher m = p.matcher(headerText);
+		String[] dates=new String[2];
+		int i=0;
+		while(m.find()){
+			dates[i++] = m.group();
+		}
+		return dates;
+	} 
 	
+	public int monthsDifferenceBetween(Date startDate, Date endDate){
+		Calendar startCalendar = new GregorianCalendar();
+		startCalendar.setTime(startDate);
+		Calendar endCalendar = new GregorianCalendar();
+		endCalendar.setTime(endDate);
+
+		int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
+		report.report("reports helper month diff between method : "+diffYear);
+		int diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
+		return diffMonth;
+	}
+
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub

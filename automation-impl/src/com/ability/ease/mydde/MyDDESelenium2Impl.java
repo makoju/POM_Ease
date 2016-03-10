@@ -1,5 +1,8 @@
 package com.ability.ease.mydde;
 
+import java.util.Map;
+
+import com.ability.ease.auto.enums.tests.SelectTimeframe;
 import com.ability.ease.auto.enums.tests.Status;
 import com.ability.ease.testapi.IMyDDE;
 
@@ -11,15 +14,20 @@ public class MyDDESelenium2Impl implements IMyDDE{
 	public boolean verifyPageViewAndOptions() throws Exception {
 		return mydde.verifyPageViewAndOptions();
 	}
-
+	
 	@Override
-	public boolean verifyOptionsUnderReportsForHHA() throws Exception {
-		return mydde.verifyOptionsUnderReportsForHHA();
+	public boolean verifyColumnsAndSorting(String report, String expectedColumns, String columnName, int columnIndex) throws Exception {
+		return mydde.verifyColumnsAndSorting(report, expectedColumns, columnName, columnIndex);
 	}
 
 	@Override
-	public boolean verifyOptionsUnderTimeframe() throws Exception {
-		return mydde.verifyOptionsUnderTimeframe();
+	public boolean verifyOptionsUnderReportsForHHA_NonHHA(String fromDate,String toDate,String expectedReports,String agency, String expectedColumns) throws Exception {
+		return mydde.verifyOptionsUnderReportsForHHA_NonHHA(fromDate, toDate, expectedReports, agency, expectedColumns);
+	}
+
+	@Override
+	public boolean verifyOptionsUnderTimeframe(String fromDate, String toDate) throws Exception {
+		return mydde.verifyOptionsUnderTimeframe(fromDate,toDate);
 	}
 
 	@Override
@@ -28,28 +36,82 @@ public class MyDDESelenium2Impl implements IMyDDE{
 	}
 
 	@Override
-	public boolean verifySaveProfileOption() throws Exception {
-		return mydde.verifySaveProfileOption();
+	public boolean verifySaveProfileOption(String agency, String saveProfileNameAS) throws Exception {
+		return mydde.verifySaveProfileOption(agency,saveProfileNameAS);
 	}
 
 	@Override
-	public boolean verifyOptionsUnderReportsForNonHHA() throws Exception {
-		return mydde.verifyOptionsUnderReportsForNonHHA();
+	public boolean verifyTimeFrameOptionsUnderAdvanced(String fromDate, String toDate, String expTimFrameOptions) throws Exception {
+		return mydde.verifyTimeFrameOptionsUnderAdvanced(fromDate,toDate, expTimFrameOptions);
 	}
 
 	@Override
-	public boolean verifyTimeFrameOptionsUnderAdvanced() throws Exception {
-		return mydde.verifyTimeFrameOptionsUnderAdvanced();
+	public boolean verifyAdvancedSearchForMAXFields(Map<String, String> mapAttrValues) throws Exception {
+		return mydde.verifyAdvancedSearchForMAXFields(mapAttrValues);
 	}
-
-	@Override
-	public boolean verifyAdvanceSearchForMAXFields(String hic, String monthsAgo,Status status,String location) throws Exception {
-		return mydde.verifyAdvanceSearchForMAXFields(hic,monthsAgo,status,location);
-	}
-
+	
 	@Override
 	public boolean verifyAdvancedSearchForStatusLocation() throws Exception {
 		return mydde.verifyAdvancedSearchForStatusLocation();
 	}
 
+	@Override
+	public boolean verifyOptionUB04Form() throws Exception {
+		return mydde.verifyOptionUB04Form();
+	}
+
+	/*@Override
+	public boolean verifyPieAndPrintOptions() throws Exception {
+		return false;
+	}*/
+
+	@Override
+	public boolean verifyAdvancedOption() throws Exception {
+		return mydde.verifyAdvancedOption();
+	}
+
+	@Override
+	public boolean verifyLiveSearchOption(String hic) throws Exception {
+		return mydde.verifyLiveSearchOption(hic);
+	}
+
+	@Override
+	public boolean verifyOptionsUnderAdvancedView() throws Exception {
+		return mydde.verifyOptionsUnderAdvancedView();
+	}
+
+	@Override
+	public boolean verifyOptionsUnderAdvancedSearch(Map<String, String> mapAttrValues) throws Exception {
+		return mydde.verifyOptionsUnderAdvancedSearch(mapAttrValues);
+	}
+
+	@Override
+	public boolean verifyColumnHeadersInSearchResults(String expectedColumns) throws Exception {
+		return mydde.verifyColumnHeadersInSearchResults(expectedColumns);
+	}
+
+	/*@Override
+	public boolean verifyTotalsForAdvancedSearchResult(String savedProfile) throws Exception {
+		return mydde.verifyTotalsForAdvancedSearchResult(savedProfile);
+	}*/
+
+	@Override
+	public boolean verifySaveProfileOptionWithDuplicateName(String agency, String monthsAgo, String saveProfileNameAS) throws Exception {
+		return mydde.verifySaveProfileOptionWithDuplicateName(agency, monthsAgo, saveProfileNameAS);
+	}
+
+	@Override
+	public boolean verifyAdvancedSearchForCustomDates(String agency, String betweenDate, String andDate) throws Exception {
+		return mydde.verifyAdvancedSearchForCustomDates(agency,betweenDate,andDate);
+	}
+
+	@Override
+	public boolean verifyAdvancedSearchForGivenMonths(String agencyFromJSystem,String monthsAgo)	throws Exception {
+		return mydde.verifyAdvancedSearchForGivenMonths(agencyFromJSystem,monthsAgo);
+	}
+
+	@Override
+	public boolean verifyAdvancedSearchForGivenMonthsAndDateRange(String agencyFromJSystem, String betweenDate, String andDate, String monthsAgo) throws Exception {
+		return mydde.verifyAdvancedSearchForGivenMonthsAndDateRange(agencyFromJSystem,betweenDate,andDate,monthsAgo);
+	}
 }

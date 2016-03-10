@@ -30,11 +30,6 @@ public class EligibilityTests extends BaseTest{
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
 	private String hic,agency,firstname,lastname,description, status;
 
-	//Constructor
-	public EligibilityTests()throws Exception{
-		super();
-	}
-
 	@Before
 	public void setupTests()throws Exception{
 		elig = (IEligibility)context.getBean("elig");
@@ -44,7 +39,7 @@ public class EligibilityTests extends BaseTest{
 	@Override
 	public void handleUIEvent(HashMap<String, Parameter> map, String methodName) throws Exception {	
 		super.handleUIEvent(map, methodName);
-			UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Eligibility\\Eligibility.xml");
+		UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Eligibility\\Eligibility.xml");
 	}
 	
 	/**
@@ -207,7 +202,7 @@ public class EligibilityTests extends BaseTest{
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
 	@TestProperties(name = "Get the count of ${status} Activites", paramsInclude = { "status,testType" })
-	public void getActivityCount(String status) throws Exception {
+	public void getActivityCount() throws Exception {
 		report.report("Inside getActivityCount test method");
 		keepAsGloablParameter("activitycount", Integer.toString(elig.getActivityCount(status)));
 	}
@@ -218,7 +213,7 @@ public class EligibilityTests extends BaseTest{
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
 	@TestProperties(name = "Verify ${status} Activities CountIncreasedByOne", paramsInclude = { "status,testType" })
-	public void VerifyActivityCountIncreasedByOne(String status) throws Exception {
+	public void VerifyActivityCountIncreasedByOne() throws Exception {
 		report.report("Inside VerifyActivityCountIncreasedByOne test method");
 		int activitycount = Integer.parseInt(globalParamMap.get("activitycount"));
 		int latestactivitycount = elig.getActivityCount(status);
@@ -234,7 +229,7 @@ public class EligibilityTests extends BaseTest{
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
 	@TestProperties(name = "Verify ${status} Activities CountDecreasedByOne", paramsInclude = { "status,testType" })
-	public void VerifyActivityCountDecreasedByOne(String status) throws Exception {
+	public void VerifyActivityCountDecreasedByOne() throws Exception {
 		report.report("Inside VerifyActivityCountDecreasedByOne test method");
 		int activitycount = Integer.parseInt(globalParamMap.get("activitycount"));
 		int latestactivitycount = elig.getActivityCount(status);

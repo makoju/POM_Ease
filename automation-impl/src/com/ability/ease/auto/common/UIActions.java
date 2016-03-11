@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -197,9 +198,13 @@ public class UIActions extends AbstractPageObject {
 							fromdate = dates[0].substring(dates[0].indexOf("(")+1, dates[0].indexOf(")"));
 							todate = dates[1].substring(dates[1].indexOf("(")+1, dates[1].indexOf(")"));;
 						}
-						typeEditBox("reportCustomDateFrom", fromdate);
+						/*typeEditBox("reportCustomDateFrom", fromdate);
 						typeEditBox("reportCustomDateTo", todate);
-						clickButton("reportTimeframeButton");
+						clickButton("reportTimeframeButton");*/
+						((JavascriptExecutor) driver).executeScript("$('#reportCustomDateFrom').val('"+fromdate+"');");
+						((JavascriptExecutor) driver).executeScript("$('#reportCustomDateTo').val('"+todate+"');");
+						((JavascriptExecutor) driver).executeScript("$('#reportTimeframeButton').click();");
+						
 					}
 					else 
 						clickLink(timeframe.trim());

@@ -3,24 +3,29 @@ package com.ability.ease.HMO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
+import java.util.Date;
 import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 public class HMOHelper extends AbstractPageObject {
-	
+
 	/*
 	 * Entering Patient details into HMO Catcher Page
 	 */
-	public void FillHmo(String  sAgency,String sHIC,String sLastName, String sFirstName,String sDob,String sSex) throws Exception{
+	public void fillHmo(String  sAgency,String sHIC,String sLastName, String sFirstName,String sDob,String sSex) throws Exception{
+		Thread.sleep(5000);
 		safeJavaScriptClick("ELIG.");
-		waitForElementToBeClickable(ByLocator.linktext,"Add to HMO/Adv. Catcher",5);
+		Thread.sleep(5000);
+		waitForElementToBeClickable(ByLocator.linktext,"Add to HMO/Adv. Catcher",9);
 		safeJavaScriptClick("Add to HMO/Adv. Catcher");
+		waitForElementToBeClickable(ByLocator.name,"ProvID",9);
 		selectByNameOrID("ProvID", sAgency);
 		typeEditBox("hic", sHIC);
 		typeEditBox("lname",sLastName);
@@ -29,32 +34,32 @@ public class HMOHelper extends AbstractPageObject {
 		selectByNameOrID("sex", sSex);
 		clickButtonV2("submit");
 	}
-	
+
 	/*
 	 * Connecting to DB to get Extended Days using HIC and NPI
 	 */
 	public String HMODBConnection(String  sAgency,String sHIC) throws SQLException{
-		String sQueryToGetDays = "SELECT DATEDIFF(Termination,createdate) as Days from ddez.hmocatcherpatient where providerid=" + sAgency +" and HIC='"+sHIC+"'";
+		String sQueryToGetDays = "SELECT DATEDIFF(Termination,createdate) as Days from ddeztest.customer.hmocatcherpatient where providerid=" + sAgency +" and HIC='"+sHIC+"'";
 		ResultSet results = MySQLDBUtil.getResultFromMySQLDB(sQueryToGetDays);
 		String daysVal="";
 		while(results.next()){
 			daysVal = results.getString("Days");	
 		}
-	return daysVal;
+		return daysVal;
 	}
-	
+
 	/*
 	 * Connecting to DB to get Extended Days using HIC
 	 */
-	public String HMODBConnection(String  sHIC) throws SQLException{
+	public int getExtendedDaysFromDB(String  sHIC) throws SQLException{
 		String sQueryToGetDays = "SELECT datediff(Termination,createdate) as Days from ddez.hmocatcherpatient where  HIC='"+sHIC+"'";
 		ResultSet results = MySQLDBUtil.getResultFromMySQLDB(sQueryToGetDays);
-		String extendedDays="";
+		int iextendedDays = 0;
 		while(results.next()){
-			extendedDays = results.getString("Days");	
-							}
-	return extendedDays;
+			iextendedDays= results.getInt("Days");
 		}
+		return iextendedDays;
+	}
 
 
 	/*
@@ -62,29 +67,33 @@ public class HMOHelper extends AbstractPageObject {
 	 */	
 	public void navigateToPatientInfoPage(String sHIC) throws Exception	{
 		String xpathToGreenBoxAQB = "//td[@id='tdGoodActivity']";
-		WebElement greenBox = waitForElementToBeClickable(ByLocator.xpath, xpathToGreenBoxAQB, 10);
+		WebElement greenBox = waitForElementToBeClickable(ByLocator.xpath, xpathToGreenBoxAQB, 20);
 		greenBox.click();
-		driver.findElement(By.xpath("//*[contains(text(),'"+sHIC+"')]/../following-sibling::td/a[text()='Report']")).click();
-		clickLink("Add patient to my HMO Move Catcher list.");
 	}
-	
+
 	/*
 	 * Navigate to HMO/Adv Catcher Patients
 	 */	
 	public void navigateToHMOCatcherExtendPage() throws Exception	{
+		waitForElementToBeClickable(ByLocator.linktext,"ELIG.",10);
 		safeJavaScriptClick("ELIG.");
-		waitForElementToBeClickable(ByLocator.linktext,"ELIG.",8);
+		waitForElementToBeClickable(ByLocator.linktext,"HMO/Adv Catcher Patients",8);
 		safeJavaScriptClick("HMO/Adv Catcher Patients");
+	}
+	
+	
+	public void ganerateRandom9DigitNumberfollowedByChar(){
+		
 	}
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void navigateToPage() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

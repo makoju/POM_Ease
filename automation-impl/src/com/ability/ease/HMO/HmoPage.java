@@ -34,28 +34,25 @@ public class HmoPage extends AbstractPageObject  {
 
 	HMOHelper hhp=new HMOHelper();
 	boolean alertverify;
-	String daysVal;
+	int  idaysVal;
 	/*
 	 * Adding a Patient to HMO Catcher
 	 */
 	public boolean addToHMO(String  sAgency,String sHIC,String sLastName, String sFirstName,String sDob,String sSex)throws Exception{
-		hhp.FillHmo(sAgency, sHIC, sLastName, sFirstName, sDob, sSex);
+		hhp.fillHmo(sAgency, sHIC, sLastName, sFirstName, sDob, sSex);
 		alertverify=verifyAlert("Patient was successfully added to HMO Advantage Move Catcher!");
-		daysVal=hhp.HMODBConnection(sHIC);
-		if(alertverify && daysVal.equalsIgnoreCase("75"))   {		
+		int idaysVal=hhp.getExtendedDaysFromDB(sHIC);
+		if(alertverify && idaysVal == 75){		
 			return true;
-		}
-		else
-		{
+		}else{
 			return false;
 		}
-		
 	}
 	/*
 	 * Adding a Patient to HMO Catcher, which already being tracked
 	 */
 	public boolean addToHMODuplicatePatient(String  sAgency,String sHIC,String sLastName, String sFirstName,String sDob,String sSex)throws Exception{
-		hhp.FillHmo(sAgency, sHIC, sLastName,sFirstName, sDob, sSex);
+		hhp.fillHmo(sAgency, sHIC, sLastName,sFirstName, sDob, sSex);
 		return verifyAlert("Your request to add this patient to the HMO Advantage Move Catcher was not accepted because this patient is already being tracked by HMO Advantage Move Catcher!");		
 	}
 	/*
@@ -69,53 +66,59 @@ public class HmoPage extends AbstractPageObject  {
 		driver.findElement(By.xpath(".//*[contains(text(),"+"'"+sHIC+"'"+")]/../preceding-sibling::td/input")).click();
 		clickLink("Extend");
 		isExtended=verifyAlert("Patient(s) successfully changed on HMO Advantage Catcher!");
-		String extendedDays=daysVal=hhp.HMODBConnection(sHIC);
-		if( Integer.parseInt(extendedDays)==idays && isExtended ){
-
+		if( idays>75 && isExtended ){
 			return true;
-		}
-		else
+		}else{
 			return false;
 		}
+	}
+
 	/*
 	 * Adding a Patient to HMO Catcher from patient info page
 	 */	
 	public boolean addtoHMOFromPatientInfo(String sHIC) throws Exception {
 		hhp.navigateToPatientInfoPage(sHIC);
+		driver.findElement(By.xpath("//*[contains(text(),'"+sHIC+"')]/following-sibling::td/a[text()='Report']")).click();
+		clickLink("Add patient to my HMO Move Catcher list.");
 		alertverify=verifyAlert("Patient was successfully added to HMO Advantage Move Catcher!");
 		safeJavaScriptClick("HMO/Adv Catcher Patients");
-		String spatientdays=hhp.HMODBConnection(sHIC);
-		if(alertverify && spatientdays.equals("75")){
+		int ipatientdays=hhp.getExtendedDaysFromDB(sHIC);
+		if(alertverify && ipatientdays==75){
 			return true;
-		}
-		else{
+		}else{
 			return false;
-	}
 		}
+	}
 
 	/*
 	 * Adding a Patient to HMO Catcher from patient info page,which is already being tracked
 	 */		
 	public boolean addDuplicatePatientToHMOFromPatientInfo(String sHIC) throws Exception{
 		hhp.navigateToPatientInfoPage(sHIC);
+		driver.findElement(By.xpath("//*[contains(text(),'"+sHIC+"')]/following-sibling::td/a[text()='Report']")).click();
+		clickLink("Add patient to my HMO Move Catcher list.");
 		return verifyAlert("Your request to add this patient to the HMO Advantage Move Catcher was not accepted because this patient is already being tracked by HMO Advantage Move Catcher!");
-		
+
 	}
 	/*
 	 * Removing a patient from HMO Catcher
 	 */	
 	public boolean trashHMOPatient(String sHIC) throws Exception{
+
+		boolean result = false;
 		hhp.navigateToHMOCatcherExtendPage();
 		if(isTextExistInTable(sHIC,5)){	
 			driver.findElement(By.xpath(".//*[contains(text(),'"+sHIC+"')]/../preceding-sibling::td/input")).click();
 			clickLinkV2("reportDelete");
-			return true;
+			if(isTextPresent(sHIC)){
+				result = true;
+			}else{
+				result = false;
+			}
 		}
-		else{
-			return false;
-		}
-		
+		return result;
 	}
+
 	/*
 	 * Acknowledge Patient from HMO Catcher
 	 */	
@@ -126,95 +129,84 @@ public class HmoPage extends AbstractPageObject  {
 		driver.findElement(By.xpath(".//*[contains(text(),'"+sHIC+"')]/../preceding-sibling::td")).click();
 		if(isTextExistInTable(sHIC,5)){
 			return false;
-		}
-			else{
+		}else{
 			return true;
 		}
-
 	}
+
+
 	public boolean AdvanceSearchFromHMO(String sHIC) throws Exception{
 		int ifailCount=0;
 		List<String>  al=new ArrayList();
 		int iflag=1;
+		String patientInfoXpath = "//td[contains(text(),'PATIENT INFORMATION')]";
+
 		hhp.navigateToHMOCatcherExtendPage();
 		WebElement searchIcon = driver.findElement(By.id("reportHICSearch"));
 		moveToElement(searchIcon);
 		typeEditBox("reportHICEntry", sHIC);
 		clickButton("reportHICButton");
 		boolean bliveSearcheligcheck=driver.getPageSource().contains("ELIGIBILITY CHECK AND CLAIMS SCRAPE");
-		waitForElementVisibility(By.xpath(".//*[@id='reportarea']/div[1]/table/tbody/tr/td"),4);
+		waitForElementToBeClickable(ByLocator.xpath, patientInfoXpath, 10);
 		boolean bliveSearchPatientInfo=driver.getPageSource().contains("PATIENT INFORMATION ");
 		if(bliveSearcheligcheck == true || bliveSearchPatientInfo == true){
 			al.add("Pass");
 			report.report("Live Search from HMO is working fine" ,Reporter.ReportAttribute.BOLD);
-		}
-		else{
+		}else{
 			al.add("Fail");
 			report.report("Live Search from HMO is not working fine", Reporter.FAIL);
-			
 		}
+
 		hhp.navigateToHMOCatcherExtendPage();
 		moveToElement(searchIcon);
 		WebElement advanceSearch = driver.findElement(By.xpath("//*[@id='reportAdvanceSearch']"));
 		safeJavaScriptClick(advanceSearch);
 		boolean bliveSearchAdvance= driver.getPageSource().contains("ADVANCED SEARCH");
-		
+
 		if(bliveSearchAdvance==true){
 			al.add("Pass");
 			report.report("Advance Search Navigation from HMO is working fine", Reporter.ReportAttribute.BOLD);
-		}
-		else
-		{
+		}else{
 			al.add("Fail");
 			report.report("Advance Search Navigation from HMO is not working fine", Reporter.FAIL);
 		}
-	
+
 		for(int i=0;i<al.size();i++){
 			if(al.get(i).equals("Fail")){
 				iflag=0;
 				break;
 			}
-			
 		}
 		if(iflag==1){
 			return true;
-		}
-		else{
+		}else{
 			return false;
 		}
-		
+
 	}
-	
+
 	public boolean printHMO() throws Exception{
 		hhp.navigateToHMOCatcherExtendPage();
 		driver.findElement(By.xpath(".//*[@id='reportPrint']")).click();
-  
+		waitForElementToBeClickable(ByLocator.xpath,".//*[@id='reportPrint']",8);
+		Runtime.getRuntime().exec("C:\\Users\\srinivas.bandari\\Desktop\\Automation\\print.exe");
 		return true;
 	}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
+
+
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void navigateToPage() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-		
-	}
-	
-	
+
+}
+
+

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import jsystem.framework.report.Reporter;
 import jsystem.framework.report.Reporter.ReportAttribute;
 
 import org.openqa.selenium.By;
@@ -14,6 +15,7 @@ import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFileFomat;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFilesSize;
 import com.ability.ease.claims.ClaimsHelper;
+import com.ability.ease.mydde.reports.ReportsHelper;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 public class AuditDocPage extends AbstractPageObject{
@@ -21,6 +23,119 @@ public class AuditDocPage extends AbstractPageObject{
 	AuditDocHelper helper = new AuditDocHelper();
 	int failCounter = 0;
 	String xpathToADRSubPage = "//td[contains(text(),'ADR Response Document Submission Report')]";
+
+	String tableheadersxpath = "//table[@id='datatable']//tr[@class='tableheaderblue']/td";
+	ReportsHelper reportshelper = new ReportsHelper();
+
+	//Expected column header help text
+	String[] expectedheaders = { "Upload ADR Documents",
+			"The Patient HIC number.",
+			"The name of the patient.",
+			"The claim Status and Location.",
+			"The date the patient was originally admitted.",
+			"Start of Episode date.",
+			"The reimbursement amount posted by Medicare on the claim.",
+			"The total episode value.",
+			"The number of days left to respond to the ADR.",
+			"The date an action is required by the FI in order to resolve the ADR.",
+			"Ensure that ADR documentation is mailed by this date to avoid unnecessary auto-denying of your claim.",
+			"The code associated with the ADR.",
+			"Total Amount Billed for Claim",
+			"The last time the claim was updated in Ease from DDE.",
+	"ADR Response Document Submission status."};
+
+	/**
+	 * 
+	 * @param Timeframe
+	 * @param Value
+	 * @param agency
+	 * @param agencyValue
+	 * @param hic
+	 * @param patient
+	 * @param daysduedate
+	 * @param duedate
+	 * @param code
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean verifyEsmdDeliveryStatusReportColumnsForHHA(String Timeframe, String Value, String agency, String agencyValue, 
+			String hic,String patient,String daysduedate,String duedate,String code) throws Exception {
+		//	waitForElementVisibility(By.linkText("MY DDE"));
+		navigateToPage();
+		//	waitForElementVisibility(By.linkText("Advanced"));
+		clickLink("Advanced");
+		//	waitForElementVisibility(By.linkText("esMD Delivery & Status"));
+		clickLink("esMD Delivery & Status");
+		String icon=".//*[@id='scrollContent']/tr/td[1]//img";
+		String sloc=".//*[contains(text(),'S/Loc')]";
+		String  cmsStatus=".//*[contains(text(),'CMS')]";
+		helper.clickTimeFrame(Timeframe,Value);
+		helper.clickAgency(agency, agencyValue);
+		boolean isicon=helper.verifyColumn(icon);
+		boolean isSLoc=helper.verifyColumn(sloc);
+		boolean isCMSStatus=helper.verifyColumn(cmsStatus);
+		if(isCMSStatus==true & isicon==true & isSLoc==true){
+			report.report("Expected Columns and data presented under eSMD Report", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Expected Columns and data not presented under eSMD Report", Reporter.FAIL);
+			failCounter++;
+		}
+		//Click HIC under esMD Report
+		clickLink(hic);
+		if(helper.isHIcExist(hic)){
+			helper.navigateBack();
+			report.report("HIC ID presented on the patient information page", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("HIC ID not presented on the patient information page", Reporter.FAIL);
+			failCounter++;
+		}
+
+		//Click Patient Link under esMD Report
+		clickLink(patient);
+		if(helper.isPatientExist(patient)){
+			helper.navigateBack();
+			report.report("Patient Name presented on the patient information page", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Patient Name is not presented on the patient information page", Reporter.FAIL);
+			failCounter++;
+		}
+		//Click 30-days due date link
+		clickLink(daysduedate);
+		if(helper.isADRExist(daysduedate)){
+			helper.navigateBack();
+			report.report("ADR Page is displayed", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("ADR Page isnot displayed", Reporter.FAIL);
+			failCounter++;
+		}
+		//Click due date under the esMD report	
+		clickLink(duedate);
+		if(helper.isADRExist(duedate)){
+			helper.navigateBack();
+			report.report("ADR Page is displayed", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("ADR Page isnot displayed", Reporter.FAIL);
+			failCounter++;
+		}
+		//Click code link under esMD Report
+		clickLink(code);
+		if(helper.isADRExist(code)){
+			helper.navigateBack();
+			report.report("ADR Page is displayed", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("ADR Page isnot displayed", Reporter.FAIL);
+			failCounter++;
+		}
+		//Comparing 
+		String[] actualheadertooltips = reportshelper
+				.getTableHeaderToolTips(tableheadersxpath);
+		if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders,true)){
+			failCounter++;
+			report.report("Total number of failures is: " + failCounter,ReportAttribute.BOLD);
+		}
+		return (failCounter == 0) ? true : false;
+	}
+
 
 	/**
 	 * Use this method to upload a PDF / TIFF document in AuditDoc 
@@ -60,7 +175,7 @@ public class AuditDocPage extends AbstractPageObject{
 					clickButtonV2("Send");
 					//validate review contractor name on alert box appears before submitting the ADR to a review contractor
 					if(verifyAlert(sExpectedAlertMessageBeforeADRSubmission)){		
-						report.report("Review contractor name on alert validated successfully" + reviewContractorName , ReportAttribute.BOLD);
+						report.report("Review contractor name on alert validated successfully : " + reviewContractorName , ReportAttribute.BOLD);
 						//validate successful submission of ADR
 						if(verifyAlertV2(sExpectedAlertMessageAfterSuccessfulADRSubmission)){
 							report.report("Successfully processed ADR response documents submission", ReportAttribute.BOLD);
@@ -116,14 +231,19 @@ public class AuditDocPage extends AbstractPageObject{
 			Thread.sleep(5000);
 		}*/
 		//Before validating CMS screen details or ddez.cmsstatusupdates and ddez.adrdocsubmissioninfo wait for three minutes to get the mock time reponses from Audti doc server
+		String fileSize = adrFileSize.toString();
+		char relationalOperator = fileSize.charAt(0);
+		List<String> lsADRFilePaths = helper.getADRFilePath(adrFileType, relationalOperator);
+		List<String> lsADRFileNames = helper.getADRFileNamesFromFilePaths(lsADRFilePaths);
+
 		String receivedByCMSESTXpath = "//td[contains(text(),'" + claimIDorDCN + "')]/following-sibling::td[3]";
 		String receivedByReviewerESTXpath = "//td[contains(text(),'" + claimIDorDCN + "')]/following-sibling::td[4]";
 		String reviewerAckTimeEST = null,  CMSAckTimeInEST = null;
 		String CMSAckTimeInCST = null, reviewerAckTimeCST = null;
 		long timeDiffInHoursOfCMSAckTime = 0L, timeDiffInHoursOfReviewerAckTime = 0L; 
 
-		report.report("Waiting for ~ 3.1 minutes to get the mock reposne from Audit Doc server...");
-		Thread.sleep(200000);
+		report.report("Waiting for ~ 4 minutes to get the mock reposne from Audit Doc server...");
+		Thread.sleep(240000);
 
 		//validations
 		List<WebElement> lsADRSubmissionTableHeaders = helper.getReportTableHeaders("datatable");
@@ -193,21 +313,79 @@ public class AuditDocPage extends AbstractPageObject{
 				failCounter++;
 				report.report("Fail : Reviewer acknowledgement time and CMS acknowledge times are not valid !");
 			}
+
+			helper.validateADRResponseTableData(CMSStatusUpdateTableData, "CMSTransactionID");
+			List<String> lsFileNamesFromToolTip = helper.getToolTipOfView(claimIDorDCN);
+			if( Verify.ListEquals(lsFileNamesFromToolTip, lsADRFileNames) ) {
+				report.report("File names visible on view tool tip are same as uploaded ones", ReportAttribute.BOLD);
+			}else{
+				failCounter++;
+				report.report("Fail : File names visible on view tool tip are different from uploaded ones");
+			}
+
 		}else{
 			report.report("Fail : ADR Resonse Document submission page data table not populated with received timestamp values, please check!");
 			failCounter++;
 		}
-		
+
 		report.report("Fail counter value from verifyCMSStatusScreenAfterADRSubmission method is : " + failCounter);
 		return (failCounter == 0) ? true : false;
 	}
 
 	public boolean verifyRecordsPresenUnderESMDreport()throws Exception{
 
+		String sXpathOfOVERNIGHT = "//span[contains(text(),'OVERNIGHT')]";
+		String ADRPageXpath = "//td[contains(text(),'ADR REPORT FOR')]";
+		String eSMDPageXpath = "//td[contains(text(),'ESMD DELIVERY & STATUS')]";
+		String sADRDataTableXpath = "//table[@id='datatable']/tbody/tr";
+		String sEaseFoundNoItemsXpath = "//span[contains(text(),'EASE found no items')]";
+		List<WebElement> lsADRRecords = null;
+		List<WebElement> lseSMDAndStatusRecords = null;
+		int recordCountFromADRReport = 0;
+		int recordCountFromeSMDStatusReport = 0;
+
+
 		int failCounter = 0;
 
+		helper.clickMyDDELink();
+		clickLink("Advanced");
+		//get the record count from ADR Report
+		if(waitForElementToBeClickable(ByLocator.xpath,sXpathOfOVERNIGHT, 30) != null){
+			clickLink("ADR");
+			if(waitForElementToBeClickable(ByLocator.xpath, ADRPageXpath, 10) != null){
+				lsADRRecords = driver.findElements(By.xpath(sADRDataTableXpath));
+				recordCountFromADRReport = lsADRRecords.size();
+			}	
+			clickLink("esMD Delivery & Status");
+			if(waitForElementToBeClickable(ByLocator.xpath, eSMDPageXpath, 10) != null){
+				if( waitForElementToBeClickable(ByLocator.xpath, sEaseFoundNoItemsXpath, 10) != null){
+					helper.changeTimeFrame();
+					if (waitForElementToBeClickable(ByLocator.xpath, eSMDPageXpath, 10) != null ){
+						lsADRRecords = driver.findElements(By.xpath(sADRDataTableXpath));
+						recordCountFromADRReport = lsADRRecords.size();
+					}else{
+						failCounter++;
+						report.report("ESMD DELIVERY & STATUS...text is not present on page after clicking eSMD Delivery & Status Report");
+					}
+				}else{
+					failCounter++;
+					report.report("EASE found no items...text is not present on page after clicking eSMD Delivery & Status Report");
+				}
+				lseSMDAndStatusRecords = driver.findElements(By.xpath(sADRDataTableXpath));
+				recordCountFromeSMDStatusReport = lseSMDAndStatusRecords.size();
+			}
+		}else{
+			failCounter++;
+			report.report("Fail : Unable to find ADR link on page");
+		}
 
-		return ( failCounter == 0 ) ? true : false;
+		if( failCounter == 0 && recordCountFromADRReport == recordCountFromeSMDStatusReport){
+			report.report("Records count under ADR Report are : " + recordCountFromADRReport, ReportAttribute.BOLD);
+			report.report("Records count under eSMD Delivery & Status Report are : " + recordCountFromADRReport, ReportAttribute.BOLD);
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 

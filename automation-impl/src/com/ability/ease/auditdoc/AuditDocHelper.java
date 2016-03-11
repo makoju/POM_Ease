@@ -16,6 +16,8 @@ import jsystem.framework.report.Reporter.ReportAttribute;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotVisibleException;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebElement;
@@ -24,12 +26,14 @@ import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.TestCommonResource;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFileFomat;
+import com.ability.ease.claims.ClaimsHelper;
 import com.ability.ease.mydde.reports.ReportsHelper;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 public class AuditDocHelper extends AbstractPageObject{
 
 	ReportsHelper reportHelper = new ReportsHelper();
+	ClaimsHelper claimHelper = new ClaimsHelper();
 
 	int failCounter = 0;
 	WebElement uploadIOCN=null;
@@ -116,26 +120,32 @@ public class AuditDocHelper extends AbstractPageObject{
 	public void navigateToESMDStatusPage(String agency) throws Exception{
 
 		WebElement mydde = waitForElementVisibility(By.linkText("MY DDE"));
-		String classAttr = mydde.getAttribute("class");
+		//	String classAttr = mydde.getAttribute("class");
 		if ( mydde != null) {
-			if( !classAttr.equalsIgnoreCase("topNavAnchor topNavAnchorSelected")){
+			/*if( !classAttr.equalsIgnoreCase("topNavAnchor topNavAnchorSelected")){
 				clickLink("MY DDE");
 				clickEsmdStatusLink(agency);
 				return;
 			}else{
 				clickEsmdStatusLink(agency);
-			}
+			}*/
+			clickLink("MY DDE");
+			clickEsmdStatusLink(agency);
 		}
 	}
 
 	public void clickEsmdStatusLink(String agency)throws Exception{
-		String sXpathOfOVERNIGHT = "//span[contains(text(),'OVERNIGHT')]";
+		String sXpathOfOVERNIGHT = "//span[contains(text(),'OVERNIGHT')] | //td[contains(text(),'EASE SUMMARY REPORT')]";
 		String sXpathBeforeClickOnESMD = "//td[contains(text(),'FOR AGENCY')]";
 		//	String sXpathofEsmdReport = "//td[contains(text(),'ESMD DELIVERY & STATUS REPORT')]";
-		clickLink("Advanced");
+		waitForElementToBeClickable(ByLocator.xpath, sXpathOfOVERNIGHT, 10);
+		if( !isTextPresent("Basic")){
+			clickLink("Advanced");
+		}
 		Thread.sleep(5000);
-		WebElement overNightText = retryUntilElementIsVisible(sXpathOfOVERNIGHT, 10);
-		if(overNightText != null){
+		WebElement reportHeaderTextInBlue = retryUntilElementIsVisible(sXpathOfOVERNIGHT, 10);
+		String reportHeaderText = reportHeaderTextInBlue.getText();
+		if(reportHeaderTextInBlue != null){
 			waitForElementToBeClickable(ByLocator.id, "reportAgencySelect", 5);
 			//change agency and time frame to get the right record to upload ADR document
 			moveToElement("Agency");
@@ -144,9 +154,9 @@ public class AuditDocHelper extends AbstractPageObject{
 			//wait for FOR AGENCY text on table header in blue before clicking on esmd-status link
 			if(waitForElementToBeClickable(ByLocator.xpath,sXpathBeforeClickOnESMD, 30) != null){
 				clickLink("esMD Delivery & Status");
-				moveToElement("Timeframe");
-				typeEditBox("reportCustomDateFrom", "2/23/2011");
-				clickButtonV2("reportTimeframeButton");
+				if(!reportHeaderText.contains("2011")){
+					changeTimeFrame();
+				}
 			}else{
 				report.report("EASE SUMMARY REPORT FROM MM/DD/YYYY TO MM/DD/YYYY, FOR AGENCY XXXX is not present !!!");
 			}
@@ -168,7 +178,7 @@ public class AuditDocHelper extends AbstractPageObject{
 			break;
 		case TIFF:
 			if( relationalOperator == '>'){
-				filePaths.add(TestCommonResource.getTestResoucresDirPath()+"auditdocfiles\\AuditDoc_ADR_TIFF_2_45MB.TIFF");
+				filePaths.add(TestCommonResource.getTestResoucresDirPath()+"auditdocfiles\\AuditDoc_ADR_TIFF_2_45MB.tiff");
 			}else if( relationalOperator == '<'){
 				filePaths.add(TestCommonResource.getTestResoucresDirPath()+"auditdocfiles\\AuditDoc_ADR_TIFF_1_0.13MB.TIFF");
 			}
@@ -185,11 +195,11 @@ public class AuditDocHelper extends AbstractPageObject{
 		case PDFandTIFF:
 			if( relationalOperator == '>'){
 				filePaths.add(TestCommonResource.getTestResoucresDirPath()+"auditdocfiles\\AuditDoc_ADR_PDF_2_38.8MB.pdf");
-				filePaths.add(TestCommonResource.getTestResoucresDirPath()+"auditdocfiles\\AuditDoc_ADR_TIFF_2_45MB.TIFF");
-			}else if( relationalOperator == '<'){
-				filePaths.add(TestCommonResource.getTestResoucresDirPath()+"auditdocfiles\\AuditDoc_ADR_TIFF_3_0.07MB.TIFF");
 				filePaths.add(TestCommonResource.getTestResoucresDirPath()+"auditdocfiles\\AuditDoc_ADR_PDF_4_7.80MB.pdf");
+			}else if( relationalOperator == '<'){
+				filePaths.add(TestCommonResource.getTestResoucresDirPath()+"auditdocfiles\\AuditDoc_ADR_TIFF_3_0.07MB.tif");
 				filePaths.add(TestCommonResource.getTestResoucresDirPath()+"auditdocfiles\\AuditDoc_ADR_PDF_3_6.31MB.pdf");
+				filePaths.add(TestCommonResource.getTestResoucresDirPath()+"auditdocfiles\\AuditDoc_ADR_TIFF_1_0.13MB.TIFF");
 			}
 			break;
 
@@ -207,20 +217,36 @@ public class AuditDocHelper extends AbstractPageObject{
 	 */
 	public boolean uploadFilesAutoIT(List<String> lsFilePaths)throws Exception {
 		int failCounter = 0;
+		int i = 0;
 		String sFileName = null;
 		String autoITScriptPath = TestCommonResource.getTestResoucresDirPath()+"fileuploadutil\\FileUploadAutoIT.exe";
+		String browseFileXpath = null;
 
 		for( String sFilePath:lsFilePaths){
 			sFileName = getFileNameFromFilePath(sFilePath);
-			clickButtonV2("fileUploadId");
+
 			try {
+				if( i == 0){
+					browseFileXpath = "//input[@id='fileUploadId']";
+					driver.findElement(By.xpath(browseFileXpath)).click();
+				}else{
+					browseFileXpath = "//input[@id='fileUploadId_F"+i+"']";
+					WebElement browse = driver.findElement(By.xpath(browseFileXpath));
+					browse.click();
+					//safeJavaScriptClick(browse);
+				}
 				report.report("Invoking autoit script to upload file : " + sFileName);
 				Runtime.getRuntime().exec(autoITScriptPath + " " + sFilePath);
 				report.report(sFileName + " : File browsing completed ");
 			} catch (IOException e) {
 				failCounter++;
 				e.printStackTrace();
+			}catch(ElementNotVisibleException enve){
+				failCounter++;
+				enve.printStackTrace();
 			}
+			Thread.sleep(10000);
+			i++;
 		}
 		return (failCounter == 0) ? true : false;
 	}
@@ -380,19 +406,64 @@ public class AuditDocHelper extends AbstractPageObject{
 					isElementPresent = true;
 					result = true;
 				}
+				driver.findElement(By.xpath(sXpathRefresh)).click();
 			}catch(NoSuchElementException nsee){
 				Thread.sleep(10000);
+			}catch(Exception e){
 				try{
-					driver.findElement(By.xpath(sXpathRefresh));
-				}catch(UnhandledAlertException uae){
 					Alert alert = driver.switchTo().alert();
-					
+					if(alert.getText().contains("I am still processing"))
+						alert.accept();
 				}
-				continue;
+				catch(Exception e1){
+					//ignore
+				}
+			}
+			continue;
+		}
+		return result;
+	}
+
+	public void changeTimeFrame()throws Exception{
+		moveToElement("Timeframe");
+		typeEditBox("reportCustomDateFrom", "2/23/2011");
+		clickButtonV2("reportTimeframeButton");
+	}
+
+	public void clickMyDDELink() throws Exception{
+		claimHelper.clickMYDDELink();
+	}
+
+	public void validateADRResponseTableData(Map<String, String> CMSStatusUpdateTableData, String columnNameID){
+		String columnValue = CMSStatusUpdateTableData.get(columnNameID);
+		if( columnValue != null ){
+			report.report(columnNameID + " has a got value : " + columnValue);
+		}else{
+			report.report(columnNameID + " value is : null ");
+		}
+	}
+
+	public List<String> getToolTipOfView(String ClaimIDDCN)throws Exception{
+
+		String viewToolTipXpath = "//td[contains(text(),'" + ClaimIDDCN + "')]/following-sibling::td[contains(text(),'view')]";
+		waitForElementVisibility(By.xpath(viewToolTipXpath));
+		WebElement we = driver.findElement(By.xpath(viewToolTipXpath));
+		String tooltiprawtext = we.getAttribute("onmouseover");
+		tooltiprawtext.replaceAll("\"", "");
+		List<String> lsFileNamesFromViewColumn = new ArrayList<String>(); 
+
+		String str2 = tooltiprawtext.substring(tooltiprawtext.indexOf("<BR>"));
+		String[] str3 = str2.split("<BR>");
+		for(String s1:str3){
+			if(!s1.isEmpty()){
+				lsFileNamesFromViewColumn.add(s1.replaceAll("[^a-zA-Z0-9-._ ]", ""));
 			}
 		}
-
-		return result;
+		report.report("There are/is "+ lsFileNamesFromViewColumn.size() + " file name(s) found in Document List view tool tip");
+		for(String fileName:lsFileNamesFromViewColumn){
+			report.report("File name from Document List view tool tip : " + fileName);
+		}
+		return lsFileNamesFromViewColumn;
 	}
 	@Override
 	public void assertInPage() {

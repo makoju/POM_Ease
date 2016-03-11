@@ -27,12 +27,25 @@ public class AuditDocTests extends BaseTest{
 	private String agency;
 	private String expectedCMSStatusTableHeaders;
 	private int length;
-	
+	private String timeframe,Value,agencyValue,hic,patient,daysduedate,duedate,code;
+
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
 
 	@Before
 	public void setupTests()throws Exception{
 		auditdoc = (IAuditDoc)context.getBean("auditdoc");
+	}
+
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "verifyEsmdDeliveryStatusReportColumnsForHHA", paramsInclude = {"timeframe,Value,agency,agencyValue,hic,patient,daysduedate,duedate,code,testType"})
+	public void verifyEsmdDeliveryStatusReportColumnsForHHA() throws Exception{	
+
+		if(auditdoc.verifyEsmdDeliveryStatusReportColumnsForHHA(timeframe,Value,agency,agencyValue,hic,patient,daysduedate,duedate,code)){
+			report.report("Expected Columns and data presented under eSMD Report", Reporter.PASS);
+		}else{
+			report.report("Expected Columns and data not presented under eSMD Report", Reporter.FAIL);
+		}
 	}
 
 	@Test
@@ -46,14 +59,14 @@ public class AuditDocTests extends BaseTest{
 		keepAsGloablParameter("caseID", caseID);
 		keepAsGloablParameter("adrFileFormat", adrFileFormat.toString());
 		keepAsGloablParameter("adrFileSize", adrFileSize.toString());
-		
+
 		if(!auditdoc.verifyADRDocumentUploadFileFormats(agency, reviewContractorName, claimIDDCN, caseID, adrFileFormat, adrFileSize)){
 			report.report("Failed to upload ADR response document of type " + adrFileFormat + " with size " + adrFileSize , Reporter.FAIL);
 		}else{
 			report.report("Successfully uploaded ADR response document of type " + adrFileFormat + " with size " + adrFileSize, Reporter.ReportAttribute.BOLD);
 		}
 	}
-	
+
 
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
@@ -70,8 +83,7 @@ public class AuditDocTests extends BaseTest{
 
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify Records Presen Under eSMDreport", 
-	paramsInclude = { "expectedCMSStatusTableHeaders, reviewContractorName, claimIDDCN, caseID, adrFileFormat, adrFileSize, testType" })
+	@TestProperties(name = "Verify Records Present Under eSMDreport", paramsInclude = { "testType" })
 	public void verifyRecordsPresenUnderESMDreport()throws Exception{
 
 		if(!auditdoc.verifyRecordsPresenUnderESMDreport()){
@@ -80,7 +92,7 @@ public class AuditDocTests extends BaseTest{
 			report.report("Records present under ADR report and records present under eSMD status report are equal", Reporter.ReportAttribute.BOLD);
 		}
 	}
-	
+
 	/*###
 	# Getters and Setters
 	###*/
@@ -168,6 +180,70 @@ public class AuditDocTests extends BaseTest{
 	public void setLength(int length) {
 		this.length = length;
 	}
-	
-	
+
+	public String getTimeframe() {
+		return timeframe;
+	}
+
+	@ParameterProperties(description = "Test Data:Timeframe")
+	public void setTimeframe(String timeframe) {
+		this.timeframe = timeframe;
+	}
+
+	public String getValue() {
+		return Value;
+	}
+	@ParameterProperties(description = "Test Data:All (up to 18 mos ago)")
+	public void setValue(String value) {
+		Value = value;
+	}
+
+
+	public String getAgencyValue() {
+		return agencyValue;
+	}
+	@ParameterProperties(description = "Test Data:HHA1")
+	public void setAgencyValue(String agencyValue) {
+		this.agencyValue = agencyValue;
+	}
+
+	public String getHic() {
+		return hic;
+	}
+	@ParameterProperties(description = "Test Data:000002778A")
+	public void setHic(String hic) {
+		this.hic = hic;
+	}
+
+	public String getPatient() {
+		return patient;
+	}
+	@ParameterProperties(description = "Test Data:DOE, JOHN 2778")
+	public void setPatient(String patient) {
+		this.patient = patient;
+	}
+
+	public String getDaysduedate() {
+		return daysduedate;
+	}
+	@ParameterProperties(description = "01/21/17")
+	public void setDaysduedate(String daysduedate) {
+		this.daysduedate = daysduedate;
+	}
+
+	public String getDuedate() {
+		return duedate;
+	}
+	@ParameterProperties(description = "02/05/17")
+	public void setDuedate(String duedate) {
+		this.duedate = duedate;
+	}
+
+	public String getCode() {
+		return code;
+	}
+	@ParameterProperties(description = "55555")
+	public void setCode(String code) {
+		this.code = code;
+	}
 }

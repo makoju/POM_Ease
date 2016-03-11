@@ -11,10 +11,8 @@ public class AuditDocSelenium2Impl implements IAuditDoc{
 	AuditDocPage auditdocpage = new AuditDocPage();
 	
 	@Override
-	public boolean verifyEsmdDeliveryStatusReportColumns(
-			Map<String, String> mapAttrValues) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean verifyEsmdDeliveryStatusReportColumnsForHHA(String Timeframe, String Value, String agency, String agencyValue, String hic,String patient,String daysduedate,String duedate,String code) throws Exception {
+		return auditdocpage.verifyEsmdDeliveryStatusReportColumnsForHHA(Timeframe,Value,agency,agencyValue,hic,patient,daysduedate,duedate,code);
 	}
 	
 	@Override
@@ -36,8 +34,7 @@ public class AuditDocSelenium2Impl implements IAuditDoc{
 
 	@Override
 	public boolean verifyRecordsPresenUnderESMDreport() throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		return auditdocpage.verifyRecordsPresenUnderESMDreport();
 	}
 	
 	

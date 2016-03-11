@@ -25,7 +25,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -713,7 +712,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			break;
 		}		
 		if (element == null) {
-			throw new Exception ("Web element not found: " + elementLocator); 
+			throw new Exception ("Web element not found: " + elementLocator);
 		}
 		return element;
 	}
@@ -1099,7 +1098,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 
 		WebDriverHelper.highlightElement(driver, we);
 		setSelectedField(we, valueToSelect);
-		// sendEnterOnWebElement(we);
+	/*	// sendEnterOnWebElement(we);
 
 		/*		try {
 
@@ -1143,6 +1142,30 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			e.printStackTrace();
 		}
 	}
+
+	public String[] selectGetOptions(String selectNameOrID) {
+		WebElement we = waitForElementVisibility(By.xpath("//select[contains(@name,'" + selectNameOrID + "') or " + 
+				"contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "')] | " + 
+				"//span[@id='"+ selectNameOrID +"']/select | " + "//td[span[contains(@title,"+"'"+ selectNameOrID +"'"+")]]/following-sibling::td/select | " + "//td[contains(text(),"+"'"+ selectNameOrID +"'"+")]/select"));
+
+		WebDriverHelper.highlightElement(driver, we);
+		int i = 0;
+		String[] actual = null; 
+		Select dropDown = new Select(we);
+		try {
+			List<WebElement> getAllOptions = dropDown.getOptions();
+			actual = new String[getAllOptions.size()];
+			for(WebElement getOption : getAllOptions){
+				actual[i++] = getOption.getText().trim();
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return actual;
+	}
+
+
+
 	/**
 	 * Use this method to select from radio buttons options
 	 * @param radioNameOrID - set the name or id of the desired select tag
@@ -1186,7 +1209,6 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		try {
 			dropDown.selectByVisibleText(value);
 		} catch (Exception ex) {
-
 			dropDown.selectByValue(value);
 		} 
 	}
@@ -1211,7 +1233,8 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 * @throws Exception
 	 */
 	public boolean isTextExistInTable(String text, long waitTimeInSeconds) throws Exception {
-		String xpath = "//td[text() ='"+text+"'] | //td/span[text() ='"+text+"']" ;
+		//String xpath = "//td[text() ='"+text+"'] | //td/span[text() ='"+text+"']" ;
+		String xpath = "//td[text() ='"+text+"'] | //td/span[text() ='"+text+"']| //a[text() ='"+text+"']";
 		WebDriverWait wait = new WebDriverWait(driver, waitTimeInSeconds); // for links that become enable by client-side js
 		try{
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
@@ -1851,6 +1874,17 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			}
 		}
 		return sValueFromJsystem;
+	}
+	
+	public static String getLocatorFromXML(List<Attribute> lsAttributes, String displayName){
+		String sLocator = null;
+		for(Attribute scrAttr:lsAttributes){
+			if(scrAttr.getDisplayName().equalsIgnoreCase(displayName)){
+				sLocator = scrAttr.getLocator();
+				break;
+			}
+		}
+		return sLocator;
 	}
 
 	//mouse hover alternative approach 

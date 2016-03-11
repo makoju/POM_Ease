@@ -1,8 +1,6 @@
 package com.ability.ease.myaccount;
 
 import java.io.ByteArrayInputStream;
-import java.io.StringReader;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +13,6 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
 import com.ability.ease.auto.common.TestCommonResource;
 import com.ability.ease.auto.common.TimeZoneConversionUtil;
@@ -26,25 +23,13 @@ import com.ability.ease.home.HomePage;
 import com.ability.ease.home.HomePage.Menu;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
-
-import jsystem.framework.report.Reporter;
-
-
 public class ChangeSchedulePage extends AbstractPageObject {
 
 	MyAccountHelper helper = new MyAccountHelper();
 	
-	
-	
-	
-
 	public boolean verifyChangeSchedule(Map<String,String> mapAttrValues)throws Exception {
 
-		//int failCounter = 0;
-
-		
 		navigateToPage();
-		//clickLink("MY ACCOUNT");
 		clickLink("Change Schedule");
 
 		UIAttributeXMLParser parser = UIAttributeXMLParser.getInstance();
@@ -54,47 +39,32 @@ public class ChangeSchedulePage extends AbstractPageObject {
 		UIActions changeSchedule = new UIActions();
 		changeSchedule.fillScreenAttributes(lsAttributes);
 		Thread.sleep(5000);
-		
-		
-		//clickButton("Next");
-		
 
 		//validations
-		String sTimeZone =getValueFromJSystem(lsAttributes, "Timezone");//mapAttrValues.get("Timezone");
+		String sTimeZone = mapAttrValues.get("Timezone");
 		report.report("Timezone is added");
 		String sAgencyNumber = mapAttrValues.get("Agency");
 		Map<Integer,String> xmlFileMap = helper.getScheduleXMLFilesFromDB(sAgencyNumber);
-
-		
 
 		//code to convert claim schedule time to CST
 		String sClaimsScheduleTime = mapAttrValues.get("claimsTimeDropDown");
 		report.report("Timezone clamis is added");
 		String CSTValue_Claims = TimeZoneConversionUtil.convertToCSTTimeZone(sClaimsScheduleTime, sTimeZone);
 		
-
 		//code to convert Eligibility schedule time to CST
 		String sEligibilityScheduleTime = mapAttrValues.get("EligibilityTimeDropDown");
 		report.report("Timezone eligibility  is added");
 		String CSTValue_Eligibility = TimeZoneConversionUtil.convertToCSTTimeZone(sEligibilityScheduleTime, sTimeZone);
-		
 
 		//code to convert EFT schedule time to CST
 		String sEftScheduleTime = mapAttrValues.get("EFTTimeDropDown");
 		report.report("Timezone EFT is added");
 		String CSTValue_EFT = TimeZoneConversionUtil.convertToCSTTimeZone(sEftScheduleTime, sTimeZone);
-		
-		
-		
 
 		String sXpathExpression = "//schedule/@hour";
 		Document claimsXMLDocument = convertStringToDocument(xmlFileMap.get(10));
 		Document eligibilityXMLDocument = convertStringToDocument(xmlFileMap.get(11));
 		Document eftXMLDocument = convertStringToDocument(xmlFileMap.get(12));
-
-
-		
-
 
 		return (
 				isValueFoundinXML(claimsXMLDocument, sXpathExpression,  CSTValue_Claims) &
@@ -102,7 +72,6 @@ public class ChangeSchedulePage extends AbstractPageObject {
 				isValueFoundinXML(eftXMLDocument, sXpathExpression,  CSTValue_EFT)
 				);
 	}
-
 
 	private static Document convertStringToDocument(String xmlStr) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();  
@@ -117,10 +86,6 @@ public class ChangeSchedulePage extends AbstractPageObject {
 		} 
 		return null;
 	}
-	
-	
-	
-	
 
 
 	public boolean isValueFoundinXML(Document  document, String sXpathExpression, String value) throws XPathExpressionException{
@@ -152,7 +117,6 @@ public class ChangeSchedulePage extends AbstractPageObject {
 	@Override
 	public void navigateToPage() throws Exception {
 		HomePage.getInstance().navigateTo(Menu.MYACCOUNT, null);
-
 	}
 
 }

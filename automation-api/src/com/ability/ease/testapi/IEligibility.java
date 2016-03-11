@@ -11,6 +11,7 @@ public interface IEligibility {
 	abstract public boolean verifyEligibilityStatus(String firstname, String lastname, String status) throws Exception;
 	abstract public boolean navigatetoClaimDetails(String firstname, String lastname, String hic)throws Exception;
 	abstract public boolean acknoweldgeEligibility(String firstname, String lastname) throws Exception;
+	abstract public int getActivityCount(String status) throws Exception;
 	abstract public boolean verifyHETSActivitiesCompletedStatusReport(String hic, String agency, String firstname,String lastname)throws Exception;
 	abstract public boolean verifyNavigationToUB04FromPatientInfoScreen(String hic, String agency, String firstname,String lastname)throws Exception;
 	abstract public boolean verifyNavigationToClaimInfoFromPatientInfoScreen(String hic, String agency, String firstname,String lastname)throws Exception;

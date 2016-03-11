@@ -59,9 +59,14 @@ public class EligibilityPage extends AbstractPageObject{
 			if(!verifyEligibilityRequestStatusCompleted(firstlastname.toUpperCase()))
 				return false;
 		}
+		
+		else if(status.equalsIgnoreCase("failed")){
+			if(!verifyEligibilityRequestStatusFailed(firstlastname.toUpperCase()))
+				return false;
+		}
 		return true;
 	}
-	
+
 	public boolean navigatetoClaimDetails(String firstname, String lastname, String hic) throws Exception{
 		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 		navigateToPage();
@@ -320,7 +325,29 @@ public class EligibilityPage extends AbstractPageObject{
 
 		return failurecount==0?true:false;
 	}
-
+	
+	public int getActivityCount(String status) {
+		int count=0;
+		if(status.equalsIgnoreCase("pending"))
+			count = getActivitycount("tdPendingActivity");
+		
+		else
+			if(status.equalsIgnoreCase("completed"))
+			count = getActivitycount("tdGoodActivity");
+			
+		else
+			if(status.equalsIgnoreCase("failed"))
+			count = getActivitycount("tdFailedActivity");
+		else
+		{
+			report.report("Invalid Status option: "+status, Reporter.FAIL);
+		}
+		
+		return count;
+	}
+	
+	
+	//Helper methods
 	private void navigatetoClaimInfoScreen() {
 		WebElement startdatelink = waitForElementVisibility(By.xpath("//tr[@class='tableline1']/td[3]/a"));
 		if (startdatelink!=null)
@@ -405,6 +432,22 @@ public class EligibilityPage extends AbstractPageObject{
 				report.report("Submitted Patient Eligibility was not found in Good Activity table(Green).", Reporter.WARNING);
 				return false;
 			}
+	}
+	
+	
+	private boolean verifyEligibilityRequestStatusFailed(String lastname) {
+		WebElement tblfailedactivity = waitForElementVisibility(By.id("tdFailedActivity"));
+		moveToElement(tblfailedactivity);
+
+		String firstlastname = Verify.getTableData("failedActivity", 1, 5);
+		if (firstlastname!=null && firstlastname.toLowerCase().contains(lastname.toLowerCase())){
+			report.report("Submitted Patient Eligibility was found in Failed Activity table(Red).", ReportAttribute.BOLD);
+			return true;
+		}
+		else{
+			report.report("Submitted Patient Eligibility was not found in Failed Activity table(Red).", Reporter.WARNING);
+			return false;
+		}
 	}
 	
 	public boolean isOptionSelected(WebElement select, String option){

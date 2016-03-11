@@ -20,8 +20,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.ability.ease.mydde.reports.ReportsHelper;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
+import jsystem.extensions.report.html.Report;
 import jsystem.framework.report.Reporter;
 import jsystem.framework.report.Reporter.ReportAttribute;
 
@@ -31,7 +33,7 @@ public class Verify extends AbstractPageObject{
 		boolean isTrue=true;
 		if(actual.length!=expected.length)
 		{
-			report.report("Actual and Expected arrays Lengths are not equal: Actual: "+ actual.length+ "  Expected: "+expected.length);
+			report.report("Actual and Expected arrays Lengths are not equal: Actual: "+ actual.length+ "  Expected: "+expected.length,Reporter.WARNING);
 			return false;
 		}
 		else
@@ -164,7 +166,7 @@ public class Verify extends AbstractPageObject{
 						lsexpectedcolumndata.addAll(lsactualcolumndata);
 						Collections.sort(lsexpectedcolumndata); //which sorts elements as per natural order for strings alphabet ascending order
 						report.report("Actual: "+lsactualcolumndata+" Expected: "+lsexpectedcolumndata);
-						return Verify.ListEquals(lsactualcolumndata, lsexpectedcolumndata);
+						return Verify.listEquals(lsactualcolumndata, lsexpectedcolumndata);
 					}
 					else
 					{
@@ -209,7 +211,7 @@ public class Verify extends AbstractPageObject{
 						lsexpectedcolumndata.addAll(lsactualcolumndata);
 						Collections.sort(lsexpectedcolumndata); //which sorts elements as per natural order for strings alphabet ascending order
 						report.report("Actual: "+lsactualcolumndata+" Expected: "+lsexpectedcolumndata);
-						return Verify.ListEquals(lsactualcolumndata, lsexpectedcolumndata);
+						return Verify.listEquals(lsactualcolumndata, lsexpectedcolumndata);
 					}
 					else
 					{
@@ -256,8 +258,7 @@ public class Verify extends AbstractPageObject{
 
 	}
 
-	public static boolean ListEquals(List<String> lsactualcolumndata,
-			List<String> lsexpectedcolumndata) {
+	public static boolean listEquals(List<String> lsactualcolumndata,List<String> lsexpectedcolumndata) {
 		int failurecount=0;
 		if(lsactualcolumndata!=null && lsexpectedcolumndata!=null && lsactualcolumndata.size()!=lsexpectedcolumndata.size()){
 			report.report("Both the lists are of different size, Actual: "+lsactualcolumndata.size()+" Expected: "+lsexpectedcolumndata.size());
@@ -299,6 +300,54 @@ public class Verify extends AbstractPageObject{
      assertNotNull(amount);
      }*/
 		return amount!=null?true:false;
+	}
+
+	public static boolean verifyTableColumnNames(String tableIdentifier, String[] expected){
+		int i=0,faliureCount=0; 
+		boolean isColFound = false; 
+
+		//Waiting for 2 seconds before the page load finish
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			if(isTextPresent("EASE found no items for this report")){
+				report.report("EASE found no items for this report",ReportAttribute.BOLD);
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		List<WebElement> allColumns =new ReportsHelper().getReportTableHeaders(tableIdentifier);
+		if(allColumns == null){
+			return false;
+		}
+//		String[] actualColNames = new String[allColumns.size()];
+		ArrayList<String> actualColNames = new ArrayList<String>();
+		for(WebElement column : allColumns){
+			if(!column.getText().equals("")){
+//				actualColNames[i++] = column.getText();
+				actualColNames.add(column.getText());
+			}
+		}
+		for(String s : expected){
+			for(String actual : actualColNames){
+				if(actual.trim().equalsIgnoreCase(s.trim())){
+					report.report("Expected column is displayed : " + s,ReportAttribute.BOLD);
+					isColFound = true;
+					break;
+				}
+			}
+			if(!isColFound){
+				faliureCount++;
+			}
+			isColFound = false;
+		}
+		return faliureCount == 0? true:false;
 	}
 
 	/**

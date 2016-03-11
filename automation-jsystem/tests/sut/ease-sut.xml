@@ -6,7 +6,7 @@
             <class>com.ability.ease.auto.systemobjects.DefaultWorkingEnvironment</class>
             <host>10.164.1.104</host>
             <port>8080</port>
-            <mySQLDBHostName>10.164.2.250</mySQLDBHostName>
+            <mySQLDBHostName>10.164.1.88</mySQLDBHostName>
             <mySQLDBName>ddez</mySQLDBName>
             <mySQLDBPort>3306</mySQLDBPort>
             <mySQLDBUserName>easeweb</mySQLDBUserName>

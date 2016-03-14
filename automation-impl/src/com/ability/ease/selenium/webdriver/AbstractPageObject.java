@@ -1,5 +1,7 @@
 package com.ability.ease.selenium.webdriver;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,8 +23,8 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -35,10 +37,12 @@ import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.events.WebDriverEventListener;
 import org.openqa.selenium.support.pagefactory.Annotations;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.ability.ease.auto.common.TestCommonResource;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
 import com.ability.ease.auto.enums.portal.BrowserType;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
@@ -709,7 +713,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			break;
 		}		
 		if (element == null) {
-			throw new Exception ("Web element not found: " + elementLocator); 
+			throw new Exception ("Web element not found: " + elementLocator);
 		}
 		return element;
 	}
@@ -732,8 +736,11 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			WebDriverHelper.highlightElement(driver, element);
 
 			if (WorkingEnvironment.getWebdriverType() == WebDriverType.INTERNET_EXPLORER_DRIVER) {
+				element.click();
+				//sendEnterOnWebElement(element);
+				//element.sendKeys(Keys.ENTER);
 				//element.click();
-				sendEnterOnWebElement(element);
+				//sendEnterOnWebElement(element);
 				return;
 			}
 			element.click();
@@ -749,7 +756,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 */	
 	public void clickImage(String imageIdentifier) {
 		String imgXpath = "//input[@type='image'][@alt='" + imageIdentifier + "' or @title='" + imageIdentifier + "'] | " +
-				" //input[@type='image'][contains(@alt,'" + imageIdentifier + "')]";
+				" //input[@type='image'][contains(@alt,'" + imageIdentifier + "')]" ;
 		WebDriverWait wait = new WebDriverWait(driver, 3); // for links that become enable by client-side js
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(imgXpath)));
 		WebElement button = driver.findElement(By.xpath(imgXpath));
@@ -769,7 +776,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		try {
 			int count = 0 ;
 			while (element.isEnabled() && count < 5){//Special case for IE9 
-				report.report("Sending Enter to WebElement");
+				report.report("Sending Enter to WebElement: "+ element.getText());
 				element.sendKeys(Keys.ENTER);
 				count ++ ;
 				Thread.sleep(2000);
@@ -1095,9 +1102,8 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 
 		WebDriverHelper.highlightElement(driver, we);
 		setSelectedField(we, valueToSelect);
-		// sendEnterOnWebElement(we);
 
-/*		try {
+		/*		try {
 
 			if (we.getAttribute("onchange")!= null){
 				report.report("firing 'onchange' event");
@@ -1139,6 +1145,30 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			e.printStackTrace();
 		}
 	}
+
+	public String[] selectGetOptions(String selectNameOrID) {
+		WebElement we = waitForElementVisibility(By.xpath("//select[contains(@name,'" + selectNameOrID + "') or " + 
+				"contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "')] | " + 
+				"//span[@id='"+ selectNameOrID +"']/select | " + "//td[span[contains(@title,"+"'"+ selectNameOrID +"'"+")]]/following-sibling::td/select | " + "//td[contains(text(),"+"'"+ selectNameOrID +"'"+")]/select"));
+
+		WebDriverHelper.highlightElement(driver, we);
+		int i = 0;
+		String[] actual = null; 
+		Select dropDown = new Select(we);
+		try {
+			List<WebElement> getAllOptions = dropDown.getOptions();
+			actual = new String[getAllOptions.size()];
+			for(WebElement getOption : getAllOptions){
+				actual[i++] = getOption.getText().trim();
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return actual;
+	}
+
+
+
 	/**
 	 * Use this method to select from radio buttons options
 	 * @param radioNameOrID - set the name or id of the desired select tag
@@ -1182,7 +1212,6 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		try {
 			dropDown.selectByVisibleText(value);
 		} catch (Exception ex) {
-
 			dropDown.selectByValue(value);
 		} 
 	}
@@ -1207,7 +1236,8 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 * @throws Exception
 	 */
 	public boolean isTextExistInTable(String text, long waitTimeInSeconds) throws Exception {
-		String xpath = "//td[text() ='"+text+"'] | //td/span[text() ='"+text+"']" ;
+		//String xpath = "//td[text() ='"+text+"'] | //td/span[text() ='"+text+"']" ;
+		String xpath = "//td[text() ='"+text+"'] | //td/span[text() ='"+text+"']| //a[text() ='"+text+"']";
 		WebDriverWait wait = new WebDriverWait(driver, waitTimeInSeconds); // for links that become enable by client-side js
 		try{
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
@@ -1399,7 +1429,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 		return webElement;
 	}
-	
+
 	private static void checkandignoremodaldialog(){
 		try{
 			Alert alert = driver.switchTo().alert();
@@ -1550,7 +1580,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		WebElement we = waitForElementVisibility(By.linkText(sElementText), 60);
 		moveByOffset(we,-10,0);
 	}
-	
+
 	public void moveToElementAndClick(WebElement element) {
 		Actions builder = new Actions(driver);
 		Action moveAndClick = builder.moveToElement(element)
@@ -1624,9 +1654,9 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			//Alert alert = driver.switchTo().alert();
 			Alert alert = wait.until(ExpectedConditions.alertIsPresent());
 			sActual = alert.getText().toString();
-			report.report("Expected text on alert box is :" +sActual);
+			report.report("Expected text on alert box is :" +sExpected);
 			if( sActual.equalsIgnoreCase(sExpected)){
-				report.report("Actual text on alert box is : "+ sExpected);
+				report.report("Actual text on alert box is : "+ sActual);
 				alert.accept();
 				return true;
 			}
@@ -1636,6 +1666,54 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		return false;
 	}
 
+	/**
+	 * Handle alerts :: this method reads an alert text from test method and compares with the actuals
+	 * It will try to capture the alert until it is visible
+	 * Nageswar.Bodduri
+	 */
+	public boolean verifyAlertV2(String sExpected){
+
+		String sActual=null;
+		Alert alert = null;
+		try{
+			//Wait 10 seconds till alert is present
+			report.report("Inside verify alert method....");
+			alert = waitForAlert(driver);
+			sActual = alert.getText().toString();
+			report.report("Expected text on alert box is :" +sExpected);
+			if( sActual.equalsIgnoreCase(sExpected)){
+				report.report("Actual text on alert box is : "+ sActual);
+				alert.accept();
+				return true;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	/**
+	 * Use this method only when you are sure about the expected alert will appear but takes a long time ( 10 - 15 minutes)
+	 * @throws InterruptedException 
+	 * 
+	 */
+	public Alert waitForAlert(WebDriver driver) throws InterruptedException {
+
+		boolean isAlertPresent = false;
+		Alert alert = null;
+		report.report("Waiting for alert to be present, this will take 10 - 15 minutes time please be patient...");
+		while(!isAlertPresent)
+		{
+			try{
+				alert = driver.switchTo().alert();
+				isAlertPresent = true;
+			}catch(NoAlertPresentException e){
+				Thread.sleep(10000);
+				continue;
+			}
+		}
+		return alert;
+	}
 	/**
 	 * get main window handle
 	 * Nageswar.Bodduri
@@ -1715,6 +1793,19 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 		return sLabelXpath.toString();
 	}
+	
+	public boolean isAlertPresent() 
+	{ 
+	    try 
+	    { 
+	        driver.switchTo().alert(); 
+	        return true; 
+	    }   // try 
+	    catch (NoAlertPresentException Ex) 
+	    { 
+	        return false; 
+	    }   // catch 
+	} 
 
 	/**
 	 * Clicks a Link : when you can not locate any anchor element by its text.Use this method to locate an anchor tag with its id or name
@@ -1723,7 +1814,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 */
 	public void clickLinkV2(String linkLocator)throws Exception{
 
-		String elementLocator = "//a[@id='" + linkLocator+ "'] | " + " //a[@name='" + linkLocator +"']";
+		String elementLocator = "//a[@id='" + linkLocator+"' or @name='" + linkLocator +"' or text()='"+linkLocator+"']";
 		WebElement element = null;
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 
@@ -1735,8 +1826,17 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		if (element!=null) {
 			WebDriverHelper.highlightElement(driver, element);
 			if (WorkingEnvironment.getWebdriverType() == WebDriverType.INTERNET_EXPLORER_DRIVER) {
-				//element.click();
-				sendEnterOnWebElement(element);
+				int count=0;
+				element.click();
+
+				/*while(isAlertPresent() && count++ < 10){
+					report.report("We have found an alert handling it and try again!!!");
+					driver.switchTo().alert().accept();
+					Thread.sleep(2000);
+					element.click();
+				}
+				if(count > 0)
+					element.click();*/
 				return;
 			}else{
 				element.click();
@@ -1800,17 +1900,64 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 		return sValueFromJsystem;
 	}
+	
+	public static String getLocatorFromXML(List<Attribute> lsAttributes, String displayName){
+		String sLocator = null;
+		for(Attribute scrAttr:lsAttributes){
+			if(scrAttr.getDisplayName().equalsIgnoreCase(displayName)){
+				sLocator = scrAttr.getLocator();
+				break;
+			}
+		}
+		return sLocator;
+	}
 
 	//mouse hover alternative approach 
 	protected void mouseOver(WebElement element) {
-	    String code = "var fireOnThis = arguments[0];"
-	                + "var evObj = document.createEvent('MouseEvents');"
-	                + "evObj.initEvent( 'mouseover', true, true );"
-	                + "fireOnThis.dispatchEvent(evObj);";
-	    ((JavascriptExecutor) driver).executeScript(code, element);
+		String code = "var fireOnThis = arguments[0];"
+				+ "var evObj = document.createEvent('MouseEvents');"
+				+ "evObj.initEvent( 'mouseover', true, true );"
+				+ "fireOnThis.dispatchEvent(evObj);";
+		((JavascriptExecutor) driver).executeScript(code, element);
 	}
-	
+
 	/**
+	 * 
+	 * @param xpath - Xpath of webelement
+	 * @param retries - number of retries 
+	 * @author nageswar
+	 */
+	public WebElement retryUntilElementIsVisible(String xpath,int retries){	
+		int count = 0;
+		WebElement we = null;
+		do{
+			we = driver.findElement(By.xpath(xpath));
+			count++;
+			if(we != null){
+				break;
+			}
+		}while(we == null || count < retries);
+
+		return we;
+	}
+
+	/**
+	 * Use this method to get only the file name from given file path
+	 * @param sFilePath : relative path of a file
+	 * @return file name
+	 */
+	public String getFileNameFromFilePath(String sFilePath){
+
+		String sFileName = null;
+		File f = null;
+		if( ! sFilePath.isEmpty()){
+			f = new File(sFilePath);
+			sFileName = f.getName();
+		}
+		return sFileName;
+	}
+
+	/** 
 	 * Use this method to check whether the top level menu items like MY DDE, ELIG., MY ACCOUNT etc.. were selected or not
 	 * @param linktext
 	 * @return
@@ -1819,10 +1966,10 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		WebElement topNavAnchor = waitForElementVisibility(By.linkText(linktext));
 		if(topNavAnchor!=null){
 			String s = topNavAnchor.getAttribute("class");
-			 if(s!=null)
-				 return s.contains("topNavAnchorSelected");
-			 else
-				 return false;
+			if(s!=null)
+				return s.contains("topNavAnchorSelected");
+			else
+				return false;
 		}
 		return false;
 	}
@@ -1835,10 +1982,10 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		WebElement menu = waitForElementVisibility(By.linkText(linktext));
 		if(menu!=null){
 			String s = menu.getAttribute("class");
-			 if(s!=null)
-				 return s.contains("menuSelected");
-			 else
-				 return false;
+			if(s!=null)
+				return s.contains("menuSelected");
+			else
+				return false;
 		}
 		return false;
 	}
@@ -1855,6 +2002,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 * set driver object
 	 * @param driver
 	 */
+
 	public  void setDriver(WebDriver _driver) {
 		driver = _driver;
 	}
@@ -1871,7 +2019,5 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	public void update(Observable o, Object arg) {
 		driver.quit();
 	}
-
-
 }
 

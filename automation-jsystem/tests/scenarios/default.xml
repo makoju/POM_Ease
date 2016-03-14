@@ -22,10 +22,12 @@
         <antcallback target="t4"/>
         <antcallback target="t5"/>
         <antcallback target="t6"/>
+        <antcallback target="t7"/>
+        <antcallback target="t8"/>
     </target>
     <target name="t0">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="6dbaffee-46ab-4fe1-8386-2d379957e5ce"/>
+            <sysproperty key="jsystem.uuid" value="385c4456-d4ab-49f8-bd4f-8954ede97bb3"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.misc.MiscTests.loginToEase"/>
@@ -33,6 +35,10 @@
     </target>
     <target name="t1">
         <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="8532af16-b35b-4773-9a67-58b49704b19f"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.mydde.MyDDETests.verifySaveProfileOption"/>
             <sysproperty key="jsystem.uuid" value="0464ff00-26c1-4348-aaec-5ce758c4830c"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
@@ -77,6 +83,22 @@
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.mydde.MyDDEReportsTests.verifyHMOPatientsExportPDFExcel"/>
+        </jsystem>
+    </target>
+    <target name="t7">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="34a26d49-24a0-473a-b0ca-54514f29cc2e"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.auditdoc.AuditDocTests.verifyADRDocumentUploadFileFormats"/>
+        </jsystem>
+    </target>
+    <target name="t8">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="36d1c32f-af21-485d-9672-b152c6bc0d86"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.auditdoc.AuditDocTests.verifyCMSStatusScreenAfterADRSubmission"/>
         </jsystem>
     </target>
 </project>

@@ -52,14 +52,11 @@ public class MyDDEReportsPage extends AbstractPageObject {
 				"The total amount at risk (already paid or prospective).",
 		"The remaining amount of money expected from Medicare." };
 		int i = 0;
-		String reportText = getElementText(By
-				.xpath("//div[@id='reportarea']//td[contains(text(),'EASE SUMMARY REPORT')]"));
-		Attribute agencyattr = reportshelper.getAttribute(lsAttributes,
-				"agency");
+		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'EASE SUMMARY REPORT')]"));
+		Attribute agencyattr = reportshelper.getAttribute(lsAttributes,"agency");
 		// To Do - Need to get the From and Todate from Timeframe attributes
 		// value
-		Attribute timeframeattr = reportshelper.getAttribute(lsAttributes,
-				"Timeframe");
+		Attribute timeframeattr = reportshelper.getAttribute(lsAttributes,"Timeframe");
 		String timeframe = timeframeattr.getValue().toLowerCase();
 		if (timeframe.contains("fromdate")) {
 			istimeframedaterange = true;
@@ -3310,4 +3307,10 @@ public class MyDDEReportsPage extends AbstractPageObject {
 	public void navigateToPage() throws Exception {
 		HomePage.getInstance().navigateTo(Menu.MYDDE, null);
 	}
+	
+	public void clickAdvanced() throws Exception{
+		navigateToPage();
+		clickLink("Advanced");
+	}
+	
 }

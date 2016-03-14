@@ -1,6 +1,7 @@
 package com.ability.ease.mydde.reports;
 
 import java.util.Map;
+
 import com.ability.ease.testapi.IReports;
 
 public class ReportsSelenium2Impl implements IReports{
@@ -345,5 +346,10 @@ public class ReportsSelenium2Impl implements IReports{
 	@Override
 	public boolean verifyHospicePatientsExportPDFExcel(Map<String, String> mapAttrValues) throws Exception {
 		return mydde.verifyHospicePatientsExportPDFExcel(mapAttrValues);
+	}
+
+	@Override
+	public void clickAdvancedTab() throws Exception {
+		mydde.clickAdvanced();
 	}
 }

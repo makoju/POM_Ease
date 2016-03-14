@@ -316,7 +316,7 @@ public class AuditDocPage extends AbstractPageObject{
 
 			helper.validateADRResponseTableData(CMSStatusUpdateTableData, "CMSTransactionID");
 			List<String> lsFileNamesFromToolTip = helper.getToolTipOfView(claimIDorDCN);
-			if( Verify.ListEquals(lsFileNamesFromToolTip, lsADRFileNames) ) {
+			if( Verify.listEquals(lsFileNamesFromToolTip, lsADRFileNames) ) {
 				report.report("File names visible on view tool tip are same as uploaded ones", ReportAttribute.BOLD);
 			}else{
 				failCounter++;

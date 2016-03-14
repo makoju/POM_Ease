@@ -143,11 +143,16 @@ public class UIAttributeXMLParser {
 					if(Style.toString().equalsIgnoreCase("MultiSelectAgency")){
 						attrStyle= UIAttributeStyle.MultiSelectAgency;
 					}
+
 					if(Style.toString().equalsIgnoreCase("ProvidersInformation")){
 						attrStyle= UIAttributeStyle.ProvidersInformation;
 					}
 					if(Style.toString().equalsIgnoreCase("SetUpAgency")){
 						attrStyle= UIAttributeStyle.SetUpAgency;
+					}
+					
+					if(Style.toString().equalsIgnoreCase("CustomSchedule")){
+						attrStyle= UIAttributeStyle.CustomSchedule;
 					}
 					if(Style.toString().equalsIgnoreCase("ServiceDate")){
 						attrStyle= UIAttributeStyle.ServiceDate;

@@ -14,14 +14,13 @@ import org.junit.Test;
 
 import com.ability.auto.common.AttrStringstoMapConvert;
 import com.ability.ease.auto.common.annotations.SupportTestTypes;
-import com.ability.ease.auto.common.test.resource.TestCommonResource;
 import com.ability.ease.auto.dlgproviders.AttributeNameValueDialogProvider;
-import com.ability.ease.auto.enums.common.UIAttributesXMLFileName;
 import com.ability.ease.auto.enums.tests.TestType;
 import com.ability.ease.common.BaseTest;
 import com.ability.ease.testapi.IReports;
 
 public class MyDDEReportsTests  extends BaseTest{
+	
 	private IReports reports;
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
 
@@ -32,7 +31,7 @@ public class MyDDEReportsTests  extends BaseTest{
 
 	public void handleUIEvent(HashMap<String, Parameter> map, String methodName)throws Exception{
 		super.handleUIEvent(map, methodName);
-		UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MyDDE.xml");
+//		UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\MyDDE.xml");
 	}
 
 	@Test
@@ -850,6 +849,13 @@ public class MyDDEReportsTests  extends BaseTest{
 		}else{
 			report.report("Failed to Verify Hospice Patients Export Options. Please see the JSystem report log for more details", Reporter.FAIL);
 		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Clicking Advanced Tab", paramsInclude = { "testType" })
+	public void clickingAdvancedTab() throws Exception{	
+		reports.clickAdvancedTab();
 	}
 
 	public AttributeNameValueDialogProvider[] getAttributeNameValueDialogProvider() {

@@ -30,11 +30,6 @@ public class EligibilityTests extends BaseTest{
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
 	private String hic,agency,firstname,lastname,description, status;
 
-	//Constructor
-	public EligibilityTests()throws Exception{
-		super();
-	}
-
 	@Before
 	public void setupTests()throws Exception{
 		elig = (IEligibility)context.getBean("elig");
@@ -44,7 +39,7 @@ public class EligibilityTests extends BaseTest{
 	@Override
 	public void handleUIEvent(HashMap<String, Parameter> map, String methodName) throws Exception {	
 		super.handleUIEvent(map, methodName);
-			UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Eligibility\\Eligibility.xml");
+		UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Eligibility\\Eligibility.xml");
 	}
 	
 	/**
@@ -56,10 +51,13 @@ public class EligibilityTests extends BaseTest{
 	public void submitEligibilityCheck() throws Exception {
 		report.report("Inside submitEligibilityCheck tests method");
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
-		globalParamMap.put("hic", mapAttrValues.get("HIC"));
-		globalParamMap.put("agency", mapAttrValues.get("Agency"));
-		globalParamMap.put("lastname", mapAttrValues.get("Last Name"));
-		globalParamMap.put("firstname", mapAttrValues.get("First Name"));
+		//adding milliseconds to firstname to avoid data duplicate problems
+		mapAttrValues.put("First Name", mapAttrValues.get("First Name")+System.currentTimeMillis());
+
+		keepAsGloablParameter("hic", mapAttrValues.get("HIC"));
+		keepAsGloablParameter("agency", mapAttrValues.get("Agency"));
+		keepAsGloablParameter("lastname", mapAttrValues.get("Last Name"));
+		keepAsGloablParameter("firstname", mapAttrValues.get("First Name"));
 		
 		if(!elig.submitEligibilityCheck(mapAttrValues)) {
 			report.report("Failed to Submit eligibility Check!!!",	Reporter.FAIL);
@@ -118,7 +116,7 @@ public class EligibilityTests extends BaseTest{
 	 */
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
-	@TestProperties(name = "Verify HETS Activities Completed Status", paramsInclude = { "hic,agency,firstname,lastname,testType" })
+	@TestProperties(name = "Verify HETS Activities Completed Status Report", paramsInclude = { "hic,agency,firstname,lastname,testType" })
 	public void verifyHETSActivitiesCompletedStatusReport() throws Exception {
 		report.report("Inside verifyHETSActivitiesCompletedStatusReport tests method");
 		if(!elig.verifyHETSActivitiesCompletedStatusReport(hic, agency, firstname, lastname)) {
@@ -201,6 +199,49 @@ public class EligibilityTests extends BaseTest{
 		}	
 	}
 	
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Get the count of ${status} Activites", paramsInclude = { "status,testType" })
+	public void getActivityCount() throws Exception {
+		report.report("Inside getActivityCount test method");
+		keepAsGloablParameter(status+"activitycount", Integer.toString(elig.getActivityCount(status)));
+	}
+	
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify ${status} Activities CountIncreasedByOne", paramsInclude = { "status,testType" })
+	public void VerifyActivityCountIncreasedByOne() throws Exception {
+		report.report("Inside VerifyActivityCountIncreasedByOne test method");
+		int activitycount = Integer.parseInt(globalParamMap.get(status+"activitycount"));
+		int latestactivitycount = elig.getActivityCount(status);
+		if(activitycount+1 == latestactivitycount)
+			report.report("Activity: "+status+" count increased by one", Reporter.PASS);
+		else
+			report.report("Activity: "+status+" count was not increased by one Actual: "+latestactivitycount+" Expected: "+(activitycount+1), Reporter.FAIL);
+	}
+	
+	/**
+	 * 
+	 */
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify ${status} Activities CountDecreasedByOne", paramsInclude = { "status,testType" })
+	public void VerifyActivityCountDecreasedByOne() throws Exception {
+		report.report("Inside VerifyActivityCountDecreasedByOne test method");
+		int activitycount = Integer.parseInt(globalParamMap.get("activitycount"));
+		int latestactivitycount = elig.getActivityCount(status);
+		if(activitycount-1 == latestactivitycount)
+			report.report("Activity: "+status+" count decreased by one", Reporter.PASS);
+		else
+			report.report("Activity: "+status+" count was not decreased by one Actual: "+latestactivitycount+" Expected: "+(activitycount-1), Reporter.FAIL);
+	}
+	
 	/*######
 	Getters and Setters
 	######*/
@@ -232,7 +273,8 @@ public class EligibilityTests extends BaseTest{
 	public String getFirstname() {
 		return firstname;
 	}
-
+	
+	@ParameterProperties(description = "Provide the FirstName Value it suffix current time in milliseconds to it")
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}

@@ -99,4 +99,6 @@ public interface IReports {
 	
 	boolean verifyHospicePatientsHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception;
 	boolean verifyHospicePatientsExportPDFExcel(Map<String, String> mapAttrValues) throws Exception;
+	
+	void clickAdvancedTab() throws Exception;
 }

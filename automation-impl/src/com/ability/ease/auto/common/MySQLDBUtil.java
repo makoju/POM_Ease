@@ -83,6 +83,16 @@ public class MySQLDBUtil {
 		return noOfrowsUpdated;
 	}
 	
+	public static int getInsertUpdateRowsCount(String sQueryName){
+		readConnParamsFromWE();
+		initializeDBConnection();
+		try{
+			return statement.executeUpdate(sQueryName);	
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return 0;
+	}
 
 	/*
 	 * Method to return a specific column value

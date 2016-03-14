@@ -35,4 +35,13 @@ public class ClaimsSelenium2Impl implements IClaims{
 	public boolean verifyDataInEditClaimLinePopUpWindow(Map<String, String> mapAttrValues,String claimLineNumberToEdit) throws Exception {
 		return claims.verifyDataInEditClaimLinePopUpWindow(mapAttrValues,claimLineNumberToEdit);
 	}
+
+	/**
+	 * P - Medium test cases
+	 */
+	@Override
+	public boolean verifyHelpTextInUB04Form() throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

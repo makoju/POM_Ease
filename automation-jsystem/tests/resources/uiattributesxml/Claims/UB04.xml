@@ -135,13 +135,13 @@
       <locator>ub6a</locator>
       <style>Text</style>
       <displayName>Statement from which period</displayName>
-      <description>Provide date in MMDDYY format ex., 09292015</description>
+      <description>Provide date in MMDDYY format ex., 092915</description>
    </UIAttribute>
    <UIAttribute>
       <locator>ub6b</locator>
       <style>Text</style>
       <displayName>Statement to which period</displayName>
-      <description>Provide date in MMDDYY format ex., 09292015</description>
+      <description>Provide date in MMDDYY format ex., 092915</description>
    </UIAttribute>
    <!-- Filed Locator6 end-->
    <!-- (Note : Filed 7 and 8a are not used )Filed Locator8 start-->
@@ -187,7 +187,7 @@
       <locator>ub12</locator>
       <style>Text</style>
       <displayName>Patient Admission Date</displayName>
-      <description>Provide admission/start care date in MMDDYY format ex., 09292015</description>
+      <description>Provide admission/start care date in MMDDYY format ex., 092915</description>
    </UIAttribute>
    <!-- Filed Locator12 end-->
    <!-- Filed Locator13 start-->

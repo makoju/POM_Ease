@@ -10,9 +10,13 @@
            http://www.springframework.org/schema/context/spring-context-3.2.xsd">		   
 	
 	<bean id="misc" class="com.ability.ease.misc.MiscSelenium2Impl"/>
+	<bean id="hmo" class="com.ability.ease.HMO.HmoSelenium2Impl"/>
 	<bean id="elig" class="com.ability.ease.eligibility.EligibilitySelenium2Impl"/>
 	<bean id="admin" class="com.ability.ease.admin.AdminSelenium2Impl"/>
 	<bean id="claims" class="com.ability.ease.claims.ClaimsSelenium2Impl"/>
 	<bean id="reports" class="com.ability.ease.mydde.reports.ReportsSelenium2Impl"/>
 	<bean id="nonhhareports" class="com.ability.ease.mydde.reports.NonHHAReportsSeleniumImpl"/>
+	<bean id="auditdoc" class="com.ability.ease.auditdoc.AuditDocSelenium2Impl"/>
+	<bean id="mydde" class="com.ability.ease.mydde.MyDDESelenium2Impl"/>
+	<bean id="myaccount" class="com.ability.ease.myaccount.MyAccountSelenium2Impl"/>
 </beans>

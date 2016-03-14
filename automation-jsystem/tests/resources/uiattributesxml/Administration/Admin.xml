@@ -512,13 +512,14 @@
 		<displayName>Region</displayName>
 		<description>This is Region drop down..need to select</description>
 </UIAttribute>
+ 
+<UIAttribute>
+		<locator>UserProvID</locator>
+		<style>MultiSelectAgency</style>
+		<displayName>Agency</displayName>
+		<description>This is multiselect agency drop down..need to select multiple agency</description>
+</UIAttribute>
 
- <UIAttribute>
-   <locator>intermediary,intermediarynumber,region</locator>
-   <style>SetUpAgency</style>
-  <displayName>SetUpAgency</displayName>
-  <description>Provide provider information in each row separating with ~ ex., Cahaba / Jurisdiction 10,12345,Great Lakes~Cigna / Jurisdiction 15,23456,Great Western~</description>
-</UIAttribute> 
 
 
 

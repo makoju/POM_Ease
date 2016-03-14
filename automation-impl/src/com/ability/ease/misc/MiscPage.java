@@ -67,26 +67,26 @@ public class MiscPage extends AbstractPageObject {
 					//check that current user is the requested userName by checking status property currentLoggedInUser AND by validating that page source includes the logged in user name
 					report.report(sUserName + " is already logged-in to ease... nothing to do here.", Reporter.ReportAttribute.BOLD);
 				} else {
-						report.report("Logging out user: " +  currentLoggedInUser);
-						//HomePage.getInstance().signOut();
-						//safeJavaScriptClick("LOGOUT");
-						clickLinkV2("LOGOUT");
-						try {
-							driver.quit();
-							isBrowserOpen = false;
-							openBrowser();
-							driver.get(WorkingEnvironment.getEaseURL());
-						} 
-						catch (Exception e) {
+					report.report("Logging out user: " +  currentLoggedInUser);
+					//HomePage.getInstance().signOut();
+					//safeJavaScriptClick("LOGOUT");
+					clickLinkV2("LOGOUT");
+					try {
+						driver.quit();
+						isBrowserOpen = false;
+						openBrowser();
+						driver.get(WorkingEnvironment.getEaseURL());
+					} 
+					catch (Exception e) {
 						report.report("Exception in launching browser: "+ e.getMessage());
 						if(e instanceof NoSuchWindowException){
-					
-						}
-						}
-						finally{
-							isLoggedIn=false;
+
 						}
 					}
+					finally{
+						isLoggedIn=false;
+					}
+				}
 			} else {
 				isLoggedIn = false;
 				validLogin(sUserName, sPassword);

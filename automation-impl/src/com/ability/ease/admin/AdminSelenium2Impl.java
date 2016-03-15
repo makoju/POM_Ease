@@ -11,10 +11,6 @@ import com.ability.ease.testapi.IAdministration;
  */
 public class AdminSelenium2Impl implements IAdministration{
 	
-	
-	
-	
-	
 	@Override
 	public boolean addUser(Map<String, String> mapAttrVal) throws Exception {
 		AdminPage adminpage = new AdminPage();

@@ -124,12 +124,58 @@ public class UIActions extends AbstractPageObject {
 
 					String[] sLocators18To28 = scrAttr.getLocator().split(",");
 					String[] sValues18To28 = scrAttr.getValue().split("~~~");
-
 					report.report("Filling "+ scrAttr.getDisplayName() + " Values");
 					for(int i=0;i < sValues18To28.length; i++){
 						typeEditBox(sLocators18To28[i], sValues18To28[i]);
 					}
 					break;
+
+					/* provider information in admin for add customer*/
+				case ProvidersInformation:
+					String[] npilocators = scrAttr.getLocator().split(",");
+					String[] npivalues = scrAttr.getValue().split("~");
+					WebElement we = null;
+
+					int p=0;
+					for(String str:npivalues){						
+						String[] sValues = str.split(",");
+						for(int i=0;i < sValues.length; i++){	
+							String locator = npilocators[i];
+							if(locator.equalsIgnoreCase("provdisplay")){
+								we = driver.findElement(By.xpath("//input[@name='"+locator+"_"+p+"']"));
+								we.clear();
+								typeEditBoxByWebElement(we, sValues[i]);
+								continue;
+							}
+							if(locator.equalsIgnoreCase("provtype")){
+								we = driver.findElement(By.xpath("//select[@name='"+locator+"_"+p+"']"));								
+								selectByWebElement(we, sValues[i]);
+								continue;
+							}
+							typeEditBox(npilocators[i]+"_"+p, sValues[i]);		
+						}
+						clickButtonV2("Add Agency");
+						p++;
+					}
+
+					break;
+					
+					/* Setting up agencies for a new customer */
+					
+				case SetUpAgency:
+					String[] agencylocators = scrAttr.getLocator().split(",");
+					String[] agencyvalues = scrAttr.getValue().split("~");			
+					
+					for(String str:agencyvalues){						
+						String[] avalues = str.split(",");
+						for(int i=0;i < avalues.length; i++){
+							typeEditBox(agencylocators[i],avalues[i]);
+							clickButtonV2("Submit");
+						}
+												
+					}
+					break;
+				
 				case SpanCodes:
 					String[] sSpanCodesDates = null;
 					String[] sLocatorsSpanCodes = scrAttr.getLocator().split(",");
@@ -229,6 +275,7 @@ public class UIActions extends AbstractPageObject {
 							checkChkBox(agency.trim());
 					}
 					break;					
+
 				case ServiceDate:
 					//safeJavaScriptClick(scrAttr.getLocator());
 					String servicedate = scrAttr.getValue().trim();
@@ -284,7 +331,7 @@ public class UIActions extends AbstractPageObject {
 					}
 					break;				
 
-				default:
+					default:
 					report.report("The attribute Style is not implemented.",
 							ReportAttribute.BOLD);
 					break;

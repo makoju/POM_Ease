@@ -135,13 +135,13 @@
       <locator>ub6a</locator>
       <style>Text</style>
       <displayName>Statement from which period</displayName>
-      <description>Provide date in MMDDYY format ex., 092915</description>
+      <description>Provide date in MMDDYY format ex., 09292015</description>
    </UIAttribute>
    <UIAttribute>
       <locator>ub6b</locator>
       <style>Text</style>
       <displayName>Statement to which period</displayName>
-      <description>Provide date in MMDDYY format ex., 092915</description>
+      <description>Provide date in MMDDYY format ex., 09292015</description>
    </UIAttribute>
    <!-- Filed Locator6 end-->
    <!-- (Note : Filed 7 and 8a are not used )Filed Locator8 start-->
@@ -187,7 +187,7 @@
       <locator>ub12</locator>
       <style>Text</style>
       <displayName>Patient Admission Date</displayName>
-      <description>Provide admission/start care date in MMDDYY format ex., 092915</description>
+      <description>Provide admission/start care date in MMDDYY format ex., 09292015</description>
    </UIAttribute>
    <!-- Filed Locator12 end-->
    <!-- Filed Locator13 start-->
@@ -253,7 +253,7 @@
       <locator>ub31a1,ub31a2,ub32a1,ub32a2,ub33a1,ub33a2,ub34a1,ub34a2</locator>
       <style>SpanCodes</style>
       <displayName>OCCURRENCE Codes and Dates</displayName>
-      <description>Provide ~~~ seperated occurrence codes and dates in form of xx MMDDYY~~~xx MMDDYY...ex.,01 030115~~~02 032915~~~03 042915~~~08 052915</description>
+      <description>Provide ~~~ seperated occurrence codes and dates in form of xx MMDDYY~~~xx MMDDYY...ex.,01 03012015~~~02 03292015~~~03 04292015~~~08 05292015</description>
    </UIAttribute>
    <!-- Filed Locator31-34 End:: OCCURRENCE Codes and Date-->
    <!-- Filed Locator35-36 start:: OCCURRENCE SPAN CODE FROM THROUGH-->
@@ -261,7 +261,7 @@
       <locator>ub35a1,ub35a2,ub35a3,ub36a1,ub36a2,ub36a3</locator>
       <style>SpanCodes</style>
       <displayName>OCCURRENCE Span Codes</displayName>
-      <description>Provide occurence span codes and dates in code mmddyy mmddyy format separted by ~~~ ex., A1 060215 060215~~~B2 070215 070215</description>
+      <description>Provide occurence span codes and dates in code mmddyy mmddyy format separted by ~~~ ex., A1 06022015 06022015~~~B2 07022015 07022015</description>
    </UIAttribute>
    <!-- Filed Locator35-36 End:: OCCURRENCE SPAN CODE FROM THROUGH-->
    <!--Filed Locator39-41 start:: Value Codes-->
@@ -410,7 +410,7 @@
       <locator>ub74_1,ub74_2,ub74a1,ub74a2,ub74b1,ub74b2,ub74c1,ub74c2,ub74d1,ub74d2,ub74e1,ub74e2</locator>
       <style>SpanCodes</style>
       <displayName>Principal Procedure Codes and Dates</displayName>
-      <description>Provide Principal procedure codes and dates separating with ~~~ ex., 17H8A01 121515~~~17H8A01 121515~~~ASD 120215~~~ASD 121415~~~SAD 120815~~~ASD 121515</description>
+      <description>Provide Principal procedure codes and dates separating with ~~~ ex., 17H8A01 12152015~~~17H8A01 12152015~~~ASD 12022015~~~ASD 12142015~~~SAD 12082015~~~ASD 12152015</description>
    </UIAttribute>
    <UIAttribute>
       <locator>ub76a</locator>

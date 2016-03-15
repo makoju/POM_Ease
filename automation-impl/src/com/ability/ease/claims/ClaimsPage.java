@@ -367,7 +367,7 @@ public class ClaimsPage extends AbstractPageObject{
 			renchIcon.click();
 			report.report("Clicked rench icon");
 			waitForElementVisibility(By.xpath(xPathPCN));
-			pcn = helper.retryUntilElementIsVisible(xPathPCN, 10);
+			pcn = retryUntilElementIsVisible(xPathPCN, 10);
 			String pcnValue = pcn.getAttribute("value");
 			WebElement lockIcon = driver.findElement(By.name("ub04lock"));
 			moveToElement(lockIcon);

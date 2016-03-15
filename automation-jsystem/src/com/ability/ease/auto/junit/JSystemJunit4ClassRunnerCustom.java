@@ -269,7 +269,7 @@ public class JSystemJunit4ClassRunnerCustom extends JUnit4ClassRunner {
 			addFailure(notifier, new AssertionFailedError("Fail report was submitted"));
 		}
 		test.jsystemTestPostExecution(test);
-		//writeScenarioResultToTextFile(test);
+		writeScenarioResultToTextFile(test);
 
 	}
 

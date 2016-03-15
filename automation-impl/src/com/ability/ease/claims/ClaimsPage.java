@@ -242,6 +242,7 @@ public class ClaimsPage extends AbstractPageObject{
 			failCounter++;
 		}
 		helper.addClaimLine(newClaimLineEntry, sNewClaimLinePoisition, beforeOrAfter);
+		//this line is added to take over the mouse from last claim line entry,such that final values will get populated 
 		driver.findElement(By.xpath("//li[contains(text(),'0001')]")).click();
 
 		//compare totals after adding new claim line
@@ -259,11 +260,12 @@ public class ClaimsPage extends AbstractPageObject{
 		}
 
 		clickLinkV2("claimSubmit");
-
 		if(helper.acceptUB04SubmitWarning()){
 			if(helper.validateConfirmationScreenSteps(lsAttributes)){
 				clickButton("yesConfirmEditClaimButton");
-				report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
+				if( verifyAlert("Changes scheduled!")){
+					report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
+				}
 			}
 			else{
 				report.report("There are some problems in form filling, please fill all mandatory values in UB04 form");
@@ -272,6 +274,7 @@ public class ClaimsPage extends AbstractPageObject{
 		}else{
 			report.report("Fail : Unable to handle UB04 Form submission dailog box");
 		}
+
 
 		String endTime = helper.getCurrentTimeFromEaseDB();
 		//waiting to record to be pushed unto the database

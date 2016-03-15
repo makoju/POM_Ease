@@ -38,6 +38,7 @@ public class HomePage extends AbstractPageObject{
 	public static enum SubMenu {
 		AddUser("Add User"),
 		EditUSer("Edit User"),
+		AddCustomer("Add Customer"),
 		NA("NA");
 		private String value;
 

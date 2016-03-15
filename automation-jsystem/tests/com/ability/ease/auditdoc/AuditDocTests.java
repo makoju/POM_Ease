@@ -40,7 +40,7 @@ public class AuditDocTests extends BaseTest{
 
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "verifyEsmdDeliveryStatusReportColumnsForHHA", paramsInclude = {"timeframe,Value,agency,agencyValue,hic,patient,daysduedate,duedate,code,testType"})
+	@TestProperties(name = "verifyEsmdDeliveryStatusReportColumns : ${agencyValue}", paramsInclude = {"timeframe,Value,agency,agencyValue,hic,patient,daysduedate,duedate,code,testType"})
 	public void verifyEsmdDeliveryStatusReportColumnsForHHA() throws Exception{	
 
 		if(auditdoc.verifyEsmdDeliveryStatusReportColumnsForHHA(timeframe,Value,agency,agencyValue,hic,patient,daysduedate,duedate,code)){

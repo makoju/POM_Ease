@@ -24,11 +24,11 @@ public class AuditDocPage extends AbstractPageObject{
 	int failCounter = 0;
 	String xpathToADRSubPage = "//td[contains(text(),'ADR Response Document Submission Report')]";
 
-	String tableheadersxpath = "//table[@id='datatable']//tr[@class='tableheaderblue']/td";
+	String tableheadersxpathHHA = "//table[@id='datatable']//tr[@class='tableheaderblue']/td";
 	ReportsHelper reportshelper = new ReportsHelper();
 
-	//Expected column header help text
-	String[] expectedheaders = { "Upload ADR Documents",
+	//Expected column header help text for HHA
+	String[] expectedheaders_HHA = { "Upload ADR Documents",
 			"The Patient HIC number.",
 			"The name of the patient.",
 			"The claim Status and Location.",
@@ -36,6 +36,22 @@ public class AuditDocPage extends AbstractPageObject{
 			"Start of Episode date.",
 			"The reimbursement amount posted by Medicare on the claim.",
 			"The total episode value.",
+			"The number of days left to respond to the ADR.",
+			"The date an action is required by the FI in order to resolve the ADR.",
+			"Ensure that ADR documentation is mailed by this date to avoid unnecessary auto-denying of your claim.",
+			"The code associated with the ADR.",
+			"Total Amount Billed for Claim",
+			"The last time the claim was updated in Ease from DDE.",
+	"ADR Response Document Submission status."};
+	//Expected column header help text for Generic
+	String[] expectedheaders_Generic = { "Upload ADR Documents",
+			"The Patient HIC number.",
+			"The name of the patient.",
+			"The claim Status and Location.",
+			"The date the patient was originally admitted.",
+			"The claim start date.",
+			"The claim through date.",
+			"The reimbursement amount posted by Medicare on the claim.",
 			"The number of days left to respond to the ADR.",
 			"The date an action is required by the FI in order to resolve the ADR.",
 			"Ensure that ADR documentation is mailed by this date to avoid unnecessary auto-denying of your claim.",
@@ -58,19 +74,17 @@ public class AuditDocPage extends AbstractPageObject{
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean verifyEsmdDeliveryStatusReportColumnsForHHA(String Timeframe, String Value, String agency, String agencyValue, 
-			String hic,String patient,String daysduedate,String duedate,String code) throws Exception {
-		//	waitForElementVisibility(By.linkText("MY DDE"));
-		navigateToPage();
-		//	waitForElementVisibility(By.linkText("Advanced"));
-		clickLink("Advanced");
-		//	waitForElementVisibility(By.linkText("esMD Delivery & Status"));
-		clickLink("esMD Delivery & Status");
+	public boolean verifyEsmdDeliveryStatusReportColumnsForHHA(String Timeframe, String Value, String agency, String agencyValue,String hic,String patient,String daysduedate,String duedate,String code) throws Exception {
+		helper.clickAgency(agency, agencyValue);
+		helper.clickTimeFrame(Timeframe,Value);
+		Thread.sleep(8000);
+		WebElement esMD = waitForElementToBeClickable(ByLocator.xpath, "//a[text()='esMD Delivery & Status']", 30);
+		if(esMD != null){
+			clickLink("esMD Delivery & Status");	
+		}
 		String icon=".//*[@id='scrollContent']/tr/td[1]//img";
 		String sloc=".//*[contains(text(),'S/Loc')]";
 		String  cmsStatus=".//*[contains(text(),'CMS')]";
-		helper.clickTimeFrame(Timeframe,Value);
-		helper.clickAgency(agency, agencyValue);
 		boolean isicon=helper.verifyColumn(icon);
 		boolean isSLoc=helper.verifyColumn(sloc);
 		boolean isCMSStatus=helper.verifyColumn(cmsStatus);
@@ -82,6 +96,7 @@ public class AuditDocPage extends AbstractPageObject{
 		}
 		//Click HIC under esMD Report
 		clickLink(hic);
+		Thread.sleep(8000);
 		if(helper.isHIcExist(hic)){
 			helper.navigateBack();
 			report.report("HIC ID presented on the patient information page", Reporter.ReportAttribute.BOLD);
@@ -92,6 +107,7 @@ public class AuditDocPage extends AbstractPageObject{
 
 		//Click Patient Link under esMD Report
 		clickLink(patient);
+		Thread.sleep(8000);
 		if(helper.isPatientExist(patient)){
 			helper.navigateBack();
 			report.report("Patient Name presented on the patient information page", Reporter.ReportAttribute.BOLD);
@@ -127,13 +143,24 @@ public class AuditDocPage extends AbstractPageObject{
 			failCounter++;
 		}
 		//Comparing 
-		String[] actualheadertooltips = reportshelper
-				.getTableHeaderToolTips(tableheadersxpath);
-		if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders,true)){
-			failCounter++;
-			report.report("Total number of failures is: " + failCounter,ReportAttribute.BOLD);
+		if(agencyValue.contains("HHA"))
+		{
+			String[] actualheadertooltips = reportshelper.getTableHeaderToolTips(tableheadersxpathHHA);
+			if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders_HHA,true)){
+				failCounter++;
+				report.report("Total number of failures is: " + failCounter,ReportAttribute.BOLD);
+			}
+		}
+		else
+		{
+			String[] actualheadertooltips = reportshelper.getTableHeaderToolTips(tableheadersxpathHHA);
+			if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders_Generic,true)){
+				failCounter++;
+				report.report("Total number of failures is: " + failCounter,ReportAttribute.BOLD);
+			}
 		}
 		return (failCounter == 0) ? true : false;
+
 	}
 
 

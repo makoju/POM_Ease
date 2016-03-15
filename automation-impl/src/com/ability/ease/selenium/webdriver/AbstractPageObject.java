@@ -1095,7 +1095,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		/* WebElement we = waitForElementVisibility(By.xpath("//select[contains(@name,'" + selectNameOrID + "') or " +
 				 										  "contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "')]"));
 		 */ 
-		//added by bodna02 to handle a select element if it is inside a span tag when a name / id couldn't able to identify
+		//added by nageswar.bodduri to handle a select element if it is inside a span tag when a name / id couldn't able to identify
 		WebElement we = waitForElementVisibility(By.xpath("//select[contains(@name,'" + selectNameOrID + "') or " + 
 				"contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "')] | " + 
 				"//span[@id='"+ selectNameOrID +"']/select | " + "//td[span[contains(@title,"+"'"+ selectNameOrID +"'"+")]]/following-sibling::td/select | " + "//td[contains(text(),"+"'"+ selectNameOrID +"'"+")]/select"));

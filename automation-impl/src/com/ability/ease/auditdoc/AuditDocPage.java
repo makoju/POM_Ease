@@ -405,6 +405,7 @@ public class AuditDocPage extends AbstractPageObject{
 		}
 		return Long.parseLong(new String(digits));
 	}
+	
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub

@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.ability.ease.auto.common.annotations.SupportTestTypes;
 import com.ability.ease.auto.dlgproviders.AttributeNameValueDialogProvider;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFilesSize;
+import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRSubType;
 import com.ability.ease.auto.enums.tests.TestType;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFileFomat;
 import com.ability.ease.common.BaseTest;
@@ -28,6 +29,7 @@ public class AuditDocTests extends BaseTest{
 	private String expectedCMSStatusTableHeaders;
 	private int length;
 	private String timeframe,Value,agencyValue,hic,patient,daysduedate,duedate,code;
+	private ADRSubType adrSubmissionType;
 
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
 
@@ -93,6 +95,21 @@ public class AuditDocTests extends BaseTest{
 		}
 	}
 
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify REJECT / RESEND submissions functionality", 
+	paramsInclude = { "agency, reviewContractorName, length, caseID, adrFileFormat, adrFileSize, adrSubmissionType, testType" })
+	public void verifyREJECTRESENDSubmissionsFunctionality()throws Exception{
+		
+		claimIDDCN = String.valueOf(auditdoc.generateRandomInteger(length))+adrSubmissionType.toString();
+		report.report("Claim ID / DCN From Resend/Reject method" + claimIDDCN);
+		if(!auditdoc.verifyREJECTRESENDSubmissionsFunctionality(agency, reviewContractorName, claimIDDCN, caseID, adrFileFormat, adrFileSize)){
+			report.report("Failed to upload ADR response document of type " + adrFileFormat + " with size " + adrFileSize , Reporter.FAIL);
+		}else{
+			report.report("Successfully uploaded ADR response document of type " + adrFileFormat + " with size " + adrFileSize, Reporter.ReportAttribute.BOLD);
+		}
+	}
+	
 	/*###
 	# Getters and Setters
 	###*/
@@ -242,8 +259,20 @@ public class AuditDocTests extends BaseTest{
 	public String getCode() {
 		return code;
 	}
+	
 	@ParameterProperties(description = "55555")
 	public void setCode(String code) {
 		this.code = code;
 	}
+
+	public ADRSubType getAdrSubmissionType() {
+		return adrSubmissionType;
+	}
+
+	@ParameterProperties(description = "Provide submission type REJECT or RESEND")
+	public void setAdrSubmissionType(ADRSubType adrSubmissionType) {
+		this.adrSubmissionType = adrSubmissionType;
+	}
+	
+	
 }

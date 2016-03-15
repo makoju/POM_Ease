@@ -95,6 +95,23 @@ public class EaseSubMenuItems {
 		}
 
 	};
+	
+	
+	public static enum ADRSubType{
+		RESEND("RESEND"),
+		REJECT("REJECT");
+		
+		private String value;
+		private ADRSubType(String value) {
+			this.value = value;
+		}
+
+		@Override
+		public String toString() {
+			return value;
+		}
+
+	};
 
 
 }

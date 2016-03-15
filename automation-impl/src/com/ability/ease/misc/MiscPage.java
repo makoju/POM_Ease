@@ -17,6 +17,7 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -66,12 +67,25 @@ public class MiscPage extends AbstractPageObject {
 					//check that current user is the requested userName by checking status property currentLoggedInUser AND by validating that page source includes the logged in user name
 					report.report(sUserName + " is already logged-in to ease... nothing to do here.", Reporter.ReportAttribute.BOLD);
 				} else {
+					report.report("Logging out user: " +  currentLoggedInUser);
+					//HomePage.getInstance().signOut();
+					//safeJavaScriptClick("LOGOUT");
+					clickLinkV2("LOGOUT");
 					try {
-						report.report("Logging out user: " +  currentLoggedInUser);
-						HomePage.getInstance().signOut();
+						driver.quit();
+						isBrowserOpen = false;
+						openBrowser();
 						driver.get(WorkingEnvironment.getEaseURL());
-						isLoggedIn = false;
-					} catch (Exception e) {}
+					} 
+					catch (Exception e) {
+						report.report("Exception in launching browser: "+ e.getMessage());
+						if(e instanceof NoSuchWindowException){
+
+						}
+					}
+					finally{
+						isLoggedIn=false;
+					}
 				}
 			} else {
 				isLoggedIn = false;

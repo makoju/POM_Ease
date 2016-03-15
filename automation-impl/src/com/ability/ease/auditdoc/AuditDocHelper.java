@@ -395,7 +395,7 @@ public class AuditDocHelper extends AbstractPageObject{
 	public boolean waitForADRResponsePageToBeVisible(String sXpath) throws InterruptedException{
 
 		//String xpathToADRSubPage = "//td[contains(text(),'ADR Response Document Submission Report')]";
-		String sXpathRefresh = "//a[@id='refreshPage']";
+		//String sXpathRefresh = "//a[@id='refreshPage']";
 		boolean result = false;
 		WebElement we = null;
 		boolean isElementPresent = false;
@@ -406,7 +406,7 @@ public class AuditDocHelper extends AbstractPageObject{
 					isElementPresent = true;
 					result = true;
 				}
-				driver.findElement(By.xpath(sXpathRefresh)).click();
+				//driver.findElement(By.xpath(sXpathRefresh)).click();
 			}catch(NoSuchElementException nsee){
 				Thread.sleep(10000);
 			}catch(Exception e){

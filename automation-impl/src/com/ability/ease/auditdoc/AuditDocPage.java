@@ -158,7 +158,7 @@ public class AuditDocPage extends AbstractPageObject{
 
 		helper.navigateToESMDStatusPage(agency);
 		waitForElementToBeClickable(ByLocator.xpath,sXpathofEsmdReport, 30);
-		WebElement uploadDocIcon = retryUntilElementIsVisible("//td/center/a/img[1]", 5); 
+		WebElement uploadDocIcon = retryUntilElementIsVisible("//td/center/a/img[1]", 7); 
 		uploadDocIcon.click();
 		waitForElementVisibility(By.xpath(adrPageXpath));
 		WebElement adrPage = retryUntilElementIsVisible(adrPageXpath, 5);
@@ -242,6 +242,7 @@ public class AuditDocPage extends AbstractPageObject{
 		String CMSAckTimeInCST = null, reviewerAckTimeCST = null;
 		long timeDiffInHoursOfCMSAckTime = 0L, timeDiffInHoursOfReviewerAckTime = 0L; 
 
+		report.report("Verifying CMS status screen details");
 		report.report("Waiting for ~ 4 minutes to get the mock reposne from Audit Doc server...");
 		Thread.sleep(240000);
 
@@ -316,7 +317,7 @@ public class AuditDocPage extends AbstractPageObject{
 
 			helper.validateADRResponseTableData(CMSStatusUpdateTableData, "CMSTransactionID");
 			List<String> lsFileNamesFromToolTip = helper.getToolTipOfView(claimIDorDCN);
-			if( Verify.ListEquals(lsFileNamesFromToolTip, lsADRFileNames) ) {
+			if( Verify.listEquals(lsFileNamesFromToolTip, lsADRFileNames) ) {
 				report.report("File names visible on view tool tip are same as uploaded ones", ReportAttribute.BOLD);
 			}else{
 				failCounter++;
@@ -388,6 +389,11 @@ public class AuditDocPage extends AbstractPageObject{
 		}
 	}
 
+	public boolean verifyREJECTRESENDSubmissionsFunctionality(String agency,String reviewContractorName, String claimIDorDCN, 
+			String caseID, ADRFileFomat adrFileType, ADRFilesSize adrFileSize)throws Exception{
+		boolean result = verifyADRDocumentUploadFileFormats(agency, reviewContractorName, claimIDorDCN, caseID, adrFileType, adrFileSize);
+		return result; 
+	}
 
 	public long generateRandomInteger(int length)throws Exception{
 

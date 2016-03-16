@@ -147,6 +147,8 @@ public class TestResultParser {
 				}
 			}
 
+			//Push Build Details into art.BuildDetails Table
+			insertBuildDetails();
 			//Now, push art.scenario table results to art.testresults table to display in ART dash board
 			String sQuery1 = "Select count(scenarioname) from art.scenario";
 			String sQuery2 = "Select count(scenariostatus) from art.scenario where scenarioStatus = 'pass'";
@@ -162,7 +164,7 @@ public class TestResultParser {
 			scenarioFailed = getCoulmnValue(oResultSet, "count(scenariostatus)");
 			
 			//Here, build id value should be parameterized once 
-			int buildId = Integer.parseInt(WorkingEnvironment.getEaseBuildId());
+			int buildId = Integer.parseInt(WorkingEnvironment.getEasebuildId());
 			String sInsertQuery = "Insert into testresults(totaltests,passed,failed,buildid) values ("+scenarioCount +"," + scenarioPassed + "," + scenarioFailed + "," + buildId +")";
 			executeQuery(sInsertQuery);
 			
@@ -216,13 +218,14 @@ public class TestResultParser {
 
 		Properties prop = readARTDBProperties();
 
-		String hostName = prop.getProperty("dbhostname");
-		String port = prop.getProperty("dbport");
-		String userName = prop.getProperty("dbusername");
-		String password = prop.getProperty("dbpassword");
+		String hostName = prop.getProperty("artdbhostname");
+		String port = prop.getProperty("artdbport");
+		String userName = prop.getProperty("attdbusername");
+		String password = prop.getProperty("artdbpassword");
 		String dbname = prop.getProperty("dbname");
 
 		DB_URL = "jdbc:mysql://" + hostName + ":" + port + "/" + dbname;
+		System.out.println("DB URL : " + DB_URL);
 		try{
 			Class.forName(JDBC_DRIVER);
 			System.out.println("Connecting to ART database!");
@@ -270,6 +273,19 @@ public class TestResultParser {
 		return rowValue;
 	}
 
+	public static void insertBuildDetails(){
+		int buildId = Integer.parseInt(WorkingEnvironment.getEasebuildId());
+		String buildName = WorkingEnvironment.getEasebuildName();
+		String buildDate = WorkingEnvironment.getEasebuildDate();
+		System.out.println("Ease Build ID : " + buildId);
+		System.out.println("Ease Build Name : " + buildName);
+		System.out.println("Ease Build Generated Date : " + buildDate);
+		String insertQueryBuildDetails = "Insert into art.builddetails(BuildID, BuildName, BuildDate) values ("+ buildId +", '"+ buildName +
+				"', STR_TO_DATE('" + buildDate + "', '%d-%m-%Y'));";
+		System.out.println("Insert Build Details Query : " + insertQueryBuildDetails);
+		executeQuery(insertQueryBuildDetails);
+		System.out.println("Insertion successful !!");
+	}
 	class Result
 	{
 		String scenarioName;

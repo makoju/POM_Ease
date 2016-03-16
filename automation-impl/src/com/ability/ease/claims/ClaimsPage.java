@@ -109,7 +109,9 @@ public class ClaimsPage extends AbstractPageObject{
 		clickLinkV2("claimSubmit");
 		if(helper.validateConfirmationScreenSteps(lsAttributes)){
 			clickButton("yesConfirmEditClaimButton");
-			report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
+			if( verifyAlert("Changes scheduled!")){
+				report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
+			}
 		}
 		else{
 			report.report("There are some problems in form filling, please fill all mandatory values in UB04 form");

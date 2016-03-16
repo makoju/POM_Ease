@@ -28,6 +28,7 @@ import com.ability.ease.auto.common.TestCommonResource;
 import com.ability.ease.auto.common.UIActions;
 import com.ability.ease.auto.dataStructure.common.AttibuteXMLParser.UIAttributeXMLParser;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
+import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.MyAccountSubMenu;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.UserActionType;
@@ -297,6 +298,7 @@ public class MiscPage extends AbstractPageObject {
 				return true;
 			}
 		}
+		Thread.sleep(5000);
 		if(userAction.toString().equalsIgnoreCase("Modify")){
 			admin.fillScreenAttributes(lsAttributes);
 			return verifyAlert("Personal information changed successfully!");
@@ -333,7 +335,7 @@ public class MiscPage extends AbstractPageObject {
 						sElementText = subItem.getText();
 					report.report("Clicking on " + sElementText + " option");
 					safeJavaScriptClick(sElementText);
-					Thread.sleep(10000);
+					Thread.sleep(5000);
 					if(driver.findElement(By.xpath(sXpathTabHead)).getText().equalsIgnoreCase(sExpectedOutput)){
 						report.report("verified left menu option '" + subMenuItem.toString() + "' under My Account tab");
 						return true;
@@ -369,7 +371,10 @@ public class MiscPage extends AbstractPageObject {
 		WebElement link = waitForElementVisibility(By.linkText("MY ACCOUNT"));
 		if ( link != null) {
 			safeJavaScriptClick("MY ACCOUNT");
+			Thread.sleep(5000);
+			safeJavaScriptClick("Setup Alerts");
 		}
+
 		admin.fillScreenAttributes(lsAttributes);
 		verifyAlert("User alerts updated!");
 

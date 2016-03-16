@@ -13,7 +13,9 @@
             <mySQLDBPassword>web123</mySQLDBPassword>
             <userName>empadmin</userName>
             <password>Totally#1</password>
-            <easebuildid>70</easebuildid>
+            <easebuildid>1.5.2.7</easebuildid>
+	    <easebuildName>EaseWeb-emp7-1.5.2-7.x86_64.rpm</easebuildName>
+	    <easebuildDate>2016-03-10</easebuildDate>
         </workingEnvironment>
         <webdriver>
             <class>com.ability.ease.auto.systemobjects.WebDriverSystemObject</class>

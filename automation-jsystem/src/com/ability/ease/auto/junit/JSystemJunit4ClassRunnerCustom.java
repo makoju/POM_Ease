@@ -308,6 +308,7 @@ public class JSystemJunit4ClassRunnerCustom extends JUnit4ClassRunner {
 			File file =new File(filePath);
 			//if file doesn't exists, then create it
 			if(!file.exists()){
+				file.delete();
 				file.createNewFile();
 			}
 			bufferWritter = new BufferedWriter(new FileWriter(file,true));

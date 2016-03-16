@@ -137,7 +137,7 @@ public class AuditDocHelper extends AbstractPageObject{
 	public void clickEsmdStatusLink(String agency)throws Exception{
 		String sXpathOfOVERNIGHT = "//span[contains(text(),'OVERNIGHT')] | //td[contains(text(),'EASE SUMMARY REPORT')]";
 		String sXpathBeforeClickOnESMD = "//td[contains(text(),'FOR AGENCY')]";
-		//	String sXpathofEsmdReport = "//td[contains(text(),'ESMD DELIVERY & STATUS REPORT')]";
+		String sXpathofEsmdReport = "//td[contains(text(),'ESMD DELIVERY & STATUS REPORT')]";
 		waitForElementToBeClickable(ByLocator.xpath, sXpathOfOVERNIGHT, 10);
 		if( !isTextPresent("Basic")){
 			clickLink("Advanced");
@@ -152,10 +152,17 @@ public class AuditDocHelper extends AbstractPageObject{
 			selectByNameOrID("reportAgencySelect", agency);
 			clickButton("Change Agency");
 			//wait for FOR AGENCY text on table header in blue before clicking on esmd-status link
-			if(waitForElementToBeClickable(ByLocator.xpath,sXpathBeforeClickOnESMD, 30) != null){
-				clickLink("esMD Delivery & Status");
+			if(waitForElementToBeClickable(ByLocator.xpath,sXpathBeforeClickOnESMD, 60) != null){
 				if(!reportHeaderText.contains("2011")){
 					changeTimeFrame();
+				}
+				Thread.sleep(5000);
+				if( waitForElementToBeClickable(ByLocator.xpath,sXpathBeforeClickOnESMD, 60) != null){
+					//clickLink("esMD Delivery & Status");
+					safeJavaScriptClick("esMD Delivery & Status");
+					waitForElementToBeClickable(ByLocator.xpath,sXpathofEsmdReport, 30);
+				}else{
+					report.report("OVERNIGHT EASE SUMMARY REPORT FOR XX/XX/XXXX, FOR AGENCY XXX not visible after changing the timeframe");
 				}
 			}else{
 				report.report("EASE SUMMARY REPORT FROM MM/DD/YYYY TO MM/DD/YYYY, FOR AGENCY XXXX is not present !!!");
@@ -402,9 +409,16 @@ public class AuditDocHelper extends AbstractPageObject{
 		while( !isElementPresent ){
 			try{
 				we = driver.findElement(By.xpath(sXpath));
-				if( we != null) {
+				String rcvdByCMSTime = we.getText();
+				report.report("Text from Received by reviewer column..." + rcvdByCMSTime);
+				if( we != null && !rcvdByCMSTime.isEmpty()) {
 					isElementPresent = true;
 					result = true;
+				}
+				if( rcvdByCMSTime.isEmpty() ){
+					navigateBack();
+					Thread.sleep(10000);
+					navigateForward();
 				}
 				//driver.findElement(By.xpath(sXpathRefresh)).click();
 			}catch(NoSuchElementException nsee){

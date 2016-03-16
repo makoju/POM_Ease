@@ -42,7 +42,10 @@ public class AuditDocSelenium2Impl implements IAuditDoc{
 			String caseID, ADRFileFomat adrFileType, ADRFilesSize adrFileSize)throws Exception {
 		return auditdocpage.verifyREJECTRESENDSubmissionsFunctionality(agency, reviewContractorName, claimIDorDCN, caseID, adrFileType, adrFileSize);
 	}
-	
-	
+
+	@Override
+	public boolean isDocSplitted(String claimIDorDCN) throws Exception {
+		return auditdocpage.isDocSplitted(claimIDorDCN);
+	}
 
 }

@@ -30,10 +30,16 @@ public interface IAuditDoc {
 	public boolean verifyRecordsPresenUnderESMDreport()throws Exception; 
 
 	/*
-	 * method to verify the esmd report recods count
+	 * method to verify REJECT and RESEND Submission functionality
 	 */
 	public boolean verifyREJECTRESENDSubmissionsFunctionality(String agency,String reviewContractorName, String claimIDorDCN, 
 			String caseID, ADRFileFomat adrFileType, ADRFilesSize adrFileSize)throws Exception; 
+
+	
+	/*
+	 * method to verify document split submission
+	 */
+	public boolean isDocSplitted(String claimIDorDCN)throws Exception; 
 
 	
 	/*

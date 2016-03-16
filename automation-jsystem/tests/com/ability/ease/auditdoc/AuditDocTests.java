@@ -110,6 +110,19 @@ public class AuditDocTests extends BaseTest{
 		}
 	}
 	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Document Split Functionality", 
+	paramsInclude = { "claimIDDCN, testType" })
+	public void isDocSplitted()throws Exception{
+	
+		if(!auditdoc.isDocSplitted(claimIDDCN)){
+			report.report("Document submitted not splitted into multiple chunks", Reporter.FAIL);
+		}else{
+			report.report("Documet submitted is splitted successfully" , Reporter.ReportAttribute.BOLD);
+		}
+	}
+	
 	/*###
 	# Getters and Setters
 	###*/

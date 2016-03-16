@@ -209,7 +209,7 @@ public class AuditDocPage extends AbstractPageObject{
 							waitForElementToBeClickable(ByLocator.xpath, "//a[contains(text(),'Sent to CMS')]", 10);
 							if( isElementPresent(By.xpath("//a[contains(text(),'Sent to CMS')]"))){
 								clickLink("Sent to CMS");
-								if(waitForElementToBeClickable(ByLocator.xpath, xpathToADRSubPage, 10) != null){
+								if(waitForElementToBeClickable(ByLocator.xpath, xpathToADRSubPage, 60) != null){
 									report.report("Successfully sent ADR reponse documents to CMS", ReportAttribute.BOLD);
 								}else{
 									failCounter++;
@@ -273,19 +273,19 @@ public class AuditDocPage extends AbstractPageObject{
 		report.report("Waiting for ~ 4 minutes to get the mock reposne from Audit Doc server...");
 		Thread.sleep(240000);
 
-		//validations
-		List<WebElement> lsADRSubmissionTableHeaders = helper.getReportTableHeaders("datatable");
-		if ( Verify.compareTableHeaderNames(lsADRSubmissionTableHeaders, expectedCMSStatusTableHeaders)){
-			report.report("Validation 1 : CMS status update screen fileds have been validated successfully", ReportAttribute.BOLD);
-		}else{
-			failCounter++;
-			report.report("Validation 1 : CMS status update screen fileds validation failed", ReportAttribute.BOLD);
-		}
-
 		helper.navigateBack();
 		helper.navigateForward();
 
 		if( helper.waitForADRResponsePageToBeVisible(receivedByCMSESTXpath) ){
+
+			//validations
+			List<WebElement> lsADRSubmissionTableHeaders = helper.getReportTableHeaders("datatable");
+			if ( Verify.compareTableHeaderNames(lsADRSubmissionTableHeaders, expectedCMSStatusTableHeaders)){
+				report.report("Validation 1 : CMS status update screen fileds have been validated successfully", ReportAttribute.BOLD);
+			}else{
+				failCounter++;
+				report.report("Validation 1 : CMS status update screen fileds validation failed", ReportAttribute.BOLD);
+			}
 
 			String sQueryCMSStatusUpdate = "SELECT * FROM ddez.cmsstatusupdates where CMSClaimID = "+ claimIDorDCN ;
 			Map<String, String> CMSStatusUpdateTableData = helper.getDataFromCMSStatusUpdateTable(sQueryCMSStatusUpdate);
@@ -380,7 +380,7 @@ public class AuditDocPage extends AbstractPageObject{
 		//get the record count from ADR Report
 		if(waitForElementToBeClickable(ByLocator.xpath,sXpathOfOVERNIGHT, 30) != null){
 			clickLink("ADR");
-			if(waitForElementToBeClickable(ByLocator.xpath, ADRPageXpath, 10) != null){
+			if(waitForElementToBeClickable(ByLocator.xpath, ADRPageXpath, 60) != null){
 				lsADRRecords = driver.findElements(By.xpath(sADRDataTableXpath));
 				recordCountFromADRReport = lsADRRecords.size();
 			}	
@@ -422,6 +422,30 @@ public class AuditDocPage extends AbstractPageObject{
 		return result; 
 	}
 
+	public boolean isDocSplitted(String claimIDorDCN)throws Exception{
+		
+		String sXpathToSplitSubmissionColumn = "//td[contains(text(),'" + claimIDorDCN + "')]/following-sibling::td[10]";
+		WebElement we = waitForElementToBeClickable(ByLocator.xpath, sXpathToSplitSubmissionColumn, 30);
+		if( we != null){
+			String submissionSplitText = we.getText();
+			if(!submissionSplitText.isEmpty()){
+				if(submissionSplitText.equalsIgnoreCase("Yes")){
+					report.report("Is Document splitted : " + submissionSplitText , ReportAttribute.BOLD);
+				}else{
+					report.report("Fail : Document not splitted into multiple chunks");
+					failCounter++;
+				}
+			}else{
+				report.report("Fail : Submission Split coulm text is emtpy");
+				failCounter++;
+			}
+		}else{
+			report.report("Fail : Submission Split coulm reference is null");
+			failCounter++;
+		}
+		return failCounter == 0 ? true : false;
+	}
+	
 	public long generateRandomInteger(int length)throws Exception{
 
 		Random random = new Random();
@@ -432,7 +456,7 @@ public class AuditDocPage extends AbstractPageObject{
 		}
 		return Long.parseLong(new String(digits));
 	}
-	
+
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub

@@ -123,15 +123,17 @@ public class TestResultParser {
 
 			//Getting connection to ART database
 			initializeDBConnection();
-			
+
 			//truncate art.scenario table before inserting new set of results
-			String sTruncateQuery = "Truncate Table art.Scenario";
-			executeQuery(sTruncateQuery);
+			/*String sTruncateQuery = "Truncate Table art.Scenario";
+			executeQuery(sTruncateQuery);*/
+
+			deleteDataFromScenarioTable();
 
 			for(String module:moduleNames)
 			{
 				//Getting module ID with module name from art.module table
-				oResultSet = getResultSet("Select moduleid from module where modulename='"+ module.split("_")[0] +"'");
+				oResultSet = getResultSet("Select moduleid from art.module where modulename='"+ module.split("_")[0] +"'");
 				try {
 					while(oResultSet.next()){
 						moduleID = oResultSet.getInt("ModuleID");
@@ -142,7 +144,7 @@ public class TestResultParser {
 				List<Result> lsScenarioResult1 = resultmap.get(module);
 				for(Result r1:lsScenarioResult1){
 					//Inserting scenario , status and module ID to art.scenario table
-					String sInsertQuery = "Insert into scenario(scenarioname, scenariostatus, moduleid) values ('" + r1.getScenarioName() + "','" + r1.getStatus() + "'," + moduleID + ")";
+					String sInsertQuery = "Insert into art.scenario(scenarioname, scenariostatus, moduleid) values ('" + r1.getScenarioName() + "','" + r1.getStatus() + "'," + moduleID + ")";
 					executeQuery(sInsertQuery);
 				}
 			}
@@ -152,30 +154,31 @@ public class TestResultParser {
 			//Now, push art.scenario table results to art.testresults table to display in ART dash board
 			String sQuery1 = "Select count(scenarioname) from art.scenario";
 			String sQuery2 = "Select count(scenariostatus) from art.scenario where scenarioStatus = 'pass'";
-			String sQuery3 = "Select count(scenariostatus) from art.scenario where scenarioStatus = 'fail'";
+			String sQuery3 = "Select invalid.customercount(scenariostatus) from art.scenario where scenarioStatus = 'fail'";
 
 			oResultSet = getResultSet(sQuery1);
 			scenarioCount = getCoulmnValue(oResultSet, "count(scenarioname)");
-			
+
 			oResultSet = getResultSet(sQuery2);
 			scenarioPassed = getCoulmnValue(oResultSet, "count(scenariostatus)");
-			
+
 			oResultSet = getResultSet(sQuery3);
 			scenarioFailed = getCoulmnValue(oResultSet, "count(scenariostatus)");
-			
+
 			//Here, build id value should be parameterized once 
 			int buildId = Integer.parseInt(WorkingEnvironment.getEasebuildId());
 			String sInsertQuery = "Insert into testresults(totaltests,passed,failed,buildid) values ("+scenarioCount +"," + scenarioPassed + "," + scenarioFailed + "," + buildId +")";
 			executeQuery(sInsertQuery);
-			
-			
+
+
 		} catch (FileNotFoundException fnfe) {
 			System.out.println("File :" + sFilePath + " is not present under specified path");
 			fnfe.printStackTrace();
 		} catch (IOException ioe) {
 			System.out.println("Exception while reading the "+ sFilePath + "ERROR:");
 			ioe.printStackTrace();
-		} finally {
+		} 
+		finally {
 			try {
 				reader.close();
 				fis.close();
@@ -220,7 +223,7 @@ public class TestResultParser {
 
 		String hostName = prop.getProperty("artdbhostname");
 		String port = prop.getProperty("artdbport");
-		String userName = prop.getProperty("attdbusername");
+		String userName = prop.getProperty("artdbusername");
 		String password = prop.getProperty("artdbpassword");
 		String dbname = prop.getProperty("dbname");
 
@@ -232,7 +235,10 @@ public class TestResultParser {
 			sConnection = DriverManager.getConnection(DB_URL,userName,password);
 			if( sConnection != null) {
 				System.out.println("Connection successful to ART database!!!");
-				sStatement = sConnection.createStatement();
+				//sStatement = sConnection.createStatement();
+				sStatement = sConnection.createStatement
+						(ResultSet.TYPE_SCROLL_SENSITIVE,
+								ResultSet.CONCUR_UPDATABLE);
 			}
 		}catch(Exception e){
 			System.out.println("Exception occured while establishing connection to MySQL database ! ERROR::");
@@ -274,9 +280,12 @@ public class TestResultParser {
 	}
 
 	public static void insertBuildDetails(){
-		int buildId = Integer.parseInt(WorkingEnvironment.getEasebuildId());
+		
+		int buildId = 0;
+		String sBuildID = WorkingEnvironment.getEasebuildId();
 		String buildName = WorkingEnvironment.getEasebuildName();
 		String buildDate = WorkingEnvironment.getEasebuildDate();
+		buildId = Integer.valueOf(sBuildID);
 		System.out.println("Ease Build ID : " + buildId);
 		System.out.println("Ease Build Name : " + buildName);
 		System.out.println("Ease Build Generated Date : " + buildDate);
@@ -286,6 +295,33 @@ public class TestResultParser {
 		executeQuery(insertQueryBuildDetails);
 		System.out.println("Insertion successful !!");
 	}
+
+
+	public static boolean deleteDataFromScenarioTable(){
+
+		String sDeleteQuery = "DELETE FROM art.scenario";
+		String sAlterQuery = "ALTER TABLE art.scenario AUTO_INCREMENT = 1";
+		int[] rowCount = null;
+		try {
+			System.out.println("Executing Batch Query Update To Delete Rows in Scenario Table...");
+			sStatement.addBatch(sDeleteQuery);
+			sStatement.addBatch(sAlterQuery);
+			rowCount = sStatement.executeBatch();
+		} catch (SQLException e) {
+			System.out.println("Exception occured while : Executing Batch Query Update To Delete Rows in Scenario Table...");
+			System.out.println("ERROR :" + e.getMessage());
+			e.printStackTrace();
+		}
+		if( rowCount.length > 0){
+			System.out.println("Executing Batch Query Update To Delete Rows In Scenario Table Is Completed Succesfully");
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+
+
 	class Result
 	{
 		String scenarioName;

@@ -286,6 +286,7 @@ public class JSystemJunit4ClassRunnerCustom extends JUnit4ClassRunner {
 		String bbResult = null;
 		boolean bScenarioResult = false;
 		BufferedWriter bufferWritter=null;
+		boolean success = false;
 
 		lsScenario = ScenarioHelper.getScenarioAncestors(ScenarioHelper.getCurrentRunningTest());
 		for(Scenario sc:lsScenario){
@@ -307,9 +308,9 @@ public class JSystemJunit4ClassRunnerCustom extends JUnit4ClassRunner {
 			String filePath= TestCommonResource.getTestResoucresDirPath()+"testresults\\ScenarioResult.txt";
 			File file =new File(filePath);
 			//if file doesn't exists, then create it
-			if(!file.exists()){
-				file.delete();
+			if(! file.exists()){
 				file.createNewFile();
+				System.out.println("Created new " + filePath + " file ");
 			}
 			bufferWritter = new BufferedWriter(new FileWriter(file,true));
 			bufferWritter.write(fileLine+"\n");

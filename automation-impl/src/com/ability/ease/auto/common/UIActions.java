@@ -290,8 +290,8 @@ public class UIActions extends AbstractPageObject {
 						}
 						WebElement custom = waitForElementVisibility(By.xpath("//input[@value='custom']"));
 						safeJavaScriptClick(custom);
-						typeEditBox("reportCustomDateFrom", fromdate);
-						typeEditBox("reportCustomDateTo", todate);
+						typeEditBox("dateRangeFrom", fromdate);
+						typeEditBox("dateRangeTo", todate);
 					}
 					else if(servicedate.toLowerCase().startsWith("all")){
 						WebElement all = waitForElementVisibility(By.xpath("//input[@value='all']"));

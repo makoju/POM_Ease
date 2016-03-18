@@ -51,9 +51,10 @@ public class CustomSchedulePage extends AbstractPageObject {
 		String actCronSchedule=null;
 		int failurecount=0;
 		
-		
+		//Assuming it's verifying with test.customer hence harcoded customer id as '1'. Have to be modified to support for other customers too 
 		String query1 = "Select ps.StartDay,ps.EndDay,ps.cronschedule,ps.OnOff,ps.Schedule from ddez.provider p join ddez.providerschedule ps ON p.id = ps.providerid where p.DisplayName='"
-				+ agencyName + "' and ps.JobType=10";
+				+ agencyName + "' and ps.JobType='10' and p.customerid='1' and ps.StartDay!=''";
+		
 		ResultSet rs = MySQLDBUtil.getResultFromMySQLDB(query1);
 		int count = 1;
 		while(rs.next()){

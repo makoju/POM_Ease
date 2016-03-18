@@ -1,26 +1,18 @@
 package com.ability.ease.misc;
 
-import java.awt.RenderingHints.Key;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import jsystem.framework.report.Reporter; 
 
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
 
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 import com.ability.ease.auto.common.MySQLDBUtil;
@@ -29,7 +21,6 @@ import com.ability.ease.auto.common.UIActions;
 import com.ability.ease.auto.dataStructure.common.AttibuteXMLParser.UIAttributeXMLParser;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
-import com.ability.ease.auto.enums.tests.EaseSubMenuItems;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.MyAccountSubMenu;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.UserActionType;
 import com.ability.ease.auto.system.WorkingEnvironment;
@@ -269,14 +260,7 @@ public class MiscPage extends AbstractPageObject {
 		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Misc\\Misc.xml", mapAttrVal);
 		UIActions admin = new UIActions();
 
-		Thread.sleep(3000);
-		WebElement link = waitForElementVisibility(By.linkText("MY ACCOUNT"));
-		if ( link != null) {
-			safeJavaScriptClick("MY ACCOUNT");
-		}else{
-			report.report("MY ACCOUNT link is not visible");
-			return false;
-		}
+		clickMYACCOUNTLink();
 		if( userAction.toString().equalsIgnoreCase("Read")){
 			for( Attribute scrAttr:lsAttributes){
 				if(scrAttr.getDisplayName().equalsIgnoreCase("Name")){
@@ -316,11 +300,7 @@ public class MiscPage extends AbstractPageObject {
 		List<WebElement> menuItem = new ArrayList<WebElement>();
 		String sElementText = null;
 
-		Thread.sleep(5000);
-		WebElement link = waitForElementVisibility(By.linkText("MY ACCOUNT"));
-		if ( link != null) {
-			safeJavaScriptClick("MY ACCOUNT");
-		}
+		clickMYACCOUNTLink();
 		waitForElementVisibility(By.xpath(sXpathContainer), 60);
 		//get all menu item into one list object
 		menuItem = driver.findElements(By.xpath(sXpathContainer));
@@ -367,16 +347,14 @@ public class MiscPage extends AbstractPageObject {
 		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Misc\\Misc.xml", mapAttrVal);
 
 		UIActions admin = new UIActions();
-		//Thread.sleep(3000);
-		WebElement link = waitForElementVisibility(By.linkText("MY ACCOUNT"));
-		if ( link != null) {
-			safeJavaScriptClick("MY ACCOUNT");
-			Thread.sleep(5000);
-			safeJavaScriptClick("Setup Alerts");
+		
+		clickMYACCOUNTLink();
+		Thread.sleep(3000);
+		safeJavaScriptClick("Setup Alerts");
+		if(waitForElementToBeClickable(ByLocator.xpath, "//td[contains(text(),'SETUP ALERTS')]", 60) != null){
+			admin.fillScreenAttributes(lsAttributes);
+			verifyAlert("User alerts updated!");
 		}
-
-		admin.fillScreenAttributes(lsAttributes);
-		verifyAlert("User alerts updated!");
 
 		//verify whether data got changed in database
 		//getting user id from ddez.user table
@@ -462,6 +440,19 @@ public class MiscPage extends AbstractPageObject {
 		return false;
 	}
 
+	public void clickMYACCOUNTLink() throws Exception{
+		WebElement mydde = waitForElementVisibility(By.linkText("MY ACCOUNT"));
+		String classAttr = mydde.getAttribute("class");
+		if ( mydde != null) {
+			if( !classAttr.equalsIgnoreCase("topNavAnchor topNavAnchorSelected")){
+				clickLink("MY ACCOUNT");
+				return;
+			}else{
+				//nothing to do
+			}
+		}
+		report.report("MY DDE Link element is not avaible on page");
+	}
 	/*
 	 * This method is used to get the alert option value from UI and used as part of verifyAlertOption() method
 	 */

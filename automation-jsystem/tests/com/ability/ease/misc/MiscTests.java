@@ -43,10 +43,21 @@ public class MiscTests extends BaseTest{
 	}
 
 	@Test
-	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@SupportTestTypes(testTypes = { TestType.Selenium2, TestType.RESTful } )
 	@TestProperties(name = "Login as ${userName}", paramsInclude = { "userName, password, testType" })
 	public void loginToEase()throws Exception{
+		switch (testType) {
+		case Selenium2:
+			
+			break;
+		case RESTful:
+			
+			
+			break;
 
+		default:
+			break;
+		}
 		if(misc.validLogin(userName, password)){
 			report.report("Successfully Logged in as user: "+userName, Reporter.ReportAttribute.BOLD);
 		}else{

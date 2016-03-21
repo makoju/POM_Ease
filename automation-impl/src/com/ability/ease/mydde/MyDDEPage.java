@@ -388,20 +388,21 @@ public class MyDDEPage extends AbstractPageObject{
 		int failurecount = 0;
 		String[] options = {"reportHICSearch","reportHome","reportTimeframe","reportAgency","reportPieChart","reportPrint","reportExport",
 				"reportNewUB04","reportComplexity"};
+		
 		//Click Advanced using Advanced building block in MyDDEReportsPage
-
+		
 		for(String optionsId : options){
 			WebElement verifyOptions = waitForElementVisibility(By.id(optionsId));
 			if ( verifyOptions != null) {
 				String optionsText = verifyOptions.getText().toUpperCase();
 				if(!optionsText.equals("")){
-					report.report("Successfully verified "+optionsText+" under Basic view.");
+					report.report("Successfully verified "+optionsText+" under Advanced view.");
 				}
 				else{
-					report.report("Successfully verified "+optionsId+" under Basic view.");
+					report.report("Successfully verified "+optionsId+" under Advanced view.");
 				}
 			}else{
-				report.report("Failed to verify "+optionsId+" under Basic view.");
+				report.report("Failed to verify "+optionsId+" under Advanced view.");
 				failurecount++;
 			}
 		}

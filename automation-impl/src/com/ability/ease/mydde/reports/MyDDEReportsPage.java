@@ -3310,7 +3310,14 @@ public class MyDDEReportsPage extends AbstractPageObject {
 	
 	public void clickAdvanced() throws Exception{
 		navigateToPage();
-		clickLink("Advanced");
+		WebElement pageView = waitForElementToBeClickable(ByLocator.xpath, "//a[@id='reportComplexity']", 30);
+		if(pageView != null){
+			String viewText = pageView.getText();
+			if(viewText.equalsIgnoreCase("Advanced")){
+				clickLink("Advanced");
+			}
+		}
+		
 	}
 	
 }

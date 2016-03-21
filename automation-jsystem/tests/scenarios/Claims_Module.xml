@@ -16,10 +16,34 @@
     <taskdef classname="com.aqua.anttask.jsystem.JSystemSetAntProperties" name="jsystemsetantproperties"/>
     <target name="execute scenario">
         <antcallback target="t0"/>
+        <antcallback target="t1"/>
+        <antcallback target="t2"/>
+        <antcallback target="t3"/>
     </target>
     <target name="t0">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_UB04_001_Verify UB04 Form Fields.xml">
-            <property name="jsystem.uuid" value="bc5493e9-aeba-4b23-8076-4c60ae335a37"/>
+        <jsystem-ant antfile="${scenarios.base}/scenarios/TS_EASE_UB04_001_Testing all the fields in UB04 form.xml">
+            <property name="jsystem.uuid" value="6637e9bd-b488-4d05-924a-554878732a7f"/>
+            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+        </jsystem-ant>
+    </target>
+    <target name="t1">
+        <jsystem-ant antfile="${scenarios.base}/scenarios/TS_EASE_UB04_002_Verifying add or remove claim line options for new Claim.xml">
+            <property name="jsystem.uuid" value="0ae732ca-6c5c-4e27-aec6-97a1406cc9a4"/>
+            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+        </jsystem-ant>
+    </target>
+    <target name="t2">
+        <jsystem-ant antfile="${scenarios.base}/scenarios/TS_EASE_UB04_003_Verifying add or remove claim line options for existing Claim.xml">
+            <property name="jsystem.uuid" value="b49aee48-a5b5-4451-8994-6af274a5725c"/>
+            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+        </jsystem-ant>
+    </target>
+    <target name="t3">
+        <jsystem-ant antfile="${scenarios.base}/scenarios/TS_EASE_UB04_008_Verification of the Data  in the Claim line Pop window.xml">
+            <property name="jsystem.uuid" value="bad1be39-2e74-4c5c-a0a3-e919a4a2996a"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>

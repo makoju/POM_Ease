@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.Alert;
+import org.openqa.selenium.WebDriver;
 
 import com.ability.ease.auto.common.TestCommonResource;
 import com.ability.ease.auto.common.UIActions;
@@ -22,7 +23,7 @@ public class AdminPage extends AbstractPageObject{
 		UIAttributeXMLParser parser = new UIAttributeXMLParser();
 		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Administration\\AddUser.xml", mapAttrVal);
 		UIActions admin = new UIActions();
-		
+
 		for ( Attribute scrAttr:lsAttributes){
 			if( scrAttr.getDisplayName().equalsIgnoreCase("User Name")){
 				sActual = scrAttr.getValue().toString();
@@ -33,19 +34,18 @@ public class AdminPage extends AbstractPageObject{
 		report.report("User "+ sActual + " added!");
 		return verifyAlert("User "+ sActual + " added!");
 	}
-	
+
 	public boolean editUser(Map<String, String> mapAttrVal)throws Exception{
-	
+
 		return false;
 	}
-	
+
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub
-		
+
 	}
 	public void navigateToPage() throws Exception {
 		HomePage.getInstance().navigateTo(Menu.Admin, SubMenu.AddUser);
 	}
-
 }

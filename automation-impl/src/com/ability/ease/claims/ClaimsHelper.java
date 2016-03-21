@@ -148,7 +148,7 @@ public class ClaimsHelper extends AbstractPageObject{
 
 
 
-	public String getCurrentTimeFromEaseDB(){
+	public static String getCurrentTimeFromEaseDB(){
 		String currentTimeStamp = null;
 		ResultSet rs = MySQLDBUtil.getResultFromMySQLDB("Select now()");
 		try {
@@ -392,19 +392,6 @@ public class ClaimsHelper extends AbstractPageObject{
 			report.report("UB04 From Submit Warning : Model dailog box reference is null");
 			return false;
 		}
-	}
-
-	public WebElement retryUntilElementIsVisible(String xpath,int retries){	
-		int count = 0;
-		WebElement we = null;
-		do{
-			we = driver.findElement(By.xpath(xpath));
-			count++;
-			if(we != null){
-				break;
-			}
-		}while(we == null || count < retries);
-		return we;
 	}
 
 	public List<String> getFiledValuesFromEditClaimLineModelDailogWindow()throws Exception{

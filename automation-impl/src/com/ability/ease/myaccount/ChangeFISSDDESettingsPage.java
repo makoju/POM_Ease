@@ -11,7 +11,9 @@ import jsystem.framework.report.Reporter.ReportAttribute;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.Verify;
@@ -132,6 +134,9 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 			typeEditBox("ddepassword", ddeuserid);
 			typeEditBox("Verify", ddeuserid);
 			clickButtonV2("Submit");
+			WebDriverWait wait = new WebDriverWait(driver, 85);
+			wait.until(ExpectedConditions.alertIsPresent());
+			
 			if(!verifyAlert("DDE information changed")){
 				report.report("DDE Information Submitted was not acknowledged",Reporter.WARNING);
 				return false;
@@ -198,6 +203,9 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 			typeEditBox("ddepassword", ddeuserid);
 			typeEditBox("Verify", ddeuserid);
 			clickButtonV2("Submit");
+			WebDriverWait wait = new WebDriverWait(driver, 85);
+			wait.until(ExpectedConditions.alertIsPresent());
+			
 			if(!verifyAlert("DDE information changed")){
 				report.report("DDE Information Submitted was not acknowledged",Reporter.WARNING);
 				return false;

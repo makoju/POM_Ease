@@ -22,7 +22,9 @@ public final class WorkingEnvironment{
 	private static String mySQLDBPassword;
 	private static String userName;
 	private static String password;
-	private static String easeBuildId; 
+	private static String easebuildId;
+	private static String easebuildName; 
+	private static String easebuildDate; 
 	private static String mailServerHost;
 
 	public static String getHost() {
@@ -131,11 +133,23 @@ public final class WorkingEnvironment{
 	public static void setPassword(String password) {
 		WorkingEnvironment.password = password;
 	}
-	public static String getEaseBuildId() {
-		return easeBuildId;
+	public static String getEasebuildId() {
+		return easebuildId;
 	}
-	public static void setEaseBuildId(String easeBuildId) {
-		WorkingEnvironment.easeBuildId = easeBuildId;
+	public static void setEasebuildId(String easebuildId) {
+		WorkingEnvironment.easebuildId = easebuildId;
+	}
+	public static String getEasebuildName() {
+		return easebuildName;
+	}
+	public static void setEasebuildName(String easebuildName) {
+		WorkingEnvironment.easebuildName = easebuildName;
+	}
+	public static String getEasebuildDate() {
+		return easebuildDate;
+	}
+	public static void setEasebuildDate(String easebuildDate) {
+		WorkingEnvironment.easebuildDate = easebuildDate;
 	}
 	
 }

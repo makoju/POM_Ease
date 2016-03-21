@@ -7,6 +7,10 @@ import jsystem.framework.system.SystemObjectImpl;
  * require to run tests against a specified environment
  * 
  */
+/**
+ * @author nageswar.bodduri
+ *
+ */
 public class DefaultWorkingEnvironment extends SystemObjectImpl{
 
 	// variables require for runtime
@@ -20,6 +24,8 @@ public class DefaultWorkingEnvironment extends SystemObjectImpl{
 	private String userName;
 	private String password;
 	private String easeBuildId;
+	private String easeBuildName;
+	private String easeBuildDate;
 	private String mailServerHost = "abc.senecaglobal.com";
 	private String mailServerUser = "administrator";
 	private String mailServerPassword = "adminpassword";		
@@ -87,6 +93,19 @@ public class DefaultWorkingEnvironment extends SystemObjectImpl{
 	}
 	public void setEaseBuildId(String easeBuildId) {
 		this.easeBuildId = easeBuildId;
+	}
+	
+	public String getEaseBuildName() {
+		return easeBuildName;
+	}
+	public void setEaseBuildName(String easeBuildName) {
+		this.easeBuildName = easeBuildName;
+	}
+	public String getEaseBuildDate() {
+		return easeBuildDate;
+	}
+	public void setEaseBuildDate(String easeBuildDate) {
+		this.easeBuildDate = easeBuildDate;
 	}
 	/**
 	 * Mail server host

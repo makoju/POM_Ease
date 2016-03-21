@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<UIAttributes 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xsi:schemaLocation="UIAttributes.xsd">
+ <!-- <UIAttribute>
+		<locator>Add Customer</locator>
+		<style>Link</style>
+		<displayName>Add Customer</displayName>
+		<description>This is reference to Add Customer Link</description>
+</UIAttribute> -->      
+  
+ <UIAttribute>
+		<locator>custname</locator>
+		<style>Text</style>
+		<displayName>Company Name</displayName>
+		<description>Provide the Customer Name</description>
+</UIAttribute> 
+          
+ <UIAttribute>
+		<locator>name</locator>
+		<style>Text</style>
+		<displayName>Contact Name</displayName>
+		<description>Contact Name of the Customer</description>
+</UIAttribute>  
+    
+ <UIAttribute>
+		<locator>username</locator>
+		<style>Text</style>
+		<displayName>Username</displayName>
+		<description>Username of the customer</description>
+</UIAttribute>            
+          
+<UIAttribute>
+		<locator>phone</locator>
+		<style>Text</style>
+		<displayName>Phone</displayName>
+		<description>Phone No of the Customer</description>
+</UIAttribute>
+       
+<UIAttribute>
+		<locator>email</locator>
+		<style>Text</style>
+		<displayName>E-mail</displayName>
+		<description>Email Of the Customer</description>
+</UIAttribute>          
+          
+<UIAttribute>
+		<locator>expir</locator>
+		<style>Text</style>
+		<displayName>Expiration</displayName>
+		<description>Expiration of the customer</description>
+</UIAttribute>          
+          
+<UIAttribute>
+		<locator>reseller</locator>
+		<style>DropDown</style>
+		<displayName>Reseller</displayName>
+		<description>Reseller Option will be selected by Default</description>
+</UIAttribute>          
+          
+<UIAttribute>
+		<locator>reseller_cust_id</locator>
+		<style>Text</style>
+		<displayName>Reseller Cust ID</displayName>
+		<description>Reseller CustomerId</description>
+</UIAttribute> 
+
+<UIAttribute>
+		<locator>fee_schedule</locator>
+		<style>DropDown</style>
+		<displayName>Fee Schedule</displayName>
+		<description>Fee Schedule Option will get selected by default ie Trial</description>
+</UIAttribute>
+          
+ <UIAttribute>
+		<locator>census</locator>
+		<style>Text</style>
+		<displayName>Census</displayName>
+		<description>Census of the Customer</description>
+</UIAttribute>          
+                   
+<UIAttribute>
+		<locator>alpha_split_eanble</locator>
+		<style>checkbox</style>
+		<displayName>Alpha Split Enable</displayName>
+		<description>Alpha Split Enable of the customer</description>
+</UIAttribute>  
+<UIAttribute>
+		<locator>audit_docs_eanble</locator>
+		<style>checkbox</style>
+		<displayName>AUDITDocs Enable</displayName>
+		<description>Audit Docs Enable of the customer</description>
+</UIAttribute> 
+<UIAttribute>
+		<locator>analytics_eanble</locator>
+		<style>checkbox</style>
+		<displayName>Analytics Enable</displayName>
+		<description>Audit Docs Enable of the customer</description>
+
+</UIAttribute>      
+ <!-- added agency for more than one agency row -->     
+ <UIAttribute>
+   <locator>npi,provdisplay,ptan,provname,provtype</locator>
+   <style>ProvidersInformation</style>
+  <displayName>ProvidersInformation</displayName>
+   <description>Provide provider information in each row separating with ~ ex., 1013144823,1013144823,123455,TestHHA1,HHA~1790873933,1790873933,234567,TestHospice,Hospice~</description>
+</UIAttribute>       
+        
+ <UIAttribute>
+		<locator>npi_0</locator>
+		<style>Text</style>
+		<displayName>NPI</displayName>
+		<description>National Provider Identification</description>
+</UIAttribute>
+
+ <UIAttribute>
+		<locator>provdisplay_0</locator>
+		<style>Text</style>
+		<displayName>Display Name</displayName>
+		<description>Display name of the Provider</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>provdisplay_1</locator>
+		<style>Text</style>
+		<displayName>Display Name</displayName>
+		<description>Display name of the Provider</description>
+</UIAttribute>
+
+ <UIAttribute>
+		<locator>ptan_0</locator>
+		<style>Text</style>
+		<displayName>PTAN</displayName>
+		<description>PTAN of the Provider</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>provname_0</locator>
+		<style>Text</style>
+		<displayName>Name</displayName>
+		<description>Name of the Provider</description>
+</UIAttribute>
+
+ <UIAttribute>
+		<locator>provtype_0</locator>
+		<style>DropDown</style>
+		<displayName>Type</displayName>
+		<description>Type of the Provider</description>
+</UIAttribute>
+	
+<UIAttribute>
+		<locator>provtype_1</locator>
+		<style>DropDown</style>
+		<displayName>Type</displayName>
+		<description>Type of the Provider</description>
+</UIAttribute> 	
+	
+<UIAttribute>
+		<locator>Add Customer</locator>
+		<style>Link</style>
+		<displayName>Add Customer</displayName>
+		<description>This is reference to Add Customer Link</description>
+</UIAttribute>
+ 
+<UIAttribute>
+		<locator>Setup</locator>
+		<style>Link</style>
+		<displayName>Setup</displayName>
+		<description>Setup Link of the Provider</description>
+</UIAttribute> 
+
+<UIAttribute>
+		<locator>setup_eligid</locator>
+		<style>Text</style>
+		<displayName>Eligibility Prov</displayName>
+		<description>Eligibility of the provider</description>
+</UIAttribute>   
+
+<UIAttribute>
+		<locator>setup_reqstoptime</locator>
+		<style>Text</style>
+		<displayName>Stop Time</displayName>
+		<description>Stop Time of the provider</description>
+</UIAttribute>
+  
+<UIAttribute>
+		<locator>setup_claims</locator>
+		<style>checkbox</style>
+		<displayName>Claims  </displayName>
+		<description>Claims Check box</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_cwf</locator>
+		<style>checkbox</style>
+		<displayName>Eligibility</displayName>
+		<description>Eligibility Check box</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_eft</locator>
+		<style>checkbox</style>
+		<displayName>EFT</displayName>
+		<description>EFT Check box</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_recovery</locator>
+		<style>checkbox</style>
+		<displayName>Recovery</displayName>
+		<description>Recovery Check box</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_livesearch</locator>
+		<style>checkbox</style>
+		<displayName>Live Search</displayName>
+		<description>Live Search Check box</description>
+</UIAttribute>
+          
+<UIAttribute>
+		<locator>setup_liveelig</locator>
+		<style>checkbox</style>
+		<displayName>Eligibility Checks</displayName>
+		<description>Eligibility Checks Check box</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_editclaims</locator>
+		<style>checkbox</style>
+		<displayName>Click-to-Fix</displayName>
+		<description>Setup edit claims</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_editclaims_auto</locator>
+		<style>checkbox</style>
+		<displayName>Click-to-Fix Automation</displayName>
+		<description>Setup edit claims</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_receivables</locator>
+		<style>checkbox</style>
+		<displayName>Receivables</displayName>
+		<description>Receivables</description>
+</UIAttribute>
+ 
+<UIAttribute>
+		<locator>setup_hmocatcher</locator>
+		<style>checkbox</style>
+		<displayName>HMO Catcher</displayName>
+		<description>HMO Catcher</description>
+</UIAttribute>       
+  
+<UIAttribute>
+		<locator>setup_maxusers</locator>
+		<style>Text</style>
+		<displayName>Max Users</displayName>
+		<description>Max Users</description>
+</UIAttribute>
+  
+<UIAttribute>
+		<locator>setup_track_months</locator>
+		<style>Text</style>
+		<displayName>Track Months</displayName>
+		<description>Track Months</description>
+</UIAttribute>
+ 
+<UIAttribute>
+		<locator>setup_track_months</locator>
+		<style>Text</style>
+		<displayName>Track Months</displayName>
+		<description>Track Months</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_use_elga</locator>
+		<style>checkbox</style>
+		<displayName>Use ELGA/H</displayName>
+		<description>Use ELGA/H</description>
+</UIAttribute>
+     
+<UIAttribute>
+		<locator>setup_run_0</locator>
+		<style>DropDown</style>
+		<displayName>Run</displayName>
+		<description>Select the Run DropDown of different jobs</description>
+</UIAttribute> 
+
+<UIAttribute>
+		<locator>setup_day2_0</locator>
+		<style>checkbox</style>
+		<displayName>Mon</displayName>
+		<description>Select the Monday Checkbox of claimjob run</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_day3_0</locator>
+		<style>checkbox</style>
+		<displayName>Tue</displayName>
+		<description>Select the Tuesday Checkbox of Claim Job run</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_day4_0</locator>
+		<style>checkbox</style>
+		<displayName>Wed</displayName>
+		<description>Select the Wednesday Checkbox of Claim Job</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_day5_0</locator>
+		<style>checkbox</style>
+		<displayName>Thu</displayName>
+		<description>Select the Thursday Checkbox of Claim Job</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_day6_0</locator>
+		<style>checkbox</style>
+		<displayName>Fri</displayName>
+		<description>Select the Friday Checkbox of Claim Job</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_custom_0</locator>
+		<style>checkbox</style>
+		<displayName>Custom</displayName>
+		<description>Select the Custom Checkbox of Claim Job</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_date_0</locator>
+		<style>text</style>
+		<displayName>Custom</displayName>
+		<description>Select the Custom DatePicker</description>
+</UIAttribute>
+
+/* For Eligibility Job Run Drop Down*/
+
+<UIAttribute>
+		<locator>setup_run_1</locator>
+		<style>text</style>
+		<displayName>Custom</displayName>
+		<description>Select the Custom DatePicker</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_day2_1</locator>
+		<style>checkbox</style>
+		<displayName>Mon</displayName>
+		<description>Select the Monday Checkbox of claimjob run</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_day3_1</locator>
+		<style>checkbox</style>
+		<displayName>Tue</displayName>
+		<description>Select the Tuesday Checkbox of Claim Job run</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_day4_1</locator>
+		<style>checkbox</style>
+		<displayName>Wed</displayName>
+		<description>Select the Wednesday Checkbox of Claim Job</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_day5_1</locator>
+		<style>checkbox</style>
+		<displayName>Thu</displayName>
+		<description>Select the Thursday Checkbox of Claim Job</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_day6_1</locator>
+		<style>checkbox</style>
+		<displayName>Fri</displayName>
+		<description>Select the Friday Checkbox of Claim Job</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_custom_1</locator>
+		<style>checkbox</style>
+		<displayName>Custom</displayName>
+		<description>Select the Custom Checkbox of Claim Job</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_date_1</locator>
+		<style>text</style>
+		<displayName>Custom</displayName>
+		<description>Select the Custom DatePicker</description>
+</UIAttribute>
+
+/* EFT Run */
+
+<UIAttribute>
+		<locator>setup_run_2</locator>
+		<style>text</style>
+		<displayName>Custom</displayName>
+		<description>Select the Custom DatePicker</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_day2_2</locator>
+		<style>checkbox</style>
+		<displayName>Mon</displayName>
+		<description>Select the Monday Checkbox of claimjob run</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_day3_2</locator>
+		<style>checkbox</style>
+		<displayName>Tue</displayName>
+		<description>Select the Tuesday Checkbox of Claim Job run</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_day4_2</locator>
+		<style>checkbox</style>
+		<displayName>Wed</displayName>
+		<description>Select the Wednesday Checkbox of Claim Job</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_day5_2</locator>
+		<style>checkbox</style>
+		<displayName>Thu</displayName>
+		<description>Select the Thursday Checkbox of Claim Job</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_day6_2</locator>
+		<style>checkbox</style>
+		<displayName>Fri</displayName>
+		<description>Select the Friday Checkbox of Claim Job</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_custom_2</locator>
+		<style>checkbox</style>
+		<displayName>Custom</displayName>
+		<description>Select the Custom Checkbox of Claim Job</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>setup_date_2</locator>
+		<style>text</style>
+		<displayName>Custom</displayName>
+		<description>Select the Custom DatePicker</description>
+</UIAttribute>
+
+/* Run Button */
+
+<UIAttribute>
+		<locator>button</locator>
+		<style>Button</style>
+		<displayName>Add Run</displayName>
+		<description>This is Add Run button...no input required</description>
+</UIAttribute>
+	
+<UIAttribute>
+		<locator>button</locator>
+		<style>Button</style>
+		<displayName>Save Changes</displayName>
+		<description>This is Save Changes button...no input required</description>
+</UIAttribute>
+	
+<UIAttribute>
+		<locator>button</locator>
+		<style>Button</style>
+		<displayName>Discard Changes</displayName>
+		<description>This is Discard Changes button...no input required</description>
+</UIAttribute>
+	
+<UIAttribute>
+		<locator>button</locator>
+		<style>Button</style>
+		<displayName>Add Agency</displayName>
+		<description>This is Add Agency button...no input required</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>Submit</locator>
+		<style>submit</style>
+		<displayName>Submit</displayName>
+		<description>This is Submit button...no input required</description>
+</UIAttribute>
+
+<!-- added for new customer while setting up agencies below locators are required  -->
+
+<UIAttribute>
+		<locator>intermediary</locator>
+		<style>DropDown</style>
+		<displayName>Intermediary</displayName>
+		<description>This is Intermediary drop down..need to select</description>
+</UIAttribute>
+
+ <UIAttribute>
+		<locator>interno</locator>
+		<style>Text</style>
+		<displayName>Intermediary Number</displayName>
+		<description>Provide the Intermediary Number max length 5</description>
+</UIAttribute>
+
+<UIAttribute>
+		<locator>region</locator>
+		<style>DropDown</style>
+		<displayName>Region</displayName>
+		<description>This is Region drop down..need to select</description>
+</UIAttribute>
+ 
+<UIAttribute>
+		<locator>UserProvID</locator>
+		<style>MultiSelectAgency</style>
+		<displayName>Agency</displayName>
+		<description>This is multiselect agency drop down..need to select multiple agency</description>
+</UIAttribute>
+
+
+
+
+</UIAttributes>

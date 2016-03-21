@@ -4,16 +4,18 @@
         <class>com.ability.ease.auto.systemobjects.MySut</class>
         <workingEnvironment>
             <class>com.ability.ease.auto.systemobjects.DefaultWorkingEnvironment</class>
-            <host>192.168.8.56</host>
+            <host>10.164.1.104</host>
             <port>8080</port>
-            <mySQLDBHostName>208.79.195.253</mySQLDBHostName>
+            <mySQLDBHostName>10.164.2.250</mySQLDBHostName>
             <mySQLDBName>ddez</mySQLDBName>
             <mySQLDBPort>3306</mySQLDBPort>
-            <mySQLDBUserName>akali</mySQLDBUserName>
-            <mySQLDBPassword>akali</mySQLDBPassword>
-	    <userName>empadmin</userName>
-	    <password>Totally#1</password>
-	    <easebuildid>70</easebuildid>
+            <mySQLDBUserName>easeweb</mySQLDBUserName>
+            <mySQLDBPassword>web123</mySQLDBPassword>
+            <userName>empadmin</userName>
+            <password>Totally#1</password>
+            <easebuildid>7</easebuildid>
+	    <easebuildName>EaseWeb-emp7-1.5.2-7.x86_64.rpm</easebuildName>
+	    <easebuildDate>10-03-2016</easebuildDate>
         </workingEnvironment>
         <webdriver>
             <class>com.ability.ease.auto.systemobjects.WebDriverSystemObject</class>

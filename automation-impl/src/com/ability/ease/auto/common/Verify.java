@@ -92,7 +92,7 @@ public class Verify extends AbstractPageObject{
 		String text="";
 		WebElement we = getTable(tableidentifier);
 		String columnxpath="//table[@id='"+tableidentifier+"']//tbody/tr["+row+"]"+"/td["+column+"] | //span[text()='"+tableidentifier+"']/following-sibling::table//tbody/tr["+row+"]"+"/td["+column+"]";
-		
+
 		boolean bFlag = false;
 		if(we != null){
 			while( !bFlag ) {
@@ -349,6 +349,7 @@ public class Verify extends AbstractPageObject{
 		}
 		return faliureCount == 0? true:false;
 	}
+
 	/**
 	 * nageswar.bodduri
 	 * @param array1
@@ -365,4 +366,40 @@ public class Verify extends AbstractPageObject{
 		}
 		return result;
 	}
+
+	/**
+	 * nageswar.bodduri
+	 * @param lsTableHeaderElements : list of table header webelements
+	 * @param expectedTableHeaderNames : string array of expected column names
+	 * @return true if table column names are same , false other wise
+	 */
+	public static boolean compareTableHeaderNames(List<WebElement> lsTableHeaderElements, String expectedTableHeaderNames){
+
+		boolean result = false;
+		int passCounter = 0;
+		int i = 0;
+		String[] expectedTableHeaderNamesArray = expectedTableHeaderNames.split(",");
+
+		report.report("Inside compare table header names method in Verify class");
+
+		for(WebElement column:lsTableHeaderElements){
+			if(column.getText().trim().equalsIgnoreCase(expectedTableHeaderNamesArray[i])){
+				report.report("Expected column name : " + expectedTableHeaderNamesArray[i] + " is equal to Actual column name : " + column.getText().trim());
+				passCounter++;
+			}else{
+				report.report("Expected column name : " + expectedTableHeaderNamesArray[i] + " is not equal to Actual column name : " + column.getText().trim());
+			}
+			i++;
+		}
+		if( passCounter == expectedTableHeaderNamesArray.length){
+			result = true;
+			report.report("Table column names verified succssfully");
+		}else{
+			result = false;
+			report.report("Fail : Table column names are not identical");
+		}
+		return result;
+	}
+
+
 }

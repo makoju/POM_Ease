@@ -86,10 +86,14 @@ public class CustomSchedulePage extends AbstractPageObject {
 		return failurecount==0?true:false;
 	}
 	
-	public boolean verifyJobScheduleCurrentAction(String agencyName){
-		String query1 = "INSERT INTO ddez.jobschedule select p.customerid,p.id, 10, @rownum := @rownum+1, now(),0,null,null,null,null,null,null,null,-102,null,null from provider p where p.DisplayName='"+agencyName+"'";
-
-		if(!(MySQLDBUtil.getInsertUpdateRowsCount(query1)>0)){
+		public boolean verifyJobScheduleCurrentAction(String agencyName){
+		String query1 =  "DELETE From ddez.jobschedule where providerid=(select p.id from ddez.provider p where p.DisplayName='"+agencyName+"'  and customerid='1')";
+		String query2 = "INSERT INTO ddez.jobschedule select p.customerid,p.id, 10, @rownum := @rownum+1, now(),0,null,null,null,null,null,null,null,-102,null,null from provider p where p.DisplayName='"+agencyName+"'";
+		
+		//Delete the entry from job schedule table if it already exists
+		MySQLDBUtil.getUpdateResultFromMySQLDB(query1);
+		
+		if(!(MySQLDBUtil.getInsertUpdateRowsCount(query2)>0)){
 			report.report("Failed to insert record into Job Schedule Table", Reporter.WARNING);
 			return false;
 		}

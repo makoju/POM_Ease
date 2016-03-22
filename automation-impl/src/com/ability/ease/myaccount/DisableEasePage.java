@@ -34,7 +34,7 @@ public class DisableEasePage extends AbstractPageObject {
 	@Override
 	public void navigateToPage() throws Exception {
 		int count=0;
-		while(!isTextPresent("MANAGE FISS/DDE SETTINGS") && count++ < 3){
+		while(!isTextPresent("Change FISS/DDE Settings") && count++ < 3){
 			HomePage.getInstance().navigateTo(Menu.MYACCOUNT, null);
 		}
 		clickLink("DISABLE EASE");

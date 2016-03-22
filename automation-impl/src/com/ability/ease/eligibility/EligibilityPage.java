@@ -115,7 +115,7 @@ public class EligibilityPage extends AbstractPageObject{
 		navigateToPage();
 		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 		if(!verifyEligibilityRequestStatusCompleted(firstlastname))
-			failurecount++;
+			return false;
 		
 		//Handle the report link of Eligibility Check Request and data validation
 		String expectedreportheader = "ELIGIBILITY CHECK REPORT";
@@ -371,14 +371,21 @@ public class EligibilityPage extends AbstractPageObject{
 	
 	private boolean navigatetoEligibilityReport(String firstlastname) {
 		  WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
-		  moveToElement(tblcompletedactivity);
-		  WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstlastname+"')]/following-sibling::td/a[text()='Report']"));
-		  if(we!=null){
-			  we.click();
+		  if(tblcompletedactivity!=null){
+			  moveToElement(tblcompletedactivity);
+			  WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstlastname+"')]/following-sibling::td/a[text()='Report']"));
+			  if(we!=null){
+				  we.click();
+			  }
+			  else
+			  {
+				  report.report("Specified activity was not found in good activity table", Reporter.WARNING);
+				  return false;
+			  }
 		  }
 		  else
 		  {
-			  report.report("Specified activity was not found in good activity table");
+			  report.report("Good Activity Table was not found", Reporter.WARNING);
 			  return false;
 		  }
 		  return true;

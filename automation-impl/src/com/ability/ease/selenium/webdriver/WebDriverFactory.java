@@ -14,6 +14,8 @@ import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerDriverLogLevel;
+import org.openqa.selenium.ie.InternetExplorerDriverService;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -88,9 +90,9 @@ public class WebDriverFactory {
 			System.setProperty("webdriver.ie.driver",WorkingEnvironment.getWebdriverIEServerEXEPath());
 
 			DesiredCapabilities ieCapabilities = DesiredCapabilities.internetExplorer();
-			//ieCapabilities.setCapability("nativeEvents", true);    
-			//ieCapabilities.setCapability("enablePersistentHover", true);
+			//ieCapabilities.setCapability("nativeEvents", true);    			
 			ieCapabilities.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
+			//ieCapabilities.setCapability("enablePersistentHover", false);
 			ieCapabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
 			
 			/*ieCapabilities.setCapability("ignoreProtectedModeSettings", true);
@@ -104,7 +106,12 @@ public class WebDriverFactory {
 			if (ignoreCertificateErrors) {
 				ieCapabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 			}
-			webDriver = new InternetExplorerDriver(ieCapabilities);
+			InternetExplorerDriverService.Builder service =
+			           new InternetExplorerDriverService.Builder();
+			        service = service.withLogLevel(InternetExplorerDriverLogLevel.TRACE);
+			        service = service.withLogFile(new File("c:\\selenium.log"));
+		        
+			webDriver = new InternetExplorerDriver(service.build(), ieCapabilities);
 		} catch (Exception e) {
 			ListenerstManager.getInstance().report(e.getMessage(),false);
 		}

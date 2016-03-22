@@ -122,7 +122,6 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 	
 	public boolean setupDDECredential(String groupname, String ddeuserid, String ddepassword) throws Exception{
 		navigateToPage();
-		//WebElement we = waitForElementVisibility(By.id("ddeuser"));
 		WebElement we = waitForElementVisibility(By.linkText("Password Protection"));
 		if(we == null){
 			WebElement select = waitForElementVisibility(By.id("group"));
@@ -153,7 +152,7 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 	}
 	public boolean editFISSDDESetup(String groupname, String agencies) throws Exception{
 		navigateToPage();
-		WebElement we = waitForElementVisibility(By.id("ddeuser"));
+		WebElement we = waitForElementVisibility(By.linkText("Password Protection"));
 		if(we == null){
 			WebElement select = waitForElementVisibility(By.id("group"));
 			if(select!=null)
@@ -192,7 +191,6 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 	
 	public boolean editDDECredential(String groupname, String ddeuserid, String ddepassword) throws Exception{
 		navigateToPage();
-		//WebElement we = waitForElementVisibility(By.id("ddeuser"));
 		WebElement we = waitForElementVisibility(By.linkText("Password Protection"));
 		if(we == null){
 			report.report("Multiple groups visible under FISS settings...selecting one");
@@ -226,7 +224,7 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 	
 	public boolean removeFISSDDESetup(String groupname) throws Exception{
 		navigateToPage();
-		WebElement we = waitForElementVisibility(By.id("ddeuser"));
+		WebElement we = waitForElementVisibility(By.linkText("Password Protection"));
 		if(we == null){
 			WebElement select = waitForElementVisibility(By.id("group"));
 			if(select!=null)

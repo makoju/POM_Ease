@@ -303,33 +303,45 @@ public class UIActions extends AbstractPageObject {
 					}
 					break;
 				case CustomSchedule:
-					clickButton("Custom");
-					String[] customschedulevalue = scrAttr.getValue().split(";");
-					int count = Integer.parseInt(customschedulevalue[0]);
-					for(int i=1;i<=count;i++){
-						//click on addscheduler to get the new row of schedule from 4th scheduler onwards; by default 3 rows present
-						if(i>3)
-							clickButton("Add Scheduler");
-						
-						String[] schedule = customschedulevalue[i].split(",");
-						
-						String startxpath = "//table[@id='schedulerTable']//tr[@class='tableline1']["+(i+1)+"]//input[@name='schedule_start']";
-						String endxpath = "//table[@id='schedulerTable']//tr[@class='tableline1']["+(i+1)+"]//input[@name='schedule_end']";
-						String runtime = "//table[@id='schedulerTable']//tr[@class='tableline1']["+(i+1)+"]//select[@name='schedule_runtime']";
-						String credential =  "//table[@id='schedulerTable']//tr[@class='tableline1']["+(i+1)+"]//select[@name='schedule_credential']";
-						
-						typeEditBoxByWebElement(waitForElementVisibility(By.xpath(startxpath)), schedule[0].trim());
-						typeEditBoxByWebElement(waitForElementVisibility(By.xpath(endxpath)), schedule[1].trim());
-						
-						WebElement weruntime = waitForElementVisibility(By.xpath(runtime));
-						Select selectruntime = new Select(weruntime);
-						selectruntime.selectByVisibleText(schedule[2].trim());
-						
-						WebElement wecredential = waitForElementVisibility(By.xpath(credential));
-						Select selectcredential = new Select(wecredential);
-						selectcredential.selectByVisibleText(schedule[3].trim());
-					}
-					break;				
+					String startxpath = "//input[@name='schedule_start']";
+                    String endxpath = "//input[@name='schedule_end']";
+                    String runtime = "//select[@name='schedule_runtime']";
+                    String credential =  "//select[@name='schedule_credential']";
+                    List<WebElement> lsStartSchedule = new ArrayList<WebElement>();
+                    List<WebElement> lsendSchedule = new ArrayList<WebElement>();
+                    List<WebElement> lsruntime = new ArrayList<WebElement>();
+                    List<WebElement> lscredential = new ArrayList<WebElement>();
+                    
+                    clickButton("Custom");
+                    waitForElementToBeClickable(ByLocator.xpath, "//td[text()='ASSIGN CUSTOM SCHEDULE']", 15);
+                    
+                    String[] customschedulevalue = scrAttr.getValue().split(";");
+                    int count = Integer.parseInt(customschedulevalue[0]);
+             
+                    for(int i=0;i<count;i++){
+                           //click on addscheduler to get the new row of schedule from 4th scheduler onwards; by default 3 rows present
+                           
+                           if(i>3)
+                                  clickButton("Add Scheduler");
+                           
+                           String[] schedule = customschedulevalue[i+1].split(",");
+
+                           lsStartSchedule = driver.findElements(By.xpath(startxpath));
+                           typeEditBoxByWebElement(lsStartSchedule.get(i),schedule[0].trim());
+                           
+                           lsendSchedule = driver.findElements(By.xpath(endxpath));
+                           typeEditBoxByWebElement(lsendSchedule.get(i),schedule[1].trim());
+                           
+                           lsruntime = driver.findElements(By.xpath(runtime));
+                           Select selectruntime = new Select(lsruntime.get(i));
+                           selectruntime.selectByVisibleText(schedule[2].trim());
+                           
+                           lscredential = driver.findElements(By.xpath(credential));
+                           Select selectcredential = new Select(lscredential.get(i));
+                           selectcredential.selectByVisibleText(schedule[3].trim());
+                    }
+                    break; 
+			
 
 					default:
 					report.report("The attribute Style is not implemented.",

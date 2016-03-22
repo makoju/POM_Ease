@@ -406,7 +406,8 @@ public class AuditDocHelper extends AbstractPageObject{
 		boolean result = false;
 		WebElement we = null;
 		boolean isElementPresent = false;
-		while( !isElementPresent ){
+		int count = 0;
+		while( !isElementPresent || count++ <= 5 ){
 			try{
 				we = driver.findElement(By.xpath(sXpath));
 				String rcvdByCMSTime = we.getText();

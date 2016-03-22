@@ -219,7 +219,7 @@ public class EligibilityTests extends BaseTest{
 	public void VerifyActivityCountIncreasedByOne() throws Exception {
 		report.report("Inside VerifyActivityCountIncreasedByOne test method");
 		int activitycount = Integer.parseInt(globalParamMap.get(status+"activitycount"));
-		Thread.sleep(10000);//wait for 10 secs to get the activity table update
+		Thread.sleep(18000);//wait for 10 secs to get the activity table update
 		int latestactivitycount = elig.getActivityCount(status);
 		if(activitycount+1 == latestactivitycount)
 			report.report("Activity: "+status+" count increased by one", Reporter.PASS);
@@ -236,7 +236,7 @@ public class EligibilityTests extends BaseTest{
 	public void VerifyActivityCountDecreasedByOne() throws Exception {
 		report.report("Inside VerifyActivityCountDecreasedByOne test method");
 		int activitycount = Integer.parseInt(globalParamMap.get(status+"activitycount"));
-		Thread.sleep(10000);//wait for 10 secs to get the activity table update
+		Thread.sleep(18000);//wait for 10 secs to get the activity table update
 		int latestactivitycount = elig.getActivityCount(status);
 		if(activitycount-1 == latestactivitycount)
 			report.report("Activity: "+status+" count decreased by one", Reporter.PASS);

@@ -6,11 +6,12 @@
             <class>com.ability.ease.auto.systemobjects.DefaultWorkingEnvironment</class>
             <host>10.164.1.104</host>
             <port>8080</port>
-            <mySQLDBHostName>10.164.2.250</mySQLDBHostName>
+            <mySQLDBHostName>10.164.1.88</mySQLDBHostName>
             <mySQLDBName>ddez</mySQLDBName>
             <mySQLDBPort>3306</mySQLDBPort>
             <mySQLDBUserName>easeweb</mySQLDBUserName>
             <mySQLDBPassword>web123</mySQLDBPassword>
+	    <easeGridServer1>10.164.1.101</easeGridServer1>
             <userName>empadmin</userName>
             <password>Totally#1</password>
             <easebuildid>7</easebuildid>

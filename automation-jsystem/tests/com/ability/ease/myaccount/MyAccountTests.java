@@ -137,7 +137,7 @@ public class MyAccountTests extends BaseTest {
 	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Setup FISS/DDE SETUP", paramsInclude = { "groupname,ddeuserid,ddepassword,testType" })
+	@TestProperties(name = "Setup DDE Credentials", paramsInclude = { "groupname,ddeuserid,ddepassword,testType" })
 	public void setupDDECredential() throws Exception
 	{
 		if(myaccount.setupDDECredential(groupname,ddeuserid,ddepassword)){

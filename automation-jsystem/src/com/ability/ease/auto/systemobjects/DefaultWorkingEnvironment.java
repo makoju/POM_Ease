@@ -21,6 +21,7 @@ public class DefaultWorkingEnvironment extends SystemObjectImpl{
 	private String mySQLDBUserName;
 	private String mySQLDBPassword;
 	private String mySQLDBPort;
+	private String easeGridServer1;
 	private String userName;
 	private String password;
 	private String easeBuildId;
@@ -75,7 +76,12 @@ public class DefaultWorkingEnvironment extends SystemObjectImpl{
 	public void setMySQLDBPort(String mySQLDBPort) {
 		this.mySQLDBPort = mySQLDBPort;
 	}
-
+	public String getEaseGridServer1() {
+		return easeGridServer1;
+	}
+	public void setEaseGridServer1(String easeGridServer1) {
+		this.easeGridServer1 = easeGridServer1;
+	}
 	public String getUserName() {
 		return userName;
 	}

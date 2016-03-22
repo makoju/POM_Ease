@@ -25,6 +25,7 @@ import jsystem.framework.report.Reporter.ReportAttribute;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -457,6 +458,63 @@ public class ClaimsHelper extends AbstractPageObject{
 		}
 
 		return lsEditClaimLineWindow;
+	}
+
+	public static boolean isSubmitWarningPresent(){
+		WebElement we = null;
+		boolean flag = false;
+		//Alert alert = null;
+		try { 
+			we = driver.switchTo().activeElement();
+			String str = we.getText();
+			if(str != null && str.trim().contains("Review")){
+				flag = true;
+			}
+			return flag;
+		}catch (NoAlertPresentException Ex){ 
+			 return flag;
+		}  
+	}
+
+	public int getActivitycount(String activitytablename){
+		return Integer.parseInt(getElementText(By.xpath("//table[@id='activityTable']//td[@id='"+activitytablename+"']")));
+	}
+
+	public boolean handleSubmitWarningAlert(List<Attribute> lsAttributes)throws Exception{
+		int failCounter = 0;
+		boolean isSubmitWarn = isSubmitWarningPresent();
+
+		if( !isSubmitWarn ) {
+			report.report("Submit warning alert not present on the screen...");
+			if(validateConfirmationScreenSteps(lsAttributes)){
+				clickButton("yesConfirmEditClaimButton");
+				if( verifyAlert("Changes scheduled!")){
+					report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
+				}else{
+					failCounter++;
+					report.report("Fail : Changes scheduled alert is not present");
+				}
+			}else{
+				failCounter++;
+				report.report("Fail : Failed to validate submission confirmation screen content");
+			}
+		}else {
+			report.report("Submit warning alert is present on the screen...");
+			acceptUB04SubmitWarning();
+			if(validateConfirmationScreenSteps(lsAttributes)){
+				clickButton("yesConfirmEditClaimButton");
+				if( verifyAlert("Changes scheduled!")){
+					report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
+				}else{
+					failCounter++;
+					report.report("Fail : Changes scheduled alert is not present");
+				}
+			}else{
+				failCounter++;
+				report.report("Fail : Failed to validate submission confirmation screen content");
+			}
+		}
+		return (failCounter == 0) ? true : false;
 	}
 	@Override
 	public void assertInPage() {

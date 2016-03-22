@@ -110,8 +110,20 @@ public class EaseSubMenuItems {
 		public String toString() {
 			return value;
 		}
-
 	};
 
+	public static enum easeServerStatus{
+		Stop("Stop"),
+		Start("Start");
+		
+		private String value;
+		private easeServerStatus(String value) {
+			this.value = value;
+		}
 
+		@Override
+		public String toString() {
+			return value;
+		}
+	};
 }

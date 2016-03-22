@@ -11,7 +11,7 @@ public class ShellExecUtil {
 		Channel channel = null;
 		Session session = null;
 		String outputFromShell = null;
-		String sHostName = WorkingEnvironment.getHost();
+		String sHostName = WorkingEnvironment.getEaseGridServer1();
 		String sUserName = "empadmin";
 		try{
 			System.out.println("Creating JSch object...");
@@ -26,12 +26,15 @@ public class ShellExecUtil {
 			System.out.println("Session got created succssfully...");
 
 			channel = session.openChannel("exec");
-			((ChannelExec)channel).setCommand(shellCommand);
-			channel.setInputStream(null);
+			((ChannelExec)channel).setPty(true);
+			((ChannelExec)channel).setCommand("sudo -S -p '' " + shellCommand);
+			InputStream in=channel.getInputStream();
+			OutputStream out=channel.getOutputStream();
 			((ChannelExec)channel).setErrStream(System.err);
-			InputStream in = channel.getInputStream();
 			channel.connect();
-
+			out.write(("Totally#1"+"\n").getBytes());
+			out.flush();
+			Thread.sleep(5000);
 			byte[] temp = new byte[1024];
 			while (true) {
 				while (in.available() > 0) {

@@ -34,6 +34,7 @@ public class ClaimsTests extends BaseTest{
 	private String newClaimLineEntry;
 	private ClaimStatusType claimStatus;
 	private String patientControlNumber;
+	private String HIC;
 
 	private AttributePair[] attrpair;
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
@@ -51,6 +52,7 @@ public class ClaimsTests extends BaseTest{
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "Verify UB04 Form Fields", paramsInclude = { "AttributeNameValueDialogProvider, testType" })
 	public void verifyUB04FormFields()throws Exception{
+		
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
 		if(!claims.verifyUB04FormFeatures(mapAttrValues)){
 			report.report("Failed to verify the fields in UB04 form!", Reporter.FAIL);
@@ -129,6 +131,43 @@ public class ClaimsTests extends BaseTest{
 			report.report("Failed to verify data in edit claim line pop-up window", Reporter.FAIL);
 		}else{
 			report.report("Succesfully verified data in edit claim line pop-up window", Reporter.ReportAttribute.BOLD);
+		}
+	}
+
+
+	/**
+	 * Use this method only to fill values in UB04 form
+	 * @throws Exception
+	 */
+
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Fill values in UB04 Form", paramsInclude = { "AttributeNameValueDialogProvider, testType" })
+	public void fillUB04FormValuesOnly()throws Exception{
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		HIC = mapAttrValues.get("Insureds Unique ID Primary");
+		keepAsGloablParameter("HIC", HIC);
+		if(!claims.fillUB04FormValuesOnly(mapAttrValues)){
+			report.report("Fail to fill values in UB04 form !!", Reporter.FAIL);
+		}else{
+			report.report("Succesfully filled up values in UB04 form!!!", Reporter.ReportAttribute.BOLD);
+		}
+	}
+	
+	/**
+	 * Use this method to open an existing claim from pending activity box
+	 * @throws Exception
+	 */
+
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Open Claim From Pending Activity Query Box", paramsInclude = { "HIC, testType" })
+	public void openExistingClaimFromPendingAQB()throws Exception{
+		
+		if(!claims.openExistingClaimFromPendingAQB(HIC)){
+			report.report("Failed to open claim from pending AQB", Reporter.FAIL);
+		}else{
+			report.report("Succesfully opened claim from pending AQB", Reporter.ReportAttribute.BOLD);
 		}
 	}
 
@@ -217,6 +256,15 @@ public class ClaimsTests extends BaseTest{
 	@ParameterProperties(description = "Provide claim line number to edit from the existing claim lines")
 	public void setClaimLineNumberToEdit(String claimLineNumberToEdit) {
 		this.claimLineNumberToEdit = claimLineNumberToEdit;
+	}
+
+	public String getHIC() {
+		return HIC;
+	}
+
+	@ParameterProperties(description = "Provide HIC Id of the claim request that should be picked up from AQB")
+	public void setHIC(String hIC) {
+		HIC = hIC;
 	}
 	
 	

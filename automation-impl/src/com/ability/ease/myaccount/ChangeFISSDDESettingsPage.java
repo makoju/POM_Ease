@@ -76,7 +76,7 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 		String query1 = "select cred.GroupName from ddez.userddecredential cred where cred.DDEPasswordHolder=(select u.userid from ddez.user u where u.userName='"+username+"')";
 		ResultSet rs = MySQLDBUtil.getResultFromMySQLDB(query1);
 		while(rs.next()){
-			if(rs.getString(0).trim().equalsIgnoreCase(groupname)){
+			if(rs.getString(1).trim().equalsIgnoreCase(groupname)){
 				report.report("Added GroupName "+groupname+ " Was found in DB", ReportAttribute.BOLD);
 				isgroupfound=true;
 				break;
@@ -122,7 +122,8 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 	
 	public boolean setupDDECredential(String groupname, String ddeuserid, String ddepassword) throws Exception{
 		navigateToPage();
-		WebElement we = waitForElementVisibility(By.id("ddeuser"));
+		//WebElement we = waitForElementVisibility(By.id("ddeuser"));
+		WebElement we = waitForElementVisibility(By.linkText("Password Protection"));
 		if(we == null){
 			WebElement select = waitForElementVisibility(By.id("group"));
 			if(select!=null)
@@ -191,8 +192,10 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 	
 	public boolean editDDECredential(String groupname, String ddeuserid, String ddepassword) throws Exception{
 		navigateToPage();
-		WebElement we = waitForElementVisibility(By.id("ddeuser"));
+		//WebElement we = waitForElementVisibility(By.id("ddeuser"));
+		WebElement we = waitForElementVisibility(By.linkText("Password Protection"));
 		if(we == null){
+			report.report("Multiple groups visible under FISS settings...selecting one");
 			WebElement select = waitForElementVisibility(By.id("group"));
 			if(select!=null)
 				selectByNameOrID("group", groupname);

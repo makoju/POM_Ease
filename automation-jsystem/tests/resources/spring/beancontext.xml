@@ -19,4 +19,5 @@
 	<bean id="auditdoc" class="com.ability.ease.auditdoc.AuditDocSelenium2Impl"/>
 	<bean id="mydde" class="com.ability.ease.mydde.MyDDESelenium2Impl"/>
 	<bean id="myaccount" class="com.ability.ease.myaccount.MyAccountSelenium2Impl"/>
+	<bean id="common" class="com.ability.ease.auto.common.CommonSelenium2Impl"/>
 </beans>

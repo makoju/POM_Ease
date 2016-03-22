@@ -35,13 +35,31 @@ public class ClaimsSelenium2Impl implements IClaims{
 	public boolean verifyDataInEditClaimLinePopUpWindow(Map<String, String> mapAttrValues,String claimLineNumberToEdit) throws Exception {
 		return claims.verifyDataInEditClaimLinePopUpWindow(mapAttrValues,claimLineNumberToEdit);
 	}
+	
+	@Override
+	public boolean openExistingClaimFromPendingAQB(String HIC) throws Exception {
+		return claims.openExistingClaimFromPendingAQB(HIC);
+	}
 
-	/**
-	 * P - Medium test cases
-	 */
+
+	@Override
+	public boolean fillUB04FormValuesOnly(Map<String, String> mapAttrValues)
+			throws Exception {
+		return claims.fillUB04FormValuesOnly(mapAttrValues);
+	}
+	
 	@Override
 	public boolean verifyHelpTextInUB04Form() throws Exception {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public boolean getCountFromPendingActivity() throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	
 }

@@ -20,6 +20,7 @@ public final class WorkingEnvironment{
 	private static String mySQLDBPort;
 	private static String mySQLDBUser;
 	private static String mySQLDBPassword;
+	private static String easeGridServer1;
 	private static String userName;
 	private static String password;
 	private static String easebuildId;
@@ -120,6 +121,13 @@ public final class WorkingEnvironment{
 	}
 	public static void setMySQLDBName(String mySQLDBName) {
 		WorkingEnvironment.mySQLDBName = mySQLDBName;
+	}
+	
+	public static String getEaseGridServer1() {
+		return easeGridServer1;
+	}
+	public static void setEaseGridServer1(String easeGridServer1) {
+		WorkingEnvironment.easeGridServer1 = easeGridServer1;
 	}
 	public static String getUserName() {
 		return userName;

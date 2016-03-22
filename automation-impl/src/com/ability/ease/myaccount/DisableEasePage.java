@@ -37,6 +37,6 @@ public class DisableEasePage extends AbstractPageObject {
 		while(!isTextPresent("MANAGE FISS/DDE SETTINGS") && count++ < 3){
 			HomePage.getInstance().navigateTo(Menu.MYACCOUNT, null);
 		}
-		clickLink("DISABLE EASE");
+		clickLink("Disable Ease");
 	}
 }

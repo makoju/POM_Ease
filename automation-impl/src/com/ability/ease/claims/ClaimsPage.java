@@ -8,6 +8,7 @@ import java.util.Map;
 import jsystem.framework.report.Reporter;
 import jsystem.framework.report.Reporter.ReportAttribute;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -18,6 +19,7 @@ import com.ability.ease.auto.common.UIActions;
 import com.ability.ease.auto.common.Verify;
 import com.ability.ease.auto.dataStructure.common.AttibuteXMLParser.UIAttributeXMLParser;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
+import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.mydde.reports.MyDDEReportsPage;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
@@ -25,6 +27,7 @@ public class ClaimsPage extends AbstractPageObject{
 
 	ClaimsHelper helper = new ClaimsHelper();
 	UIActions uiactions = new UIActions();
+	int failCounter = 0;
 
 
 	//C-tor
@@ -40,7 +43,6 @@ public class ClaimsPage extends AbstractPageObject{
 	public boolean verifyUB04FormFields(Map<String, String> mapAttrVal)throws Exception{
 		String sXpathToAgencyName = "//span[contains(text(),'OVERNIGHT')]/..";
 		String sAgencyName = null;
-		int failCounter = 0;
 		String sClaimRequestXML = null;
 		String sClaimRequestID = null;
 
@@ -160,7 +162,6 @@ public class ClaimsPage extends AbstractPageObject{
 		String output = ShellExecUtil.executeShellCmd(sShellCommand);
 		report.report("Outpubpeterst of shell command "+ sShellCommand +": "+ output);
 		 */
-		int failCounter = 0;
 		float[] correctedClaimTotals = null;
 		float prevTotalCoveredCharges = 0, prevTotalNonCoveredCharges = 0;
 		String sClaimRequestXML = null;
@@ -262,19 +263,28 @@ public class ClaimsPage extends AbstractPageObject{
 		}
 
 		clickLinkV2("claimSubmit");
-		if(helper.acceptUB04SubmitWarning()){
+		boolean isSubmitWarn = helper.isSubmitWarningPresent();
+
+		if( !isSubmitWarn ) {
+			report.report("Submit warning alert not present on the screen...");
 			if(helper.validateConfirmationScreenSteps(lsAttributes)){
 				clickButton("yesConfirmEditClaimButton");
 				if( verifyAlert("Changes scheduled!")){
 					report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
 				}
 			}
-			else{
+		}else {
+			report.report("Submit warning alert is present on the screen...");
+			helper.acceptUB04SubmitWarning();
+			if(helper.validateConfirmationScreenSteps(lsAttributes)){
+				clickButton("yesConfirmEditClaimButton");
+				if( verifyAlert("Changes scheduled!")){
+					report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
+				}
+			}else{
 				report.report("There are some problems in form filling, please fill all mandatory values in UB04 form");
 				failCounter++;
 			}
-		}else{
-			report.report("Fail : Unable to handle UB04 Form submission dailog box");
 		}
 
 
@@ -336,10 +346,12 @@ public class ClaimsPage extends AbstractPageObject{
 			waitForElementVisibility(By.id("reportAdvanceSearch"));
 			WebElement advanceSearch = driver.findElement(By.xpath("//*[@id='reportAdvanceSearch']"));
 			safeJavaScriptClick(advanceSearch);
+			waitForElementToBeClickable(ByLocator.id,"ClaimSubmittedLookbackMonths", 15);
+			typeEditBox("ClaimSubmittedLookbackMonths", "30");
 			selectByNameOrID("Status", statusLocationToSelect);
 			clickButtonV2("Search");
 			do{
-				searchResult = driver.findElement(By.xpath(searchResultXpath));
+				searchResult = waitForElementToBeClickable(ByLocator.xpath, searchResultXpath, 30);
 				count++;
 				if(searchResult != null){
 					break;
@@ -357,7 +369,7 @@ public class ClaimsPage extends AbstractPageObject{
 		return result;
 	}
 
-	/*
+	/*test.customertest.customer
 	 * Use this method to search a claim request based on status from Advance Search page  
 	 */
 	public boolean selectClaimRecordFromSearchResults(String patientControlNumber) throws Exception {
@@ -390,7 +402,6 @@ public class ClaimsPage extends AbstractPageObject{
 
 
 	public boolean verifyDataInEditClaimLinePopUpWindow(Map<String, String> mapAttrValues, String claimLineNumberToEdit)throws Exception{
-		int failCounter = 0;
 		String sEditClaimLineHeaderTextAcual = null;
 		String sEditClaimLineHeaderTextExpected = "Edit Claim Line - "+ claimLineNumberToEdit;
 
@@ -442,6 +453,66 @@ public class ClaimsPage extends AbstractPageObject{
 		report.report("Fail counter is : " + failCounter);
 		return  (failCounter == 0) ? true : false;
 	}
+	
+	/**
+	 * Use this method to open an existing claim from Pending Activity Box based on HIC value
+	 * @param - HIC is mandatory
+	 */
+	public boolean openExistingClaimFromPendingAQB(String HIC)throws Exception{
+		
+		String xpathToRenchIcon = "//a[contains(text(),'"+ HIC +"')]/../preceding-sibling::td[3]/img";
+		
+		int pendingactivitycountprev = helper.getActivitycount("tdPendingActivity");
+		Thread.sleep(30000);
+		int pendingactivitycountafter = helper.getActivitycount("tdPendingActivity");
+		report.report("Pending activity Counts => Before Claim Req Submission : " + pendingactivitycountprev + " After Claim Req Submission : " + pendingactivitycountafter);
+		if( pendingactivitycountafter != 0){
+			if(pendingactivitycountafter-1 == pendingactivitycountprev){
+				WebElement tdPendingActivity = waitForElementToBeClickable(ByLocator.id, "tdPendingActivity", 15);
+				moveToElement(tdPendingActivity);
+				WebElement renchIcon = waitForElementToBeClickable(ByLocator.xpath, xpathToRenchIcon, 10);
+				moveToElement(renchIcon);
+				renchIcon.click();
+			}else{
+				report.report("Pending activity count is not increased in AQB");
+				failCounter++;
+			}
+		}else{
+			failCounter++;
+			report.report("Count in pening activity box after claim submission is zero");
+		}
+		
+		return (failCounter == 0 ) ? true : false;
+	} 
+	
+	/**
+	 * Use this method to fill values in UB04 form ,this method do not perform any validations
+	 * @param - mapAttrValues
+	 */
+	public boolean fillUB04FormValuesOnly(Map<String, String> mapAttrValues)throws Exception{
+		
+		String xpathToOverNightReportHeader = "//span[contains(text(),'OVERNIGHT')]/..";
+		
+		UIAttributeXMLParser parser = new UIAttributeXMLParser();
+		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Claims\\UB04.xml", mapAttrValues);
+
+		//click on MY DDE link and capture Agency name
+		helper.clickMYDDELink();
+		waitForElementToBeClickable(ByLocator.xpath, xpathToOverNightReportHeader, 60);
+		uiactions.fillScreenAttributes(lsAttributes);
+		clickLinkV2("claimSubmit");
+		if (helper.handleSubmitWarningAlert(lsAttributes) ){
+			report.report("Successfully filled values in UB04 form");
+		}else{
+			report.report("Fail : Error while filling values in UB04 form");
+			failCounter++;
+		}
+		return (failCounter == 0 ) ? true : false;
+		
+	}
+	
+	
+	
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub

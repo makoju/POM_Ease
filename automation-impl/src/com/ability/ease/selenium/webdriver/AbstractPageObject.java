@@ -1427,6 +1427,10 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		catch(Exception e){
 			checkandignoremodaldialog();
 		}
+		
+		if(webElement==null)
+			  report.report("waited for "+timeOutInSeconds+" for the WebElement to be visible but not found", ReportAttribute.BOLD);
+		
 		return webElement;
 	}
 

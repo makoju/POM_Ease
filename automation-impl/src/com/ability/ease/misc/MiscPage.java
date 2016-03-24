@@ -6,12 +6,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import jsystem.framework.report.Reporter; 
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebElement;
+
 
 
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
@@ -61,8 +63,8 @@ public class MiscPage extends AbstractPageObject {
 				} else {
 					report.report("Logging out user: " +  currentLoggedInUser);
 					//HomePage.getInstance().signOut();
-					//safeJavaScriptClick("LOGOUT");
-					clickLinkV2("LOGOUT");
+					safeJavaScriptClick("LOGOUT");
+					//clickLinkV2("LOGOUT");
 					try {
 						driver.quit();
 						isBrowserOpen = false;
@@ -94,22 +96,38 @@ public class MiscPage extends AbstractPageObject {
 						typeEditBox("txtUser", sUserName);						
 						typeEditBox("txtPassword", sPassword);
 						clickButtonV2("loginbutton");
-						mainWindowHanlder = returnMainWindowHandle();
-						returnCurrentWindowHandle(mainWindowHanlder);
+						//mainWindowHanlder = returnMainWindowHandle();
+						//returnCurrentWindowHandle(mainWindowHanlder);
 					}
-					if (isElementPresent(By.linkText("LOGOUT"))) {
+										
+					if (waitForElementVisibility(By.linkText("LOGOUT"),3)!=null) {
 						isLoggedIn = true;
 						currentLoggedInUser = sUserName;
 						// countTry = 3;
 					} else {
-						report.report( "Retrying to Login ...");
+						report.report("Logout link not found in current window hence switching the window..."); 
+						Set<String> winhandles = driver.getWindowHandles();
+						for(String handle: winhandles)
+						{
+							report.report("Inside switch window handler...");
+							driver.switchTo().window(handle);
+							if (isElementPresent(By.linkText("LOGOUT"))) {
+								isLoggedIn = true;
+								currentLoggedInUser = sUserName;
+								// countTry = 3;
+							}
+						}
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 					report.report( "The following exception occured during login attempt:" + e.toString());
 				} finally {
+					report.report( "Inside Finally Block attempt: ..."+countTry);
 					countTry ++;
 				}
+				if(!isLoggedIn)
+					report.report("Retrying Login....Attempt#"+countTry);
+				
 			} while (countTry < 3 && !isLoggedIn);
 		}
 		// isLoggedIn = true;

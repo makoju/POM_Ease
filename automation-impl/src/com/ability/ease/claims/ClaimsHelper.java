@@ -460,7 +460,7 @@ public class ClaimsHelper extends AbstractPageObject{
 		return lsEditClaimLineWindow;
 	}
 
-	public static boolean isSubmitWarningPresent(){
+	public boolean isSubmitWarningPresent(){
 		WebElement we = null;
 		boolean flag = false;
 		//Alert alert = null;

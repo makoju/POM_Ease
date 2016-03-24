@@ -1812,8 +1812,8 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 * You can add other possible ways to identify an anchor tag without link text to existing xpath
 	 * @author nageswar.bodduri
 	 */
-	public void clickLinkV2(String linkLocator)throws Exception{
 
+	public void clickLinkV2(String linkLocator)throws Exception{
 		String elementLocator = "//a[@id='" + linkLocator+"' or @name='" + linkLocator +"' or text()='"+linkLocator+"']";
 		WebElement element = null;
 		WebDriverWait wait = new WebDriverWait(driver, 10);

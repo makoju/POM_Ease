@@ -35,6 +35,7 @@ public class ClaimsTests extends BaseTest{
 	private ClaimStatusType claimStatus;
 	private String patientControlNumber;
 	private String HIC;
+	private String claimLineEntries;
 
 	private AttributePair[] attrpair;
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
@@ -68,7 +69,8 @@ public class ClaimsTests extends BaseTest{
 	 */
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify Add Remove Claim Lines", paramsInclude = { "AttributeNameValueDialogProvider, claimLineNumberToDelete, claimLineNumberToAdd, newClaimLineEntry, testType" })
+	@TestProperties(name = "Verify Add Remove Claim Lines For New Claim", paramsInclude = { "AttributeNameValueDialogProvider, claimLineNumberToDelete, "
+			+ "claimLineNumberToAdd, newClaimLineEntry, testType" })
 	public void verifyAddRemoveClaimLines()throws Exception{
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
 		if(!claims.verifyAddRemoveClaimLines(mapAttrValues, claimLineNumberToDelete, claimLineNumberToAdd, newClaimLineEntry)){
@@ -146,7 +148,9 @@ public class ClaimsTests extends BaseTest{
 	public void fillUB04FormValuesOnly()throws Exception{
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
 		HIC = mapAttrValues.get("Insureds Unique ID Primary");
+		claimLineEntries = mapAttrValues.get("ClaimLineEntries");
 		keepAsGloablParameter("HIC", HIC);
+		keepAsGloablParameter("claimLineEntries", claimLineEntries);
 		if(!claims.fillUB04FormValuesOnly(mapAttrValues)){
 			report.report("Fail to fill values in UB04 form !!", Reporter.FAIL);
 		}else{
@@ -170,6 +174,24 @@ public class ClaimsTests extends BaseTest{
 			report.report("Succesfully opened claim from pending AQB", Reporter.ReportAttribute.BOLD);
 		}
 	}
+	
+	/**
+	 * Use this method add or remove claim lines in existing claim
+	 * @throws Exception
+	 */
+
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Add or Remove Claim Lines in Existing Claim", paramsInclude = { "claimLineEntries, claimLineNumberToDelete, claimLineNumberToAdd, newClaimLineEntry testType" })
+	public void addOrRemoveClaimLinesInExistingClaim()throws Exception{
+		
+		if(!claims.addOrRemoveClaimLinesInExistingClaim(claimLineEntries, claimLineNumberToDelete, claimLineNumberToAdd, newClaimLineEntry)){
+			report.report("Failed to add or remove claim line(s) in existing claim!!!", Reporter.FAIL);
+		}else{
+			report.report("Succesfully added or removed claim line(s) in existing claim!!!", Reporter.ReportAttribute.BOLD);
+		}
+	}
+
 
 
 	/*
@@ -265,6 +287,15 @@ public class ClaimsTests extends BaseTest{
 	@ParameterProperties(description = "Provide HIC Id of the claim request that should be picked up from AQB")
 	public void setHIC(String hIC) {
 		HIC = hIC;
+	}
+
+	public String getClaimLineEntries() {
+		return claimLineEntries;
+	}
+
+	@ParameterProperties(description = "Claim Line Entries : Read from Global Parameters")
+	public void setClaimLineEntries(String claimLineEntries) {
+		this.claimLineEntries = claimLineEntries;
 	}
 	
 	

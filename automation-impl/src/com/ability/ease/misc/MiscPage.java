@@ -55,7 +55,7 @@ public class MiscPage extends AbstractPageObject {
 		}
 		if (isLoggedIn) {
 			if (!isTextPresent("LOG IN")) {
-				if (currentLoggedInUser.equalsIgnoreCase(sUserName) && driver.findElement(By.cssSelector("BODY")).getText().toLowerCase().contains(sUserName.toLowerCase())) {
+				if (currentLoggedInUser.equalsIgnoreCase(sUserName)) {
 					//check that current user is the requested userName by checking status property currentLoggedInUser AND by validating that page source includes the logged in user name
 					report.report(sUserName + " is already logged-in to ease... nothing to do here.", Reporter.ReportAttribute.BOLD);
 				} else {
@@ -135,7 +135,7 @@ public class MiscPage extends AbstractPageObject {
 		}
 		if (isLoggedIn) {
 			if (!isTextPresent("LOG IN")) {
-				if (currentLoggedInUser.equalsIgnoreCase(sUserName) && driver.findElement(By.cssSelector("BODY")).getText().toLowerCase().contains(sUserName.toLowerCase())) {
+				if (currentLoggedInUser.equalsIgnoreCase(sUserName)) {
 					//check that current user is the requested userName by checking status property currentLoggedInUser AND by validating that page source includes the logged in user name
 					report.report(sUserName + " is already logged-in to ease... nothing to do here.", Reporter.ReportAttribute.BOLD);
 				} else {

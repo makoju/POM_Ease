@@ -135,7 +135,7 @@ public class AuditDocHelper extends AbstractPageObject{
 	}
 
 	public void clickEsmdStatusLink(String agency)throws Exception{
-		String sXpathOfOVERNIGHT = "//span[contains(text(),'OVERNIGHT')] | //td[contains(text(),'EASE SUMMARY REPORT')]";
+		String sXpathOfOVERNIGHT = "//span[contains(text(),'OVERNIGHT')] | //td[contains(text(),'EASE SUMMARY REPORT')] | //td[contains(text(),'FOR AGENCY')]";
 		String sXpathBeforeClickOnESMD = "//td[contains(text(),'FOR AGENCY')]";
 		String sXpathofEsmdReport = "//td[contains(text(),'ESMD DELIVERY & STATUS REPORT')]";
 		waitForElementToBeClickable(ByLocator.xpath, sXpathOfOVERNIGHT, 10);
@@ -415,6 +415,7 @@ public class AuditDocHelper extends AbstractPageObject{
 				if( we != null && !rcvdByCMSTime.isEmpty()) {
 					isElementPresent = true;
 					result = true;
+					break;
 				}
 				if( rcvdByCMSTime.isEmpty() ){
 					navigateBack();

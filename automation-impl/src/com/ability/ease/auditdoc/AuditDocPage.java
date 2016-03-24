@@ -74,7 +74,7 @@ public class AuditDocPage extends AbstractPageObject{
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean verifyEsmdDeliveryStatusReportColumnsForHHA(String Timeframe, String Value, String agency, String agencyValue,String hic,String patient,String daysduedate,String duedate,String code) throws Exception {
+	public boolean verifyEsmdDeliveryStatusReportColumns(String Timeframe, String Value, String agency, String agencyValue,String hic,String patient,String daysduedate,String duedate,String code) throws Exception {
 		helper.clickAgency(agency, agencyValue);
 		helper.clickTimeFrame(Timeframe,Value);
 		Thread.sleep(8000);
@@ -209,7 +209,7 @@ public class AuditDocPage extends AbstractPageObject{
 							waitForElementToBeClickable(ByLocator.xpath, "//a[contains(text(),'Sent to CMS')]", 10);
 							if( isElementPresent(By.xpath("//a[contains(text(),'Sent to CMS')]"))){
 								clickLink("Sent to CMS");
-								if(waitForElementToBeClickable(ByLocator.xpath, xpathToADRSubPage, 60) != null){
+								if(waitForElementToBeClickable(ByLocator.xpath, xpathToADRSubPage, 80) != null){
 									report.report("Successfully sent ADR reponse documents to CMS", ReportAttribute.BOLD);
 								}else{
 									failCounter++;
@@ -376,6 +376,7 @@ public class AuditDocPage extends AbstractPageObject{
 		int failCounter = 0;
 
 		helper.clickMyDDELink();
+		waitForElementToBeClickable(ByLocator.linktext, "Advanced", 30);
 		clickLink("Advanced");
 		//get the record count from ADR Report
 		if(waitForElementToBeClickable(ByLocator.xpath,sXpathOfOVERNIGHT, 30) != null){

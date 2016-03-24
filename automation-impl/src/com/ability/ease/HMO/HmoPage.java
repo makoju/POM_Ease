@@ -52,8 +52,15 @@ public class HmoPage extends AbstractPageObject  {
 	 * Adding a Patient to HMO Catcher, which already being tracked
 	 */
 	public boolean addToHMODuplicatePatient(String  sAgency,String sHIC,String sLastName, String sFirstName,String sDob,String sSex)throws Exception{
+		String sExpectedMessageOnAlertBox = "Your request to add this patient to the HMO Advantage Move Catcher was not accepted because this patient is "
+				+ "already being tracked by HMO Advantage Move Catcher!";
 		hhp.fillHmo(sAgency, sHIC, sLastName,sFirstName, sDob, sSex);
-		return verifyAlert("Your request to add this patient to the HMO Advantage Move Catcher was not accepted because this patient is already being tracked by HMO Advantage Move Catcher!");		
+		if(verifyAlert(sExpectedMessageOnAlertBox)){
+			return true;
+		}else{
+			report.report("Alert messages are not matching !!!");
+			return false;
+		}
 	}
 	/*
 	 * Extending the HMO Catcher by 75 days,need to have data with less than 10 days in the application

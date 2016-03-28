@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
+import org.openqa.selenium.By;
+
 import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.TestCommonResource;
 import com.ability.ease.auto.common.TimeZoneConversionUtil;
@@ -18,6 +20,7 @@ import com.ability.ease.home.HomePage.Menu;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 import jsystem.framework.report.Reporter;
+import jsystem.framework.report.Reporter.ReportAttribute;
 
 public class CustomSchedulePage extends AbstractPageObject {
 
@@ -41,6 +44,26 @@ public class CustomSchedulePage extends AbstractPageObject {
 			report.report("Custom schedule setup was unsuccessful");
 			return false;
 		}
+		return true;
+	}
+	
+	public boolean deleteAllCustomSchedule(String agency) throws Exception {
+		navigateToPage();
+		clickLink("Change Schedule");
+		selectByNameOrID("user_prov_id", agency);
+		
+		clickButton("Custom");
+		if(waitForElementVisibility(By.xpath("//td[text()='ASSIGN CUSTOM SCHEDULE']"))==null){
+			report.report("Unable to navigate to custom schedule page from change schedule", Reporter.WARNING);
+			return false;
+		}
+		clickButtonV2("Delete All");
+		if(!verifyAlert("Are you sure to remove all the entries?"))
+		{
+			report.report("unable to delete alerts from custom schedule page", Reporter.WARNING);
+			return false;
+		}
+		
 		return true;
 	}
 	
@@ -86,7 +109,7 @@ public class CustomSchedulePage extends AbstractPageObject {
 		return failurecount==0?true:false;
 	}
 	
-		public boolean verifyJobScheduleCurrentAction(String agencyName){
+	public boolean verifyJobScheduleCurrentAction(String agencyName){
 		String query1 =  "DELETE From ddez.jobschedule where providerid=(select p.id from ddez.provider p where p.DisplayName='"+agencyName+"'  and customerid='1')";
 		String query2 = "INSERT INTO ddez.jobschedule select p.customerid,p.id, 10, @rownum := @rownum+1, now(),0,null,null,null,null,null,null,null,-102,null,null from provider p where p.DisplayName='"+agencyName+"'";
 		

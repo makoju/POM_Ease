@@ -101,6 +101,11 @@ public class MyAccountSelenium2Impl implements IMyAccount {
 		return new ResumeEase().resumeEase(groupname, ddeuserid, ddepassword);
 	}
 
+	@Override
+	public boolean deleteAllCustomSchedule(String agency) throws Exception {
+		return custschedpage.deleteAllCustomSchedule(agency);
+	}
+
 	/*@Override
 	public boolean verifyChangeSchedule(String sTimeZone, String sAgency, String sClaimsTime, String sEligibilityTime, String sEFTTime)
 			throws Exception{

@@ -137,7 +137,7 @@ public class MyAccountTests extends BaseTest {
 	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Setup DDE Credentials", paramsInclude = { "groupname,ddeuserid,ddepassword,testType" })
+	@TestProperties(name = "Setup DDE Credential", paramsInclude = { "groupname,ddeuserid,ddepassword,testType" })
 	public void setupDDECredential() throws Exception
 	{
 		if(myaccount.setupDDECredential(groupname,ddeuserid,ddepassword)){
@@ -206,6 +206,19 @@ public class MyAccountTests extends BaseTest {
 			report.report("Failed to Resume Group", Reporter.FAIL);
 		}
 	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Delete All Custom Schedule for ${agency} ", paramsInclude = { "agency,testType" })
+	public void deleteAllCustomSchedule() throws Exception
+	{
+		if(myaccount.deleteAllCustomSchedule(agency)){
+			report.report("Succesfully Deleted Custom Schedule for agency: "+agency, ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Delete Custom Schedule for agency: "+agency, Reporter.FAIL);
+		}
+	}
+	
 	/*##
 	# Getters and Setters
 	##*/

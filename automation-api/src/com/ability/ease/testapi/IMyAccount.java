@@ -17,4 +17,5 @@ public interface IMyAccount{
 	public boolean removeFISSDDESetup(String groupname) throws Exception;
 	public boolean disableEase(String grouporagencycheckboxname,String grouporagencyname,String disableuntil) throws Exception;
 	public boolean resumeEase(String groupname, String ddeuserid, String ddepassword) throws Exception;
+	public boolean deleteAllCustomSchedule(String agency) throws Exception;
 }

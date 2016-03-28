@@ -37,6 +37,7 @@ import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.ProviderTable;
 import com.ability.ease.auto.common.UB04FormXMLParser;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
+import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 public class ClaimsHelper extends AbstractPageObject{
@@ -88,7 +89,8 @@ public class ClaimsHelper extends AbstractPageObject{
 		String classAttr = mydde.getAttribute("class");
 		if ( mydde != null) {
 			if( !classAttr.equalsIgnoreCase("topNavAnchor topNavAnchorSelected")){
-				clickLink("MY DDE");
+				safeJavaScriptClick("MY DDE");
+				waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 10);
 				return;
 			}else{
 				//nothing to do

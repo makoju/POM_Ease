@@ -346,6 +346,118 @@ public class EligibilityPage extends AbstractPageObject{
 		return count;
 	}
 	
+
+	public boolean verifyOptionsUnderPatientInformationScreen(String hic, String firstname, String lastname) throws Exception {
+		int failurecount=0;
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
+		
+		if(!navigatetoPatientInfoScreen(firstlastname, hic))
+			return false;
+		/*Verify  the following options
+		1.Patient information
+		2.Latest HMO Plans
+		3.MSP information
+		4.Show Previous eligibility checks link
+		5.Expand Eligibility results link
+		6.View271 link
+		7.Refresh Data
+		8. Admissions*/
+		
+		//1.Patient information
+		String headertext = getElementText(By.className("headergreen"));
+		if (headertext!=null && headertext.contains("PATIENT INFORMATION")){
+			report.report("Header Patient Information is found", ReportAttribute.BOLD);
+		}
+		else{
+			report.report("Header Patient Information not found", Reporter.WARNING);
+			failurecount++;
+		}
+		//TODO - Yet to verify the following options; Seems to be these options doesn't appear for Eligibility Check requests but for claim Request we can see these
+		//2. HMO Plans
+		//3. MSP Information
+		//8. Admissions
+		
+		//4.Show Previous eligibility checks link
+		WebElement showprevelig = waitForElementVisibility(By.partialLinkText("Show previous eligibility checks"));
+		if(showprevelig!=null)
+		{
+			report.report("Show previous eligibility checks link is found", ReportAttribute.BOLD);
+			showprevelig.click();
+			WebElement preveligcheckreqtable = waitForElementVisibility(By.id("datatable"));
+			if(preveligcheckreqtable == null){
+				report.report("Unable to find previously submitted eligibility checks", Reporter.WARNING);
+				failurecount++;
+			}
+		}
+		else{
+			report.report("Show previous eligibility checks link not found", Reporter.WARNING);
+			failurecount++;
+		}
+		
+		//5. + Expand Eligibility Results
+		WebElement expandeligresults = waitForElementVisibility(By.partialLinkText("Expand Eligibility Results"));
+		if(expandeligresults!=null)
+		{
+			report.report("Expand Eligibility Results link is found", ReportAttribute.BOLD);
+			expandeligresults.click();
+			WebElement preveligcheckreqtable = waitForElementVisibility(By.id("collapseResults"));
+			if(preveligcheckreqtable!=null){
+				report.report("unable to find previous eligibility results", Reporter.WARNING);
+				failurecount++;
+			}
+			String[] expectedHeaders = {"Insured/Subscriber Information", "Provider Information", "Eligibility", "Deductibles / Caps", "Plan Coverage"};
+			String[] actualHeaders;
+			int i=0;
+			
+			List<WebElement> lseligresultsheaders = findElements(By.className("resultHeading"));
+			actualHeaders = new String[lseligresultsheaders.size()];
+			
+			for(WebElement we:lseligresultsheaders)
+				actualHeaders[i++] = we.getText();
+			
+			if(!Verify.verifyArrayofStrings(actualHeaders, expectedHeaders, true)){
+				report.report("Actual and expected headers of eligibility results not matched", Reporter.WARNING);
+				failurecount++;
+			}
+			
+		}
+		else{
+			report.report("Expand Eligibility Results link not found", Reporter.WARNING);
+			failurecount++;
+		}
+		
+		//6. View 271
+		WebElement  view271element = waitForElementVisibility(By.partialLinkText("View 271"));
+		if(view271element!=null)
+		{
+			report.report("View 271 is found", ReportAttribute.BOLD);
+			view271element.click();
+			if(waitForElementVisibility(By.xpath("//span[text()='Raw X12 271 Response']"), 20)!=null)
+			{
+				report.report("271 response page is not displayed", Reporter.WARNING);
+				failurecount++;
+			}
+		}
+		else{
+			report.report("View 271 link not found", Reporter.WARNING);
+			failurecount++;
+		}
+		
+		//7. Refresh Data
+		if(waitForElementVisibility(By.partialLinkText("Refresh Data"))!=null)
+		{
+			report.report("Refresh Data is found", ReportAttribute.BOLD);
+			//TODO - Need to Validate Refresh Data Functionality here
+		}
+		else{
+			report.report("Refresh Data link not found", Reporter.WARNING);
+			failurecount++;
+		}
+				
+		return failurecount==0?true:false;
+	}
+	
+	
 	
 	//Helper methods
 	private void navigatetoClaimInfoScreen() {
@@ -509,6 +621,32 @@ public class EligibilityPage extends AbstractPageObject{
 		return failurecount==0?true:false;
 	}
 	
+	public boolean searchactivitylogByHIC(String status, String hic) throws Exception {
+		navigateToPage();
+		if(status.equalsIgnoreCase("completed"))
+			clickButton("tdGoodActivity");
+		else if(status.equalsIgnoreCase("failed"))
+			clickButton("tdFailedActivity");
+		else if(status.equalsIgnoreCase("pending"))
+			clickButton("tdPendingActivity");
+		
+		else{
+			report.report("Wrong Status option supplied", Reporter.WARNING);
+			return false;
+		}
+		//move to search icon and enter HIC
+		WebElement element = waitForElementVisibility(By.id("reportHICSearch"));
+		if(element==null){
+			report.report("HIC Search ICON is not found", Reporter.WARNING);
+			return false;
+		}
+		moveToElement(element);
+		typeEditBox("reportHICEntry", hic);
+		clickButton("GO");
+		
+		return waitForElementVisibility(By.xpath("//td[contains(text(),'PATIENT INFORMATION')]"))!=null?true:false;
+	}
+	
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub
@@ -524,4 +662,5 @@ public class EligibilityPage extends AbstractPageObject{
 		if(!isTextPresent("Enter the patient search information below"))
 			clickLink("Eligiblity Check");
 	}
+
 }

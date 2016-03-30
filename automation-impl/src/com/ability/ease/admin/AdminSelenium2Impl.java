@@ -86,10 +86,10 @@ public class AdminSelenium2Impl implements IAdministration{
 		return customerpage.setUpAgencies(agency,intermediary,intermediaryNumber,region);
 	}
 		
-	public boolean changeSchedule(String customerName,String timeZone) throws Exception
+	public boolean changeSchedule(String timeZone) throws Exception
 	{
 		AddCustomerPage customerpage = new AddCustomerPage();
-		return customerpage.changeSchedule(customerName,timeZone);
+		return customerpage.changeSchedule(timeZone);
 	}
 	
 	public boolean setUpProvidersGroup(String customerName,String groupName,String multiagencies) throws Exception

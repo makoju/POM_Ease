@@ -2,12 +2,14 @@ package com.ability.ease.admin;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import jsystem.framework.ParameterProperties;
 import jsystem.framework.TestProperties;
 import jsystem.framework.report.Reporter;
 import jsystem.framework.scenario.Parameter;
 import jsystem.framework.scenario.UseProvider;
+import jsystem.utils.RandomUtils;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -84,8 +86,21 @@ public class AdminTests extends BaseTest{
 	public void addCustomer() throws Exception {
 
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		//Converting companyname to random
+		String companyname = mapAttrValues.get("Company Name");
+		companyname= companyname+System.currentTimeMillis();
+		mapAttrValues.put("Company Name", companyname);
+		//Company Name and ContactName should be same otherwise customer failed to add
+		mapAttrValues.put("Contact Name", companyname);
+		
 		keepAsGloablParameter("companyname", mapAttrValues.get("Company Name"));
-		//globalParamMap.put("companyname", mapAttrValues.get("Company Name"));
+
+		//Converting username to random
+		String username = mapAttrValues.get("Username");
+		username= (username+System.currentTimeMillis()).substring(0, 7); //username permits 7 characters only
+		mapAttrValues.put("Username", username);
+		
+		keepAsGloablParameter("username", mapAttrValues.get("Username"));
 		String providerinformation = mapAttrValues.get("ProvidersInformation");
 		String[] providersinfo = providerinformation.split("~");
 		for(int i=0;i<providersinfo.length;i++){
@@ -117,7 +132,7 @@ public class AdminTests extends BaseTest{
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
 	@TestProperties(name = "Find Customer", paramsInclude = { "companyname","testType" })
 	public void findCustomer() throws Exception {
-		//keepAsGloablParameter("companyname", companyname);
+	
 		if(!admin.findCustomer(companyname)) {
 			report.report("Failed to find customer !!!",	Reporter.FAIL);
 		} else {
@@ -144,6 +159,13 @@ public class AdminTests extends BaseTest{
 	@TestProperties(name = "Add Employee", paramsInclude = { "AttributeNameValueDialogProvider, testType" })
 	public void addEmployee() throws Exception {
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		//Converting username to random
+		String username = mapAttrValues.get("Username");
+		username= (username+System.currentTimeMillis()).substring(0, 7); //username permits 7 characters only
+		mapAttrValues.put("Username", username);
+		
+		keepAsGloablParameter("username", mapAttrValues.get("Username"));
+		
 		if(!admin.addEmployee(mapAttrValues)) {
 			report.report("Failed to add employee !!!",	Reporter.FAIL);
 		} else {
@@ -180,10 +202,10 @@ public class AdminTests extends BaseTest{
 	/* Added for BI Analytics in admin page*/ 
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
-	@TestProperties(name = "verifyBIAnalytics", paramsInclude = { "customername","testType" })
+	@TestProperties(name = "verifyBIAnalytics", paramsInclude = { "username","testType" })
 	public void verifyBIAnalytics() throws Exception {
 
-		if(!admin.verifyBIAnalytics(customername)) {
+		if(!admin.verifyBIAnalytics(username)) {
 			report.report("Failed to verify BiAnalytics customer !!!",	Reporter.FAIL);
 		} else {
 			report.report("Customer is having BI Analytics option !!!", Reporter.PASS);
@@ -193,10 +215,10 @@ public class AdminTests extends BaseTest{
 	/* Added for BI Analytics in admin page*/ 
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
-	@TestProperties(name = "verifyBIAnalyticsUser", paramsInclude = { "customername", "testType" })
+	@TestProperties(name = "verifyBIAnalyticsUser", paramsInclude = { "username", "testType" })
 	public void verifyBIAnalyticsUser() throws Exception {
 
-		if(!admin.verifyBIAnalyticsUser(customername)) {
+		if(!admin.verifyBIAnalyticsUser(username)) {
 			report.report("BI Analytics option is not displayed !!!",	Reporter.FAIL);
 		} else {
 			report.report("I Analytics option is displayed,click on analytics option !!!", Reporter.PASS);
@@ -232,10 +254,10 @@ public class AdminTests extends BaseTest{
 	/*for new customer setting up agencies and change schedule*/ 
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
-	@TestProperties(name = "changeSchedule", paramsInclude = {"companyname","timeZone","testType" })
+	@TestProperties(name = "changeSchedule", paramsInclude = {"timeZone","testType" })
 	public void changeSchedule() throws Exception {
-		keepAsGloablParameter("companyname", companyname);
-		if(!admin.changeSchedule(companyname,timeZone)) {
+		
+		if(!admin.changeSchedule(timeZone)) {
 			report.report("change schedule not successfull !!!",Reporter.FAIL);
 		} else {
 			report.report("change schedule successfull !!!", Reporter.PASS);
@@ -248,14 +270,10 @@ public class AdminTests extends BaseTest{
 	/*for new customer setting up agencies and change schedule*/ 
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
-	@TestProperties(name = "setUpProvidersGroup", paramsInclude = {"companyname","groupName","multiagencies","testType" })
-	public void setUpProvidersGroup() throws Exception {
-
-		//keepAsGloablParameter("groupName", groupName);
-		keepAsGloablParameter("companyname", companyname);
-		
-		if(!admin.setUpProvidersGroup(companyname,groupName,multiagencies))
-				{
+	@TestProperties(name = "setUpProvidersGroup", paramsInclude = {"username","groupName","multiagencies","testType" })
+	public void setUpProvidersGroup() throws Exception {		
+		if(!admin.setUpProvidersGroup(username,groupName,multiagencies))
+		{
 			report.report("not able to setup providers group successfully !!!",Reporter.FAIL);
 		} else {
 			report.report("able to setup providers group successfully !!!", Reporter.PASS);
@@ -293,11 +311,11 @@ public class AdminTests extends BaseTest{
 	
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
-	@TestProperties(name = "loginNewCustomer", paramsInclude = {"companyname","password","testType" })
+	@TestProperties(name = "loginNewCustomer", paramsInclude = {"username","password","testType" })
 	public void loginNewCustomer() throws Exception {
 		//keepAsGloablParameter("companyname", companyname);
 		
-		if(!admin.loginNewCustomer(companyname,password)){
+		if(!admin.loginNewCustomer(username,password)){
 			report.report("not able to login with new customer unsuccessfully !!!",Reporter.FAIL);
 		} else {
 			report.report("able to login with new customer successfully !!!", Reporter.PASS);

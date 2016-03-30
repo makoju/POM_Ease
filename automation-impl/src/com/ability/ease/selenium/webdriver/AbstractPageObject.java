@@ -736,11 +736,11 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			WebDriverHelper.highlightElement(driver, element);
 
 			if (WorkingEnvironment.getWebdriverType() == WebDriverType.INTERNET_EXPLORER_DRIVER) {
-				element.click();
+				//element.click();
 				//sendEnterOnWebElement(element);
 				//element.sendKeys(Keys.ENTER);
 				//element.click();
-				//sendEnterOnWebElement(element);
+				sendEnterOnWebElement(element);
 				return;
 			}
 			element.click();

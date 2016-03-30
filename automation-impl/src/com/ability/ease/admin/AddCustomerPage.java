@@ -368,7 +368,7 @@ public class AddCustomerPage extends AbstractPageObject{
 	public boolean navigateToMyDDE(String groupName,String ddeUserId,String ddePassword,String verifyPassword)throws Exception
 	{
 
-		WebElement link = waitForElementToBeClickable(ByLocator.linktext, "My DDE", 10);
+		WebElement link = waitForElementToBeClickable(ByLocator.linktext, "MY DDE", 10);
 		
 		if ( link != null) 			
 			safeJavaScriptClick("MY DDE");
@@ -448,7 +448,6 @@ public class AddCustomerPage extends AbstractPageObject{
 	/* Once BI Server is up i can validate the username and signout functionality in the popup window*/
 	public boolean verifyBIAnalyticsUser(String username)throws Exception
 	{
-		username=null;
 		int failCounter = 0;
 		//String password="test1234";
 

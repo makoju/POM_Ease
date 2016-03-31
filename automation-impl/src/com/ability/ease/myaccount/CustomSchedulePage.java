@@ -111,7 +111,7 @@ public class CustomSchedulePage extends AbstractPageObject {
 	
 	public boolean verifyJobScheduleCurrentAction(String agencyName){
 		String query1 =  "DELETE From ddez.jobschedule where providerid=(select p.id from ddez.provider p where p.DisplayName='"+agencyName+"'  and customerid='1')";
-		String query2 = "INSERT INTO ddez.jobschedule select p.customerid,p.id, 10, @rownum := @rownum+1, now(),0,null,null,null,null,null,null,null,-102,null,null from provider p where p.DisplayName='"+agencyName+"'";
+		String query2 = "INSERT INTO ddez.jobschedule (CustomerID,ProviderID,JobType,ScheduleTime,SchedulePriority,Trace) select p.customerid,p.id, 10, now(),0,-102 from ddez.provider p where p.DisplayName='"+agencyName+"'";
 		
 		//Delete the entry from job schedule table if it already exists
 		MySQLDBUtil.getUpdateResultFromMySQLDB(query1);
@@ -120,10 +120,19 @@ public class CustomSchedulePage extends AbstractPageObject {
 			report.report("Failed to insert record into Job Schedule Table", Reporter.WARNING);
 			return false;
 		}
-		String sQueryName = "SELECT * FROM ddez.jobschedule js where js.JobType=10 limit 1"; 
+		//Wait for 5 seconds to refresh in database
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//get the last row from the jobschedule table whose jobtype is 10
+		String sQueryName = "SELECT * FROM ddez.jobschedule js where js.JobType=10 order by jobid desc limit 1"; 
 		ResultSet rs1 = MySQLDBUtil.getResultFromMySQLDB(sQueryName);
 		String currentaction = MySQLDBUtil.getColumnValue(rs1, "CurrentAction");
-		return (currentaction!=null && currentaction.equalsIgnoreCase("Initializing connection"))?true:false;
+		return (currentaction!=null && Verify.StringEquals(currentaction, "Initializing connection"))?true:false;
 	}
 		
 /*

@@ -85,12 +85,14 @@ public class ClaimsHelper extends AbstractPageObject{
 
 	//this method clicks on MY DDE Link
 	public void clickMYDDELink() throws Exception{
-		WebElement mydde = waitForElementVisibility(By.linkText("MY DDE"));
+
+		//WebElement mydde = waitForElementVisibility(By.linkText("MY DDE"));
+		WebElement mydde = waitForElementToBeClickable(ByLocator.linktext, "MY DDE", 30);
 		String classAttr = mydde.getAttribute("class");
 		if ( mydde != null) {
 			if( !classAttr.equalsIgnoreCase("topNavAnchor topNavAnchorSelected")){
 				safeJavaScriptClick("MY DDE");
-				waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 10);
+				waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 30);
 				return;
 			}else{
 				//nothing to do
@@ -173,7 +175,11 @@ public class ClaimsHelper extends AbstractPageObject{
 	}
 
 
-	public boolean validateConfirmationScreenSteps(List<Attribute> lsAttributes){
+	public boolean validateConfirmationScreenSteps(List<Attribute> lsAttributes) throws Exception{
+		String xpathToSubmit = "//ol[contains(text(), 'Submit')]";
+		String xpathToWait = "//ol[contains(text(), 'Wait')]";
+		String sConfirmationOne = null,sConfirmationTwo = null;
+
 		String sBillType = getValueFromJSystem(lsAttributes, "TYPE OF BILL");
 		StringBuilder sStmtFromWhichPeroid = new StringBuilder(getValueFromJSystem(lsAttributes, "Statement from which period"));
 		StringBuilder sStmtToWhichPeroid = new StringBuilder(getValueFromJSystem(lsAttributes, "Statement to which period"));
@@ -184,9 +190,10 @@ public class ClaimsHelper extends AbstractPageObject{
 				" through "+ sStmtToWhichPeroid.insert(5, '/') + " (brand new).";
 		String sExpectedConfirmationTwo = "Step 2: Wait for the new claim to get paid.";
 
-		String sConfirmationOne = driver.findElement(By.xpath("//ol[contains(text(), 'Submit')]")).getText();
-		String sConfirmationTwo = driver.findElement(By.xpath("//ol[contains(text(), 'Wait')]")).getText();
-
+		if(waitForElementToBeClickable(ByLocator.xpath, xpathToSubmit, 10) != null){
+			sConfirmationOne = driver.findElement(By.xpath(xpathToSubmit)).getText();
+			sConfirmationTwo = driver.findElement(By.xpath(xpathToWait)).getText();
+		}
 		if( sExpectedConfirmationOne.equalsIgnoreCase(sConfirmationOne.trim()) && sExpectedConfirmationTwo.equalsIgnoreCase(sConfirmationTwo.trim()) )
 			return true;
 		else
@@ -326,9 +333,14 @@ public class ClaimsHelper extends AbstractPageObject{
 
 		//get the number before rev code 0001
 		String totalClaimLinesDisplayed = driver.findElement(By.xpath("//li[contains(text(),'0001')]/preceding-sibling::li")).getText();
-		int numberBefore0001RevCode = Integer.valueOf(totalClaimLinesDisplayed);	
+		int numberBefore0001RevCode = Integer.valueOf(totalClaimLinesDisplayed.trim());	
 		if(numberBefore0001RevCode != 0 ){
-			numberBefore0001RevCode = numberBefore0001RevCode - 1;
+			report.report("Row number at rev code 0001 " + numberBefore0001RevCode);
+			if( numberBefore0001RevCode == 11 ){
+				numberBefore0001RevCode = 11;
+			}else{
+				numberBefore0001RevCode = numberBefore0001RevCode - 1;
+			}
 			suffix = String.valueOf(numberBefore0001RevCode);
 			for(int i=0;i < sValues.length; i++){
 				typeEditBox(sLocators[i]+"_"+suffix, sValues[i]);
@@ -474,7 +486,7 @@ public class ClaimsHelper extends AbstractPageObject{
 			}
 			return flag;
 		}catch (NoAlertPresentException Ex){ 
-			 return flag;
+			return flag;
 		}  
 	}
 
@@ -489,7 +501,7 @@ public class ClaimsHelper extends AbstractPageObject{
 		if( !isSubmitWarn ) {
 			report.report("Submit warning alert not present on the screen...");
 			if(validateConfirmationScreenSteps(lsAttributes)){
-				clickButton("yesConfirmEditClaimButton");
+				clickButtonV2("yesConfirmEditClaimButton");
 				if( verifyAlert("Changes scheduled!")){
 					report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
 				}else{
@@ -504,7 +516,7 @@ public class ClaimsHelper extends AbstractPageObject{
 			report.report("Submit warning alert is present on the screen...");
 			acceptUB04SubmitWarning();
 			if(validateConfirmationScreenSteps(lsAttributes)){
-				clickButton("yesConfirmEditClaimButton");
+				clickButtonV2("yesConfirmEditClaimButton");
 				if( verifyAlert("Changes scheduled!")){
 					report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
 				}else{

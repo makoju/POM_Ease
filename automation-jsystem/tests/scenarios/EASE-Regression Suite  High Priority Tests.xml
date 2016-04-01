@@ -55,7 +55,7 @@
     </target>
     <target name="t4">
         <jsystem-ant antfile="${scenarios.base}/scenarios/Claims_Module.xml">
-            <property name="jsystem.uuid" value="8630c389-527e-4aee-a313-331c5f7d731d"/>
+            <property name="jsystem.uuid" value="33ba4978-2c93-44db-a93d-9550589de860"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>

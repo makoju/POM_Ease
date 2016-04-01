@@ -134,7 +134,8 @@ public class AuditDocHelper extends AbstractPageObject{
 	}
 
 	public void clickEsmdStatusLink(String agency)throws Exception{
-		String sXpathOfOVERNIGHT = "//span[contains(text(),'OVERNIGHT')] | //td[contains(text(),'EASE SUMMARY REPORT')] | //td[contains(text(),'FOR AGENCY')]";
+		String sXpathOfOVERNIGHT = "//span[contains(text(),'OVERNIGHT')] | //td[contains(text(),'EASE SUMMARY REPORT')] | //td[contains(text(),'FOR AGENCY')] | "
+				+ "//td[contains(text(),'ADR Response Document Submission')]";
 		String sXpathBeforeClickOnESMD = "//td[contains(text(),'FOR AGENCY')]";
 		String sXpathofEsmdReport = "//td[contains(text(),'ESMD DELIVERY & STATUS REPORT')]";
 		waitForElementToBeClickable(ByLocator.xpath, sXpathOfOVERNIGHT, 10);

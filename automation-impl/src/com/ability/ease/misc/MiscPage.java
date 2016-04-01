@@ -12,7 +12,9 @@ import jsystem.framework.report.Reporter;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchWindowException;
+import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebElement;
+
 
 
 
@@ -56,32 +58,26 @@ public class MiscPage extends AbstractPageObject {
 			isBrowserOpen = true;
 		}
 		if (isLoggedIn) {
-			if (!isTextPresent("LOG IN")) {
-				if (currentLoggedInUser.equalsIgnoreCase(sUserName)) {
-					//check that current user is the requested userName by checking status property currentLoggedInUser AND by validating that page source includes the logged in user name
-					report.report(sUserName + " is already logged-in to ease... nothing to do here.", Reporter.ReportAttribute.BOLD);
-				} else {
-					report.report("Logging out user: " +  currentLoggedInUser);
-					//HomePage.getInstance().signOut();
-					safeJavaScriptClick("LOGOUT");
-					//clickLinkV2("LOGOUT");
-					try {
-						driver.quit();
-						isBrowserOpen = false;
-						openBrowser();
-						driver.get(WorkingEnvironment.getEaseURL());
-					} 
-					catch (Exception e) {
-						report.report("Exception in launching browser: "+ e.getMessage());
-						if(e instanceof NoSuchWindowException){
-
-						}
-					}
-					finally{
-						isLoggedIn=false;
+			if (waitForElementToBeClickable(ByLocator.linktext, "LOGOUT", 10) != null) {
+				report.report("Logging out user: " +  currentLoggedInUser);
+				//HomePage.getInstance().signOut();
+				safeJavaScriptClick("LOGOUT");
+				//clickLinkV2("LOGOUT");
+				try {
+					report.report("QUIT method called after logging out user "+ currentLoggedInUser +"...Closing all browser instances!!!");
+					quitAndRelaunchBrowser();
+				} 
+				catch (Exception e) {
+					report.report("Exception in launching browser: "+ e.getMessage());
+					if(e instanceof NoSuchWindowException){
+						//TO DO
 					}
 				}
-			} else {
+				finally{
+					isLoggedIn=false;
+				}
+			}
+			else {
 				isLoggedIn = false;
 				validLogin(sUserName, sPassword);
 			}
@@ -90,44 +86,38 @@ public class MiscPage extends AbstractPageObject {
 			int countTry = 0;
 			do {
 				try {
-					driver.switchTo().frame(0);
-					if (isElementPresent(By.id("loginbutton"))) {
+					if( waitForElementToBeClickable(ByLocator.id, "mainArea", 20) != null){
+						driver.switchTo().frame(0);
 						report.report( "Login to Ease as:" + sUserName);
 						typeEditBox("txtUser", sUserName);						
 						typeEditBox("txtPassword", sPassword);
-						clickButton("loginbutton");
-						//mainWindowHanlder = returnMainWindowHandle();
-						//returnCurrentWindowHandle(mainWindowHanlder);
+						clickButtonV2("loginbutton");
+						mainWindowHanlder = returnMainWindowHandle();
+						returnCurrentWindowHandle(mainWindowHanlder);
 					}
-										
-					if (waitForElementVisibility(By.linkText("LOGOUT"),3)!=null) {
+					if (waitForElementToBeClickable(ByLocator.linktext, "LOGOUT", 10) != null) {
 						isLoggedIn = true;
 						currentLoggedInUser = sUserName;
 						// countTry = 3;
-					} else {
-						report.report("Logout link not found in current window hence switching the window..."); 
-						Set<String> winhandles = driver.getWindowHandles();
-						for(String handle: winhandles)
-						{
-							report.report("Inside switch window handler...");
-							driver.switchTo().window(handle);
-							if (isElementPresent(By.linkText("LOGOUT"))) {
-								isLoggedIn = true;
-								currentLoggedInUser = sUserName;
-								// countTry = 3;
-							}
-						}
+					} 
+					else{
+						report.report("QUIT method called because LOGOUT text is not present on the page...Closing all browser instances!!!");
+						quitAndRelaunchBrowser();
 					}
-				} catch (Exception e) {
+				}catch(UnhandledAlertException uae){
+					report.report("QUIT method called from unhandled alert exception...Closing all browser instances!!!");
+					quitAndRelaunchBrowser();
+				} 
+				catch (Exception e) {
 					e.printStackTrace();
 					report.report( "The following exception occured during login attempt:" + e.toString());
-				} finally {
+				} 
+				finally {
 					report.report( "Inside Finally Block attempt: ..."+countTry);
 					countTry ++;
 				}
 				if(!isLoggedIn)
 					report.report("Retrying Login....Attempt#"+countTry);
-				
 			} while (countTry < 3 && !isLoggedIn);
 		}
 		// isLoggedIn = true;
@@ -365,7 +355,7 @@ public class MiscPage extends AbstractPageObject {
 		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Misc\\Misc.xml", mapAttrVal);
 
 		UIActions admin = new UIActions();
-		
+
 		clickMYACCOUNTLink();
 		Thread.sleep(3000);
 		safeJavaScriptClick("Setup Alerts");
@@ -485,6 +475,13 @@ public class MiscPage extends AbstractPageObject {
 		return isLoggedIn;
 	}
 
+	public void quitAndRelaunchBrowser(){
+		isLoggedIn = false;
+		driver.quit();
+		isBrowserOpen = false;
+		openBrowser();
+		driver.get(WorkingEnvironment.getEaseURL());
+	}
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub

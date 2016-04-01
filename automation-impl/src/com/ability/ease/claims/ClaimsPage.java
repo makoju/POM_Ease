@@ -113,7 +113,7 @@ public class ClaimsPage extends AbstractPageObject{
 
 		clickLinkV2("claimSubmit");
 		if(helper.validateConfirmationScreenSteps(lsAttributes)){
-			clickButton("yesConfirmEditClaimButton");
+			clickButtonV2("yesConfirmEditClaimButton");
 			if( verifyAlert("Changes scheduled!")){
 				report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
 			}
@@ -271,7 +271,7 @@ public class ClaimsPage extends AbstractPageObject{
 		if( !isSubmitWarn ) {
 			report.report("Submit warning alert not present on the screen...");
 			if(helper.validateConfirmationScreenSteps(lsAttributes)){
-				clickButton("yesConfirmEditClaimButton");
+				clickButtonV2("yesConfirmEditClaimButton");
 				if( verifyAlert("Changes scheduled!")){
 					report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
 				}
@@ -280,7 +280,7 @@ public class ClaimsPage extends AbstractPageObject{
 			report.report("Submit warning alert is present on the screen...");
 			helper.acceptUB04SubmitWarning();
 			if(helper.validateConfirmationScreenSteps(lsAttributes)){
-				clickButton("yesConfirmEditClaimButton");
+				clickButtonV2("yesConfirmEditClaimButton");
 				if( verifyAlert("Changes scheduled!")){
 					report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
 				}
@@ -401,14 +401,14 @@ public class ClaimsPage extends AbstractPageObject{
 				boolean isSubmitWarn = helper.isSubmitWarningPresent();
 				if( !isSubmitWarn ) {
 					report.report("Submit warning alert not present on the screen...");
-					clickButton("yesConfirmEditClaimButton");
+					clickButtonV2("yesConfirmEditClaimButton");
 					if( verifyAlert("Changes scheduled!")){
 						report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
 					}
 				}else {
 					report.report("Submit warning alert is present on the screen...");
 					helper.acceptUB04SubmitWarning();
-					clickButton("yesConfirmEditClaimButton");
+					clickButtonV2("yesConfirmEditClaimButton");
 					if( verifyAlert("Changes scheduled!")){
 						report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
 					}else{
@@ -542,7 +542,6 @@ public class ClaimsPage extends AbstractPageObject{
 			failCounter++;
 		}
 		return (failCounter == 0 ) ? true : false;
-
 	}
 
 	/**
@@ -651,14 +650,14 @@ public class ClaimsPage extends AbstractPageObject{
 
 		if( !isSubmitWarn ) {
 			report.report("Submit warning alert not present on the screen...");
-			clickButton("yesConfirmEditClaimButton");
+			clickButtonV2("yesConfirmEditClaimButton");
 			if( verifyAlert("Changes scheduled!")){
 				report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
 			}
 		}else {
 			report.report("Submit warning alert is present on the screen...");
 			helper.acceptUB04SubmitWarning();
-			clickButton("yesConfirmEditClaimButton");
+			clickButtonV2("yesConfirmEditClaimButton");
 			if( verifyAlert("Changes scheduled!")){
 				report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
 			}else{

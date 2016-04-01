@@ -1429,7 +1429,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 		
 		if(webElement==null)
-			  report.report("waited for "+timeOutInSeconds+" for the WebElement to be visible but not found", ReportAttribute.BOLD);
+			  report.report("waited for "+timeOutInSeconds+" seconds for the WebElement to be visible but not found", ReportAttribute.BOLD);
 		
 		return webElement;
 	}

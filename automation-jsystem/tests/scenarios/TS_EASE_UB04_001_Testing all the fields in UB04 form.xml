@@ -16,8 +16,17 @@
     <taskdef classname="com.aqua.anttask.jsystem.JSystemSetAntProperties" name="jsystemsetantproperties"/>
     <target name="execute scenario">
         <antcallback target="t0"/>
+        <antcallback target="t1"/>
     </target>
     <target name="t0">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="b7c8491a-f957-411d-a353-45c32380f6d3"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.misc.MiscTests.loginToEase"/>
+        </jsystem>
+    </target>
+    <target name="t1">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="6657e871-78fe-4ee9-89ed-57030b65194f"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>

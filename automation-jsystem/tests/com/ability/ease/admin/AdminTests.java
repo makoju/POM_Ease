@@ -55,6 +55,7 @@ public class AdminTests extends BaseTest{
 	private String ddePassword;
 	private String verifyPassword;
 	private String multiagencies;
+	private String npis;
 	
 
 	@Before
@@ -335,6 +336,34 @@ public class AdminTests extends BaseTest{
 		}	
 	}
 	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Set PsychiatricSTC checkbox for NPI", paramsInclude = {"npis,testType" })
+	public void setPsychiatricSTCCheckBoxForNPI() throws Exception {
+
+		if(admin.setPsychiatricSTCCheckBoxForNPI(npis))
+		{
+			report.report("Successfully Configured PsychiatricSTC for Given NPIs !!!",Reporter.PASS);
+		} 
+		else {
+			report.report("Failed to Configure PsychiatricSTC for Given NPIs!!!", Reporter.FAIL);
+		}	
+	}
+	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Set PsychiatricSTC checkbox for NPI", paramsInclude = {"npis,testType" })
+	public void verifyPsychiatricSTCCheckBoxForNPI() throws Exception {
+
+		if(admin.verifyPsychiatricSTCCheckBoxForNPI(npis))
+		{
+			report.report("Successfully Verified PsychiatricSTC checkbox enable for Given NPIs !!!",Reporter.PASS);
+		} 
+		else {
+			report.report("Failed to verify PsychiatricSTC checkbox enable for Given NPIs!!!", Reporter.FAIL);
+		}	
+	}
+	
 	
 	@Override
 	public void handleUIEvent(HashMap<String, Parameter> map, String methodName) throws Exception {	
@@ -539,5 +568,13 @@ public class AdminTests extends BaseTest{
 	@ParameterProperties(description = "Company/customer name , this value would come from global paramter")
 	public void setCompanyname(String companyname) {
 		this.companyname = companyname;
+	}
+
+	public String getNpis() {
+		return npis;
+	}
+
+	public void setNpis(String npis) {
+		this.npis = npis;
 	}	
 }

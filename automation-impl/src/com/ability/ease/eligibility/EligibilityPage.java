@@ -160,14 +160,6 @@ public class EligibilityPage extends AbstractPageObject{
 		if(!navigatetoPatientInfoScreen(firstlastname, hic))
 			return false;
 		
-		WebElement we = waitForElementVisibility(By.xpath("//td[contains(text(),'PATIENT INFORMATION')]"));
-		if(we!=null)
-			report.report("Successfully navigated to Patient Information Screen", ReportAttribute.BOLD);
-		else
-		{
-			report.report("Navigation to Patient Information Page has failed", Reporter.WARNING);
-			return false;
-		}
 		if(!isTextPresent("New Claim UB04")){
 			report.report("Unable to Navigate to UB04 Form from Patient Info. Screen", Reporter.WARNING);
 			failurecount++;
@@ -183,15 +175,7 @@ public class EligibilityPage extends AbstractPageObject{
 		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 		if(!navigatetoPatientInfoScreen(firstlastname, hic))
 			return false;
-		
-		WebElement we = waitForElementVisibility(By.xpath("//td[contains(text(),'PATIENT INFORMATION')]"));
-		if(we!=null)
-			report.report("Successfully navigated to Patient Information Screen", ReportAttribute.BOLD);
-		else
-		{
-			report.report("Navigation to Patient Information Page has failed", Reporter.WARNING);
-			return false;
-		}
+
 		navigatetoClaimInfoScreen();
 		if(waitForElementVisibility(By.xpath("//td[contains(text()='CLAIM INFORMATION')]"))!=null)
 		{
@@ -503,7 +487,7 @@ public class EligibilityPage extends AbstractPageObject{
 		  return true;
  	 }
 	
-	private boolean navigatetoPatientInfoScreen(String firstlastname, String hic) {
+	public boolean navigatetoPatientInfoScreen(String firstlastname, String hic) {
 		  WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
 		  moveToElement(tblcompletedactivity);
 		  WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstlastname+"')]/preceding-sibling::td/a[text()='"+hic+"']"));
@@ -515,6 +499,16 @@ public class EligibilityPage extends AbstractPageObject{
 			  report.report("Specified activity was not found in good activity table", Reporter.WARNING);
 			  return false;
 		  }
+		  
+		  WebElement wepatientinfo = waitForElementVisibility(By.xpath("//td[contains(text(),'PATIENT INFORMATION')]"));
+			if(wepatientinfo!=null)
+				report.report("Successfully navigated to Patient Information Screen", ReportAttribute.BOLD);
+			else
+			{
+				report.report("Navigation to Patient Information Page has failed", Reporter.WARNING);
+				return false;
+			}
+			
 		  return true;
 	 }
 		
@@ -645,6 +639,12 @@ public class EligibilityPage extends AbstractPageObject{
 		clickButton("GO");
 		
 		return waitForElementVisibility(By.xpath("//td[contains(text(),'PATIENT INFORMATION')]"))!=null?true:false;
+	}
+	
+	public boolean verifyView271RespPagehasA7() throws Exception{
+		clickLink("View271");
+		//TODO - Need to validate repsonse page with A7
+		return false;
 	}
 	
 	@Override

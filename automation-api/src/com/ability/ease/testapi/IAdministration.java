@@ -26,5 +26,6 @@ public interface IAdministration {
 	abstract public boolean navigateToMyDDE(String groupName,String ddeUserId,String ddePassword,String verifyPassword)throws Exception;
 	abstract public boolean clickHere()throws Exception;
 	abstract public boolean loginNewCustomer(String username,String newpassword)throws Exception;
-	
+	abstract public boolean setPsychiatricSTCCheckBoxForNPI(String npis) throws Exception;
+	abstract public boolean verifyPsychiatricSTCCheckBoxForNPI(String npis) throws Exception;
 }

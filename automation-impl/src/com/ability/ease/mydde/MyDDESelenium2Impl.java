@@ -114,4 +114,9 @@ public class MyDDESelenium2Impl implements IMyDDE{
 	public boolean verifyAdvancedSearchForGivenMonthsAndDateRange(String agencyFromJSystem, String betweenDate, String andDate, String monthsAgo) throws Exception {
 		return mydde.verifyAdvancedSearchForGivenMonthsAndDateRange(agencyFromJSystem,betweenDate,andDate,monthsAgo);
 	}
+
+	@Override
+	public boolean searchByHICAndNavigatetoPatientInfoScreen(String hic) throws Exception {
+		return mydde.searchByHICAndNavigatetoPatientInfoScreen(hic);
+	}
 }

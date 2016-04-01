@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import jsystem.framework.report.Reporter;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -645,6 +647,22 @@ public class MyDDEPage extends AbstractPageObject{
 		}
 		return failurecount == 0 ? true : false;
 	}
+	
+
+	public boolean searchByHICAndNavigatetoPatientInfoScreen(String hic) throws Exception {
+		navigateToPage();
+		//move to search icon and enter HIC
+		WebElement element = waitForElementVisibility(By.id("reportHICSearch"));
+		if(element==null){
+			report.report("HIC Search ICON is not found in MyDDE Screen", Reporter.WARNING);
+			return false;
+		}
+		moveToElement(element);
+		typeEditBox("reportHICEntry", hic);
+		clickButton("GO");
+
+		return waitForElementVisibility(By.xpath("//td[contains(text(),'PATIENT INFORMATION')]"))!=null?true:false;
+	}
 
 	@Override
 	public void assertInPage() {
@@ -655,4 +673,5 @@ public class MyDDEPage extends AbstractPageObject{
 	public void navigateToPage() throws Exception {
 		HomePage.getInstance().navigateTo(Menu.MYDDE, null);
 	}
+
 }

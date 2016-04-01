@@ -280,6 +280,18 @@ public class EligibilityTests extends BaseTest{
 		}	
 	}
 	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "navigate to patient information screen", paramsInclude = { "firstname,lastname,hic,testType" })
+	public void navigatetoPatientInfoScreen() throws Exception{
+		report.report("Inside navigatetopatientinformation test method");
+		if(!elig.navigatetoPatientInfoScreen(firstname,lastname,hic)) {
+			report.report("Failed to navigate to patient information screen!!!",	Reporter.FAIL);
+		} else {
+			report.report("Successfully navigated to patient information screen!!!", Reporter.PASS);
+		}	
+	}
+	
 	/*######
 	Getters and Setters
 	######*/

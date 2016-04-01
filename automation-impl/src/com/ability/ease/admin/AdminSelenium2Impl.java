@@ -1,6 +1,7 @@
 package com.ability.ease.admin;
 
 import java.util.Map;
+
 import com.ability.ease.employee.EmployeePage;
 import com.ability.ease.testapi.IAdministration;
 
@@ -117,6 +118,20 @@ public class AdminSelenium2Impl implements IAdministration{
 	public boolean loginNewCustomer(String username,String newpassword)throws Exception{
 		AddCustomerPage customerpage = new AddCustomerPage();
 		return customerpage.loginNewCustomer(username, newpassword);
+	}
+
+	@Override
+	public boolean setPsychiatricSTCCheckBoxForNPI(String npis)
+			throws Exception {
+		EligibilityConfigurationPage ecp = new EligibilityConfigurationPage();
+		return ecp.setPsychiatricSTCCheckBoxForNPI(npis);
+	}
+
+	@Override
+	public boolean verifyPsychiatricSTCCheckBoxForNPI(String npis)
+			throws Exception {
+		EligibilityConfigurationPage ecp = new EligibilityConfigurationPage();
+		return ecp.verifyPsychiatricSTCCheckBoxForNPI(npis);
 	}
 	
 }

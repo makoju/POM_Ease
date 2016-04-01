@@ -73,4 +73,15 @@ public class EligibilitySelenium2Impl implements IEligibility{
 		return eligPage.verifyOptionsUnderPatientInformationScreen(hic,firstname,lastname);
 	}
 
+	@Override
+	public boolean verifyView271RespPagehasA7() throws Exception {
+		return eligPage.verifyView271RespPagehasA7();
+	}
+
+	@Override
+	public boolean navigatetoPatientInfoScreen(String firstname, String lastname, String hic)
+			throws Exception {
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
+		return eligPage.navigatetoPatientInfoScreen(firstlastname, hic);
+	}
 }

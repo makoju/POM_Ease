@@ -18,6 +18,9 @@ import org.openqa.selenium.WebElement;
 
 
 
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.TestCommonResource;
@@ -123,6 +126,20 @@ public class MiscPage extends AbstractPageObject {
 		// isLoggedIn = true;
 		// currentLoggedInUser = userName;	
 		if (isLoggedIn) {
+			//This code is to handle intermediate Manage FISS/DDE Settings page
+			if(isTextPresent("MANAGE FISS/DDE SETTINGS"))
+			{
+					typeEditBox("ddeuser", "tset");
+					typeEditBox("ddepassword", "test1234");
+					typeEditBox("Verify", "test1234");
+					clickButtonV2("Submit");
+					WebDriverWait wait = new WebDriverWait(driver, 85);
+					wait.until(ExpectedConditions.alertIsPresent());
+					
+					if(!verifyAlert("DDE information changed")){
+						report.report("DDE Information Submitted was not acknowledged",Reporter.WARNING);
+					}
+			}
 			return true;
 		} else {
 			return false;

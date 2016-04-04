@@ -20,19 +20,26 @@ public class HMOHelper extends AbstractPageObject {
 	 * Entering Patient details into HMO Catcher Page
 	 */
 	public void fillHmo(String  sAgency,String sHIC,String sLastName, String sFirstName,String sDob,String sSex) throws Exception{
-		Thread.sleep(5000);
+		String xpathToEligCheckPage = "//td[contains(text(),'ELIGIBILITY CHECK')]";
+		
+		waitForElementToBeClickable(ByLocator.linktext, "ELIG.", 20);
 		safeJavaScriptClick("ELIG.");
-		Thread.sleep(5000);
-		waitForElementToBeClickable(ByLocator.linktext,"Add to HMO/Adv. Catcher",9);
-		safeJavaScriptClick("Add to HMO/Adv. Catcher");
-		waitForElementToBeClickable(ByLocator.name,"ProvID",9);
-		selectByNameOrID("ProvID", sAgency);
-		typeEditBox("hic", sHIC);
-		typeEditBox("lname",sLastName);
-		typeEditBox("fname",sFirstName);
-		typeEditBox("dob",sDob);
-		selectByNameOrID("sex", sSex);
-		clickButtonV2("submit");
+		if (waitForElementToBeClickable(ByLocator.xpath, xpathToEligCheckPage, 30) != null){
+			clickLinkV2("Add to HMO/Adv. Catcher");
+			if( waitForElementToBeClickable(ByLocator.id,"ProvID",30) != null){
+				selectByNameOrID("ProvID", sAgency);
+				typeEditBox("hic", sHIC);
+				typeEditBox("lname",sLastName);
+				typeEditBox("fname",sFirstName);
+				typeEditBox("dob",sDob);
+				selectByNameOrID("sex", sSex);
+				clickButtonV2("submit");
+			}else{
+				report.report("Fail : Failed to locate Provider ID dropdwon in Eligibility page!!!");
+			}
+		}else{
+			report.report("Fail: Failed to locate Add to HMO/Adv. Catcher link under Elig. tab!!!");
+		}
 	}
 
 	/*

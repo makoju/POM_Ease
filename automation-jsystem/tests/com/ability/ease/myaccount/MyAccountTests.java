@@ -31,7 +31,7 @@ public class MyAccountTests extends BaseTest {
 	
 	
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
-	private String timeZone,username,groupname,agency,claimsTime, eligibilityTime, eFTTime, sDay, EndDay, runtime, credential, timezone,ddeuserid,ddepassword,grouporagencycheckboxname,grouporagencyname,disableuntil;
+	private String timeZone,username,groupname,agency,claimsTime, eligibilityTime, eFTTime, sDay, EndDay, runtime, credential, timezone,ddeuserid,ddepassword,grouporagencycheckboxname,grouporagencyname,disableuntil,expectedalertmessage;
 	private int rownumber;
 	private boolean isnewcustomer;
 
@@ -137,7 +137,7 @@ public class MyAccountTests extends BaseTest {
 	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Setup DDE Credentials", paramsInclude = { "groupname,ddeuserid,ddepassword,testType" })
+	@TestProperties(name = "Setup DDE Credential", paramsInclude = { "groupname,ddeuserid,ddepassword,testType" })
 	public void setupDDECredential() throws Exception
 	{
 		if(myaccount.setupDDECredential(groupname,ddeuserid,ddepassword)){
@@ -185,10 +185,10 @@ public class MyAccountTests extends BaseTest {
 
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Disable Ease ", paramsInclude = { "grouporagencycheckboxname,grouporagencyname,disableuntil,testType" })
+	@TestProperties(name = "Disable Ease ", paramsInclude = { "grouporagencycheckboxname,grouporagencyname,disableuntil,expectedalertmessage,testType" })
 	public void disableEase() throws Exception
 	{
-		if(myaccount.disableEase(grouporagencycheckboxname,grouporagencyname,disableuntil)){
+		if(myaccount.disableEase(grouporagencycheckboxname,grouporagencyname,disableuntil,expectedalertmessage)){
 			report.report("Succesfully Disabled Ease", ReportAttribute.BOLD);
 		}else{
 			report.report("Failed to Disable Ease", Reporter.FAIL);
@@ -206,6 +206,19 @@ public class MyAccountTests extends BaseTest {
 			report.report("Failed to Resume Group", Reporter.FAIL);
 		}
 	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Delete All Custom Schedule for ${agency} ", paramsInclude = { "agency,testType" })
+	public void deleteAllCustomSchedule() throws Exception
+	{
+		if(myaccount.deleteAllCustomSchedule(agency)){
+			report.report("Succesfully Deleted Custom Schedule for agency: "+agency, ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to Delete Custom Schedule for agency: "+agency, Reporter.FAIL);
+		}
+	}
+	
 	/*##
 	# Getters and Setters
 	##*/
@@ -380,6 +393,14 @@ public class MyAccountTests extends BaseTest {
 
 	public void setDisableuntil(String disableuntil) {
 		this.disableuntil = disableuntil;
+	}
+
+	public String getExpectedalertmessage() {
+		return expectedalertmessage;
+	}
+
+	public void setExpectedalertmessage(String expectedalertmessage) {
+		this.expectedalertmessage = expectedalertmessage;
 	}
 
 }

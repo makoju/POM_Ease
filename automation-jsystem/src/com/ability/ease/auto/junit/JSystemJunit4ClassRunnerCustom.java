@@ -296,6 +296,10 @@ public class JSystemJunit4ClassRunnerCustom extends JUnit4ClassRunner {
 				break;
 			}
 		}
+		if(testModuleName==null){
+			System.out.println("it's not a valid module hence returning");
+			return;
+		}
 
 		scenarioName = ScenarioHelper.getTestScenario(ScenarioHelper.getCurrentRunningTest()).toString();
 		bScenarioResult = test.isPass();
@@ -303,6 +307,7 @@ public class JSystemJunit4ClassRunnerCustom extends JUnit4ClassRunner {
 			bbResult = "pass";
 		else
 			bbResult = "fail";
+
 		fileLine = testModuleName.split("/")[1] +"," + scenarioName.split("/")[1] + "," + bbResult;
 		try{
 			String filePath= TestCommonResource.getTestResoucresDirPath()+"testresults\\ScenarioResult.txt";

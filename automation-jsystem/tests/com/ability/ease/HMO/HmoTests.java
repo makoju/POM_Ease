@@ -66,11 +66,8 @@ public class HmoTests extends BaseTest {
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
 	@TestProperties(name = "Add Existing Patient To HMO", paramsInclude = { "agency,hic,lastName,firstName,dob,sex,testType" })
 	public void addToHMODuplicate() throws Exception {
-		if (hmo.addToHMODuplicatePatient(agency, hic, lastName, firstName, dob,
-				sex)) {
-			report.report(
-					"patient is already being tracked by HMO,hence not added",
-					Reporter.ReportAttribute.BOLD);
+		if (hmo.addToHMODuplicatePatient(agency, hic, lastName, firstName, dob,sex)) {
+			report.report("patient is already being tracked by HMO,hence not added",Reporter.ReportAttribute.BOLD);
 		} else {
 			report.report("patient is not tracked", Reporter.FAIL);
 		}

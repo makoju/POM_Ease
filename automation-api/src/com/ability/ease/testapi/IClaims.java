@@ -43,6 +43,12 @@ public interface IClaims {
 	 * method to only fill values in UB04 form , no validations performed
 	 */
 	public boolean getCountFromPendingActivity()throws Exception;
+	
+	/*
+	 * method to only fill values in UB04 form , no validations performed
+	 */
+	public boolean addOrRemoveClaimLinesInExistingClaim(String claimLineEntries,String claimLineNumberToDelete,
+			String claimLineNumberToAdd, String newClaimLineEntry)throws Exception;
 
 	/*
 	 * method to verify help text in UB04 form fields

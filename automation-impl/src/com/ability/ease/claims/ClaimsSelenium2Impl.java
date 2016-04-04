@@ -60,6 +60,12 @@ public class ClaimsSelenium2Impl implements IClaims{
 		return false;
 	}
 
+	@Override
+	public boolean addOrRemoveClaimLinesInExistingClaim(String claimLineEntries,String claimLineNumberToDelete,
+			String claimLineNumberToAdd, String newClaimLineEntry)throws Exception {
+		return claims.addOrRemoveClaimLinesInExistingClaim(claimLineEntries,claimLineNumberToDelete, claimLineNumberToAdd, newClaimLineEntry);
+	}
+
 
 	
 }

@@ -9,7 +9,7 @@ import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 public class DisableEasePage extends AbstractPageObject {
 	
-	public boolean disableEase(String grouporagencycheckboxname, String grouporagencyname, String disableuntil) throws Exception {
+	public boolean disableEase(String grouporagencycheckboxname, String grouporagencyname, String disableuntil, String expectedalertmessage) throws Exception {
 		String selectlocator;
 		if(!grouporagencycheckboxname.contains("Agency"))
 			selectlocator="groupid";
@@ -22,7 +22,7 @@ public class DisableEasePage extends AbstractPageObject {
 		selectByNameOrID(selectlocator, grouporagencyname);
 		selectByNameOrID("stoptype", disableuntil);
 		clickButtonV2("Submit");
-		return verifyAlert("FISS/DDE will stop executing immediately!");
+		return verifyAlert(expectedalertmessage);
 	}
 	
 	@Override

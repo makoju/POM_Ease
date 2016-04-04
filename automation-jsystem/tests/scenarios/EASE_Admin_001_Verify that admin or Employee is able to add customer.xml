@@ -29,6 +29,7 @@
         <antcallback target="t11"/>
         <antcallback target="t12"/>
         <antcallback target="t13"/>
+        <antcallback target="t14"/>
     </target>
     <target name="t0">
         <jsystem showoutput="true">
@@ -72,13 +73,21 @@
     </target>
     <target name="t5">
         <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="e91553f1-f88e-4bbb-9f71-b88ebb53e963"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.admin.AdminTests.updatePassword"/>
+        </jsystem>
+    </target>
+    <target name="t6">
+        <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="b0a51d83-2273-4332-8dc4-6f34301b517f"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.admin.AdminTests.loginNewCustomer"/>
         </jsystem>
     </target>
-    <target name="t6">
+    <target name="t7">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="df5862d6-35bd-4b4e-bb6d-7ff031ae1412"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -86,7 +95,7 @@
             <test name="com.ability.ease.admin.AdminTests.setUpAgencies"/>
         </jsystem>
     </target>
-    <target name="t7">
+    <target name="t8">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="51451edd-eae3-4fc5-8345-2433df6ce7d2"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -94,7 +103,7 @@
             <test name="com.ability.ease.admin.AdminTests.setUpAgencies"/>
         </jsystem>
     </target>
-    <target name="t8">
+    <target name="t9">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="2eda7beb-f146-40e1-ac5f-a2f7f98dd7ff"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -102,7 +111,7 @@
             <test name="com.ability.ease.admin.AdminTests.changeSchedule"/>
         </jsystem>
     </target>
-    <target name="t9">
+    <target name="t10">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="e918e570-bb91-42cf-b885-29c3c6f9fafa"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -110,7 +119,7 @@
             <test name="com.ability.ease.admin.AdminTests.clickHere"/>
         </jsystem>
     </target>
-    <target name="t10">
+    <target name="t11">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="49c5eb75-3540-41d8-b0ec-9237bcd29412"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -118,7 +127,7 @@
             <test name="com.ability.ease.admin.AdminTests.setUpProvidersGroup"/>
         </jsystem>
     </target>
-    <target name="t11">
+    <target name="t12">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="f10ca990-eadc-42f7-bc6a-0a4bada70c3e"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -126,7 +135,7 @@
             <test name="com.ability.ease.admin.AdminTests.configureDDECredentials"/>
         </jsystem>
     </target>
-    <target name="t12">
+    <target name="t13">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="86a5ce76-29dc-4ad4-a1ba-cdc9572395fe"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -134,7 +143,7 @@
             <test name="com.ability.ease.admin.AdminTests.changeSchedule"/>
         </jsystem>
     </target>
-    <target name="t13">
+    <target name="t14">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="925e6f2e-ea22-4248-a680-13d928ef6493"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>

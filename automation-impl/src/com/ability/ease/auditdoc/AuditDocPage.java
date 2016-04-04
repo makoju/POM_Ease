@@ -74,7 +74,7 @@ public class AuditDocPage extends AbstractPageObject{
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean verifyEsmdDeliveryStatusReportColumnsForHHA(String Timeframe, String Value, String agency, String agencyValue,String hic,String patient,String daysduedate,String duedate,String code) throws Exception {
+	public boolean verifyEsmdDeliveryStatusReportColumns(String Timeframe, String Value, String agency, String agencyValue,String hic,String patient,String daysduedate,String duedate,String code) throws Exception {
 		helper.clickAgency(agency, agencyValue);
 		helper.clickTimeFrame(Timeframe,Value);
 		Thread.sleep(8000);
@@ -209,7 +209,7 @@ public class AuditDocPage extends AbstractPageObject{
 							waitForElementToBeClickable(ByLocator.xpath, "//a[contains(text(),'Sent to CMS')]", 10);
 							if( isElementPresent(By.xpath("//a[contains(text(),'Sent to CMS')]"))){
 								clickLink("Sent to CMS");
-								if(waitForElementToBeClickable(ByLocator.xpath, xpathToADRSubPage, 60) != null){
+								if(waitForElementToBeClickable(ByLocator.xpath, xpathToADRSubPage, 80) != null){
 									report.report("Successfully sent ADR reponse documents to CMS", ReportAttribute.BOLD);
 								}else{
 									failCounter++;
@@ -263,6 +263,7 @@ public class AuditDocPage extends AbstractPageObject{
 		List<String> lsADRFilePaths = helper.getADRFilePath(adrFileType, relationalOperator);
 		List<String> lsADRFileNames = helper.getADRFileNamesFromFilePaths(lsADRFilePaths);
 
+		String xpathToADRRecord = "//td[contains(text(),'"+ claimIDorDCN +"')]";
 		String receivedByCMSESTXpath = "//td[contains(text(),'" + claimIDorDCN + "')]/following-sibling::td[3]";
 		String receivedByReviewerESTXpath = "//td[contains(text(),'" + claimIDorDCN + "')]/following-sibling::td[4]";
 		String reviewerAckTimeEST = null,  CMSAckTimeInEST = null;
@@ -270,89 +271,96 @@ public class AuditDocPage extends AbstractPageObject{
 		long timeDiffInHoursOfCMSAckTime = 0L, timeDiffInHoursOfReviewerAckTime = 0L; 
 
 		report.report("Verifying CMS status screen details");
-		report.report("Waiting for ~ 4 minutes to get the mock reposne from Audit Doc server...");
-		Thread.sleep(240000);
 
-		helper.navigateBack();
-		helper.navigateForward();
+		if( waitForElementToBeClickable(ByLocator.xpath, xpathToADRRecord, 30) != null){
+			report.report("ADR Submission Record present in CMS status details table");
+			report.report("Waiting for ~ 4 minutes to get the mock reposne from Audit Doc server...");
+			Thread.sleep(240000);
+			helper.navigateBack();
+			waitForElementToBeClickable(ByLocator.id, "forwardNav", 10);
+			helper.navigateForward();
 
-		if( helper.waitForADRResponsePageToBeVisible(receivedByCMSESTXpath) ){
+			if( helper.waitForADRResponsePageToBeVisible(receivedByCMSESTXpath) ){
 
-			//validations
-			List<WebElement> lsADRSubmissionTableHeaders = helper.getReportTableHeaders("datatable");
-			if ( Verify.compareTableHeaderNames(lsADRSubmissionTableHeaders, expectedCMSStatusTableHeaders)){
-				report.report("Validation 1 : CMS status update screen fileds have been validated successfully", ReportAttribute.BOLD);
+				//validations
+				List<WebElement> lsADRSubmissionTableHeaders = helper.getReportTableHeaders("datatable");
+				if ( Verify.compareTableHeaderNames(lsADRSubmissionTableHeaders, expectedCMSStatusTableHeaders)){
+					report.report("Validation 1 : CMS status update screen fileds have been validated successfully", ReportAttribute.BOLD);
+				}else{
+					failCounter++;
+					report.report("Validation 1 : CMS status update screen fileds validation failed", ReportAttribute.BOLD);
+				}
+
+				String sQueryCMSStatusUpdate = "SELECT * FROM ddez.cmsstatusupdates where CMSClaimID = "+ claimIDorDCN ;
+				Map<String, String> CMSStatusUpdateTableData = helper.getDataFromCMSStatusUpdateTable(sQueryCMSStatusUpdate);
+
+				//verify the review contractor name
+				if( CMSStatusUpdateTableData.get("ReviewerName").equalsIgnoreCase(reviewContractorName)){
+					report.report("Review contractor name -> expected : " + CMSStatusUpdateTableData.get("ReviewerName") + " and actual : " + 
+							reviewContractorName + " are same", ReportAttribute.BOLD);
+				}else{
+					failCounter++;
+					report.report("Fail :Review contractor name -> expected : " + CMSStatusUpdateTableData.get("ReviewerName") + " and actual : " 
+							+ reviewContractorName + " are not equal");
+				}
+				//verify CMS claim ID or DCN name
+				if( CMSStatusUpdateTableData.get("CMSClaimID").equalsIgnoreCase(claimIDorDCN)){
+					report.report("CMS Claim ID or DCN -> expected : " + CMSStatusUpdateTableData.get("CMSClaimID") + " and actual : " + 
+							claimIDorDCN + " are same", ReportAttribute.BOLD);
+				}else{
+					failCounter++;
+					report.report("Fail :CMS Claim ID or DCN -> expected : " + CMSStatusUpdateTableData.get("CMSClaimID") + " and actual : " + claimIDorDCN + " are not equal");
+				}
+				//verify CMS case ID
+				if( CMSStatusUpdateTableData.get("CMSCaseID").equalsIgnoreCase(caseID)){
+					report.report("CMS Case ID -> expected : " + CMSStatusUpdateTableData.get("CMSCaseID") + " and actual : " + 
+							caseID + " are same", ReportAttribute.BOLD);
+				}else{
+					failCounter++;
+					report.report("Fail :CMS Case ID -> expected : " + CMSStatusUpdateTableData.get("CMSCaseID") + " and actual : " + caseID + " are not equal");
+				}
+
+				//Verify Received By CMS and Received by Reviewer time stamps
+				CMSAckTimeInCST = CMSStatusUpdateTableData.get("CMSACKTime").replace('-', '/');
+				reviewerAckTimeCST = CMSStatusUpdateTableData.get("ReviewerACKTime").replace('-', '/');
+
+				report.report("CMS ack time from DB :" + CMSAckTimeInCST);
+				report.report("Reviewer ack time from DB :" + reviewerAckTimeCST);
+
+				WebElement CMSReceivedTime = waitForElementToBeClickable(ByLocator.xpath, receivedByCMSESTXpath, 60);
+				CMSAckTimeInEST = CMSReceivedTime.getText().trim();
+
+				WebElement reviewerReceivedTime = waitForElementToBeClickable(ByLocator.xpath, receivedByReviewerESTXpath, 60);
+				reviewerAckTimeEST = reviewerReceivedTime.getText().trim();
+				timeDiffInHoursOfCMSAckTime = helper.timeDiffInHours(CMSAckTimeInCST, CMSAckTimeInEST);
+				timeDiffInHoursOfReviewerAckTime = helper.timeDiffInHours(reviewerAckTimeCST, reviewerAckTimeEST);
+				report.report("Received By CMS time stamp in EST : " + CMSAckTimeInEST);
+				report.report("Received By CMS time stamp in CST : " + CMSAckTimeInCST);
+				report.report("Received By Reviewer time stamp in EST : " + reviewerAckTimeEST);
+				report.report("Received By Reviewer time stamp in CST : " + reviewerAckTimeCST);
+
+				if(timeDiffInHoursOfCMSAckTime == 1 && timeDiffInHoursOfReviewerAckTime == 1){	
+					report.report("Reviewer acknowledgement time and CMS acknowledge times are displayed correctly in EST time zone", ReportAttribute.BOLD);
+				}else{
+					failCounter++;
+					report.report("Fail : Reviewer acknowledgement time and CMS acknowledge times are not valid !");
+				}
+
+				helper.validateADRResponseTableData(CMSStatusUpdateTableData, "CMSTransactionID");
+				List<String> lsFileNamesFromToolTip = helper.getToolTipOfView(claimIDorDCN);
+				if( Verify.listEquals(lsFileNamesFromToolTip, lsADRFileNames) ) {
+					report.report("File names visible on view tool tip are same as uploaded ones", ReportAttribute.BOLD);
+				}else{
+					failCounter++;
+					report.report("Fail : File names visible on view tool tip are different from uploaded ones");
+				}
+
 			}else{
+				report.report("Fail : ADR Resonse Document submission page data table not populated with received timestamp values, please check!");
 				failCounter++;
-				report.report("Validation 1 : CMS status update screen fileds validation failed", ReportAttribute.BOLD);
 			}
-
-			String sQueryCMSStatusUpdate = "SELECT * FROM ddez.cmsstatusupdates where CMSClaimID = "+ claimIDorDCN ;
-			Map<String, String> CMSStatusUpdateTableData = helper.getDataFromCMSStatusUpdateTable(sQueryCMSStatusUpdate);
-
-			//verify the review contractor name
-			if( CMSStatusUpdateTableData.get("ReviewerName").equalsIgnoreCase(reviewContractorName)){
-				report.report("Review contractor name -> expected : " + CMSStatusUpdateTableData.get("ReviewerName") + " and actual : " + 
-						reviewContractorName + " are same", ReportAttribute.BOLD);
-			}else{
-				failCounter++;
-				report.report("Fail :Review contractor name -> expected : " + CMSStatusUpdateTableData.get("ReviewerName") + " and actual : " 
-						+ reviewContractorName + " are not equal");
-			}
-			//verify CMS claim ID or DCN name
-			if( CMSStatusUpdateTableData.get("CMSClaimID").equalsIgnoreCase(claimIDorDCN)){
-				report.report("CMS Claim ID or DCN -> expected : " + CMSStatusUpdateTableData.get("CMSClaimID") + " and actual : " + 
-						claimIDorDCN + " are same", ReportAttribute.BOLD);
-			}else{
-				failCounter++;
-				report.report("Fail :CMS Claim ID or DCN -> expected : " + CMSStatusUpdateTableData.get("CMSClaimID") + " and actual : " + claimIDorDCN + " are not equal");
-			}
-			//verify CMS case ID
-			if( CMSStatusUpdateTableData.get("CMSCaseID").equalsIgnoreCase(caseID)){
-				report.report("CMS Case ID -> expected : " + CMSStatusUpdateTableData.get("CMSCaseID") + " and actual : " + 
-						caseID + " are same", ReportAttribute.BOLD);
-			}else{
-				failCounter++;
-				report.report("Fail :CMS Case ID -> expected : " + CMSStatusUpdateTableData.get("CMSCaseID") + " and actual : " + caseID + " are not equal");
-			}
-
-			//Verify Received By CMS and Received by Reviewer time stamps
-			CMSAckTimeInCST = CMSStatusUpdateTableData.get("CMSACKTime").replace('-', '/');
-			reviewerAckTimeCST = CMSStatusUpdateTableData.get("ReviewerACKTime").replace('-', '/');
-
-			report.report("CMS ack time from DB :" + CMSAckTimeInCST);
-			report.report("Reviewer ack time from DB :" + reviewerAckTimeCST);
-
-			WebElement CMSReceivedTime = waitForElementToBeClickable(ByLocator.xpath, receivedByCMSESTXpath, 60);
-			CMSAckTimeInEST = CMSReceivedTime.getText().trim();
-
-			WebElement reviewerReceivedTime = waitForElementToBeClickable(ByLocator.xpath, receivedByReviewerESTXpath, 60);
-			reviewerAckTimeEST = reviewerReceivedTime.getText().trim();
-			timeDiffInHoursOfCMSAckTime = helper.timeDiffInHours(CMSAckTimeInCST, CMSAckTimeInEST);
-			timeDiffInHoursOfReviewerAckTime = helper.timeDiffInHours(reviewerAckTimeCST, reviewerAckTimeEST);
-			report.report("Received By CMS time stamp in EST : " + CMSAckTimeInEST);
-			report.report("Received By CMS time stamp in CST : " + CMSAckTimeInCST);
-			report.report("Received By Reviewer time stamp in EST : " + reviewerAckTimeEST);
-			report.report("Received By Reviewer time stamp in CST : " + reviewerAckTimeCST);
-
-			if(timeDiffInHoursOfCMSAckTime == 1 && timeDiffInHoursOfReviewerAckTime == 1){	
-				report.report("Reviewer acknowledgement time and CMS acknowledge times are displayed correctly in EST time zone", ReportAttribute.BOLD);
-			}else{
-				failCounter++;
-				report.report("Fail : Reviewer acknowledgement time and CMS acknowledge times are not valid !");
-			}
-
-			helper.validateADRResponseTableData(CMSStatusUpdateTableData, "CMSTransactionID");
-			List<String> lsFileNamesFromToolTip = helper.getToolTipOfView(claimIDorDCN);
-			if( Verify.listEquals(lsFileNamesFromToolTip, lsADRFileNames) ) {
-				report.report("File names visible on view tool tip are same as uploaded ones", ReportAttribute.BOLD);
-			}else{
-				failCounter++;
-				report.report("Fail : File names visible on view tool tip are different from uploaded ones");
-			}
-
 		}else{
-			report.report("Fail : ADR Resonse Document submission page data table not populated with received timestamp values, please check!");
+			report.report("Fail : ADR Record not present in CMS status details table, please check!");
 			failCounter++;
 		}
 
@@ -376,6 +384,7 @@ public class AuditDocPage extends AbstractPageObject{
 		int failCounter = 0;
 
 		helper.clickMyDDELink();
+		waitForElementToBeClickable(ByLocator.linktext, "Advanced", 30);
 		clickLink("Advanced");
 		//get the record count from ADR Report
 		if(waitForElementToBeClickable(ByLocator.xpath,sXpathOfOVERNIGHT, 30) != null){
@@ -423,7 +432,7 @@ public class AuditDocPage extends AbstractPageObject{
 	}
 
 	public boolean isDocSplitted(String claimIDorDCN)throws Exception{
-		
+
 		String sXpathToSplitSubmissionColumn = "//td[contains(text(),'" + claimIDorDCN + "')]/following-sibling::td[10]";
 		WebElement we = waitForElementToBeClickable(ByLocator.xpath, sXpathToSplitSubmissionColumn, 30);
 		if( we != null){
@@ -445,7 +454,7 @@ public class AuditDocPage extends AbstractPageObject{
 		}
 		return failCounter == 0 ? true : false;
 	}
-	
+
 	public long generateRandomInteger(int length)throws Exception{
 
 		Random random = new Random();

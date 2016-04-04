@@ -109,7 +109,7 @@ public class WebDriverFactory {
 			InternetExplorerDriverService.Builder service =
 			           new InternetExplorerDriverService.Builder();
 			        service = service.withLogLevel(InternetExplorerDriverLogLevel.TRACE);
-			        service = service.withLogFile(new File("c:\\selenium.log"));
+			        service = service.withLogFile(new File("c:\\logs\\selenium.log"));
 		        
 			webDriver = new InternetExplorerDriver(service.build(), ieCapabilities);
 		} catch (Exception e) {

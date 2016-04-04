@@ -18,4 +18,9 @@ public interface IEligibility {
 	abstract public boolean verifyOptionsUnderPendingActivityLogScreen() throws Exception;
 	abstract public boolean verifyOptionsUnderCompletedActivityLogScreen() throws Exception;
 	abstract public boolean verifyOptionsUnderFailedActivityLogScreen() throws Exception;
+	abstract public boolean verifyOptionsUnderPatientInformationScreen(String hic, String firstname, String lastname) throws Exception;
+	abstract public boolean searchactivitylogByHIC(String status, String hic) throws Exception;
+	abstract public boolean verifyView271RespPagehasA7() throws Exception;
+	abstract public boolean navigatetoPatientInfoScreen(String firstname, String lastname, String hic) throws Exception;
 }
+

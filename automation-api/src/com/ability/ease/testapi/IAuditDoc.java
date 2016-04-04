@@ -6,7 +6,7 @@ import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFilesSize;
 
 public interface IAuditDoc {
 	
-	boolean verifyEsmdDeliveryStatusReportColumnsForHHA(String timeframe, String Value, String agency, String agencyValue,String hic,String patient,
+	boolean verifyEsmdDeliveryStatusReportColumns(String timeframe, String Value, String agency, String agencyValue,String hic,String patient,
 			String daysduedate,String duedate,String code) throws Exception;
 	
 	/*

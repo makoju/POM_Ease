@@ -736,11 +736,11 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			WebDriverHelper.highlightElement(driver, element);
 
 			if (WorkingEnvironment.getWebdriverType() == WebDriverType.INTERNET_EXPLORER_DRIVER) {
-				element.click();
+				//element.click();
 				//sendEnterOnWebElement(element);
 				//element.sendKeys(Keys.ENTER);
 				//element.click();
-				//sendEnterOnWebElement(element);
+				sendEnterOnWebElement(element);
 				return;
 			}
 			element.click();
@@ -1427,6 +1427,10 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		catch(Exception e){
 			checkandignoremodaldialog();
 		}
+		
+		if(webElement==null)
+			  report.report("waited for "+timeOutInSeconds+" seconds for the WebElement to be visible but not found", ReportAttribute.BOLD);
+		
 		return webElement;
 	}
 
@@ -1653,8 +1657,9 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			//Alert alert = driver.switchTo().alert();
 			Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-			sActual = alert.getText().toString();
+			sActual = alert.getText().toString().replaceAll("\\\n", "");
 			report.report("Expected text on alert box is :" +sExpected);
+			report.report("Actual text on alert box is :" +sActual);
 			if( sActual.equalsIgnoreCase(sExpected)){
 				report.report("Actual text on alert box is : "+ sActual);
 				alert.accept();
@@ -1681,6 +1686,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			alert = waitForAlert(driver);
 			sActual = alert.getText().toString();
 			report.report("Expected text on alert box is :" +sExpected);
+			report.report("Actual text on alert box is :" +sActual);
 			if( sActual.equalsIgnoreCase(sExpected)){
 				report.report("Actual text on alert box is : "+ sActual);
 				alert.accept();
@@ -1812,8 +1818,8 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 * You can add other possible ways to identify an anchor tag without link text to existing xpath
 	 * @author nageswar.bodduri
 	 */
-	public void clickLinkV2(String linkLocator)throws Exception{
 
+	public void clickLinkV2(String linkLocator)throws Exception{
 		String elementLocator = "//a[@id='" + linkLocator+"' or @name='" + linkLocator +"' or text()='"+linkLocator+"']";
 		WebElement element = null;
 		WebDriverWait wait = new WebDriverWait(driver, 10);

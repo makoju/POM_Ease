@@ -19,6 +19,8 @@
         <antcallback target="t1"/>
         <antcallback target="t2"/>
         <antcallback target="t3"/>
+        <antcallback target="t4"/>
+        <antcallback target="t5"/>
     </target>
     <target name="t0">
         <jsystem-ant antfile="${scenarios.base}/scenarios/TS_EASE_UB04_001_Testing all the fields in UB04 form.xml">
@@ -36,7 +38,7 @@
     </target>
     <target name="t2">
         <jsystem-ant antfile="${scenarios.base}/scenarios/TS_EASE_UB04_003_Verifying add or remove claim line options for existing Claim.xml">
-            <property name="jsystem.uuid" value="b49aee48-a5b5-4451-8994-6af274a5725c"/>
+            <property name="jsystem.uuid" value="e23004ad-7e2c-4c9e-ac24-ac08b44f0308"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>
@@ -44,6 +46,20 @@
     <target name="t3">
         <jsystem-ant antfile="${scenarios.base}/scenarios/TS_EASE_UB04_008_Verification of the Data  in the Claim line Pop window.xml">
             <property name="jsystem.uuid" value="bad1be39-2e74-4c5c-a0a3-e919a4a2996a"/>
+            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+        </jsystem-ant>
+    </target>
+    <target name="t4">
+        <jsystem-ant antfile="${scenarios.base}/scenarios/TS_EASE_UB04_011_Verify the Summation of Existing Rejected claim.xml">
+            <property name="jsystem.uuid" value="dd45285c-f06d-444f-9ebb-7c69df22b3ef"/>
+            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+        </jsystem-ant>
+    </target>
+    <target name="t5">
+        <jsystem-ant antfile="${scenarios.base}/scenarios/TS_EASE_UB04_036_Verification of Total units and Covered Units under Serv Units for existing claim.xml">
+            <property name="jsystem.uuid" value="897bda90-a8d4-4a60-b10c-580accb810af"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>

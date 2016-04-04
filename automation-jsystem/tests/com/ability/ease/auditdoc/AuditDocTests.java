@@ -41,9 +41,9 @@ public class AuditDocTests extends BaseTest{
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "verifyEsmdDeliveryStatusReportColumns : ${agencyValue}", paramsInclude = {"timeframe,Value,agency,agencyValue,hic,patient,daysduedate,duedate,code,testType"})
-	public void verifyEsmdDeliveryStatusReportColumnsForHHA() throws Exception{	
+	public void verifyEsmdDeliveryStatusReportColumns() throws Exception{	
 
-		if(auditdoc.verifyEsmdDeliveryStatusReportColumnsForHHA(timeframe,Value,agency,agencyValue,hic,patient,daysduedate,duedate,code)){
+		if(auditdoc.verifyEsmdDeliveryStatusReportColumns(timeframe,Value,agency,agencyValue,hic,patient,daysduedate,duedate,code)){
 			report.report("Expected Columns and data presented under eSMD Report", Reporter.PASS);
 		}else{
 			report.report("Expected Columns and data not presented under eSMD Report", Reporter.FAIL);

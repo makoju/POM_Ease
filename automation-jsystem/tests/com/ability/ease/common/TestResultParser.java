@@ -154,7 +154,7 @@ public class TestResultParser {
 			//Now, push art.scenario table results to art.testresults table to display in ART dash board
 			String sQuery1 = "Select count(scenarioname) from art.scenario";
 			String sQuery2 = "Select count(scenariostatus) from art.scenario where scenarioStatus = 'pass'";
-			String sQuery3 = "Select invalid.customercount(scenariostatus) from art.scenario where scenarioStatus = 'fail'";
+			String sQuery3 = "Select count(scenariostatus) from art.scenario where scenarioStatus = 'fail'";
 
 			oResultSet = getResultSet(sQuery1);
 			scenarioCount = getCoulmnValue(oResultSet, "count(scenarioname)");

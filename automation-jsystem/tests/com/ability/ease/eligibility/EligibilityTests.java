@@ -256,6 +256,42 @@ public class EligibilityTests extends BaseTest{
 			report.report("Activity: "+status+" count was not decreased by one Actual: "+latestactivitycount+" Expected: "+(activitycount-1), Reporter.FAIL);
 	}
 	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify Options Under Patient Information Screen", paramsInclude = { "hic,firstname,lastname,testType" })
+	public void verifyOptionsUnderPatientInformationScreen() throws Exception{
+		report.report("Inside verifyOptionsUnderPatientInformationScreen test method");
+		if(!elig.verifyOptionsUnderPatientInformationScreen(hic,firstname,lastname)) {
+			report.report("Failed to verify Options Under Patient Information Screen!!!",	Reporter.FAIL);
+		} else {
+			report.report("Successfully verified Options Under Patient Information Screen!!!", Reporter.PASS);
+		}	
+	}
+	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Search Activity Log By HIC", paramsInclude = { "status,hic,testType" })
+	public void searchactivitylogByHIC() throws Exception{
+		report.report("Inside searchactivitylogByHIC test method");
+		if(!elig.searchactivitylogByHIC(status,hic)) {
+			report.report("Failed to search activitylog By HIC!!!",	Reporter.FAIL);
+		} else {
+			report.report("Successfully searched activitylog By HIC!!!", Reporter.PASS);
+		}	
+	}
+	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "navigate to patient information screen", paramsInclude = { "firstname,lastname,hic,testType" })
+	public void navigatetoPatientInfoScreen() throws Exception{
+		report.report("Inside navigatetopatientinformation test method");
+		if(!elig.navigatetoPatientInfoScreen(firstname,lastname,hic)) {
+			report.report("Failed to navigate to patient information screen!!!",	Reporter.FAIL);
+		} else {
+			report.report("Successfully navigated to patient information screen!!!", Reporter.PASS);
+		}	
+	}
+	
 	/*######
 	Getters and Setters
 	######*/

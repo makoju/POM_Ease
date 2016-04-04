@@ -22,58 +22,50 @@
         <antcallback target="t4"/>
         <antcallback target="t5"/>
         <antcallback target="t6"/>
-        <antcallback target="t7"/>
     </target>
     <target name="t0">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/AuditDocs_001_Verify esMD Delivery &amp; Status report for HHA Providers.xml">
-            <property name="jsystem.uuid" value="ff4d9a14-3c31-47fe-b491-517de21a71cb"/>
+        <jsystem-ant antfile="${scenarios.base}/scenarios/AuditDocs_001_Verify columns and pages data for HHA provider.xml">
+            <property name="jsystem.uuid" value="2be8ade1-e18b-465f-b87f-f8bc6d0c26de"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>
     </target>
     <target name="t1">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/AuditDocs_002_Verify esMD Delivery &amp; Status report for Non-HHA Providers.xml">
-            <property name="jsystem.uuid" value="0b70fe3f-24a9-4bf0-ab7b-9ebfd6796e50"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t2">
         <jsystem-ant antfile="${scenarios.base}/scenarios/AuditDocs_003_Verify whether ADR Response Document Upload  accepting PDF , TIFF, TIF file formats.xml">
             <property name="jsystem.uuid" value="9b953514-d908-4c4c-af5f-6177bfb96389"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>
     </target>
-    <target name="t3">
+    <target name="t2">
         <jsystem-ant antfile="${scenarios.base}/scenarios/AuditDocs_004_Verification of CMS status screen after submitting the ADR docs to CMS.xml">
             <property name="jsystem.uuid" value="7af97ba1-496d-49c0-81a4-03b7125b2602"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>
     </target>
-    <target name="t4">
+    <target name="t3">
         <jsystem-ant antfile="${scenarios.base}/scenarios/AuditDocs_005_Verification of split submissions under CMS status screen after submitting  the ADR files.xml">
             <property name="jsystem.uuid" value="7753f761-9558-4268-bfcf-a375b76507f7"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>
     </target>
-    <target name="t5">
+    <target name="t4">
         <jsystem-ant antfile="${scenarios.base}/scenarios/AuditDocs_006_Verify records present under eSMD report.xml">
             <property name="jsystem.uuid" value="075ff943-d0dd-4627-8f18-e29b913b194a"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>
     </target>
-    <target name="t6">
+    <target name="t5">
         <jsystem-ant antfile="${scenarios.base}/scenarios/AuditDocs_007_Verify REJECT submissions functionality under ADR Doc Upload screen and CMS Status screen.xml">
             <property name="jsystem.uuid" value="ce155f9b-fdfe-41c0-875d-c428dfb300f6"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>
     </target>
-    <target name="t7">
+    <target name="t6">
         <jsystem-ant antfile="${scenarios.base}/scenarios/AuditDocs_008_Verify RESEND submissions functionality under ADR Doc Upload screen and CMS Status screen.xml">
             <property name="jsystem.uuid" value="3c94bf75-f859-44d7-9b39-507150fcc20b"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>

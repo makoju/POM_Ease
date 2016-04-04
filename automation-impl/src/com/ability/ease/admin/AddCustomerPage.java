@@ -134,7 +134,11 @@ public class AddCustomerPage extends AbstractPageObject{
 		}					
 		clickButtonV2("Submit");
 		String sExpected= "Customer "+ mapAttrVal.get("Company Name") + " added!";
-		verifyAlert(sExpected);
+		if(!verifyAlert(sExpected))
+		{
+			report.report("Expected Alert: "+sExpected+" Not displayed", Reporter.WARNING);
+			failurecount++;
+		}
 		//clickOK();
 		report.report("Fail counter from add customer method : " + failurecount);
 		return failurecount == 0 ? true : false;
@@ -142,9 +146,8 @@ public class AddCustomerPage extends AbstractPageObject{
 
 	public boolean loginNewCustomer(String username,String newpassword)throws Exception{
 		//int failurecount=0;
-		newpassword="test1234";
-		updatePassword(username,newpassword);
-		Thread.sleep(5000);
+		//newpassword="test1234";
+		//updatePassword(username,newpassword);
 		if((new MiscPage().validLogin(username,newpassword)))
 		{
 			report.report("Logged in with the new customer successfully", ReportAttribute.BOLD);
@@ -264,7 +267,7 @@ public class AddCustomerPage extends AbstractPageObject{
 
 
 
-	public boolean changeSchedule(String customerName,String timeZone) throws Exception
+	public boolean changeSchedule(String timeZone) throws Exception
 	{
 		boolean result=false;
 		
@@ -368,7 +371,7 @@ public class AddCustomerPage extends AbstractPageObject{
 	public boolean navigateToMyDDE(String groupName,String ddeUserId,String ddePassword,String verifyPassword)throws Exception
 	{
 
-		WebElement link = waitForElementToBeClickable(ByLocator.linktext, "My DDE", 10);
+		WebElement link = waitForElementToBeClickable(ByLocator.linktext, "MY DDE", 10);
 		
 		if ( link != null) 			
 			safeJavaScriptClick("MY DDE");
@@ -415,10 +418,9 @@ public class AddCustomerPage extends AbstractPageObject{
 	public boolean updatePassword(String username,String newpassword)
 	{
 		boolean updatestatus = false;
-		newpassword="test1234";
 		int noOfrowsUpdated = 0;
 		noOfrowsUpdated = MySQLDBUtil
-				.getUpdateResultFromMySQLDB("UPDATE User SET Password=PASSWORD(CONCAT('"+newpassword+"','PeakRevenue',UserName)),ForcePasswordChange=0 WHERE Username IN (username)");
+				.getUpdateResultFromMySQLDB("UPDATE User SET Password=PASSWORD(CONCAT('"+newpassword+"','PeakRevenue',UserName)),ForcePasswordChange=0 WHERE Username='"+username+"'");
 		if (noOfrowsUpdated > 0) {
 			updatestatus = true;
 		}
@@ -448,7 +450,6 @@ public class AddCustomerPage extends AbstractPageObject{
 	/* Once BI Server is up i can validate the username and signout functionality in the popup window*/
 	public boolean verifyBIAnalyticsUser(String username)throws Exception
 	{
-		username=null;
 		int failCounter = 0;
 		//String password="test1234";
 

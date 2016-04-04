@@ -41,7 +41,7 @@ public class ClaimsPage extends AbstractPageObject{
 	 * This method is to verify all the fields in UB04 form
 	 */
 	public boolean verifyUB04FormFields(Map<String, String> mapAttrVal)throws Exception{
-		String sXpathToAgencyName = "//span[contains(text(),'OVERNIGHT')]/..";
+		String sXpathToAgencyName = "//td[contains(text(),'FOR AGENCY')]/..";
 		String sAgencyName = null;
 		String sClaimRequestXML = null;
 		String sClaimRequestID = null;
@@ -51,6 +51,9 @@ public class ClaimsPage extends AbstractPageObject{
 
 		//click on MY DDE link and capture Agency name
 		helper.clickMYDDELink();
+		moveToElement("Agency");
+		selectByNameOrID("reportAgencySelect", "HHA1");
+		clickButton("Change Agency");
 		//Before start filling new claim form get the agency name from OVER NIGHT report screen
 		waitForElementVisibility(By.xpath(sXpathToAgencyName));
 		sAgencyName = driver.findElement(By.xpath(sXpathToAgencyName)).getText();
@@ -110,7 +113,7 @@ public class ClaimsPage extends AbstractPageObject{
 
 		clickLinkV2("claimSubmit");
 		if(helper.validateConfirmationScreenSteps(lsAttributes)){
-			clickButton("yesConfirmEditClaimButton");
+			clickButtonV2("yesConfirmEditClaimButton");
 			if( verifyAlert("Changes scheduled!")){
 				report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
 			}
@@ -268,7 +271,7 @@ public class ClaimsPage extends AbstractPageObject{
 		if( !isSubmitWarn ) {
 			report.report("Submit warning alert not present on the screen...");
 			if(helper.validateConfirmationScreenSteps(lsAttributes)){
-				clickButton("yesConfirmEditClaimButton");
+				clickButtonV2("yesConfirmEditClaimButton");
 				if( verifyAlert("Changes scheduled!")){
 					report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
 				}
@@ -277,7 +280,7 @@ public class ClaimsPage extends AbstractPageObject{
 			report.report("Submit warning alert is present on the screen...");
 			helper.acceptUB04SubmitWarning();
 			if(helper.validateConfirmationScreenSteps(lsAttributes)){
-				clickButton("yesConfirmEditClaimButton");
+				clickButtonV2("yesConfirmEditClaimButton");
 				if( verifyAlert("Changes scheduled!")){
 					report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
 				}
@@ -340,6 +343,8 @@ public class ClaimsPage extends AbstractPageObject{
 		String searchResultXpath = "//td[contains(text(),'SEARCH RESULTS')]";
 		WebElement searchResult = null;
 
+		helper.clickMYDDELink();
+		waitForElementToBeClickable(ByLocator.id, "reportHICSearch", 30);
 		WebElement searchIcon = driver.findElement(By.id("reportHICSearch"));
 		if(searchIcon != null){
 			moveToElement(searchIcon);
@@ -392,7 +397,27 @@ public class ClaimsPage extends AbstractPageObject{
 			if(pcnValue.trim().equalsIgnoreCase(patientControlNumber)){
 				report.report("Claim record has been opened in edit mode successfully", ReportAttribute.BOLD);
 				result = true;
-			}else{
+				clickLink("Submit");
+				boolean isSubmitWarn = helper.isSubmitWarningPresent();
+				if( !isSubmitWarn ) {
+					report.report("Submit warning alert not present on the screen...");
+					clickButtonV2("yesConfirmEditClaimButton");
+					if( verifyAlert("Changes scheduled!")){
+						report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
+					}
+				}else {
+					report.report("Submit warning alert is present on the screen...");
+					helper.acceptUB04SubmitWarning();
+					clickButtonV2("yesConfirmEditClaimButton");
+					if( verifyAlert("Changes scheduled!")){
+						report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
+					}else{
+						report.report("There are some problems in form filling, please fill all mandatory values in UB04 form");
+						failCounter++;
+					}
+				}
+			}
+			else{
 				report.report("Fail : Unable to open claim record");
 				result = false;
 			}
@@ -404,6 +429,7 @@ public class ClaimsPage extends AbstractPageObject{
 	public boolean verifyDataInEditClaimLinePopUpWindow(Map<String, String> mapAttrValues, String claimLineNumberToEdit)throws Exception{
 		String sEditClaimLineHeaderTextAcual = null;
 		String sEditClaimLineHeaderTextExpected = "Edit Claim Line - "+ claimLineNumberToEdit;
+		String sXpathToOKButton = "//button/span[contains(text(),'OK')]";
 
 		List<String> editClaimLineModelDailogBoxDataExpected = new ArrayList<String>();
 		helper.clickMYDDELink();
@@ -429,7 +455,7 @@ public class ClaimsPage extends AbstractPageObject{
 			editClaimLineModelDailogBoxDataExpected.add(s);
 		}
 		//capture elements data on edit claim line dailog box
-		driver.switchTo().activeElement();
+		WebElement we = driver.switchTo().activeElement();
 		List<String> editClaimLineModelDailogBoxDataActual = helper.getFiledValuesFromEditClaimLineModelDailogWindow();
 
 		//Get header of edit claim line model window
@@ -449,19 +475,27 @@ public class ClaimsPage extends AbstractPageObject{
 			report.report("Fail : there is a mismatch in data on edit claim line model dailog window");
 			failCounter++;
 		}
+		driver.findElement(By.xpath(sXpathToOKButton)).click();
+		clickLinkV2("claimSubmit");
+		if (helper.handleSubmitWarningAlert(lsAttributes) ){
+			report.report("Successfully filled values in UB04 form");
+		}else{
+			report.report("Fail : Error while filling values in UB04 form");
+			failCounter++;
+		}
 
 		report.report("Fail counter is : " + failCounter);
 		return  (failCounter == 0) ? true : false;
 	}
-	
+
 	/**
 	 * Use this method to open an existing claim from Pending Activity Box based on HIC value
 	 * @param - HIC is mandatory
 	 */
 	public boolean openExistingClaimFromPendingAQB(String HIC)throws Exception{
-		
-		String xpathToRenchIcon = "//a[contains(text(),'"+ HIC +"')]/../preceding-sibling::td[3]/img";
-		
+
+		String xpathToRenchIcon = "//a[contains(text(),'"+ HIC +"')]/../preceding-sibling::td[3]/a/img";
+
 		int pendingactivitycountprev = helper.getActivitycount("tdPendingActivity");
 		Thread.sleep(30000);
 		int pendingactivitycountafter = helper.getActivitycount("tdPendingActivity");
@@ -481,18 +515,18 @@ public class ClaimsPage extends AbstractPageObject{
 			failCounter++;
 			report.report("Count in pening activity box after claim submission is zero");
 		}
-		
+
 		return (failCounter == 0 ) ? true : false;
 	} 
-	
+
 	/**
 	 * Use this method to fill values in UB04 form ,this method do not perform any validations
 	 * @param - mapAttrValues
 	 */
 	public boolean fillUB04FormValuesOnly(Map<String, String> mapAttrValues)throws Exception{
-		
+
 		String xpathToOverNightReportHeader = "//span[contains(text(),'OVERNIGHT')]/..";
-		
+
 		UIAttributeXMLParser parser = new UIAttributeXMLParser();
 		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Claims\\UB04.xml", mapAttrValues);
 
@@ -508,11 +542,165 @@ public class ClaimsPage extends AbstractPageObject{
 			failCounter++;
 		}
 		return (failCounter == 0 ) ? true : false;
-		
 	}
-	
-	
-	
+
+	/**
+	 * Use this method to add or remove claim lines in existing claim
+	 * @param - mapAttrValues
+	 */
+	public boolean addOrRemoveClaimLinesInExistingClaim(String claimLineEntries, String claimLineNumberToDelete,
+			String claimLineNumberToAdd, String newClaimLineEntry )throws Exception{
+
+		float[] correctedClaimTotals = null;
+		float prevTotalCoveredCharges = 0, prevTotalNonCoveredCharges = 0;
+		String sClaimRequestXML = null;
+		String sClaimRequestID = null;		
+		String sXpath = "//li[contains(text(),'0001')]";
+
+		Thread.sleep(5000);
+		waitForElementToBeClickable(ByLocator.xpath, sXpath, 60);
+		driver.findElement(By.xpath("//li[contains(text(),'0001')]")).click();
+		String startTime = helper.getCurrentTimeFromEaseDB();
+
+		//Before deleting the claim line entry get totals
+		float[] totalsBeforeDelete = helper.getTotalsFromUB04Form();
+
+		if( totalsBeforeDelete.length > 0) {
+			report.report("Total covered charges before deletion of claim line : " + String.valueOf(totalsBeforeDelete[0]));
+			report.report("Total non-covered charges before deletion of claim line : " + String.valueOf(totalsBeforeDelete[1]));
+			prevTotalCoveredCharges = totalsBeforeDelete[0];
+			prevTotalNonCoveredCharges = totalsBeforeDelete[1];
+		}else{
+			report.report("Fail to get total charges in UB04 form from UI, before removing claim entry", report.WARNING);
+			failCounter++;
+		}
+
+		//get claim line record details which is going to be deleted
+		String[] sClaimLines =claimLineEntries.split(",");
+		String sClaimLineToBeDeleted = sClaimLines[Integer.valueOf(claimLineNumberToDelete)-1];
+		float[] deletedTotals = helper.getTotalsFromClaimLine(sClaimLineToBeDeleted);
+		correctedClaimTotals = new float[]{helper.round(prevTotalCoveredCharges - deletedTotals[0],2), 
+				helper.round(prevTotalNonCoveredCharges - deletedTotals[1],2)};
+
+		//Delete claim line entry
+		String xPathToIdentifyWhichLineToDelete = "//*[@name='ub42_"+claimLineNumberToDelete+"']";
+		helper.moveToEditIcon(xPathToIdentifyWhichLineToDelete);
+		waitForElementVisibility(By.id("editmenutext"));
+		if(isElementPresent(By.id("editmenutext"))){
+			safeJavaScriptClick("Remove this claim line");
+			report.report("Removed claim line : "+ claimLineNumberToDelete);
+		}else{
+			report.report("Failed moved mouse to edit icon");
+			failCounter++;
+		}
+		//compare claim totals after deletion of claim line
+		float[] totalsAfterDeleteClaimLine = helper.getTotalsFromUB04Form();
+
+		if ( Verify.compareFloatArrays(totalsAfterDeleteClaimLine, correctedClaimTotals)){
+			report.report("Total covered charges after deletion of claim line : " + String.valueOf(totalsAfterDeleteClaimLine[0]));
+			report.report("Total non-covered charges after deletion of claim line : " + String.valueOf(totalsAfterDeleteClaimLine[1]));
+			report.report("Claim totals after claim line deletion are corrected successfully");
+		}else{
+			report.report("Fail : Claim totals after claim line deletion are not corrected");
+			failCounter++;
+		}
+
+		//Add claim line entry
+		String[] temp1 = claimLineNumberToAdd.split(",");
+		String sNewClaimLinePoisition = temp1[0];
+		String beforeOrAfter = temp1[1];
+		String xPathToIdentifyAtWhichLineToAdd = "//*[@name='ub42_"+sNewClaimLinePoisition+"']";
+		float[] addedTotals = helper.getTotalsFromClaimLine(newClaimLineEntry);
+		helper.moveToEditIcon(xPathToIdentifyAtWhichLineToAdd);
+		waitForElementVisibility(By.id("editmenutext"));
+		if(isElementPresent(By.id("editmenutext"))){
+			if(beforeOrAfter.equalsIgnoreCase("before")){
+				safeJavaScriptClick("Add claim line before");
+				report.report("Added new claim line : "+ newClaimLineEntry + " : before line " + sNewClaimLinePoisition);
+			}else if(beforeOrAfter.equalsIgnoreCase("after")){
+				safeJavaScriptClick("Add claim line after");
+				report.report("Added new claim line : "+ newClaimLineEntry + " : after line " + sNewClaimLinePoisition);
+			}else{
+				report.report("Please provide correct position either before or after in jsystem");
+			}
+		}else{
+			report.report("Failed moved mouse to edit icon");
+			failCounter++;
+		}
+		helper.addClaimLine(newClaimLineEntry, sNewClaimLinePoisition, beforeOrAfter);
+		//this line is added to take over the mouse from last claim line entry,such that final values will get populated 
+		driver.findElement(By.xpath("//li[contains(text(),'0001')]")).click();
+
+		//compare totals after adding new claim line
+		float[] totalsAfterAddClaimLine = helper.getTotalsFromUB04Form();
+		correctedClaimTotals = new float[]{helper.round(totalsAfterDeleteClaimLine[0] + addedTotals[0],2), 
+				helper.round(totalsAfterDeleteClaimLine[1] + addedTotals[1],2)};
+
+		if ( Verify.compareFloatArrays(totalsAfterAddClaimLine, correctedClaimTotals)){
+			report.report("Total covered charges after addition of new claim line : " + String.valueOf(totalsAfterAddClaimLine[0]));
+			report.report("Total non-covered charges after addition of new claim line : " + String.valueOf(totalsAfterAddClaimLine[1]));
+			report.report("Claim totals after new claim line addition are corrected successfully");
+		}else{
+			report.report("Fail : Claim totals after new claim line addition are not corrected");
+			failCounter++;
+		}
+
+		clickLink("Submit");
+		boolean isSubmitWarn = helper.isSubmitWarningPresent();
+
+		if( !isSubmitWarn ) {
+			report.report("Submit warning alert not present on the screen...");
+			clickButtonV2("yesConfirmEditClaimButton");
+			if( verifyAlert("Changes scheduled!")){
+				report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
+			}
+		}else {
+			report.report("Submit warning alert is present on the screen...");
+			helper.acceptUB04SubmitWarning();
+			clickButtonV2("yesConfirmEditClaimButton");
+			if( verifyAlert("Changes scheduled!")){
+				report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
+			}else{
+				report.report("There are some problems in form filling, please fill all mandatory values in UB04 form");
+				failCounter++;
+			}
+		}
+		String endTime = helper.getCurrentTimeFromEaseDB();
+		//waiting to record to be pushed unto the database
+		Thread.sleep(5000);
+		//get the xml file from database
+		String sRequestDetails[] = helper.getUB04XMLFromDatabase(startTime, endTime);
+		sClaimRequestID = sRequestDetails[0];
+		sClaimRequestXML = sRequestDetails[1];
+
+		String sFileName = TestCommonResource.getTestResoucresDirPath()+"UB04XMLs\\Claim_"+sClaimRequestID+".xml";
+		helper.stringToDom(sClaimRequestXML, sFileName);
+		//check whether XMl file contains an entry for removed claim line
+		String sXpathExpression = "//claimline[@action='remove']/@line";
+		String sRemovedClaimLineNumber = UB04FormXMLParser.getInstance().getValueOfXpathExpression(sFileName, sXpathExpression);
+
+
+		if(sRemovedClaimLineNumber.equalsIgnoreCase(claimLineNumberToDelete)){
+			report.report("Request XMl file contains an entry for removed claim line : " + claimLineNumberToDelete);
+		}else{
+			report.report("Fail : Request XML file doesn't contain entry for removed claim line :" + claimLineNumberToDelete);
+			failCounter++;
+		}
+
+		//verify totals in XML file and UB04 form in UI
+		float[] totalsFromXMLFile = UB04FormXMLParser.getInstance().getClaimTotals(sFileName);
+		if(Verify.compareFloatArrays(totalsAfterAddClaimLine, totalsFromXMLFile)){
+			report.report("Claim totals in XML file and UB04 form are same and validated successfully");
+		}else{
+			failCounter++;
+			report.report("Fail: Claim totals in XMl file and UB04 are not same");
+		}
+
+		MySQLDBUtil.closeAllDBConnections();
+		report.report("fail counter:" + String.valueOf(failCounter));
+		return (failCounter == 0) ? true : false;
+	}
+
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub
@@ -521,7 +709,6 @@ public class ClaimsPage extends AbstractPageObject{
 
 	@Override
 	public void navigateToPage() throws Exception {
-		// TODO Auto-generated method stub
 
 	}
 }

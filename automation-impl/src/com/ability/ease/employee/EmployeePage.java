@@ -29,9 +29,6 @@ public class EmployeePage extends AbstractPageObject{
 	
 	public boolean addEmployee(Map<String, String> mapAttrVal)throws Exception
 	{
-		String username=null;
-		String newpassword="test1234";
-		int failCounter = 0;
 		WebElement link = waitForElementVisibility(By.linkText("Add Employee"));
 		if ( link != null) 			
 			safeJavaScriptClick("Add Employee");
@@ -44,7 +41,7 @@ public class EmployeePage extends AbstractPageObject{
 		UIActions admin = new UIActions();
 		admin.fillScreenAttributes(lsAttributes);
 		
-		username = mapAttrVal.get("Username");
+		String username = mapAttrVal.get("Username");
 
 		List<WebElement> checkBoxes = driver.findElements(By.xpath("//input[@type='checkbox']"));
 		for(int i=0;i<checkBoxes.size();i++){
@@ -62,24 +59,12 @@ public class EmployeePage extends AbstractPageObject{
 		if(verifyAlert(sExpected)){
 			report.report( username + " employee added succssfully !!", ReportAttribute.BOLD);
 		}else{
-			report.report( "Failed to add employee " + username);
-			failCounter++;
+			report.report( "Failed to add employee " + username, Reporter.WARNING);
+			return false;
 		}
 		clickOK();
-		AddCustomerPage custpage=new AddCustomerPage();
-		custpage.updatePassword(username,newpassword);		
-		if(new MiscPage().validLogin(username,newpassword))
-		{
-			report.report("Logged in with the new employee successfully",ReportAttribute.BOLD);
-		}
-		else
-		{
-			report.report("Logged in with the new employee unsuccessfully",Reporter.WARNING);
-			failCounter++;
-		}
 		
-		return (failCounter == 0) ? true : false;
-
+		return true;
 	}
 
 	@Override

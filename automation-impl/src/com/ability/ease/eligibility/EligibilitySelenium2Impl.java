@@ -62,4 +62,26 @@ public class EligibilitySelenium2Impl implements IEligibility{
 	public int getActivityCount(String status) throws Exception {
 		return eligPage.getActivityCount(status);
 	}
+
+	@Override
+	public boolean searchactivitylogByHIC(String status, String hic) throws Exception {
+		return eligPage.searchactivitylogByHIC(status,hic);
+	}
+
+	@Override
+	public boolean verifyOptionsUnderPatientInformationScreen(String hic, String firstname, String lastname) throws Exception {
+		return eligPage.verifyOptionsUnderPatientInformationScreen(hic,firstname,lastname);
+	}
+
+	@Override
+	public boolean verifyView271RespPagehasA7() throws Exception {
+		return eligPage.verifyView271RespPagehasA7();
+	}
+
+	@Override
+	public boolean navigatetoPatientInfoScreen(String firstname, String lastname, String hic)
+			throws Exception {
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
+		return eligPage.navigatetoPatientInfoScreen(firstlastname, hic);
+	}
 }

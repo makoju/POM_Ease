@@ -61,7 +61,8 @@ public class CommonPage extends AbstractPageObject{
 				}
 			}
 		}
-
+		report.report("Waiting for sometime to Ease server to get stopped...");
+		Thread.sleep(60000);
 		return (failCounter == 0 ) ? true : false;
 	}
 

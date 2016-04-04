@@ -659,6 +659,22 @@ public class MyDDEPage extends AbstractPageObject{
 		}
 		return failurecount == 0 ? true : false;
 	}
+	
+
+	public boolean searchByHICAndNavigatetoPatientInfoScreen(String hic) throws Exception {
+		navigateToPage();
+		//move to search icon and enter HIC
+		WebElement element = waitForElementVisibility(By.id("reportHICSearch"));
+		if(element==null){
+			report.report("HIC Search ICON is not found in MyDDE Screen", Reporter.WARNING);
+			return false;
+		}
+		moveToElement(element);
+		typeEditBox("reportHICEntry", hic);
+		clickButton("GO");
+
+		return waitForElementVisibility(By.xpath("//td[contains(text(),'PATIENT INFORMATION')]"))!=null?true:false;
+	}
 
 	@Override
 	public void assertInPage() {
@@ -669,4 +685,5 @@ public class MyDDEPage extends AbstractPageObject{
 	public void navigateToPage() throws Exception {
 		HomePage.getInstance().navigateTo(Menu.MYDDE, null);
 	}
+
 }

@@ -290,6 +290,18 @@ public class MyDDETests extends BaseTest{
 			report.report("Failed to verify Advanced Search report for given months and date range.Please see the JSystem report log for more details", Reporter.FAIL);
 		}
 	}
+	
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Live Search HIC and navigation to patient info. screen", paramsInclude = { "hic,testType" })
+	public void searchByHICAndNavigatetoPatientInfoScreen() throws Exception{
+		if(mydde.searchByHICAndNavigatetoPatientInfoScreen(hic)){
+			report.report("Successfully Searched hic and navigated to patient information screen", Reporter.PASS);
+		}else{
+			report.report("Failed to Search hic and navigation to patient information screen", Reporter.FAIL);
+		}
+	}
 
 	/*####
 	##Getters and Setters methods

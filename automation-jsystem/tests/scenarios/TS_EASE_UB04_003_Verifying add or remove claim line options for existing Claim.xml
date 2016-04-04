@@ -17,21 +17,39 @@
     <target name="execute scenario">
         <antcallback target="t0"/>
         <antcallback target="t1"/>
+        <antcallback target="t2"/>
+        <antcallback target="t3"/>
     </target>
     <target name="t0">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="628cdf08-ef80-493a-bb14-47e2563f38dd"/>
+            <sysproperty key="jsystem.uuid" value="27bce564-67e2-4a63-9325-f5648f21e1ae"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-            <test name="com.ability.ease.claims.ClaimsTests.selectStatusLocationInAdvanceSearchPageAndSearch"/>
+            <test name="com.ability.ease.common.CommonTests.stopStartEaseServer"/>
         </jsystem>
     </target>
     <target name="t1">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="51affe6a-c7db-42db-ab5b-da5e5633d2a6"/>
+            <sysproperty key="jsystem.uuid" value="fe10b761-4ba0-4529-8ea2-062a22cedc6d"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-            <test name="com.ability.ease.claims.ClaimsTests.selectClaimRecordFromSearchResults"/>
+            <test name="com.ability.ease.claims.ClaimsTests.fillUB04FormValuesOnly"/>
+        </jsystem>
+    </target>
+    <target name="t2">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="c010ae7b-8695-4d0e-b32b-466dfd86b6c2"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.claims.ClaimsTests.openExistingClaimFromPendingAQB"/>
+        </jsystem>
+    </target>
+    <target name="t3">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="b9eee349-7532-43d0-9864-3311bebf5235"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.claims.ClaimsTests.addOrRemoveClaimLinesInExistingClaim"/>
         </jsystem>
     </target>
 </project>

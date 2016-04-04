@@ -91,14 +91,19 @@ public class MyAccountSelenium2Impl implements IMyAccount {
 	}
 
 	@Override
-	public boolean disableEase(String disableeaseforgroupnameoragency,String grouporagencyname, String disabletype) throws Exception {
-		return new DisableEasePage().disableEase(disableeaseforgroupnameoragency,grouporagencyname,disabletype);
+	public boolean disableEase(String disableeaseforgroupnameoragency,String grouporagencyname, String disabletype, String expectedalertmessage) throws Exception {
+		return new DisableEasePage().disableEase(disableeaseforgroupnameoragency,grouporagencyname,disabletype,expectedalertmessage);
 	}
 
 	@Override
 	public boolean resumeEase(String groupname, String ddeuserid,
 			String ddepassword) throws Exception {
 		return new ResumeEase().resumeEase(groupname, ddeuserid, ddepassword);
+	}
+
+	@Override
+	public boolean deleteAllCustomSchedule(String agency) throws Exception {
+		return custschedpage.deleteAllCustomSchedule(agency);
 	}
 
 	/*@Override

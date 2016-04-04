@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import jsystem.framework.report.Reporter.ReportAttribute;
+import jsystem.framework.report.Reporter;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;

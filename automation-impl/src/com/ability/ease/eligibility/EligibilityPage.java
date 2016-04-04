@@ -6,6 +6,7 @@ import java.util.Map;
 import jsystem.framework.report.Reporter;
 import jsystem.framework.report.Reporter.ReportAttribute;
 import jsystem.framework.report.ReporterHelper;
+import junit.framework.Assert;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -188,6 +189,27 @@ public class EligibilityPage extends AbstractPageObject{
 		}
 
 		return failurecount==0?true:false;
+	}
+	
+	public boolean verifyNavigationToHomeScreenFromPatientInfoScreen(String hic) throws Exception {
+
+		navigateToPage();
+		if(!navigatetoPatientInfoScreen(hic))
+			return false;
+		clickLink("reporthome");
+		
+		Thread.sleep(5000);
+		
+		if(isTextPresent("OVERNIGHT SUMMARY REPORT"))
+		{
+			report.report("Successfully navigated to home page", ReportAttribute.BOLD);
+			return true;
+		}
+		else
+		{
+			report.report("Failed to navigate to home page", Reporter.WARNING);
+			return false;
+		}
 	}
 	
 	public boolean verifyOptionsUnderPendingActivityLogScreen() throws Exception {
@@ -465,7 +487,7 @@ public class EligibilityPage extends AbstractPageObject{
 		  return true;
 	}
 	
-	private boolean navigatetoEligibilityReport(String firstlastname) {
+	public boolean navigatetoEligibilityReport(String firstlastname) {
 		  WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
 		  if(tblcompletedactivity!=null){
 			  moveToElement(tblcompletedactivity);
@@ -511,6 +533,31 @@ public class EligibilityPage extends AbstractPageObject{
 			
 		  return true;
 	 }
+	
+	public boolean navigatetoPatientInfoScreen(String hic){
+		WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
+		  moveToElement(tblcompletedactivity);
+		  WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td/a[text()='"+hic+"']"));
+		  if(we!=null){
+			  we.click();
+		  }
+		  else
+		  {
+			  report.report("Specified activity with hic: "+hic+"was not found in good activity table", Reporter.WARNING);
+			  return false;
+		  }
+		  
+		  WebElement wepatientinfo = waitForElementVisibility(By.xpath("//td[contains(text(),'PATIENT INFORMATION')]"));
+			if(wepatientinfo!=null)
+				report.report("Successfully navigated to Patient Information Screen", ReportAttribute.BOLD);
+			else
+			{
+				report.report("Navigation to Patient Information Page has failed", Reporter.WARNING);
+				return false;
+			}
+			
+		  return true;
+	}
 		
 	private int getActivitycount(String activitytablename){
 		return Integer.parseInt(getElementText(By.xpath("//table[@id='activityTable']//td[@id='"+activitytablename+"']")));
@@ -647,6 +694,186 @@ public class EligibilityPage extends AbstractPageObject{
 		return false;
 	}
 	
+	public boolean verifyActivityLogSearchOnlynotacknowledged() throws Exception {
+		navigateToPage();
+		clickButton("tdGoodActivity");
+		if(!isChecked("non_ack"))
+			checkChkBox("non_ack");
+		clickButton("Search");
+		//TODO - Need to add validation code for validating the not acknowledged eligibility checks
+		uncheckChkBox("non_ack");
+		clickButton("Search");
+		//TODO - Need to add validation code for validating the acknowledged & non-acknowledged eligibility checks
+		return false;
+	}
+	
+	public boolean verifyNavigationToHomeScreenFromCompletedActivityLogScreen() throws Exception {
+		navigateToPage();
+		clickButton("tdGoodActivity");
+		WebElement we = waitForElementVisibility(By.className("headerblue"));
+		if(we!=null && we.getText().equalsIgnoreCase("COMPLETED ACTIVITY LOG"))
+		{
+			clickLink("reportHome");
+			Thread.sleep(5000);
+			
+			if(isTextPresent("OVERNIGHT SUMMARY REPORT"))
+			{
+				report.report("Successfully navigated to home page", ReportAttribute.BOLD);
+				return true;
+			}
+			else
+			{
+				report.report("Failed to navigate to home page", Reporter.WARNING);
+				return false;
+			}
+		}
+		else
+		{
+			report.report("Unable to naviagte to Completed Activity Log Screen", Reporter.WARNING);
+			return false;
+		}
+	}
+	
+	public boolean verifyPDFExportInCompletedActivityLogScreen() throws Exception{
+		navigateToPage();
+		clickButton("tdGoodActivity");
+		WebElement we = waitForElementVisibility(By.className("headerblue"));
+		if(we!=null && we.getText().equalsIgnoreCase("COMPLETED ACTIVITY LOG"))
+		{
+			WebElement pdfelement = waitForElementToBeClickable(ByLocator.xpath, "//tbody/tr[1]//a[contains(@href,'eligibility.pdf')]/img", 10);
+			if(pdfelement == null)
+			{
+				report.report("PDF report link not found in completed activity log screen", Reporter.WARNING);
+				return false;
+			}
+			else
+			{
+				//pdfelement.click();
+				//need to validate whether report exported to PDF or not
+				return false;
+			}
+		}
+		else
+		{
+			report.report("Unable to naviagte to Completed Activity Log Screen", Reporter.WARNING);
+			return false;
+		}
+	}
+	
+
+	public boolean verifyPrintOptionInCompletedActivityLogScreen() throws Exception {
+		navigateToPage();
+		clickButton("tdGoodActivity");
+		WebElement we = waitForElementVisibility(By.className("headerblue"));
+		if(we!=null && we.getText().equalsIgnoreCase("COMPLETED ACTIVITY LOG"))
+		{
+			WebElement printelement = waitForElementToBeClickable(ByLocator.xpath, "//tbody/tr[1]//a[contains(@href,'eligibility.print')]/img", 10);
+			if(printelement == null)
+			{
+				report.report("Print option not found in completed activity log screen", Reporter.WARNING);
+				return false;
+			}
+			else
+			{
+				//printelement.click();
+				//need to validate whether Print function is working or not
+				return false;
+			}
+		}
+		else
+		{
+			report.report("Unable to naviagte to Completed Activity Log Screen", Reporter.WARNING);
+			return false;
+		}
+	}
+	
+	public boolean verifyTrashOptionInCompletedActivityLogScreen() throws Exception{
+		int failurecount=0;
+		
+		navigateToPage();
+		clickButton("tdGoodActivity");
+		WebElement we = waitForElementVisibility(By.className("headerblue"));
+		if(we!=null && we.getText().equalsIgnoreCase("COMPLETED ACTIVITY LOG"))
+		{
+			clickLink("reportDelete");
+			if(!verifyAlert("You must first check the checkboxes next to the specific items you want to select before you can proceed with this function.")){
+				report.report("Expected alert not present", Reporter.WARNING);
+				failurecount++;
+			}
+			else
+			{
+				String sExpectedAlertmessage = "Once you void an item, it is permanently voided and it cannot be reversed. Are you sure that you want to Void the selected items?If you do not wish to Void the selected items, then click \"Cancel\".";
+				WebElement checkbox = waitForElementToBeClickable(ByLocator.xpath, "//tbody/tr[1]//td[1]/input[@type='checkbox']", 10);
+				int prevtablesize = findElements(By.xpath("//table[@id='datatable']/tbody/tr")).size();
+								
+				if(checkbox!=null)
+				{
+					checkbox.click();
+					clickLink("reportDelete");
+					if(!verifyAlert(sExpectedAlertmessage)){
+						report.report("Expected alert not present", Reporter.WARNING);
+						failurecount++;
+					}
+					else
+					{
+						//check the size of the table it should be reduced by one
+						int newsize = findElements(By.xpath("//table[@id='datatable']/tbody/tr")).size();
+						Assert.assertTrue(newsize == prevtablesize-1);
+					}
+				}
+				else
+				{
+					report.report("Completed Activity Log item1 check box not found", Reporter.WARNING);
+					return false;
+				}
+			}
+			
+		}
+		else
+		{
+			report.report("Unable to naviagte to Completed Activity Log Screen", Reporter.WARNING);
+			return false;
+		}
+		return failurecount==0?true:false;
+	}
+	
+	public boolean VerifyNavigationOfAdvanceSearchFromLiveSearch() throws Exception {
+		navigateToPage();
+		clickButton("tdGoodActivity");
+		WebElement we = waitForElementVisibility(By.className("headerblue"));
+		if(we!=null && we.getText().equalsIgnoreCase("COMPLETED ACTIVITY LOG"))
+		{
+			//move to search icon and enter HIC
+			WebElement element = waitForElementVisibility(By.id("reportHICSearch"));
+			if(element==null){
+				report.report("HIC Search ICON is not found", Reporter.WARNING);
+				return false;
+			}
+			moveToElement(element);
+			clickLink("Advanced Search");
+			WebElement advancedsearchheader = waitForElementVisibility(By.className("headerblue"));
+			if(advancedsearchheader!=null && advancedsearchheader.getText().equalsIgnoreCase("ADVANCED SEARCH")){
+				report.report("Successfully navigated to Advanced Search Screen", ReportAttribute.BOLD);
+				return true;
+			}
+			else
+			{
+				report.report("Failed to navigate to Advanced Search Screen", Reporter.WARNING);
+				return true;
+			}
+		}
+		else
+		{
+			report.report("Unable to naviagte to Completed Activity Log Screen", Reporter.WARNING);
+			return false;
+		}
+	}
+	
+	public boolean verifyMostBenefitSTC45Fields() {
+		//Need to implement the code to get these fields data from EligibilityCheck report page
+		return false;
+	}
+	
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub
@@ -662,5 +889,4 @@ public class EligibilityPage extends AbstractPageObject{
 		if(!isTextPresent("Enter the patient search information below"))
 			clickLink("Eligiblity Check");
 	}
-
 }

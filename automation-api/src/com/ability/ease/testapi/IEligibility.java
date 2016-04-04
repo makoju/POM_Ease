@@ -22,5 +22,14 @@ public interface IEligibility {
 	abstract public boolean searchactivitylogByHIC(String status, String hic) throws Exception;
 	abstract public boolean verifyView271RespPagehasA7() throws Exception;
 	abstract public boolean navigatetoPatientInfoScreen(String firstname, String lastname, String hic) throws Exception;
+	abstract public boolean verifyActivityLogSearchOnlynotacknowledged() throws Exception;
+	abstract public boolean verifyNavigationToHomeScreenFromCompletedActivityLogScreen() throws Exception;
+	abstract public boolean verifyPDFExportInCompletedActivityLogScreen() throws Exception;
+	abstract public boolean verifyPrintOptionInCompletedActivityLogScreen() throws Exception;
+	abstract public boolean verifyTrashOptionInCompletedActivityLogScreen() throws Exception;
+	abstract public boolean verifyNavigationToHomeScreenFromPatientInfoScreen(String hic)throws Exception;
+	abstract public boolean VerifyNavigationOfAdvanceSearchFromLiveSearch() throws Exception;
+	abstract public boolean navigatetoEligibilityReport(String firstname, String lastname) throws Exception; 
+	abstract public boolean verifyMostBenefitSTC45Fields() throws Exception;
 }
 

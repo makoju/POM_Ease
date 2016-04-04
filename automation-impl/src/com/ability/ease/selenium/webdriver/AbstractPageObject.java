@@ -1657,8 +1657,9 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			//Alert alert = driver.switchTo().alert();
 			Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-			sActual = alert.getText().toString();
+			sActual = alert.getText().toString().replaceAll("\\\n", "");
 			report.report("Expected text on alert box is :" +sExpected);
+			report.report("Actual text on alert box is :" +sActual);
 			if( sActual.equalsIgnoreCase(sExpected)){
 				report.report("Actual text on alert box is : "+ sActual);
 				alert.accept();
@@ -1685,6 +1686,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			alert = waitForAlert(driver);
 			sActual = alert.getText().toString();
 			report.report("Expected text on alert box is :" +sExpected);
+			report.report("Actual text on alert box is :" +sActual);
 			if( sActual.equalsIgnoreCase(sExpected)){
 				report.report("Actual text on alert box is : "+ sActual);
 				alert.accept();

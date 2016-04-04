@@ -17,6 +17,7 @@
     <target name="execute scenario">
         <antcallback target="t0"/>
         <antcallback target="t1"/>
+        <antcallback target="t2"/>
     </target>
     <target name="t0">
         <jsystem showoutput="true">
@@ -27,6 +28,14 @@
         </jsystem>
     </target>
     <target name="t1">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="5ec6055f-9b74-44e0-91b3-49610dedf7f9"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.myaccount.MyAccountTests.deleteAllCustomSchedule"/>
+        </jsystem>
+    </target>
+    <target name="t2">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="65890508-eaff-49c2-9798-e6445f2a257f"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>

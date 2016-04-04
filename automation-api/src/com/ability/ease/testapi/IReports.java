@@ -4,6 +4,7 @@ import java.util.Map;
 
 public interface IReports {
 	
+	boolean verifyOvernightSummaryReport(String fromDate,String toDate, String agency,String expOvernightColumnsFromJSystem) throws Exception;
 	boolean verifySummaryReportHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception;
 	boolean verifySummaryReportExportPDFExcel(Map<String, String> mapAttrValues) throws Exception;
 	boolean verifyChangesReportSortHeaderHelp(Map<String, String> mapAttrValues) throws Exception;
@@ -100,5 +101,7 @@ public interface IReports {
 	boolean verifyHospicePatientsHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception;
 	boolean verifyHospicePatientsExportPDFExcel(Map<String, String> mapAttrValues) throws Exception;
 	
-	void clickAdvancedTab() throws Exception;
+	boolean verifyHMOAdvCatcherReport() throws Exception;
+	
+	boolean clickAdvancedTab() throws Exception;
 }

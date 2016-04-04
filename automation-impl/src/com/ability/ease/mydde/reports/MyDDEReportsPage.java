@@ -9,7 +9,6 @@ import jsystem.framework.report.Reporter.ReportAttribute;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
@@ -28,6 +27,457 @@ public class MyDDEReportsPage extends AbstractPageObject {
 
 	String tableheadersxpath = "//table[@id='datatable']//tr[@class='tableheaderblue']/td";
 	ReportsHelper reportshelper = new ReportsHelper();
+
+	public boolean verifyOvernightSummaryReport(String fromDate,String toDate, String agency,String expOvernightColumnsFromJSystem) throws Exception {
+
+		int failurecount = 0;
+		String[] expectedheaders = {"Allows you to edit the claim.","The Change column shows the change to a claim status or an eligibility status which caused it to be included in the report.",
+				"The ELG column shows if there is a problem with patient eligibility."
+						+ " A Green Check mark means that there were no problems found with eligibility."
+						+ " A Red X means that there was an eligibility problem or that EASE was not able to find the eligibility for the patient."
+						+ " IMPORTANT: Hover over any Red X to see the detailed information regarding the eligibility problem.",
+						"The claim Status and Location.","The Patient HIC number.","The name of the patient.","Type of claim.","Type of Bill.",
+						"The claim reason code.","The claim start date.","The claim through date.","The dollar value of the claim.",
+		"The last time the claim was updated in Ease from DDE."};
+		navigateToPage();
+		String[] expOvernightColumns = expOvernightColumnsFromJSystem.split(",");
+		Thread.sleep(3000);
+		WebElement verifyAdvanced = waitForElementToBeClickable(ByLocator.xpath, "//a[@id='reportComplexity']", 30);
+		if ( verifyAdvanced.getText().contains("Basic")) {
+			safeJavaScriptClick("Basic");
+		}
+		Thread.sleep(3000);
+
+		moveToElement("Agency");
+		selectByNameOrID("reportAgencySelect", agency);
+		clickButton("Change Agency");
+
+		//Timeframe
+		moveToElement("Timeframe");
+		typeEditBox("reportCustomDateFrom", fromDate);
+		typeEditBox("reportCustomDateTo", toDate);
+		clickButtonV2("reportTimeframeButton");
+
+		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'SUMMARY REPORT FROM')]"));
+
+		report.report("Comparing SUMMARY REPORT header value Actual:  "+ reportText);
+		if (Verify.StringEquals(reportText, "SUMMARY REPORT FROM "+ fromDate + " TO " + toDate + ", FOR AGENCY "+ agency))
+			failurecount++;
+		else if (!Verify.StringMatches(reportText,"SUMMARY REPORT FROM * TO *, FOR AGENCY "+ agency))
+			failurecount++;
+		//Summary report
+		if(Verify.verifyTableColumnNames("datatable",expOvernightColumns)){
+			if(!isTextPresent("EASE found no items for this report")){
+				if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 5))
+					failurecount++;
+
+				if (!Verify.validateTableColumnSortOrder("datatable", "Type", 7))
+					failurecount++;
+
+				if (!Verify.validateTableColumnSortOrder("datatable", "Last", 13))
+					failurecount++;
+
+				String[] actualheadertooltips = reportshelper.getTableHeaderToolTips(tableheadersxpath);
+				if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders,true))
+					failurecount++;
+			}
+		}
+		else{
+			report.report("EASE found no items for this report at this time.",ReportAttribute.BOLD);
+		}
+		report.report("Total number of failures is: " + failurecount,ReportAttribute.BOLD);
+		return failurecount == 0 ? true : false;
+	}
+
+	public boolean verifyRAPsAtRiskHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception {
+
+		boolean istimeframedaterange = false;
+		int failurecount = 0;
+		String fromdate, todate;
+		fromdate = todate = null;
+
+		String[] expectedColumns = {"HIC","Patient Name","Admit.","Start","Submit","Paid Date","Final Due","Days Left",
+				"Reimb.","Total Episode $","Est. Remaining"};
+
+		String[] expectedheaders = {"The Patient HIC number.","The name of the patient.","The date the patient was originally admitted.",
+				"Start of Episode date.","The date the RAP claim was submitted to Medicare.","The date the claim was paid (or processed).",
+				"The date a final claim should be submitted to avoid from RAP been cancelled.",
+				"The number of days left to submit the Final claim to avoid the RAP being auto-cancelled.",
+				"The reimbursement amount posted by Medicare on the claim.",
+				"The total episode value.","The remaining amount of money expected from Medicare."};
+
+		navigateToPage();
+		UIAttributeXMLParser parser = new UIAttributeXMLParser();
+		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		UIActions mydde = new UIActions();
+		mydde.fillScreenAttributes(lsAttributes);
+		Thread.sleep(3000);
+		safeJavaScriptClick("RAPs At Risk");
+
+		// Verification part
+
+		Attribute agencyattr = reportshelper.getAttribute(lsAttributes,"agency");
+		// To Do - Need to get the From and Todate from Timeframe attributes
+		// value
+		Attribute timeframeattr = reportshelper.getAttribute(lsAttributes,"Timeframe");
+		String timeframe = timeframeattr.getValue().toLowerCase();
+		if (timeframe.contains("fromdate")) {
+			istimeframedaterange = true;
+			String[] dates = timeframe.split(":");
+			fromdate = dates[0];
+			todate = dates[1];
+
+			fromdate = fromdate.substring(fromdate.indexOf("(") + 1,fromdate.indexOf(")"));
+			todate = todate.substring(todate.indexOf("(") + 1,todate.indexOf(")"));
+		}
+
+		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'RAPS AT RISK REPORT')]"));
+
+		report.report("Comparing RAP's AT RISK report header value Actual:  "+ reportText);
+		if (agencyattr != null) {
+			if (istimeframedaterange && !Verify.StringEquals(reportText, "RAPS AT RISK REPORT FROM "+ fromdate + " TO " + todate + ", FOR AGENCY "+ agencyattr.getValue()))
+				failurecount++;
+			else if (!Verify.StringMatches(reportText,"RAPS AT RISK REPORT FROM * TO *, FOR AGENCY "+ agencyattr.getValue()))
+				failurecount++;
+		}
+
+		//Verifying table columns
+		if(Verify.verifyTableColumnNames("datatable",expectedColumns)){
+			if(!isTextPresent("EASE found no items for this report")){
+				if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 1))
+					failurecount++;
+
+				if (!Verify.validateTableColumnSortOrder("datatable", "Patient Name", 2))
+					failurecount++;
+
+				if (!Verify.validateTableColumnSortOrder("datatable", "Start", 4))
+					failurecount++;
+				// verify the table header tool tips
+				String[] actualheadertooltips = reportshelper.getReportLinkSectionsTableHeaderToolTips(tableheadersxpath);
+				if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders,true))
+					failurecount++;
+			}
+		}else{
+			report.report("EASE found no items for this report at this time.",ReportAttribute.BOLD);
+		}
+		report.report("Total number of failures is: " + failurecount,ReportAttribute.BOLD);
+		return failurecount == 0 ? true : false;
+	}
+
+	//Projected payment report pending
+
+	public boolean verifyHighLevelPaymentSummaryReportSortHeader(Map<String, String> mapAttrValues) throws Exception {
+
+		int failurecount = 0;
+		String[] expectedColumns = {"Provider","Pay Date","Day","Check #","# Claims","Scheduled","Check Amt","Projected"}; 
+
+		navigateToPage();
+		UIAttributeXMLParser parser = new UIAttributeXMLParser();
+		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		UIActions mydde = new UIActions();
+		mydde.fillScreenAttributes(lsAttributes);
+		Thread.sleep(5000);
+		safeJavaScriptClick("High Lvl Payment Summary");
+
+		// Verification part
+		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'HIGH LEVEL PAYMENT')]"));
+		if (!Verify.StringMatches(reportText.trim(),"HIGH LEVEL PAYMENT SUMMARY REPORT FROM.*"))
+			failurecount++;
+
+		if(Verify.verifyTableColumnNames("datatable",expectedColumns)){
+			if(!isTextPresent("EASE found no items for this report")){
+				if (!Verify.validateSortOrderForHighLevelPaymentSummary("datatable", "Provider", 1))
+					failurecount++;
+
+				if (!Verify.validateSortOrderForHighLevelPaymentSummary("datatable", "Day", 3))
+					failurecount++;
+
+				if (!Verify.validateSortOrderForHighLevelPaymentSummary("datatable", "Check", 4))
+					failurecount++;
+			}
+		}else{
+			report.report("EASE found no items for this report at this time.",ReportAttribute.BOLD);
+		}
+		return failurecount == 0 ? true : false;
+	}
+
+	public boolean verifyPaymentReportSortHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception {
+
+		boolean istimeframedaterange = false;
+		int failurecount = 0;
+		String fromdate, todate;
+		fromdate = todate = null;
+		String[] expectedColumns = {};
+		String[] expectedheaders = { "The date of payment.", "The Patient HIC number.", "The name of the patient.","Type of claim.", "Type of Bill.",
+				"The date the claim was submitted to Medicare.", "The claim start date.", "The claim through date.", 
+				"The dollar value of the claim.", "The last time the claim was updated in Ease from DDE." };
+
+		navigateToPage();
+		UIAttributeXMLParser parser = new UIAttributeXMLParser();
+		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		UIActions mydde = new UIActions();
+		mydde.fillScreenAttributes(lsAttributes);
+		Thread.sleep(3000);
+		safeJavaScriptClick("Payment");
+
+		Attribute agencyattr = reportshelper.getAttribute(lsAttributes, "agency");
+		// To Do - Need to get the From and Todate from Timeframe attributes
+		// value
+		Attribute timeframeattr = reportshelper.getAttribute(lsAttributes, "Timeframe");
+		String timeframe = timeframeattr.getValue().toLowerCase();
+		if (timeframe.contains("fromdate")) {
+			istimeframedaterange = true;
+			String[] dates = timeframe.split(":");
+			fromdate = dates[0];
+			todate = dates[1];
+
+			fromdate = fromdate.substring(fromdate.indexOf("(") + 1,
+					fromdate.indexOf(")"));
+			todate = todate.substring(todate.indexOf("(") + 1,
+					todate.indexOf(")"));
+		}
+
+		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'PAYMENT')]"));
+
+		report.report("Comparing PAYMENT report header value Actual:  "+ reportText);
+		if (agencyattr != null) {
+			if (istimeframedaterange && !Verify.StringEquals(reportText, "PAYMENT REPORT FROM " + fromdate + " TO " + todate + ", FOR AGENCY "+ agencyattr.getValue()))
+				failurecount++;
+			else if (!Verify.StringMatches(reportText,"PAYMENT REPORT FROM.*TO.*FOR AGENCY "+ agencyattr.getValue()))
+				failurecount++;
+		}
+
+		if(Verify.verifyTableColumnNames("datatable",expectedColumns)){
+			if(!isTextPresent("EASE found no items for this report")){
+				if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 2))
+					failurecount++;
+
+				if (!Verify.validateTableColumnSortOrder("datatable", "Type", 4))
+					failurecount++;
+				// verify the table header tool tips
+				String[] actualheadertooltips = reportshelper.getTableHeaderToolTips(tableheadersxpath);
+				if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders, true))
+					failurecount++;
+			}
+		}else{
+			report.report("EASE found no items for this report at this time.",ReportAttribute.BOLD);
+		}
+		report.report("Total number of failures is: " + failurecount,ReportAttribute.BOLD);
+		return failurecount == 0 ? true : false;
+	}
+
+	public boolean verifyADRHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception {
+
+		boolean istimeframedaterange = false;
+		int failurecount = 0;
+		String fromdate, todate;
+		fromdate = todate = null;
+
+		String[] expectedColumns = {"HIC","Patient Name","Admit.","Start","Reimb","Episode $","Days Left","Due Date","30-Day Due Date","Code","Billed Amt","Last Updt"};
+
+		String[] expectedheaders = {"The Patient HIC number.","The name of the patient.","The date the patient was originally admitted.","Start of Episode date.",
+				"The reimbursement amount posted by Medicare on the claim.","The total episode value.","The number of days left to respond to the ADR.",
+				"The date an action is required by the FI in order to resolve the ADR.","Ensure that ADR documentation is mailed by this date to avoid unnecessary auto-denying of your claim.",
+				"The code associated with the ADR.","Total Amount Billed for Claim","The last time the claim was updated in Ease from DDE."};
+
+		navigateToPage();
+		UIAttributeXMLParser parser = new UIAttributeXMLParser();
+		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		UIActions mydde = new UIActions();
+		mydde.fillScreenAttributes(lsAttributes);
+
+		safeJavaScriptClick("ADR");
+
+		Attribute agencyattr = reportshelper.getAttribute(lsAttributes,"agency");
+
+		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'ADR REPORT')]"));
+
+		report.report("Comparing ADR report header value Actual:  "+ reportText);
+		if (agencyattr != null) {
+			if (istimeframedaterange && !Verify.StringEquals(reportText, "ADR REPORT, FOR AGENCY "+ agencyattr.getValue()))
+				failurecount++;
+			else if (!Verify.StringMatches(reportText,"ADR REPORT, FOR AGENCY "+ agencyattr.getValue()))
+				failurecount++;
+		}
+
+		if(Verify.verifyTableColumnNames("datatable",expectedColumns)){
+			if(!isTextPresent("EASE found no items for this report")){
+				if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 1))
+					failurecount++;
+
+				if (!Verify.validateTableColumnSortOrder("datatable", "Name", 2))
+					failurecount++;
+
+				if (!Verify.validateTableColumnSortOrder("datatable", "Admit.", 3))
+					failurecount++;
+				// verify the table header tool tips
+				String[] actualheadertooltips = reportshelper.getTableHeaderToolTips(tableheadersxpath);
+				if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders,true))
+					failurecount++;
+			}
+		}else{
+			report.report("EASE found no items for this report at this time.",ReportAttribute.BOLD);
+		}
+		report.report("Total number of failures is: " + failurecount,ReportAttribute.BOLD);
+		return failurecount == 0 ? true : false;
+	}
+
+	public boolean verifyStuckInSuspenseHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception {
+
+		boolean istimeframedaterange = false;
+		int failurecount = 0;
+		String fromdate, todate;
+		fromdate = todate = null;
+		String[] expectedColumns = {""};
+		String[] expectedheaders = {"The Patient HIC number.","The name of the patient.","The date the patient was originally admitted.",
+				"The claim start date.","The claim through date.","The date the claim was submitted to Medicare.","The number of days the claim is stuck in suspense.",
+				"The claim Status and Location.","Type of Bill.","The claim reason code.","The total episode value."};
+
+		navigateToPage();
+		UIAttributeXMLParser parser = new UIAttributeXMLParser();
+		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		UIActions mydde = new UIActions();
+		mydde.fillScreenAttributes(lsAttributes);
+		Thread.sleep(3000);
+		safeJavaScriptClick("Stuck In Suspense");
+
+		Attribute agencyattr = reportshelper.getAttribute(lsAttributes,"agency");
+		// To Do - Need to get the From and Todate from Timeframe attributes
+		// value
+		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'STUCK IN SUSPENSE REPORT')]"));
+		report.report("Comparing Stuck In Suspence report header value Actual:  "+ reportText);
+		if (agencyattr != null) {
+			if (istimeframedaterange && !Verify.StringEquals(reportText, "STUCK IN SUSPENSE REPORT, FOR AGENCY "+ agencyattr.getValue()))
+				failurecount++;
+			else if (!Verify.StringMatches(reportText,"STUCK IN SUSPENSE REPORT, FOR AGENCY "+ agencyattr.getValue()))
+				failurecount++;
+		}
+
+		if(Verify.verifyTableColumnNames("datatable",expectedColumns)){
+			if(!isTextPresent("EASE found no items for this report")){
+				if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 1))
+					failurecount++;
+
+				if (!Verify.validateTableColumnSortOrder("datatable", "Loc", 8))
+					failurecount++;
+				// verify the table header tool tips
+				String[] actualheadertooltips = reportshelper.getTableHeaderToolTips(tableheadersxpath);
+				if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders,true))
+					failurecount++;
+			}
+		}
+		else{
+			report.report("EASE found no items for this report at this time.",ReportAttribute.BOLD);
+		}
+		report.report("Total number of failures is: " + failurecount,ReportAttribute.BOLD);
+		return failurecount == 0 ? true : false;
+	}
+
+	public boolean verifyEligibilityIssuesHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception {
+		boolean istimeframedaterange = false;
+		int failurecount = 0;
+		String fromdate, todate;
+		fromdate = todate = null;
+
+		String[] expectedColumns = {"HIC","Patient Name","DOB","Sex","Active","Part A","Part B","HMO","MSP","Other HHA","Hospice"};
+
+		String[] expectedheaders = {"The Patient HIC number.","The name of the patient.","The patient's Date of Birth.","The patient sex code (M or F).",
+				"Whether or not the patient is under your care.","Whether or not the patient is eligible for Medicare Part A.","Whether or not the patient is eligible for Medicare Part B.",
+				"Whether or not the patient currently covered by an HMO plan.","Whether or not the patient has an MSP or liability period.","Whether or not another agency is/was treating the patient for the same time period.",
+		"Whether or not the patient has been treated by a hospice agency during the episode."};
+
+		navigateToPage();
+		UIAttributeXMLParser parser = new UIAttributeXMLParser();
+		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
+		UIActions mydde = new UIActions();
+		mydde.fillScreenAttributes(lsAttributes);
+		Thread.sleep(3000);
+		safeJavaScriptClick("Eligibility Issues");
+		Attribute agencyattr = reportshelper.getAttribute(lsAttributes,"agency");
+		// To Do - Need to get the From and Todate from Timeframe attributes
+		// value
+		Attribute timeframeattr = reportshelper.getAttribute(lsAttributes,"Timeframe");
+		String timeframe = timeframeattr.getValue().toLowerCase();
+		if (timeframe.contains("fromdate")) {
+			istimeframedaterange = true;
+			String[] dates = timeframe.split(":");
+			fromdate = dates[0];
+			todate = dates[1];
+
+			fromdate = fromdate.substring(fromdate.indexOf("(") + 1,fromdate.indexOf(")"));
+			todate = todate.substring(todate.indexOf("(") + 1,todate.indexOf(")"));
+		}
+
+		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'ELIGIBILITY ISSUES REPORT')]"));
+		report.report("Comparing Eligibility Issues report header value Actual:  "+ reportText);
+		if (agencyattr != null) {
+			if (istimeframedaterange && !Verify.StringEquals(reportText, "ELIGIBILITY ISSUES REPORT FROM "+ fromdate + " TO " + todate + ", FOR AGENCY "+ agencyattr.getValue()))
+				failurecount++;
+			else if (!Verify.StringMatches(reportText,"ELIGIBILITY ISSUES REPORT FROM * TO *, FOR AGENCY "+ agencyattr.getValue()))
+				failurecount++;
+		}
+
+		if(Verify.verifyTableColumnNames("datatable",expectedColumns)){
+			if(!isTextPresent("EASE found no items for this report")){
+				if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 1))
+					failurecount++;
+
+				if (!Verify.validateTableColumnSortOrder("datatable", "Name", 2))
+					failurecount++;
+
+				if (!Verify.validateTableColumnSortOrder("datatable", "DOB", 3))
+					failurecount++;
+
+				// verify the table header tool tips
+				String[] actualheadertooltips = reportshelper.getTableHeaderToolTips(tableheadersxpath);
+				if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders,true))
+					failurecount++;
+
+			}
+		}else{
+			report.report("EASE found no items for this report at this time.",ReportAttribute.BOLD);
+		}
+		report.report("Total number of failures is: " + failurecount,ReportAttribute.BOLD);
+		return failurecount == 0 ? true : false;
+	}
+
+
+	public boolean verifyHMOAdvCatcherReport() throws Exception {
+
+		int failurecount = 0;
+		String[] expectedColumns = {"HIC","Patient Name","STOP","ELG","Agency"};
+		String[] expectedHeaders = {"The Patient HIC number.","The name of the patient.","The date the patient will be removed from HMO Advantage Move Catcher.",
+				"The ELG column shows if there is a problem with patient eligibility."
+						+ " A Green Check mark means that there were no problems found with eligibility. "
+						+ "A Red X means that there was an eligibility problem or that EASE was not able to find the eligibility for the patient. "
+						+ "IMPORTANT: Hover over any Red X to see the detailed information regarding the eligibility problem.",
+		"The Agency."};
+		Thread.sleep(5000);
+		safeJavaScriptClick("ELIG.");
+		Thread.sleep(5000);
+		WebElement addHMOReport = waitForElementToBeClickable(ByLocator.linktext,"HMO/Adv. Catcher Report",30);
+		if(addHMOReport != null){
+			safeJavaScriptClick("HMO/Adv. Catcher Report");
+			String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'HMO ADVANTAGE MOVE')]"));
+			report.report("Comparing HMO Adv. Catcher report header value Actual:  "+ reportText);
+			if(Verify.verifyTableColumnNames("datatable",expectedColumns)){
+				if(!isTextPresent("No changes have been detected for any patients that are currently being tracked by HMO Advantage Move Catcher.")){
+					if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 2))
+						failurecount++;
+
+					if (!Verify.validateTableColumnSortOrder("datatable", "Name",3))
+						failurecount++;
+				}
+
+				String[] actualheadertooltips = reportshelper.getTableHeaderToolTips("//table[@id='datatable']//thead/tr/td");
+				if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedHeaders,true))
+					failurecount++;
+			}
+		}
+		return failurecount == 0 ? true : false;
+	}
+
+	/**************************** End of High priority test cases ****************************/
 
 	public boolean verifySummaryReportHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception {
 		boolean istimeframedaterange = false;
@@ -133,7 +583,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 	}
 
 	public boolean verifySummaryReportExportPDFExcel(Map<String, String> mapAttrValues) throws Exception {
-		
+
 		int failurecount = 0;
 		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
 
@@ -254,8 +704,8 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		navigateToPage();
 		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()
 				+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		
-		
+
+
 		clickLink("Changes");
 
 		// verification part
@@ -273,7 +723,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		// To DO - Need to validate whether respective link is opened or not
 		/*for (i = 0; i < actual.length; i++) {
 			reportshelper.navigateExportlink(actual[i]);
-			
+
 		}*/
 
 		return failurecount == 0 ? true : false;
@@ -327,38 +777,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		return failurecount == 0 ? true : false;
 	}
 
-	public boolean verifyHighLevelPaymentSummaryReportSortHeader(
-			Map<String, String> mapAttrValues) throws Exception {
-		int failurecount = 0;
-		// TODO Auto-generated method stub
-		// navigation part
-		navigateToPage();
-		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()
-				+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		clickLink("High Lvl Payment Summary");
 
-		// Verification part
-		String reportText = getElementText(By
-				.xpath("//div[@id='reportarea']//td[contains(text(),'HIGH LEVEL PAYMENT')]"));
-		if (!Verify.StringMatches(reportText.trim(),
-				"HIGH LEVEL PAYMENT SUMMARY REPORT FROM.*"))
-			failurecount++;
-
-		// Natural Ascending Sort Verification
-		if (!Verify.validateSortOrderForHighLevelPaymentSummary("datatable",
-				"Provider", 1))
-			failurecount++;
-
-		if (!Verify.validateSortOrderForHighLevelPaymentSummary("datatable",
-				"Day", 3))
-			failurecount++;
-
-		if (!Verify.validateSortOrderForHighLevelPaymentSummary("datatable",
-				"Check", 4))
-			failurecount++;
-
-		return failurecount == 0 ? true : false;
-	}
 
 	public boolean verifyHighLevelPaymentSummaryReportExportPDFExcel(
 			Map<String, String> mapAttrValues) throws Exception {
@@ -438,12 +857,12 @@ public class MyDDEReportsPage extends AbstractPageObject {
 				By.xpath("//div[contains(@style, 'block')]//input[@name='multiselect_example' and @checked='checked']"));
 		if(lscheckedAgencies!=null)
 			actualcheckedagencies = lscheckedAgencies.size();
-		
+
 		else if(!multiselectagencystr.toLowerCase().startsWith("uncheck all")){
 			report.report("actual selected agencies are null", Reporter.WARNING);
 			failurecount++;
 		}
-		
+
 		if (multiselectagencystr.toLowerCase().startsWith("check all")) {
 			int expectedAgencies = 0;
 			List<WebElement> lsexpectedagencies = findElements(
@@ -454,7 +873,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 				report.report("expected agencies are null", Reporter.WARNING);
 				failurecount++;
 			}
-			
+
 			if (expectedAgencies != actualcheckedagencies) {
 				report.report("There should be " + expectedAgencies
 						+ " Agencies Selected. But, Only "
@@ -651,87 +1070,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		return failurecount == 0 ? true : false;
 	}
 
-	public boolean verifyPaymentReportSortHeaderandHelpText(
-			Map<String, String> mapAttrValues) throws Exception {
-		boolean istimeframedaterange = false;
-		int failurecount = 0;
-		String fromdate, todate;
-		fromdate = todate = null;
-		String[] expectedheaders = { "The date of payment.",
-				"The Patient HIC number.", "The name of the patient.",
-				"Type of claim.", "Type of Bill.",
-				"The date the claim was submitted to Medicare.",
-				"The claim start date.", "The claim through date.",
-				"The dollar value of the claim.",
-		"The last time the claim was updated in Ease from DDE." };
 
-		navigateToPage();
-		UIAttributeXMLParser parser = new UIAttributeXMLParser();
-		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(
-				TestCommonResource.getTestResoucresDirPath()
-				+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		UIActions mydde = new UIActions();
-		mydde.fillScreenAttributes(lsAttributes);
-
-		clickLink("Payment");
-
-		// Verification part
-		// Natural Ascending Sort Verification
-		if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 2))
-			failurecount++;
-
-		if (!Verify.validateTableColumnSortOrder("datatable", "Type", 4))
-			failurecount++;
-
-		Attribute agencyattr = reportshelper.getAttribute(lsAttributes,
-				"agency");
-		// To Do - Need to get the From and Todate from Timeframe attributes
-		// value
-		Attribute timeframeattr = reportshelper.getAttribute(lsAttributes,
-				"Timeframe");
-		String timeframe = timeframeattr.getValue().toLowerCase();
-		if (timeframe.contains("fromdate")) {
-			istimeframedaterange = true;
-			String[] dates = timeframe.split(":");
-			fromdate = dates[0];
-			todate = dates[1];
-
-			fromdate = fromdate.substring(fromdate.indexOf("(") + 1,
-					fromdate.indexOf(")"));
-			todate = todate.substring(todate.indexOf("(") + 1,
-					todate.indexOf(")"));
-		}
-
-		String reportText = getElementText(By
-				.xpath("//div[@id='reportarea']//td[contains(text(),'PAYMENT')]"));
-
-		report.report("comparing payment report header value Actual:  "
-				+ reportText);
-		if (agencyattr != null) {
-			if (istimeframedaterange
-					&& !Verify.StringEquals(reportText, "PAYMENT REPORT FROM "
-							+ fromdate + " TO " + todate + ", FOR AGENCY "
-							+ agencyattr.getValue()))
-				failurecount++;
-			else if (!Verify.StringMatches(
-					reportText,
-					"PAYMENT REPORT FROM.*TO.*FOR AGENCY "
-							+ agencyattr.getValue()))
-				failurecount++;
-		}
-
-		// verify the table header tool tips
-		String[] actualheadertooltips = reportshelper
-				.getTableHeaderToolTips(tableheadersxpath);
-		if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders,
-				true))
-			failurecount++;
-
-		report.report("Total number of failures is: " + failurecount,
-				ReportAttribute.BOLD);
-
-		return failurecount == 0 ? true : false;
-	}
 
 	public boolean verifyPaymentReportExportPDFExcel(
 			Map<String, String> mapAttrValues) throws Exception { // still
@@ -935,7 +1274,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 			action.moveToElement(we).click().build().perform();
 			lsexportlinks = reportshelper.getAllExportLinks();
 		}
-		
+
 		actual = new String[lsexportlinks.size()];
 		for (WebElement we : lsexportlinks) {
 			actual[i++] = we.getText();
@@ -1079,7 +1418,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 				"The date the patient was originally admitted.", "The claim start date.", "The claim through date.", "The episode Seq. number.",
 				"Your agencyâ€™s internal ID for this patient.", "Type of Bill.", "Type of claim.", "The claim Status and Location.", "The patient discharge status.",
 				"The date the claim was paid (or processed).", "The date the claim was cancelled.", "The claim reason code.", "The amount charged for this claim.",
-				"The reimbursement amount posted by Medicare on the claim."};
+		"The reimbursement amount posted by Medicare on the claim."};
 
 		navigateToPage();
 		UIAttributeXMLParser parser = new UIAttributeXMLParser();
@@ -1091,10 +1430,10 @@ public class MyDDEReportsPage extends AbstractPageObject {
 
 		// Verification part
 		// Natural Ascending Sort Verification
-		
+
 		if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 1))
 			failurecount++;
-		
+
 		if (!Verify.validateTableColumnSortOrder("datatable", "Episode", 7))
 			failurecount++;
 
@@ -1251,7 +1590,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		reportshelper.fillScreen(TestCommonResource.getTestResoucresDirPath()
 				+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
 		clickLink("Active Episodes");
-		
+
 		moveByOffset("Export");
 		List<WebElement> lsexportlinks = reportshelper.getAllExportLinks();
 		actual = new String[lsexportlinks.size()];
@@ -1385,64 +1724,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		return failurecount == 0 ? true : false;
 	}
 
-	public boolean verifyStuckInSuspenseHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception {
-		boolean istimeframedaterange = false;
-		int failurecount = 0;
-		String fromdate, todate;
-		fromdate = todate = null;
-		String[] expectedheaders = {"The Patient HIC number.","The name of the patient.","The date the patient was originally admitted.",
-				"The claim start date.","The claim through date.","The date the claim was submitted to Medicare.","The number of days the claim is stuck in suspense.",
-				"The claim Status and Location.","Type of Bill.","The claim reason code.","The total episode value."};
 
-		navigateToPage();
-		UIAttributeXMLParser parser = new UIAttributeXMLParser();
-		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		UIActions mydde = new UIActions();
-		mydde.fillScreenAttributes(lsAttributes);
-
-		safeJavaScriptClick("Stuck In Suspense");
-
-		// Verification part
-		// Natural Ascending Sort Verification
-		if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 1))
-			failurecount++;
-		if (!Verify.validateTableColumnSortOrder("datatable", "Loc", 8))
-			failurecount++;
-
-		Attribute agencyattr = reportshelper.getAttribute(lsAttributes,"agency");
-		// To Do - Need to get the From and Todate from Timeframe attributes
-		// value
-		Attribute timeframeattr = reportshelper.getAttribute(lsAttributes,"Timeframe");
-		String timeframe = timeframeattr.getValue().toLowerCase();
-		if (timeframe.contains("fromdate")) {
-			istimeframedaterange = true;
-			String[] dates = timeframe.split(":");
-			fromdate = dates[0];
-			todate = dates[1];
-
-			fromdate = fromdate.substring(fromdate.indexOf("(") + 1,fromdate.indexOf(")"));
-			todate = todate.substring(todate.indexOf("(") + 1,todate.indexOf(")"));
-		}
-
-		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'UNPAID CLAIMS REPORT')]"));
-
-		report.report("comparing unpaid claims report header value Actual:  "+ reportText);
-		if (agencyattr != null) {
-			if (istimeframedaterange && !Verify.StringEquals(reportText, "EPISODES REPORT FROM "+ fromdate + " TO " + todate + ", FOR AGENCY "+ agencyattr.getValue()))
-				failurecount++;
-			else if (!Verify.StringMatches(reportText,"EPISODES REPORT FROM * TO *, FOR AGENCY "+ agencyattr.getValue()))
-				failurecount++;
-		}
-
-		// verify the table header tool tips
-		String[] actualheadertooltips = reportshelper.getReportLinkSectionsTableHeaderToolTips(tableheadersxpath);
-		if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders,true))
-			failurecount++;
-
-		report.report("Total number of failures is: " + failurecount,ReportAttribute.BOLD);
-
-		return failurecount == 0 ? true : false;
-	}
 
 	public boolean verifyStuckInSuspenseExportPDFExcel(Map<String, String> mapAttrValues) throws Exception {
 		int failurecount = 0, i = 0;
@@ -2413,64 +2695,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		return failurecount == 0 ? true : false;
 	}
 
-	public boolean verifyRAPsAtRiskHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception {
-		boolean istimeframedaterange = false;
-		int failurecount = 0;
-		String fromdate, todate;
-		fromdate = todate = null;
-		String[] expectedheaders = {"The Patient HIC number.","The name of the patient.","The date the patient was originally admitted.",
-				"Start of Episode date.","The date the RAP claim was submitted to Medicare.","The date the claim was paid (or processed).",
-				"The date a final claim should be submitted to avoid from RAP been cancelled.","The number of days left to submit the Final claim to avoid the RAP being auto-cancelled.",
-				"The reimbursement amount posted by Medicare on the claim.",
-				"The total episode value.","The remaining amount of money expected from Medicare."};
 
-		navigateToPage();
-		UIAttributeXMLParser parser = new UIAttributeXMLParser();
-		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		UIActions mydde = new UIActions();
-		mydde.fillScreenAttributes(lsAttributes);
-
-		safeJavaScriptClick("RAPs At Risk");
-
-		// Verification part
-		// Natural Ascending Sort Verification
-		if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 1))
-			failurecount++;
-
-		Attribute agencyattr = reportshelper.getAttribute(lsAttributes,"agency");
-		// To Do - Need to get the From and Todate from Timeframe attributes
-		// value
-		Attribute timeframeattr = reportshelper.getAttribute(lsAttributes,"Timeframe");
-		String timeframe = timeframeattr.getValue().toLowerCase();
-		if (timeframe.contains("fromdate")) {
-			istimeframedaterange = true;
-			String[] dates = timeframe.split(":");
-			fromdate = dates[0];
-			todate = dates[1];
-
-			fromdate = fromdate.substring(fromdate.indexOf("(") + 1,fromdate.indexOf(")"));
-			todate = todate.substring(todate.indexOf("(") + 1,todate.indexOf(")"));
-		}
-
-		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'RAPS AT RISK REPORT')]"));
-
-		report.report("comparing unpaid claims report header value Actual:  "+ reportText);
-		if (agencyattr != null) {
-			if (istimeframedaterange && !Verify.StringEquals(reportText, "RAPS AT RISK REPORT FROM "+ fromdate + " TO " + todate + ", FOR AGENCY "+ agencyattr.getValue()))
-				failurecount++;
-			else if (!Verify.StringMatches(reportText,"RAPS AT RISK REPORT FROM * TO *, FOR AGENCY "+ agencyattr.getValue()))
-				failurecount++;
-		}
-
-		// verify the table header tool tips
-		String[] actualheadertooltips = reportshelper.getReportLinkSectionsTableHeaderToolTips(tableheadersxpath);
-		if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders,true))
-			failurecount++;
-
-		report.report("Total number of failures is: " + failurecount,ReportAttribute.BOLD);
-
-		return failurecount == 0 ? true : false;
-	}
 
 	public boolean verifyRAPsAtRiskExportPDFExcel(Map<String, String> mapAttrValues) throws Exception {
 		int failurecount = 0, i = 0;
@@ -2499,63 +2724,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		return failurecount == 0 ? true : false;
 	}
 
-	public boolean verifyADRHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception {
-		boolean istimeframedaterange = false;
-		int failurecount = 0;
-		String fromdate, todate;
-		fromdate = todate = null;
-		String[] expectedheaders = {"The Patient HIC number.","The name of the patient.","The date the patient was originally admitted.","Start of Episode date.",
-				"The reimbursement amount posted by Medicare on the claim.","The total episode value.","The number of days left to respond to the ADR.",
-				"The date an action is required by the FI in order to resolve the ADR.","Ensure that ADR documentation is mailed by this date to avoid unnecessary auto-denying of your claim.",
-				"The code associated with the ADR.","Total Amount Billed for Claim","The last time the claim was updated in Ease from DDE."};
 
-		navigateToPage();
-		UIAttributeXMLParser parser = new UIAttributeXMLParser();
-		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		UIActions mydde = new UIActions();
-		mydde.fillScreenAttributes(lsAttributes);
-
-		safeJavaScriptClick("ADR");
-
-		// Verification part
-		// Natural Ascending Sort Verification
-		if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 1))
-			failurecount++;
-
-		Attribute agencyattr = reportshelper.getAttribute(lsAttributes,"agency");
-		// To Do - Need to get the From and Todate from Timeframe attributes
-		// value
-		Attribute timeframeattr = reportshelper.getAttribute(lsAttributes,"Timeframe");
-		String timeframe = timeframeattr.getValue().toLowerCase();
-		if (timeframe.contains("fromdate")) {
-			istimeframedaterange = true;
-			String[] dates = timeframe.split(":");
-			fromdate = dates[0];
-			todate = dates[1];
-
-			fromdate = fromdate.substring(fromdate.indexOf("(") + 1,fromdate.indexOf(")"));
-			todate = todate.substring(todate.indexOf("(") + 1,todate.indexOf(")"));
-		}
-
-		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'ADR REPORT')]"));
-
-		report.report("comparing unpaid claims report header value Actual:  "+ reportText);
-		if (agencyattr != null) {
-			if (istimeframedaterange && !Verify.StringEquals(reportText, "ADR REPORT FROM "+ fromdate + " TO " + todate + ", FOR AGENCY "+ agencyattr.getValue()))
-				failurecount++;
-			else if (!Verify.StringMatches(reportText,"ADR REPORT FROM * TO *, FOR AGENCY "+ agencyattr.getValue()))
-				failurecount++;
-		}
-
-		// verify the table header tool tips
-		String[] actualheadertooltips = reportshelper.getReportLinkSectionsTableHeaderToolTips(tableheadersxpath);
-		if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders,true))
-			failurecount++;
-
-		report.report("Total number of failures is: " + failurecount,ReportAttribute.BOLD);
-
-		return failurecount == 0 ? true : false;
-	}
 
 	public boolean verifyADRExportPDFExcel(Map<String, String> mapAttrValues) throws Exception {
 		int failurecount = 0, i = 0;
@@ -2625,63 +2794,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		return failurecount == 0 ? true : false;
 	}
 
-	public boolean verifyEligibilityIssuesHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception {
-		boolean istimeframedaterange = false;
-		int failurecount = 0;
-		String fromdate, todate;
-		fromdate = todate = null;
-		String[] expectedheaders = {"The Patient HIC number.","The name of the patient.","The patient's Date of Birth.","The patient sex code (M or F).",
-				"Whether or not the patient is under your care.","Whether or not the patient is eligible for Medicare Part A.","Whether or not the patient is eligible for Medicare Part B.",
-				"Whether or not the patient currently covered by an HMO plan.","Whether or not the patient has an MSP or liability period.","Whether or not another agency is/was treating the patient for the same time period.",
-		"Whether or not the patient has been treated by a hospice agency during the episode."};
 
-		navigateToPage();
-		UIAttributeXMLParser parser = new UIAttributeXMLParser();
-		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+ "uiattributesxml\\MyDDE\\MYDDE.xml", mapAttrValues);
-		UIActions mydde = new UIActions();
-		mydde.fillScreenAttributes(lsAttributes);
-
-		safeJavaScriptClick("Eligibility Issues");
-
-		// Verification part
-		// Natural Ascending Sort Verification
-		if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 1))
-			failurecount++;
-
-		Attribute agencyattr = reportshelper.getAttribute(lsAttributes,"agency");
-		// To Do - Need to get the From and Todate from Timeframe attributes
-		// value
-		Attribute timeframeattr = reportshelper.getAttribute(lsAttributes,"Timeframe");
-		String timeframe = timeframeattr.getValue().toLowerCase();
-		if (timeframe.contains("fromdate")) {
-			istimeframedaterange = true;
-			String[] dates = timeframe.split(":");
-			fromdate = dates[0];
-			todate = dates[1];
-
-			fromdate = fromdate.substring(fromdate.indexOf("(") + 1,fromdate.indexOf(")"));
-			todate = todate.substring(todate.indexOf("(") + 1,todate.indexOf(")"));
-		}
-
-		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'ELIGIBILITY ISSUES REPORT')]"));
-
-		report.report("comparing unpaid claims report header value Actual:  "+ reportText);
-		if (agencyattr != null) {
-			if (istimeframedaterange && !Verify.StringEquals(reportText, "ELIGIBILITY ISSUES REPORT FROM "+ fromdate + " TO " + todate + ", FOR AGENCY "+ agencyattr.getValue()))
-				failurecount++;
-			else if (!Verify.StringMatches(reportText,"ELIGIBILITY ISSUES REPORT FROM * TO *, FOR AGENCY "+ agencyattr.getValue()))
-				failurecount++;
-		}
-
-		// verify the table header tool tips
-		String[] actualheadertooltips = reportshelper.getReportLinkSectionsTableHeaderToolTips(tableheadersxpath);
-		if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders,true))
-			failurecount++;
-
-		report.report("Total number of failures is: " + failurecount,ReportAttribute.BOLD);
-
-		return failurecount == 0 ? true : false;
-	}
 
 	public boolean verifyEligibilityIssuesExportPDFExcel(Map<String, String> mapAttrValues) throws Exception {
 		int failurecount = 0, i = 0;
@@ -2801,7 +2914,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		String fromdate, todate;
 		fromdate = todate = null;
 		String[] expectedheaders = {"The Patient HIC number.","The name of the patient.","The date the patient was originally admitted.","Start of Episode date.",
-				"The eligibility problem description (if available)."};
+		"The eligibility problem description (if available)."};
 
 		navigateToPage();
 		UIAttributeXMLParser parser = new UIAttributeXMLParser();
@@ -3052,7 +3165,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		String[] expectedheaders = {"The Patient HIC number.","The name of the patient.","The date the patient was originally admitted.","Start of Episode date.",
 				"The reimbursement amount posted by Medicare on the claim.","The other agency’s intermediary code.","The other agency’s provider ID.",
 				"The other agency’s Start of Episode. If this is date is earlier than your agency’s start of episode, your episode is at risk.","The other agency’s End of Episode.",
-				"The other agency last billable action date. This can help you determine if the other agency should have adjusted their End of Episode to an earlier date when the patient switched to your care."};
+		"The other agency last billable action date. This can help you determine if the other agency should have adjusted their End of Episode to an earlier date when the patient switched to your care."};
 
 		navigateToPage();
 		UIAttributeXMLParser parser = new UIAttributeXMLParser();
@@ -3137,7 +3250,7 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		String[] expectedheaders = {"The Patient HIC number.","The name of the patient.","The date the patient was originally admitted.","Start of Episode date.",
 				"The reimbursement amount posted by Medicare on the claim.","The other agency’s intermediary code.","The other agency’s provider ID.",
 				"The other agency’s Start of Episode. If this is date is earlier than your agency’s start of episode, your episode is at risk.","The other agency’s End of Episode.",
-				"The other agency last billable action date. This can help you determine if the other agency should have adjusted their End of Episode to an earlier date when the patient switched to your care."};
+		"The other agency last billable action date. This can help you determine if the other agency should have adjusted their End of Episode to an earlier date when the patient switched to your care."};
 
 		navigateToPage();
 		UIAttributeXMLParser parser = new UIAttributeXMLParser();
@@ -3307,8 +3420,9 @@ public class MyDDEReportsPage extends AbstractPageObject {
 	public void navigateToPage() throws Exception {
 		HomePage.getInstance().navigateTo(Menu.MYDDE, null);
 	}
-	
-	public void clickAdvanced() throws Exception{
+
+	public boolean clickAdvanced() throws Exception{
+		int failurecount = 0;
 		navigateToPage();
 		WebElement pageView = waitForElementToBeClickable(ByLocator.xpath, "//a[@id='reportComplexity']", 30);
 		if(pageView != null){
@@ -3316,8 +3430,13 @@ public class MyDDEReportsPage extends AbstractPageObject {
 			if(viewText.equalsIgnoreCase("Advanced")){
 				clickLink("Advanced");
 			}
+		}else{
+			failurecount++;
 		}
-		
+		return failurecount == 0 ? true : false;
 	}
-	
+
+
+
+
 }

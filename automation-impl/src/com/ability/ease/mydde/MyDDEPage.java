@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import jsystem.framework.report.Reporter.ReportAttribute;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -20,6 +22,12 @@ import com.ability.ease.home.HomePage;
 import com.ability.ease.home.HomePage.Menu;
 import com.ability.ease.mydde.reports.ReportsHelper;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
+
+/**
+ * 
+ * @author abhilash.chavva
+ *
+ */
 
 public class MyDDEPage extends AbstractPageObject{
 
@@ -113,14 +121,20 @@ public class MyDDEPage extends AbstractPageObject{
 
 		waitForElementToBeClickable(ByLocator.xpath, "//thead[@id='datatableheader']/tr/td[7]", 30);
 		//Summary report
-		if(Verify.verifyTableColumnNames("datatable",expOvernightColumns)){//if(Verify.verifyTableColumnNames("datatable",new String[]{"Type","Claim $"})){
+		if(Verify.verifyTableColumnNames("datatable",expOvernightColumns)){
 			if(!isTextPresent("EASE found no items for this report")){
 				if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 5))
+					failurecount++;
+				
+				if (!Verify.validateTableColumnSortOrder("datatable", "Type", 7))
+					failurecount++;
+				
+				if (!Verify.validateTableColumnSortOrder("datatable", "Last Updt", 13))
 					failurecount++;
 			}
 		}
 		else{
-			failurecount++;
+			report.report("EASE found no items for this report at this time.",ReportAttribute.BOLD);
 		}
 
 		moveToElement("Reports");

@@ -138,7 +138,7 @@ public class ReportsHelper extends AbstractPageObject{
 	public List<WebElement> getReportTableHeaders(String tableidentifier){
 		WebElement table = waitForElementVisibility(By.xpath("//table[@id='"+tableidentifier+"']"));
 		if(table != null){
-			String tableheaderxpath = "//table[@id='"+tableidentifier+"']/thead/tr/td";
+			String tableheaderxpath = "//table[@id='"+tableidentifier+"']/thead/tr/td | //table[@id='datatable']/thead/tr[1]/th/div";
 			return findElements(By.xpath(tableheaderxpath));
 		}
 		else{
@@ -191,8 +191,8 @@ public class ReportsHelper extends AbstractPageObject{
 		endCalendar.setTime(endDate);
 
 		int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
-		report.report("reports helper month diff between method : "+diffYear);
 		int diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
+		
 		return diffMonth;
 	}
 

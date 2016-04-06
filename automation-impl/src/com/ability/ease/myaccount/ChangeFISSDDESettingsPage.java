@@ -261,6 +261,8 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 		while(!isTextPresent("MANAGE FISS/DDE SETTINGS") && count++ < 3){
 			HomePage.getInstance().navigateTo(Menu.MYACCOUNT, null);
 		}
+		if(waitForElementToBeClickable(ByLocator.linktext, "Change FISS/DDE Settings", 5)==null)
+			HomePage.getInstance().navigateTo(Menu.MYACCOUNT, null);
 		clickLink("Change FISS/DDE Settings");
 	}
 

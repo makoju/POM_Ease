@@ -7,7 +7,12 @@ import com.ability.ease.testapi.IReports;
 public class ReportsSelenium2Impl implements IReports{
 
 	private MyDDEReportsPage mydde = new MyDDEReportsPage();
-
+	
+	@Override
+	public boolean verifyOvernightSummaryReport(String fromDate,String toDate, String agency,String expOvernightColumnsFromJSystem) throws Exception {
+		return mydde.verifyOvernightSummaryReport(fromDate, toDate, agency, expOvernightColumnsFromJSystem);
+	}
+	
 	@Override
 	public boolean verifySummaryReportHeaderandHelpText(Map<String, String> mapAttrValues) throws Exception{
 
@@ -349,7 +354,14 @@ public class ReportsSelenium2Impl implements IReports{
 	}
 
 	@Override
-	public void clickAdvancedTab() throws Exception {
-		mydde.clickAdvanced();
+	public boolean clickAdvancedTab() throws Exception {
+		return mydde.clickAdvanced();
 	}
+
+	@Override
+	public boolean verifyHMOAdvCatcherReport() throws Exception {
+		return mydde.verifyHMOAdvCatcherReport();
+	}
+
+	
 }

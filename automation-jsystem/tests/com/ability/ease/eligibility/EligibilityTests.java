@@ -292,6 +292,91 @@ public class EligibilityTests extends BaseTest{
 		}	
 	}
 	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "verifyActivityLogSearchOnlynotacknowledged", paramsInclude = { "testType" })
+	public void verifyActivityLogSearchOnlynotacknowledged() throws Exception{
+		report.report("Inside verifyActivityLogSearchOnlynotacknowledged test method");
+		if(!elig.verifyActivityLogSearchOnlynotacknowledged()) {
+			report.report("Failed to verify ActivityLogSearch Only notacknowledged!!!",	Reporter.FAIL);
+		} else {
+			report.report("Successfully verified ActivityLogSearch Only notacknowledged!!!", Reporter.PASS);
+		}	
+	}
+
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify Navigation To HomeScreen From CompletedActivityLogScreen", paramsInclude = { "testType" })
+	public void VerifyNavigationToHomeScreenFromCompletedActivityLogScreen() throws Exception {
+		report.report("Inside VerifyNavigationToHomeScreenFromCompletedActivityLogScreen tests method");
+		if(!elig.verifyNavigationToHomeScreenFromCompletedActivityLogScreen()) {
+			report.report("Failed to verify Navigation to Home Screen from Completed Activity Log Screen!!!",	Reporter.FAIL);
+		} else {
+			report.report("Successfully verified Navigation to Home Screen from Completed Activity Log Screen!!!", Reporter.PASS);
+		}	
+	}
+	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify PDF Export Functionality In CompletedActivityLogScreen", paramsInclude = { "testType" })
+	public void VerifyPDFExportInCompletedActivityLogScreen() throws Exception {
+		report.report("Inside VerifyPDFExportInCompletedActivityLogScreen tests method");
+		if(!elig.verifyPDFExportInCompletedActivityLogScreen()) {
+			report.report("Failed to verify PDF export functionality in Completed Activity Log Screen!!!",	Reporter.FAIL);
+		} else {
+			report.report("Successfully verified PDF export functionality in Completed Activity Log Screen!!!", Reporter.PASS);
+		}	
+	}
+	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify Navigation To HomeScreen From Patient information Screen", paramsInclude = { "hic,testType" })
+	public void verifyNavigationToHomeScreenFromPatientInfoScreen() throws Exception {
+		report.report("Inside verifyNavigationToHomeScreenFromPatientInfoScreen tests method");
+		if(!elig.verifyNavigationToHomeScreenFromPatientInfoScreen(hic)) {
+			report.report("Failed to verify Navigation to Home Screen from Patient Information Screen!!!",	Reporter.FAIL);
+		} else {
+			report.report("Successfully verified Navigation to Home Screen from Patient Information Screen!!!", Reporter.PASS);
+		}	
+	}
+	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify Navigation To Advanced Search Screen From LiveSearch Screen", paramsInclude = { "testType" })
+	public void VerifyNavigationOfAdvanceSearchFromLiveSearch() throws Exception {
+		report.report("Inside VerifyNavigationOfAdvanceSearchFromLiveSearch tests method");
+		if(!elig.VerifyNavigationOfAdvanceSearchFromLiveSearch()) {
+			report.report("Failed to verify Navigation to Advanced Screen from LiveSearch Screen!!!",	Reporter.FAIL);
+		} else {
+			report.report("Successfully verified Navigation to Advanced Search Screen from LiveSearch Screen!!!", Reporter.PASS);
+		}	
+	}
+	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify Navigation to Eligibility Check Report Screen", paramsInclude = { "firstname,lastname,testType" })
+	public void navigatetoEligibilityReport() throws Exception {
+		report.report("Inside navigatetoEligibilityReport test method");
+		if(!elig.navigatetoEligibilityReport(firstname, lastname)) {
+			report.report("Failed to verify Navigation to Eligibility Check Report Screen!!!",	Reporter.FAIL);
+		} else {
+			report.report("Successfully Navigated to Eligibility Check Report Screen!!!", Reporter.PASS);
+		}	
+	}
+	
+	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Verify Most Benefit and STC45 Fields", paramsInclude = { "testType" })
+	public void verifyMostBenefitSTC45Fields() throws Exception {
+		report.report("Inside verifyMostBenefitSTC45Fields tests method");
+		if(!elig.verifyMostBenefitSTC45Fields()) {
+			report.report("Failed to verify MostBenefit and STC45Fields in Eligibility Check report Screen!!!",	Reporter.FAIL);
+		} else {
+			report.report("Successfully verified MostBenefit and STC45Fields in Eligibility Check report Screen!!!", Reporter.PASS);
+		}	
+	}
+	
 	/*######
 	Getters and Setters
 	######*/

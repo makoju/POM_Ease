@@ -84,4 +84,58 @@ public class EligibilitySelenium2Impl implements IEligibility{
 		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 		return eligPage.navigatetoPatientInfoScreen(firstlastname, hic);
 	}
+
+	@Override
+	public boolean verifyActivityLogSearchOnlynotacknowledged()
+			throws Exception {
+		return eligPage.verifyActivityLogSearchOnlynotacknowledged();
+	}
+
+	@Override
+	public boolean verifyNavigationToHomeScreenFromCompletedActivityLogScreen()
+			throws Exception {
+		return eligPage.verifyNavigationToHomeScreenFromCompletedActivityLogScreen();
+	}
+
+	@Override
+	public boolean verifyPDFExportInCompletedActivityLogScreen()
+			throws Exception {
+		return eligPage.verifyPDFExportInCompletedActivityLogScreen();
+	}
+
+	@Override
+	public boolean verifyPrintOptionInCompletedActivityLogScreen()
+			throws Exception {
+		return eligPage.verifyPrintOptionInCompletedActivityLogScreen();
+	}
+
+	@Override
+	public boolean verifyTrashOptionInCompletedActivityLogScreen()
+			throws Exception {
+		return eligPage.verifyTrashOptionInCompletedActivityLogScreen();
+	}
+
+	@Override
+	public boolean verifyNavigationToHomeScreenFromPatientInfoScreen(String hic)
+			throws Exception {
+		return eligPage.verifyNavigationToHomeScreenFromPatientInfoScreen(hic);
+	}
+
+	@Override
+	public boolean VerifyNavigationOfAdvanceSearchFromLiveSearch()
+			throws Exception {
+		return eligPage.VerifyNavigationOfAdvanceSearchFromLiveSearch();
+	}
+
+	@Override
+	public boolean navigatetoEligibilityReport(String firstname, String lastname)
+			throws Exception {
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
+		return eligPage.navigatetoEligibilityReport(firstlastname);
+	}
+
+	@Override
+	public boolean verifyMostBenefitSTC45Fields() throws Exception {
+		return eligPage.verifyMostBenefitSTC45Fields();
+	}
 }

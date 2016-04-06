@@ -119,7 +119,7 @@ public class Verify extends AbstractPageObject{
 		if(we!=null){
 			List<WebElement> dataelement = we.findElements(By.xpath("tbody//tr/td["+column+"][contains(@class,'datatablecell')]"));
 			for(WebElement element:dataelement){
-				if(element.getText().trim().matches("[a-zA-Z0-9\\s+]+"))
+				if(element.getText().trim().matches("[a-zA-Z0-9,/\\s+]+"))
 					actual.add(element.getText());
 			}
 		}
@@ -314,9 +314,9 @@ public class Verify extends AbstractPageObject{
 			e1.printStackTrace();
 		}
 		try {
-			if(isTextPresent("EASE found no items for this report")){
+			if(isTextPresent("EASE found no items for this report") || isTextPresent("No changes have been detected for any patients")){
 				report.report("EASE found no items for this report",ReportAttribute.BOLD);
-				return true;
+				return false;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

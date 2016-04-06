@@ -122,14 +122,14 @@ public class AuditDocHelper extends AbstractPageObject{
 		WebElement mydde = waitForElementVisibility(By.linkText("MY DDE"));
 		String classAttr = mydde.getAttribute("class");
 		if ( mydde != null) {
-			if( !classAttr.equalsIgnoreCase("topNavAnchor topNavAnchorSelected")){
-				safeJavaScriptClick("MY DDE");
-				waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 10);
+			/*if( !classAttr.equalsIgnoreCase("topNavAnchor topNavAnchorSelected")){*/
+			safeJavaScriptClick("MY DDE");
+			waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 10);
+			clickEsmdStatusLink(agency);
+			return;
+			/*}else{
 				clickEsmdStatusLink(agency);
-				return;
-			}else{
-				clickEsmdStatusLink(agency);
-			}
+			}*/
 		}
 	}
 
@@ -408,11 +408,11 @@ public class AuditDocHelper extends AbstractPageObject{
 		WebElement we = null;
 		boolean isElementPresent = false;
 		int count = 0;
-		while( !isElementPresent || count++ <= 5 ){
+		while( !isElementPresent && count++ <= 5 ){
 			try{
 				we = driver.findElement(By.xpath(sXpath));
 				String rcvdByCMSTime = we.getText();
-				report.report("Text from Received by reviewer column..." + rcvdByCMSTime);
+				report.report("Text from Received by reviewer column is : " + rcvdByCMSTime + " in " + count + " try");
 				if( we != null && !rcvdByCMSTime.isEmpty()) {
 					isElementPresent = true;
 					result = true;

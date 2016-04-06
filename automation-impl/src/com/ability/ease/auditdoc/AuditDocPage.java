@@ -187,7 +187,8 @@ public class AuditDocPage extends AbstractPageObject{
 		waitForElementToBeClickable(ByLocator.xpath,sXpathofEsmdReport, 30);
 		WebElement uploadDocIcon = retryUntilElementIsVisible("//td/center/a/img[1]", 7); 
 		uploadDocIcon.click();
-		waitForElementVisibility(By.xpath(adrPageXpath));
+		//waitForElementVisibility(By.xpath(adrPageXpath));
+		waitForElementToBeClickable(ByLocator.xpath, adrPageXpath, 30);
 		WebElement adrPage = retryUntilElementIsVisible(adrPageXpath, 5);
 		if( adrPage != null ){
 			//enter review contractor name and other required details
@@ -371,7 +372,7 @@ public class AuditDocPage extends AbstractPageObject{
 	public boolean verifyRecordsPresenUnderESMDreport()throws Exception{
 
 		String sXpathOfOVERNIGHT = "//span[contains(text(),'OVERNIGHT')]";
-		String ADRPageXpath = "//td[contains(text(),'ADR REPORT FOR')]";
+		String ADRPageXpath = "//td[contains(text(),'ADR REPORT, FOR')]";
 		String eSMDPageXpath = "//td[contains(text(),'ESMD DELIVERY & STATUS')]";
 		String sADRDataTableXpath = "//table[@id='datatable']/tbody/tr";
 		String sEaseFoundNoItemsXpath = "//span[contains(text(),'EASE found no items')]";

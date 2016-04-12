@@ -89,7 +89,7 @@ public class MiscPage extends AbstractPageObject {
 			int countTry = 0;
 			do {
 				try {
-					if( waitForElementToBeClickable(ByLocator.id, "mainArea", 20) != null){
+						Thread.sleep(6000);
 						driver.switchTo().frame(0);
 						report.report( "Login to Ease as:" + sUserName);
 						typeEditBox("txtUser", sUserName);						
@@ -98,7 +98,7 @@ public class MiscPage extends AbstractPageObject {
 						clickButtonV2("loginbutton");
 						mainWindowHanlder = returnMainWindowHandle();
 						returnCurrentWindowHandle(mainWindowHanlder);
-					}
+						
 					if (waitForElementToBeClickable(ByLocator.linktext, "LOGOUT", 10) != null) {
 						isLoggedIn = true;
 						currentLoggedInUser = sUserName;

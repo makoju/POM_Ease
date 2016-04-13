@@ -172,7 +172,7 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 				for(String agency:agencieslist)
 					selectByNameOrID("UserProvID", agency);
 			}
-			clickButton("Submit");
+			clickButtonV2("Submit");
 			if(!verifyAlert("Information saved!")){
 				report.report("Failed to edit FISS/DDE Settings of group"+groupname, Reporter.WARNING);
 				return false;

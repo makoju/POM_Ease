@@ -58,6 +58,7 @@ public class MiscPage extends AbstractPageObject {
 	public boolean validLogin(String sUserName, String sPassword) throws Exception {
 		if (isBrowserOpen == false || !driver.getCurrentUrl().contains(WorkingEnvironment.getEaseURL())) {
 			driver.get(WorkingEnvironment.getEaseURL());
+			driver.manage().window().maximize();
 			isBrowserOpen = true;
 		}
 		if (isLoggedIn) {
@@ -499,6 +500,7 @@ public class MiscPage extends AbstractPageObject {
 		isBrowserOpen = false;
 		openBrowser();
 		driver.get(WorkingEnvironment.getEaseURL());
+		driver.manage().window().maximize();
 	}
 	@Override
 	public void assertInPage() {

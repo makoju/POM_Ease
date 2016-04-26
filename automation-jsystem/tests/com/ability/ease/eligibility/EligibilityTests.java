@@ -224,7 +224,7 @@ public class EligibilityTests extends BaseTest{
 		do{
 			report.report("Activities count not increased so trying again attempt#"+(count+1));
 			latestactivitycount = elig.getActivityCount(status);
-			Thread.sleep(5000);
+			Thread.sleep(8500);
 		}while(count++ < 5 && latestactivitycount == activitycount);
 		
 		if(activitycount+1 == latestactivitycount)

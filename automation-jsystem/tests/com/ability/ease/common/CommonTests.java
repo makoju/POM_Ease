@@ -30,11 +30,10 @@ public class CommonTests extends BaseTest{
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "${easeSrvStauts} Ease Server", paramsInclude = { "easeSrvStauts", "testType" })
 	public void stopStartEaseServer()throws Exception{
-		
-		if(!common.stopStartEaseServer(easeSrvStauts.toString())){
-			report.report("Failed to " + easeSrvStauts + " Ease server", Reporter.FAIL);
+		if(CommonUtils.stopStartEaseServer(easeSrvStauts.toString())){
+			report.report("EASE server " + easeSrvStauts.toString() + " successful!!!");
 		}else{
-			report.report("Successfully " + easeSrvStauts + "  Ease server", ReportAttribute.BOLD);
+			report.report("EASE server " + easeSrvStauts.toString() + " failed !!!");
 		}
 	}
 	
@@ -42,9 +41,8 @@ public class CommonTests extends BaseTest{
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "Parse Test Result and Push The Data to ART DB", paramsInclude = { "testType" })
 	public void parseTestResultAndPushDataToArtDB()throws Exception{
-
 		TestResultParser.parseTestResultAndPushDataToARTDB();
-	
+
 	}
 
 

@@ -28,8 +28,8 @@
         </jsystem-ant>
     </target>
     <target name="t1">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/AddEmployee.xml">
-            <property name="jsystem.uuid" value="4b6f59bb-2b70-486f-939e-3013f7c4653f"/>
+        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Admin_007_Verify that the admin is able to add an employee.xml">
+            <property name="jsystem.uuid" value="7a90f37f-d128-43f6-8daf-ccc27dd81c5d"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>

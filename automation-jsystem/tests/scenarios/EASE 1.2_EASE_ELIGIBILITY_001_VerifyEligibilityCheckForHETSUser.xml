@@ -19,8 +19,21 @@
         <antcallback target="t1"/>
         <antcallback target="t2"/>
         <antcallback target="t3"/>
+        <antcallback target="t4"/>
+        <antcallback target="t5"/>
+        <antcallback target="t6"/>
+        <antcallback target="t7"/>
+        <antcallback target="t8"/>
     </target>
     <target name="t0">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="72c92353-d402-44a0-9cc4-d80935fc5946"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.common.CommonTests.stopStartEaseServer"/>
+        </jsystem>
+    </target>
+    <target name="t1">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="3225b389-ca05-4797-a22f-ba2dcafc131d"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -28,7 +41,7 @@
             <test name="com.ability.ease.misc.MiscTests.loginToEase"/>
         </jsystem>
     </target>
-    <target name="t1">
+    <target name="t2">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="5dd7e656-4137-4fd3-910e-a687a7ac8306"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -36,7 +49,39 @@
             <test name="com.ability.ease.eligibility.EligibilityTests.submitEligibilityCheck"/>
         </jsystem>
     </target>
-    <target name="t2">
+    <target name="t3">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="dd434ad0-1f63-4e4c-b321-6763d574875a"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.eligibility.EligibilityTests.getActivityCount"/>
+        </jsystem>
+    </target>
+    <target name="t4">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="43ca853a-991a-4e7b-a0d0-09ee356f41fe"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.eligibility.EligibilityTests.getActivityCount"/>
+        </jsystem>
+    </target>
+    <target name="t5">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="719ff5e6-a56d-4b31-aecc-e5af7d316dd2"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.eligibility.EligibilityTests.VerifyActivityCountIncreasedByOne"/>
+        </jsystem>
+    </target>
+    <target name="t6">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="e519ce74-4944-4151-8cc9-8cf8c1b155f9"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.eligibility.EligibilityTests.VerifyActivityCountIncreasedByOne"/>
+        </jsystem>
+    </target>
+    <target name="t7">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="d8a03076-1b3c-4a82-8703-1b7448b983ee"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -44,7 +89,7 @@
             <test name="com.ability.ease.eligibility.EligibilityTests.verifyEligibilityStatus"/>
         </jsystem>
     </target>
-    <target name="t3">
+    <target name="t8">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="a17e18fa-d70b-470b-bcd6-6bb09f62eb7d"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>

@@ -47,7 +47,7 @@ public class EligibilityPage extends AbstractPageObject{
 			return true;
 	}
 	
-	public boolean verifyEligibilityStatus(String firstname, String lastname, String status) throws Exception {
+	/*public boolean verifyEligibilityStatus(String firstname, String lastname, String status) throws Exception {
 		navigateToPage();
 		//validation
 		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
@@ -58,6 +58,30 @@ public class EligibilityPage extends AbstractPageObject{
 		}
 		else if(status.equalsIgnoreCase("completed")){
 			if(!verifyEligibilityRequestStatusCompleted(firstlastname.toUpperCase()))
+				return false;
+		}
+		
+		else if(status.equalsIgnoreCase("failed")){
+			if(!verifyEligibilityRequestStatusFailed(firstlastname.toUpperCase()))
+				return false;
+		}
+		return true;
+	}*/
+	
+	/*
+	 * added by nageswar.bodduri
+	 */
+	public boolean verifyEligibilityStatus(String firstname, String lastname, String status) throws Exception {
+		navigateToPage();
+		//validation
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
+
+		if(status.equalsIgnoreCase("pending")){
+			if(!verifyEligibilityRequestStatusPending(firstlastname.toUpperCase()))
+				return false;
+		}
+		else if(status.equalsIgnoreCase("completed")){
+			if(!verifyEligibilityRequestStatusCompleted(firstname))
 				return false;
 		}
 		
@@ -86,14 +110,17 @@ public class EligibilityPage extends AbstractPageObject{
 	}
 	
 	public boolean acknoweldgeEligibility(String firstname, String lastname) throws Exception{
-		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
+	
+		//String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
+		String firstnamesuffix = firstname.replaceAll("[^0-9]", "");
+		
 		navigateToPage();
 		WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
 		//Acknowledge the Request - To do - we've to get the first record from the table not any record matches with the given name
 		int goodactivitycountprev = getActivitycount("tdGoodActivity");
 	
 		moveToElement(tblcompletedactivity);
-		WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstlastname+"')]/../td[1]/a"));
+		WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstnamesuffix+"')]/../td[1]/a"));
 		  if(we!=null){
 			  we.click();
 		  }
@@ -114,17 +141,20 @@ public class EligibilityPage extends AbstractPageObject{
 	public boolean verifyHETSActivitiesCompletedStatusReport(String hic,String agency, String firstname, String lastname) throws Exception {
 		int failurecount=0;
 		navigateToPage();
-		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
-		if(!verifyEligibilityRequestStatusCompleted(firstlastname))
+		
+		String firstnamesuffix = firstname.replaceAll("[^0-9]", "");
+		//String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
+		if(!verifyEligibilityRequestStatusCompleted(firstnamesuffix))
 			return false;
 		
 		//Handle the report link of Eligibility Check Request and data validation
 		String expectedreportheader = "ELIGIBILITY CHECK REPORT";
-		if(!navigatetoEligibilityReport(firstlastname))
+		if(!navigatetoEligibilityReport(firstnamesuffix))
 			return false;
 		
-		WebElement reportheader = waitForElementVisibility(By.xpath("//td[@class='headergreen']"));
-		if(reportheader!=null && !Verify.StringEquals(expectedreportheader, reportheader.getText())){
+		//WebElement reportheader = waitForElementVisibility(By.xpath("//td[@class='headergreen']"));
+		WebElement reportheader = waitForElementToBeClickable(ByLocator.xpath, "//td[@class='headergreen']", 10);
+		if(reportheader!=null && !Verify.StringEquals(reportheader.getText(),expectedreportheader)){
 			report.report("Unable to find Expected Header of a Report"+expectedreportheader, Reporter.WARNING);
 			failurecount++;
 		}
@@ -142,15 +172,23 @@ public class EligibilityPage extends AbstractPageObject{
 			  report.report("Unable to find Add to HMO Catcher link", Reporter.WARNING);
 			  failurecount++;
 		}
+		if(!(waitForElementVisibility(By.xpath("//span[text()='Other HHA Information']"))!=null)){
+			  report.report("Unable to find General Patient Information Section", Reporter.WARNING);
+			  failurecount++;
+		}
+		if(!(waitForElementVisibility(By.xpath("//span[text()='Hospice Information']"))!=null)){
+			  report.report("Unable to find Add to HMO Catcher link", Reporter.WARNING);
+			  failurecount++;
+		}
 					
-		if(!Verify.isElementPresent(By.xpath("//pre/h2[contains(text(), 'Agency: "+agency+"')]"))){
+		/*if(!Verify.isElementPresent(By.xpath("//pre/h2[contains(text(), 'Agency: "+agency+"')]"))){
 			  report.report("Unable to find agency information in Eligibility Check Report. Expected Agency: "+agency, Reporter.WARNING);
 			  failurecount++;
 		}
 		if(!Verify.isElementPresent(By.xpath("//pre/h2[contains(text(), 'HIC: "+hic+"')]"))){
 			  report.report("Unable to find hic information in Eligibility Check Report. Expected HIC: "+hic, Reporter.WARNING);
 			  failurecount++;
-		}
+		}*/
 		return failurecount==0?true:false;
 	}
 
@@ -185,7 +223,7 @@ public class EligibilityPage extends AbstractPageObject{
 		}
 		else{
 			report.report("Failed to Navigate to Claim Information page", Reporter.WARNING);
-			failurecount++;
+			failurecount++;	
 		}
 
 		return failurecount==0?true:false;
@@ -578,13 +616,14 @@ public class EligibilityPage extends AbstractPageObject{
 		}
 	}
 	
-	private boolean verifyEligibilityRequestStatusCompleted(String lastname){
-			
+	private boolean verifyEligibilityRequestStatusCompleted(String firstname){
+						
 			WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
 			moveToElement(tblcompletedactivity);
-
-			String firstlastname = Verify.getTableData("goodActivity", 1, 5);
-			if (firstlastname!=null && firstlastname.toLowerCase().contains(lastname.toLowerCase())){
+			
+			String firstnamesuffix = firstname.replaceAll("[^0-9]", "");
+			String firstlastname = Verify.getTableData("goodActivity", 1, 6);
+			if (firstlastname!=null && firstlastname.contains(firstnamesuffix)){
 				report.report("Submitted Patient Eligibility was found in Good Activity table(Green).", ReportAttribute.BOLD);
 				return true;
 			}

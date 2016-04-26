@@ -133,7 +133,7 @@ public class TestResultParser {
 			for(String module:moduleNames)
 			{
 				//Getting module ID with module name from art.module table
-				oResultSet = getResultSet("Select moduleid from art.module where modulename='"+ module.split("_")[0] +"'");
+				oResultSet = getResultSet("Select moduleid from art.Module where modulename='"+ module.split("_")[0] +"'");
 				try {
 					while(oResultSet.next()){
 						moduleID = oResultSet.getInt("ModuleID");
@@ -144,7 +144,7 @@ public class TestResultParser {
 				List<Result> lsScenarioResult1 = resultmap.get(module);
 				for(Result r1:lsScenarioResult1){
 					//Inserting scenario , status and module ID to art.scenario table
-					String sInsertQuery = "Insert into art.scenario(scenarioname, scenariostatus, moduleid) values ('" + r1.getScenarioName() + "','" + r1.getStatus() + "'," + moduleID + ")";
+					String sInsertQuery = "Insert into art.Scenario(scenarioname, scenariostatus, moduleid) values ('" + r1.getScenarioName() + "','" + r1.getStatus() + "'," + moduleID + ")";
 					executeQuery(sInsertQuery);
 				}
 			}
@@ -152,9 +152,9 @@ public class TestResultParser {
 			//Push Build Details into art.BuildDetails Table
 			insertBuildDetails();
 			//Now, push art.scenario table results to art.testresults table to display in ART dash board
-			String sQuery1 = "Select count(scenarioname) from art.scenario";
-			String sQuery2 = "Select count(scenariostatus) from art.scenario where scenarioStatus = 'pass'";
-			String sQuery3 = "Select count(scenariostatus) from art.scenario where scenarioStatus = 'fail'";
+			String sQuery1 = "Select count(scenarioname) from art.Scenario";
+			String sQuery2 = "Select count(scenariostatus) from art.Scenario where scenarioStatus = 'pass'";
+			String sQuery3 = "Select count(scenariostatus) from art.Scenario where scenarioStatus = 'fail'";
 
 			oResultSet = getResultSet(sQuery1);
 			scenarioCount = getCoulmnValue(oResultSet, "count(scenarioname)");
@@ -167,7 +167,9 @@ public class TestResultParser {
 
 			//Here, build id value should be parameterized once 
 			int buildId = Integer.parseInt(WorkingEnvironment.getEasebuildId());
-			String sInsertQuery = "Insert into testresults(totaltests,passed,failed,buildid) values ("+scenarioCount +"," + scenarioPassed + "," + scenarioFailed + "," + buildId +")";
+			String sInsertQuery = "Insert into TestResults(totaltests,passed,failed,buildid) values ("+scenarioCount +"," + scenarioPassed + "," + scenarioFailed + "," + buildId +")";
+			System.out.println("Executing below insert query against ART database!!!");
+			System.out.println(sInsertQuery);
 			executeQuery(sInsertQuery);
 
 
@@ -289,7 +291,7 @@ public class TestResultParser {
 		System.out.println("Ease Build ID : " + buildId);
 		System.out.println("Ease Build Name : " + buildName);
 		System.out.println("Ease Build Generated Date : " + buildDate);
-		String insertQueryBuildDetails = "Insert into art.builddetails(BuildID, BuildName, BuildDate) values ("+ buildId +", '"+ buildName +
+		String insertQueryBuildDetails = "Insert into art.BuildDetails(BuildID, BuildName, BuildDate) values ("+ buildId +", '"+ buildName +
 				"', STR_TO_DATE('" + buildDate + "', '%d-%m-%Y'));";
 		System.out.println("Insert Build Details Query : " + insertQueryBuildDetails);
 		executeQuery(insertQueryBuildDetails);
@@ -299,8 +301,8 @@ public class TestResultParser {
 
 	public static boolean deleteDataFromScenarioTable(){
 
-		String sDeleteQuery = "DELETE FROM art.scenario";
-		String sAlterQuery = "ALTER TABLE art.scenario AUTO_INCREMENT = 1";
+		String sDeleteQuery = "DELETE FROM art.Scenario";
+		String sAlterQuery = "ALTER TABLE art.Scenario AUTO_INCREMENT = 1";
 		int[] rowCount = null;
 		try {
 			System.out.println("Executing Batch Query Update To Delete Rows in Scenario Table...");

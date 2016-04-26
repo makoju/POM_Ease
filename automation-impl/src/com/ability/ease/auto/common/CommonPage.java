@@ -6,8 +6,8 @@ import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 public class CommonPage extends AbstractPageObject{
 
-	int failCounter = 0;
-	public boolean stopStartEaseServer(String status)throws Exception{
+	/*static int failCounter = 0;
+	public static boolean stopStartEaseServer(String status)throws Exception{
 
 
 		String statusCommand = "sh /opt/abilitynetwork/ease/bin/easeServer.sh status";
@@ -65,7 +65,7 @@ public class CommonPage extends AbstractPageObject{
 		Thread.sleep(60000);
 		return (failCounter == 0 ) ? true : false;
 	}
-
+*/
 
 
 

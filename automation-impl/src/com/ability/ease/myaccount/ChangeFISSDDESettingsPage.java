@@ -101,6 +101,13 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 		String[] actual = new String[agencieslist.length];
 		int i=0;
 		
+		navigateToPage();
+		WebElement webelement = waitForElementVisibility(By.linkText("Password Protection"));
+		if(webelement == null){
+			WebElement select = waitForElementVisibility(By.id("group"));
+			if(select!=null)
+				selectByNameOrID("group", groupname);
+		}
 		clickLink("Edit");
 		WebElement selectagencies = waitForElementVisibility(By.id("UserProvID"));
 		Select select = new Select(selectagencies);
@@ -172,7 +179,7 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 				for(String agency:agencieslist)
 					selectByNameOrID("UserProvID", agency);
 			}
-			clickButton("Submit");
+			clickButtonV2("Submit");
 			if(!verifyAlert("Information saved!")){
 				report.report("Failed to edit FISS/DDE Settings of group"+groupname, Reporter.WARNING);
 				return false;

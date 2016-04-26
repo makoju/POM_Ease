@@ -54,29 +54,29 @@
         </jsystem-ant>
     </target>
     <target name="t4">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/Claims_Module.xml">
-            <property name="jsystem.uuid" value="33ba4978-2c93-44db-a93d-9550589de860"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t5">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/AuditDoc_Module.xml">
-            <property name="jsystem.uuid" value="22f2b621-4a24-4815-a8e0-3589069757eb"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t6">
         <jsystem-ant antfile="${scenarios.base}/scenarios/MyAccount_Module.xml">
             <property name="jsystem.uuid" value="8784a419-fb87-4050-8f42-009af60214d3"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>
     </target>
-    <target name="t7">
+    <target name="t5">
+        <jsystem-ant antfile="${scenarios.base}/scenarios/Claims_Module.xml">
+            <property name="jsystem.uuid" value="33ba4978-2c93-44db-a93d-9550589de860"/>
+            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+        </jsystem-ant>
+    </target>
+    <target name="t6">
         <jsystem-ant antfile="${scenarios.base}/scenarios/Admin_Module.xml">
             <property name="jsystem.uuid" value="56b31f7b-4885-4e00-b985-9933b9faea16"/>
+            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+        </jsystem-ant>
+    </target>
+    <target name="t7">
+        <jsystem-ant antfile="${scenarios.base}/scenarios/AuditDoc_Module.xml">
+            <property name="jsystem.uuid" value="22f2b621-4a24-4815-a8e0-3589069757eb"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>

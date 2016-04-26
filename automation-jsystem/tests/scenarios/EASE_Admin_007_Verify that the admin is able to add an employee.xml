@@ -17,10 +17,12 @@
     <target name="execute scenario">
         <antcallback target="t0"/>
         <antcallback target="t1"/>
+        <antcallback target="t2"/>
+        <antcallback target="t3"/>
     </target>
     <target name="t0">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="21d20b6e-ab8e-4ef0-ac0d-7acf9666f3de"/>
+            <sysproperty key="jsystem.uuid" value="8a924be0-9880-45d3-8e1a-8d1b58d646be"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.misc.MiscTests.loginToEase"/>
@@ -28,10 +30,26 @@
     </target>
     <target name="t1">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="154dbd31-3e2a-448c-b9a7-bd5662e06dbd"/>
+            <sysproperty key="jsystem.uuid" value="d415b0dd-c37b-4068-aa5d-dc95bba9f499"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.admin.AdminTests.addEmployee"/>
+        </jsystem>
+    </target>
+    <target name="t2">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="73cb57ef-c928-4e37-94c5-e17c2b3a4747"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.admin.AdminTests.updatePassword"/>
+        </jsystem>
+    </target>
+    <target name="t3">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="b1ec4c95-5768-4599-bfff-23989b615086"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.admin.AdminTests.loginNewCustomer"/>
         </jsystem>
     </target>
 </project>

@@ -326,7 +326,7 @@ public class AddCustomerPage extends AbstractPageObject{
 			for(String agency:multiAgency){			  
 				selectByNameOrID("UserProvID",agency);
 			}
-			clickButton("Submit");
+			clickButtonV2("Submit");
 			String sExpected="Information saved!";
 			if (verifyAlert(sExpected)){
 				result = true;
@@ -503,8 +503,21 @@ public class AddCustomerPage extends AbstractPageObject{
 
 		if ( waitForElementVisibility(By.linkText("ADMINISTRATION")) != null ) {
 			safeJavaScriptClick("Assign Alerts");			    
-			selectByNameOrID("alerttype",alerttype);				
-			selectByNameOrID("notused",username);								
+			selectByNameOrID("alerttype",alerttype);
+			try{
+			selectByNameOrID("notused",username);
+			}
+			catch(Exception e){
+				WebElement we = waitForElementVisibility(By.id("used"));
+				Select selected = new Select(we);
+				List<WebElement> selectedusers = selected.getOptions();
+				for(WebElement element: selectedusers){
+				    if(element.getText().equalsIgnoreCase(username)){
+				    	report.report("User was already been assigned with the specified alerttype: "+alerttype, ReportAttribute.BOLD);
+				    	return true;
+				    }
+				}
+			}
 			clickButton(">>");				
 			clickButtonV2("Submit");
 			String sExpected4= "Alerts assignment updated!";

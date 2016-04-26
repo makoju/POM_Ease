@@ -1,13 +1,19 @@
-package com.ability.ease.auto.common;
+package com.ability.auto.common;
 
 import com.ability.ease.auto.system.WorkingEnvironment;
 import com.jcraft.jsch.*;
 
 import java.io.*;
 
+/**
+ * 
+ * @author nageswar.bodduri
+ *
+ */
 public class ShellExecUtil {
 
 	public static String executeShellCmd(String shellCommand){
+		
 		Channel channel = null;
 		Session session = null;
 		String outputFromShell = null;
@@ -23,7 +29,7 @@ public class ShellExecUtil {
 			session.setUserInfo(ui);
 			session.setTimeout(3000);
 			session.connect();
-			System.out.println("Session got created succssfully...");
+			System.out.println("SSH Session got created succssfully to " + sHostName);
 
 			channel = session.openChannel("exec");
 			((ChannelExec)channel).setPty(true);
@@ -53,7 +59,9 @@ public class ShellExecUtil {
 			System.out.println("Exception occured during creation of session and/or channel: ERROR" + e.getMessage());
 			e.printStackTrace();
 		}finally{
+			System.out.println("Closing channel with " + sHostName);
 			channel.disconnect();
+			System.out.println("Closing session with " + sHostName);
 			session.disconnect();
 		}
 		return outputFromShell;

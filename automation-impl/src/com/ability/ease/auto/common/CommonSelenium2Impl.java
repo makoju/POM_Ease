@@ -8,7 +8,8 @@ public class CommonSelenium2Impl implements ICommon{
 	
 	@Override
 	public boolean stopStartEaseServer(String status) throws Exception {
-		return cp.stopStartEaseServer(status);
+		return false;
+	//	return cp.stopStartEaseServer(status);
 	}
 
 }

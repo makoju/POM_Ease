@@ -180,7 +180,7 @@ public class CustomSchedulePage extends AbstractPageObject {
 				MySQLDBUtil.closeAllDBConnections();
 		}
 
-		return noOfrowsUpdated==1?true:false;
+		return noOfrowsUpdated>=1?true:false;
 
 	}    
 	
@@ -221,6 +221,8 @@ public class CustomSchedulePage extends AbstractPageObject {
 		boolean flag = true;
 
 		List<WebElement> deleteElements = driver.findElements(By.xpath("//img[@src='assets/images/delete.png']"));
+		//First element refers to first row where delete image was disabled.So, Skipping that and taking a sublist after that
+		deleteElements = deleteElements.subList(1, deleteElements.size());
 		
 		for (WebElement deleteimages : deleteElements) {
 		  if(deleteimages.isEnabled()){
@@ -228,7 +230,7 @@ public class CustomSchedulePage extends AbstractPageObject {
 			scheduleIds.add(s.replace("deleteRow(this,", "").replace(")", ""));
 			report.report("schedle ID"+scheduleIds);
 			deleteimages.click();
-			if (!verifyAlert("Are you sure you want delete the row?")) {
+			if (!verifyAlert("Are you sure you want to delete the row ?")) {
 				report.report("unable to delete alerts from custom schedule page", Reporter.WARNING);
 				failurecount++;
 			}

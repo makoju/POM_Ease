@@ -252,7 +252,7 @@ public class MyAccountTests extends BaseTest {
 	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify Custom ScheduleDelete", paramsInclude = { " dAgency,testType" })
+	@TestProperties(name = "Verify Custom Schedule Delete last two rows", paramsInclude = { " dAgency,testType" })
 	public void CustomScheduleDeleteTwoRows() throws Exception 
 	{
 		if(myaccount.deletecustomScheduleRows(dAgency)){

@@ -3,10 +3,14 @@ package com.ability.ease.myaccount;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.TestCommonResource;
@@ -18,6 +22,7 @@ import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
 import com.ability.ease.home.HomePage;
 import com.ability.ease.home.HomePage.Menu;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
+import com.ability.ease.selenium.webdriver.WebDriverHelper;
 
 import jsystem.framework.report.Reporter;
 import jsystem.framework.report.Reporter.ReportAttribute;
@@ -120,6 +125,7 @@ public class CustomSchedulePage extends AbstractPageObject {
 			report.report("Failed to insert record into Job Schedule Table", Reporter.WARNING);
 			return false;
 		}
+		
 		//Wait for 5 seconds to refresh in database
 		try {
 			Thread.sleep(5000);
@@ -127,47 +133,140 @@ public class CustomSchedulePage extends AbstractPageObject {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+				
 		//get the last row from the jobschedule table whose jobtype is 10
-		String sQueryName = "SELECT * FROM ddez.jobschedule js where js.JobType=10 order by jobid desc limit 1"; 
+		String sQueryName = "SELECT * FROM ddez.jobschedule js where js.JobType=10 order by jobid desc limit 1";
 		ResultSet rs1 = MySQLDBUtil.getResultFromMySQLDB(sQueryName);
 		String currentaction = MySQLDBUtil.getColumnValue(rs1, "CurrentAction");
 		return (currentaction!=null && Verify.StringEquals(currentaction, "Initializing connection"))?true:false;
 	}
 		
-/*
-	// Start day and endday validation from DB
-	public boolean verifyStartDayEndDay(Map<String, String> mapAttrValues,String startDayEnddayConfValue, String agencyName) throws Exception {
-		UIAttributeXMLParser parser = UIAttributeXMLParser.getInstance();
-		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath() + "uiattributesxml/myaccount/ChangeSchedule.xml",mapAttrValues);
+	public boolean verifyInvalidDDEcredentials(String agency, String credential) throws Exception {
+		navigateToPage();
+		clickLink("Change Schedule");
+		selectByNameOrID("user_prov_id", agency);
+		clickButton("Custom");
 
-		UIActions changeSchedule = new UIActions();
-		changeSchedule.fillScreenAttributes(lsAttributes);
-	
-		boolean flag = false;
-		String customschedulervalue =mapAttrValues.get("custom");
-		
-		StringBuilder DBtmpData = new StringBuilder();
-		String query1 = "Select ps.StartDay,ps.EndDay from ddez.provider p join ddez.providerschedule ps ON p.id = ps.providerid where p.DisplayName='"
-				+ agencyName + "'";
-
-		// Select ps.StartDay,ps.EndDay from ddez.provider p join ddez.providerschedule ps ON p.id = ps.providerid where p.DisplayName='HHA2'
-
-		ResultSet rs = MySQLDBUtil.getResultFromMySQLDB(query1);
-		try {
-			while (rs.next()) {
-				DBtmpData.append(rs.getInt("startday"));
-				DBtmpData.append(",");
-				DBtmpData.append(rs.getInt("enday"));
-				DBtmpData.append(";");
+		WebElement schedulecredential = waitForElementVisibility(By.name("schedule_credential"));
+		Select selectcredential = new Select(schedulecredential);
+		List<WebElement> listElements = selectcredential.getOptions();
+		for (WebElement element : listElements) {
+			if(element.getText().contains(credential)){
+			  String actualColor = element.getAttribute("style");
+		      if(actualColor.contains("color: red"))
+		      {
+		    	  report.report("Specified Credential"+ credential+" is colored red", ReportAttribute.BOLD);
+		    	  return true;
+		      }
 			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
+		}
+		report.report("The Provided Credential"+credential+" either not found in the schedule credential dropdown or is not colored in red", Reporter.WARNING);
+		return false;
+	}
+	
+	public boolean updateDDEpasswordProblem(String username) throws SQLException {
+
+		int noOfrowsUpdated = 0;
+
+		String query = "update ddez.userddecredential set DDEPasswordProblem='1', LoginErrorMessage='problem' where DDEPasswordHolder IN (Select UserID from ddez.user where username='"
+				+ username + "')";
+		try {
+			noOfrowsUpdated = MySQLDBUtil.getUpdateResultFromMySQLDB(query);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		finally {
+				MySQLDBUtil.closeAllDBConnections();
+		}
+
+		return noOfrowsUpdated==1?true:false;
+
+	}    
+	
+	public boolean verifyDeleteOptionNotEnableforFirstSchedule(String agency) throws Exception{
+		navigateToPage();
+		clickLink("Change Schedule");
+		selectByNameOrID("user_prov_id", agency);
+		clickButton("Custom");
+		if(!isTextPresent("ASSIGN CUSTOM SCHEDULE"))
+		{
+			report.report("Unable to navigate to Custom Schedule page", Reporter.WARNING);
+			return false;
 		}
 		
-		return startDayEnddayConfValue.equals(DBtmpData.toString());
+		WebElement deleteimage = waitForElementVisibility(By.xpath("//*[@id='schedulerTable']/tbody/tr[3]/td[5]/img"));
+		if(deleteimage!=null && deleteimage.isEnabled())
+		{
+			report.report("Delete Image for first Schedule Row of custom schedule was enabled but it's expected to be disabled", Reporter.WARNING);
+			return false;
+		}
+		return true;
 	}
 
+	public boolean deletecustomScheduleRows(String agency) throws Exception {
+		int failurecount=0;
+		navigateToPage();
+		clickLink("Change Schedule");
+		selectByNameOrID("user_prov_id", agency);
+		clickButton("Custom");
+		if(!isTextPresent("ASSIGN CUSTOM SCHEDULE"))
+		{
+			report.report("Unable to navigate to Custom Schedule page", Reporter.WARNING);
+			return false;
+		}
+
+		List<String> scheduleIds = new ArrayList<String>();
+
+		boolean flag = true;
+
+		List<WebElement> deleteElements = driver.findElements(By.xpath("//img[@src='assets/images/delete.png']"));
+		
+		for (WebElement deleteimages : deleteElements) {
+		  if(deleteimages.isEnabled()){
+			String s = deleteimages.getAttribute("onclick");   // onclick=deleteRow(this,55591)
+			scheduleIds.add(s.replace("deleteRow(this,", "").replace(")", ""));
+			report.report("schedle ID"+scheduleIds);
+			deleteimages.click();
+			if (!verifyAlert("Are you sure you want delete the row?")) {
+				report.report("unable to delete alerts from custom schedule page", Reporter.WARNING);
+				failurecount++;
+			}
+		  }
+		}
+		clickButtonV2("Save");
+
+		if (!verifyAlert("Custom Schedule saved successfully!")) {
+			report.report("unable to save deleted alerts from custom schedule page", Reporter.WARNING);
+			failurecount++;
+		}
+		//verify the deletion in DB
+		for (String scheduleId : scheduleIds) {
+			if (isRecordExist(scheduleId)){
+				report.report("Deleted custom schedule not removed from DB", Reporter.WARNING);
+				failurecount++;
+			}
+		}
+		return failurecount==0?true:false;
+	}
+
+	public boolean isRecordExist(String providerSchedule) throws SQLException {
+		int providerScheduleId = Integer.parseInt(providerSchedule);
+		MySQLDBUtil.initializeDBConnection();
+
+		String query = "SELECT providerschedule_ID FROM ddez.providerschedule where providerschedule_ID="
+				+ providerScheduleId;
+
+		ResultSet rs = MySQLDBUtil.getResultFromMySQLDB(query);
+
+		if (rs != null && rs.next()) {
+
+			return (providerScheduleId == rs.getInt("providerSchedule_ID"));
+
+		}
+		return false;
+	}
+	
 	// validation for Cronformat to CST
 	public boolean verifyRuntimeCronscheduleToCST(int hours ,String agency ){
 					String customschedule = scrAttr.getLocator();
@@ -223,15 +322,7 @@ public class CustomSchedulePage extends AbstractPageObject {
 					
 					}
 			}
-
-	public int booleanToInt(boolean input) {
-		if (input)
-			return 1;
-		else
-			return 0;
-
-	}
-
+	
 	private static Document convertStringToDocument(String xmlStr) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
@@ -245,8 +336,7 @@ public class CustomSchedulePage extends AbstractPageObject {
 		}
 		return null;
 
-	}*/
-
+	}
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub

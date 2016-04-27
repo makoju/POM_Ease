@@ -5,25 +5,19 @@ import java.text.ParseException;
 import java.util.Map;
 
 import com.ability.ease.testapi.IMyAccount;
+import com.sun.org.apache.bcel.internal.generic.Select;
 
 public class MyAccountSelenium2Impl implements IMyAccount {
 	
 	CustomSchedulePage custschedpage = new CustomSchedulePage();
 	ChangeSchedulePage csp = new ChangeSchedulePage();
 	ChangeFISSDDESettingsPage cfdp = new ChangeFISSDDESettingsPage();
+	SetUpAlertsPage sap = new SetUpAlertsPage();
+	ChangePasswordPage cpp = new ChangePasswordPage();
 
 	@Override
-	public boolean verifyChangePasswordValidCase(String sOldPassword, String sNewPassword, String expectedMessage,
-			String verifypassword) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean verifyChangePasswordinValidCase(String sOldPassword, String sNewPassword, String expectedMessage,
-			String verifypassword) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean verifyChangePassword(String sOldPassword, String sNewPassword,String verifypassword,String expectedMessage) throws Exception {
+		return cpp.verifyChangePassword(sOldPassword,sNewPassword,verifypassword,expectedMessage);
 	}
 
 	@Override
@@ -43,10 +37,8 @@ public class MyAccountSelenium2Impl implements IMyAccount {
 		try {
 			return custschedpage.verifyCustomSchedule(agencyName, sDay, EndDay, runtime, credential, timezone, rownumber);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
@@ -92,7 +84,7 @@ public class MyAccountSelenium2Impl implements IMyAccount {
 
 	@Override
 	public boolean disableEase(String disableeaseforgroupnameoragency,String grouporagencyname, String disabletype, String expectedalertmessage) throws Exception {
-		return new DisableEasePage().disableEase(disableeaseforgroupnameoragency,grouporagencyname,disabletype,expectedalertmessage);
+-		return new DisableEasePage().disableEase(disableeaseforgroupnameoragency,grouporagencyname,disabletype,expectedalertmessage);
 	}
 
 	@Override
@@ -106,10 +98,33 @@ public class MyAccountSelenium2Impl implements IMyAccount {
 		return custschedpage.deleteAllCustomSchedule(agency);
 	}
 
-	/*@Override
-	public boolean verifyChangeSchedule(String sTimeZone, String sAgency, String sClaimsTime, String sEligibilityTime, String sEFTTime)
-			throws Exception{
-		ChangeSchedulePage csp = new ChangeSchedulePage();
-		return csp.verifyChangeSchedule(jobScheduleMap, timezone, agency);
-	}*/
+	@Override
+	public boolean verifyInvalidDDEcredentials(String agency,String credential) throws Exception {
+		return custschedpage.verifyInvalidDDEcredentials(agency, credential);
+	}
+
+	@Override
+	public boolean updateDDEpasswordProblem(String username) throws Exception {	
+		return custschedpage.updateDDEpasswordProblem(username);
+	}
+
+	@Override
+	public boolean verifySetupalerts(String username) throws Exception {
+		return sap.setUpAlerts(username);
+	}
+
+	@Override
+	public boolean deletecustomScheduleRows(String dAgency) throws Exception {
+		return custschedpage.deletecustomScheduleRows(dAgency);
+	}
+
+	@Override
+	public boolean verifyDeleteOptionNotEnableforFirstSchedule(String agency) throws Exception {
+		return custschedpage.verifyDeleteOptionNotEnableforFirstSchedule(agency);
+	}
+
+	@Override
+	public boolean verifyCustomScheduleDelete(String agency) throws Exception {
+		return false;
+	}
 }

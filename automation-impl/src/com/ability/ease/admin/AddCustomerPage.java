@@ -505,7 +505,7 @@ public class AddCustomerPage extends AbstractPageObject{
 			safeJavaScriptClick("Assign Alerts");			    
 			selectByNameOrID("alerttype",alerttype);
 			try{
-			selectByNameOrID("notused",username);
+				selectByNameOrID("notused",username);
 			}
 			catch(Exception e){
 				WebElement we = waitForElementVisibility(By.id("used"));

@@ -11,6 +11,7 @@ import org.junit.Test;
 import com.ability.ease.auto.common.annotations.SupportTestTypes;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.easeServerStatus;
 import com.ability.ease.auto.enums.tests.TestType;
+import com.ability.ease.auto.utilities.HttpClientUtil;
 import com.ability.ease.common.BaseTest;
 import com.ability.ease.testapi.IAuditDoc;
 import com.ability.ease.testapi.ICommon;
@@ -19,6 +20,7 @@ public class CommonTests extends BaseTest{
 	
 	private ICommon common;
 	private easeServerStatus easeSrvStauts;
+	private String sReferenceURI;
 
 	@Before
 	public void setupTests()throws Exception{
@@ -31,9 +33,9 @@ public class CommonTests extends BaseTest{
 	@TestProperties(name = "${easeSrvStauts} Ease Server", paramsInclude = { "easeSrvStauts", "testType" })
 	public void stopStartEaseServer()throws Exception{
 		if(CommonUtils.stopStartEaseServer(easeSrvStauts.toString())){
-			report.report("EASE server " + easeSrvStauts.toString() + " successful!!!");
+			report.report("EASE server " + easeSrvStauts.toString() + " successful!!!",ReportAttribute.BOLD);
 		}else{
-			report.report("EASE server " + easeSrvStauts.toString() + " failed !!!");
+			report.report("EASE server " + easeSrvStauts.toString() + " failed !!!", Reporter.FAIL);
 		}
 	}
 	
@@ -42,9 +44,30 @@ public class CommonTests extends BaseTest{
 	@TestProperties(name = "Parse Test Result and Push The Data to ART DB", paramsInclude = { "testType" })
 	public void parseTestResultAndPushDataToArtDB()throws Exception{
 		TestResultParser.parseTestResultAndPushDataToARTDB();
-
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "HTTP Send POST", paramsInclude = { "sReferenceURI, testType" })
+	public void httpSendPOST()throws Exception{
+		int response = HttpClientUtil.sendPOST(sReferenceURI);
+		if( response == 200){
+			report.report( response + " : HTTP request has been sent successfully !!! ",ReportAttribute.BOLD);
+		}else{
+			report.report( response + " : HTTP request failed !!! ", Reporter.FAIL);
+		}
 	}
 
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Send e-mail notification", paramsInclude = { "testType" })
+	public void sendEmailNotification()throws Exception{
+		if (CommonUtils.sendEmailNotification()){
+			report.report("E-mail has been sent successfully !!!", ReportAttribute.BOLD);
+		}else{
+			report.report("E-mail sending failed !!!", Reporter.FAIL);
+		}
+	}
 
 	/*####
 	# Getters and Setters
@@ -59,4 +82,15 @@ public class CommonTests extends BaseTest{
 		this.easeSrvStauts = easeSrvStauts;
 	}
 
+
+	public String getsReferenceURI() {
+		return sReferenceURI;
+	}
+
+	@ParameterProperties(description = "Provide reference URL to get the reposnse for with out 'http'")
+	public void setsReferenceURI(String sReferenceURI) {
+		this.sReferenceURI = sReferenceURI;
+	}
+
+	
 }

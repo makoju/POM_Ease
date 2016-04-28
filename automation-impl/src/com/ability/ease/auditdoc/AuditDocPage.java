@@ -22,6 +22,7 @@ public class AuditDocPage extends AbstractPageObject{
 
 	AuditDocHelper helper = new AuditDocHelper();
 	int failCounter = 0;
+	String sXpathofEsmdReport = "//td[contains(text(),'ADR ESMD STATUS REPORT ')]";
 	String xpathToADRSubPage = "//td[contains(text(),'ADR Response Document Submission Report')]";
 
 	String tableheadersxpathHHA = "//table[@id='datatable']//tr[@class='tableheaderblue']/td";
@@ -75,16 +76,21 @@ public class AuditDocPage extends AbstractPageObject{
 	 * @throws Exception
 	 */
 	public boolean verifyEsmdDeliveryStatusReportColumns(String Timeframe, String Value, String agency, String agencyValue,String hic,String patient,String daysduedate,String duedate,String code) throws Exception {
-		helper.clickAgency(agency, agencyValue);
+		/*helper.clickAgency(agency, agencyValue);
 		helper.clickTimeFrame(Timeframe,Value);
 		Thread.sleep(8000);
 		WebElement esMD = waitForElementToBeClickable(ByLocator.xpath, "//a[text()='esMD Delivery & Status']", 30);
 		if(esMD != null){
 			clickLink("esMD Delivery & Status");	
-		}
+		}*/
+		
+		helper.navigateToESMDStatusPage(agencyValue);
+		waitForElementToBeClickable(ByLocator.xpath,sXpathofEsmdReport, 30);
+		
 		String icon=".//*[@id='scrollContent']/tr/td[1]//img";
 		String sloc=".//*[contains(text(),'S/Loc')]";
 		String  cmsStatus=".//*[contains(text(),'CMS')]";
+		
 		boolean isicon=helper.verifyColumn(icon);
 		boolean isSLoc=helper.verifyColumn(sloc);
 		boolean isCMSStatus=helper.verifyColumn(cmsStatus);
@@ -174,7 +180,6 @@ public class AuditDocPage extends AbstractPageObject{
 
 		String sExpectedAlertMessageBeforeADRSubmission = "Proceed with ADR Document Submission to Review Contractor : "+ reviewContractorName +"?";
 		String sExpectedAlertMessageAfterSuccessfulADRSubmission = "Successfully processed ADR response documents Submission";
-		String sXpathofEsmdReport = "//td[contains(text(),'ESMD DELIVERY & STATUS REPORT')]";
 		String adrPageXpath = "//td[contains(text(),'ADR INFORMATION')]";
 
 
@@ -193,8 +198,8 @@ public class AuditDocPage extends AbstractPageObject{
 		if( adrPage != null ){
 			//enter review contractor name and other required details
 			selectByNameOrID("reviewContractor", reviewContractorName);
-			typeEditBox("ClaimId", claimIDorDCN);
-			typeEditBox("CaseId", caseID);
+			typeEditBox("CMSClaimIDParam", claimIDorDCN);
+			typeEditBox("CaseIdParam", caseID);
 			//upload ADR based on input provided in JSYSTEM
 			if( helper.uploadFilesAutoIT(lsADRFilePaths)) {
 				//validate whether all files browsed successfully before clicking on send

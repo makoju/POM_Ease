@@ -287,7 +287,8 @@ public class TestResultParser {
 		String sBuildID = WorkingEnvironment.getEasebuildId();
 		String buildName = WorkingEnvironment.getEasebuildName();
 		String buildDate = WorkingEnvironment.getEasebuildDate();
-		buildId = Integer.valueOf(sBuildID);
+		int i = sBuildID.lastIndexOf(".");
+		buildId = Integer.valueOf(sBuildID.substring(i+1));
 		System.out.println("Ease Build ID : " + buildId);
 		System.out.println("Ease Build Name : " + buildName);
 		System.out.println("Ease Build Generated Date : " + buildDate);

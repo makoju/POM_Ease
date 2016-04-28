@@ -116,62 +116,45 @@ public class AuditDocHelper extends AbstractPageObject{
 		Thread.sleep(5000);
 	}
 
-	//Use this method to click on MY DDE Link
+	/**Use this method to click on esMD Link
+	 * Updated below code from EASE 1.5 to work accordingly on EASE 1.6 code
+	 * nageswar.bodduri
+	 */
 	public void navigateToESMDStatusPage(String agency) throws Exception{
 
-		WebElement mydde = waitForElementVisibility(By.linkText("MY DDE"));
-		String classAttr = mydde.getAttribute("class");
-		if ( mydde != null) {
-			/*if( !classAttr.equalsIgnoreCase("topNavAnchor topNavAnchorSelected")){*/
-			safeJavaScriptClick("MY DDE");
-			waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 10);
-			clickEsmdStatusLink(agency);
-			return;
-			/*}else{
-				clickEsmdStatusLink(agency);
-			}*/
-		}
-	}
-
-	public void clickEsmdStatusLink(String agency)throws Exception{
-		String sXpathOfOVERNIGHT = "//span[contains(text(),'OVERNIGHT')] | //td[contains(text(),'EASE SUMMARY REPORT')] | //td[contains(text(),'FOR AGENCY')] | "
-				+ "//td[contains(text(),'ADR Response Document Submission')]";
-		String sXpathBeforeClickOnESMD = "//td[contains(text(),'FOR AGENCY')]";
-		String sXpathofEsmdReport = "//td[contains(text(),'ESMD DELIVERY & STATUS REPORT')]";
-		waitForElementToBeClickable(ByLocator.xpath, sXpathOfOVERNIGHT, 10);
-		if( !isTextPresent("Basic")){
-			clickLink("Advanced");
-		}
-		Thread.sleep(5000);
-		WebElement reportHeaderTextInBlue = retryUntilElementIsVisible(sXpathOfOVERNIGHT, 10);
-		String reportHeaderText = reportHeaderTextInBlue.getText();
-		if(reportHeaderTextInBlue != null){
-			waitForElementToBeClickable(ByLocator.id, "reportAgencySelect", 5);
-			//change agency and time frame to get the right record to upload ADR document
-			moveToElement("Agency");
-			selectByNameOrID("reportAgencySelect", agency);
-			clickButton("Change Agency");
-			//wait for FOR AGENCY text on table header in blue before clicking on esmd-status link
-			//waitForElementToBeClickable(ByLocator.xpath,sXpathBeforeClickOnESMD, 60)
-			if(waitForElementToBeClickable(ByLocator.linktext, "Timeframe", 30) != null){
-				if(!reportHeaderText.contains("2011")){
-					changeTimeFrame();
-				}
-				Thread.sleep(5000);
-				if( waitForElementToBeClickable(ByLocator.xpath,sXpathBeforeClickOnESMD, 60) != null){
-					//clickLink("esMD Delivery & Status");
-					safeJavaScriptClick("esMD Delivery & Status");
-					waitForElementToBeClickable(ByLocator.xpath,sXpathofEsmdReport, 30);
+		String adrReportHeaderXpath = "//td[contains(text(),'ADR ESMD STATUS REPORT')]";
+		WebElement esMD = waitForElementToBeClickable(ByLocator.linktext, "esMD", 60);
+		if ( esMD != null) {
+			safeJavaScriptClick(esMD);
+			WebElement adrLink = waitForElementToBeClickable(ByLocator.linktext, "ADR Submission", 15);
+			if ( adrLink != null ){
+				safeJavaScriptClick(adrLink);
+				WebElement reportHeader = waitForElementToBeClickable(ByLocator.xpath, adrReportHeaderXpath, 15);
+				if( reportHeader != null ){
+					String reportHeaderText = reportHeader.getText();
+					waitForElementToBeClickable(ByLocator.id, "reportAgencySelect", 5);
+					moveToElement("Agency");
+					selectByNameOrID("reportAgencySelect", agency);
+					clickButton("Change Agency");
+					if(waitForElementToBeClickable(ByLocator.linktext, "Timeframe", 30) != null){
+						if(!reportHeaderText.contains("2011")){
+							changeTimeFrame();
+						}
+					}else{
+						report.report("FAIL : Timeframe option not visible on the page");
+					}
 				}else{
-					report.report("OVERNIGHT EASE SUMMARY REPORT FOR XX/XX/XXXX, FOR AGENCY XXX not visible after changing the timeframe");
+					report.report("FAIL : Report header element is not visible on the page");
 				}
 			}else{
-				report.report("EASE SUMMARY REPORT FROM MM/DD/YYYY TO MM/DD/YYYY, FOR AGENCY XXXX is not present !!!");
+				report.report("FAIL : ADR Submission option not visible on the page");
 			}
-
+		}else{
+			report.report("FAIL : esMD link is not available in EASE landing page");
 		}
 	}
 
+	
 	@SuppressWarnings("static-access")
 	public List<String> getADRFilePath(ADRFileFomat adrFileType,char relationalOperator){
 		List<String> filePaths = new ArrayList<String>();

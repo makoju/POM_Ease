@@ -27,9 +27,9 @@ public class DefaultWorkingEnvironment extends SystemObjectImpl{
 	private String easeBuildId;
 	private String easeBuildName;
 	private String easeBuildDate;
-	private String mailServerHost = "abc.senecaglobal.com";
-	private String mailServerUser = "administrator";
-	private String mailServerPassword = "adminpassword";		
+	private String mailServerHost = "10.164.3.231";
+	private String mailServerUser = "empadmin";
+	private String mailServerPassword = "Totally#1";		
 
 
 	// Getters & Setters

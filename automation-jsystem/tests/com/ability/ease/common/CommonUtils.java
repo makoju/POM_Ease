@@ -5,12 +5,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.ability.auto.common.ShellExecUtil;
+import com.ability.ease.auto.system.WorkingEnvironment;
+import com.ability.ease.auto.systemobjects.DefaultWorkingEnvironment;
 
 public class CommonUtils {
 
 	static int failCounter = 0;
 	
 	static ArrayList<String> pDetails = new ArrayList<String>();
+	static String gridserver = WorkingEnvironment.getEaseGridServer1();
 
 	public static boolean stopStartEaseServer(String request)throws Exception{
 
@@ -40,7 +43,7 @@ public class CommonUtils {
 		
 		shellCommand.append("start");
 		while(!isServerStarted && count++ < 3){
-			runCommand(shellCommand.toString());
+			runCommand(shellCommand.toString(), gridserver);
 			System.out.println("Waiting for 10 seconds to EASE server to start !!!");
 			Thread.sleep(10000);
 			pDetails = getServerStatus();
@@ -63,7 +66,7 @@ public class CommonUtils {
 		
 		shellCommand.append("stop");
 		while(!isServerStopped && count++ < 3){
-			runCommand(shellCommand.toString());
+			runCommand(shellCommand.toString(), gridserver);
 			System.out.println("Waiting for 10 seconds to EASE server to stop!!!");
 			Thread.sleep(10000);
 			pDetails = getServerStatus();
@@ -83,7 +86,7 @@ public class CommonUtils {
 		
 		String statusCommand = "sh /opt/abilitynetwork/ease/bin/easeServer.sh status";
 		ArrayList<String> processDetails = new ArrayList<String>();
-		String EASEServerCurrentStatus = ShellExecUtil.executeShellCmd(statusCommand);
+		String EASEServerCurrentStatus = ShellExecUtil.executeShellCmd(statusCommand,gridserver);
 		String sPID = getPID(EASEServerCurrentStatus);
 		
 		System.out.println("EASE Server Status : " + EASEServerCurrentStatus);
@@ -102,8 +105,8 @@ public class CommonUtils {
 		return processDetails;
 	}
 
-	private static String runCommand(String shellCommand){
-		String output = ShellExecUtil.executeShellCmd(shellCommand.toString());
+	private static String runCommand(String shellCommand, String hostnameorIP){
+		String output = ShellExecUtil.executeShellCmd(shellCommand.toString(),hostnameorIP);
 		System.out.println("Command : " + shellCommand + " -> output is :" + output);
 		return output;
 	}
@@ -115,5 +118,25 @@ public class CommonUtils {
 	    	 pid=m.group(1);    
 	     }
 	    return pid;
+	}
+	
+	public static boolean sendEmailNotification(){
+		
+		//String mailserver = WorkingEnvironment.getMailServerHost();
+		DefaultWorkingEnvironment workingEnvironment = new DefaultWorkingEnvironment();
+		String mailserver = workingEnvironment.getMailServerHost();
+		StringBuilder command = new StringBuilder("sh /easeauto/notify_results.sh");
+		String sBuildInfo = WorkingEnvironment.getEasebuildId();
+		int i = sBuildInfo.lastIndexOf(".");
+			
+		command.append(" " + sBuildInfo.substring(0, i) + " " + sBuildInfo);
+		String output = runCommand(command.toString(), mailserver);
+		System.out.println("Command : " + command);
+		System.out.println("Output : " + output);
+		if(output.contains("e-mail has been sent successfully")){
+			return true;
+		}else{
+			return false;
+		}
 	}
 }

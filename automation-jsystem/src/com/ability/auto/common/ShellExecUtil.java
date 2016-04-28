@@ -1,8 +1,6 @@
 package com.ability.auto.common;
 
-import com.ability.ease.auto.system.WorkingEnvironment;
 import com.jcraft.jsch.*;
-
 import java.io.*;
 
 /**
@@ -12,12 +10,11 @@ import java.io.*;
  */
 public class ShellExecUtil {
 
-	public static String executeShellCmd(String shellCommand){
+	public static String executeShellCmd(String shellCommand,String sHostName){
 		
 		Channel channel = null;
 		Session session = null;
 		String outputFromShell = null;
-		String sHostName = WorkingEnvironment.getEaseGridServer1();
 		String sUserName = "empadmin";
 		try{
 			System.out.println("Creating JSch object...");

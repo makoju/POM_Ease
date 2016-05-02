@@ -1,5 +1,6 @@
 package com.ability.ease.myaccount;
 
+import java.io.ByteArrayInputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -8,9 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.w3c.dom.Document;
 
 import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.TestCommonResource;
@@ -268,63 +273,7 @@ public class CustomSchedulePage extends AbstractPageObject {
 		}
 		return false;
 	}
-	
-	// validation for Cronformat to CST
-	public boolean verifyRuntimeCronscheduleToCST(int hours ,String agency ){
-					String customschedule = scrAttr.getLocator();
-					String[] customschedulevalue = scrAttr.getValue().split(";");
-					
-					for(int i=1;i<=count;i++){
-					
-					ArrayList cronList = new ArrayList();
-					StringBuilder tmpData = new StringBuilder();
-					//tmpData.append(count);
-					//tmpData.append(";");
-					for(int i=1;i<=count;i++){
-										
-						String[] schedule = customschedulevalue[i].split(",");
-						tmpData.append(schedule[0].trim()).append(",").append(schedule[1].trim()).append(";");//10,0;20,11;30,21;
-						cronList.add(schedule[2].trim());
-					
-					
-					String xmlruntimeSchedule ="Select cronschedule from providerSchedule where agencyName ='"+agency+"'";
-					ResultSet rs =MySQLDBUtil.getResultFromMySQLDB(xmlruntimeSchedule);
-					try {
-						while(rs.next()){
-						if (hours == rs.getInt(hours))
-							return true;
-						else
-							return false;
-						
-						}
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					
-					//tmpData.deleteCharAt(tmpData.length());
-					boolean isStartDayEndDayValueValid = verifyStartDayEndDay(tmpData.toString(), agency);
-					boolean isCronTimeCorrect = true;
-					for(String cron : cronList){
-						int tempConTime = convertToCronTimeCSTTimeZone(cron, sTimeZone);
-						isCronTimeCorrect = verifyRuntimeCronscheduleToCST(tempConTime, agency);
-						if(isCronTimeCorrect == false)
-							break;
-					}
-					
-					
-					if(isCronTimeCorrect == false)
-						return false;
-					}
-					
-					if(verifyOnoff(11, booleanToInt(isChecked("Schdule_onoff_0"))) == false || verifyOnoff(12, booleanToInt(isChecked("Schdule_onoff_1"))))
-						return false;
-					
-					
-					}
-			}
-	
+		
 	private static Document convertStringToDocument(String xmlStr) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;

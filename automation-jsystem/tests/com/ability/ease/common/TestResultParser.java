@@ -38,7 +38,7 @@ public class TestResultParser {
 	static ResultSet oResultSet = null;
 
 	//
-	public static void parseTestResultAndPushDataToARTDB(){
+	public static void parseTestResultAndPushDataToARTDB() throws Exception{
 
 		//List<String> testStatus = new ArrayList<String>();
 		Map<String, List<Result>> resultmap = new HashMap<String, List<Result>>();
@@ -166,7 +166,9 @@ public class TestResultParser {
 			scenarioFailed = getCoulmnValue(oResultSet, "count(scenariostatus)");
 
 			//Here, build id value should be parameterized once 
-			int buildId = Integer.parseInt(WorkingEnvironment.getEasebuildId());
+			String sBuildID = WorkingEnvironment.getEasebuildId();
+			int i = sBuildID.lastIndexOf(".");
+			int buildId = Integer.valueOf(sBuildID.substring(i+1));
 			String sInsertQuery = "Insert into TestResults(totaltests,passed,failed,buildid) values ("+scenarioCount +"," + scenarioPassed + "," + scenarioFailed + "," + buildId +")";
 			System.out.println("Executing below insert query against ART database!!!");
 			System.out.println(sInsertQuery);
@@ -281,22 +283,46 @@ public class TestResultParser {
 		return rowValue;
 	}
 
-	public static void insertBuildDetails(){
+	public static void insertBuildDetails() throws SQLException{
 		
+		String buildDetailsQuery = "Select BuildID from art.BuildDetails";
+		boolean isBuildInserted = false;
 		int buildId = 0;
 		String sBuildID = WorkingEnvironment.getEasebuildId();
 		String buildName = WorkingEnvironment.getEasebuildName();
 		String buildDate = WorkingEnvironment.getEasebuildDate();
 		int i = sBuildID.lastIndexOf(".");
 		buildId = Integer.valueOf(sBuildID.substring(i+1));
+		
 		System.out.println("Ease Build ID : " + buildId);
 		System.out.println("Ease Build Name : " + buildName);
 		System.out.println("Ease Build Generated Date : " + buildDate);
+		
 		String insertQueryBuildDetails = "Insert into art.BuildDetails(BuildID, BuildName, BuildDate) values ("+ buildId +", '"+ buildName +
 				"', STR_TO_DATE('" + buildDate + "', '%d-%m-%Y'));";
-		System.out.println("Insert Build Details Query : " + insertQueryBuildDetails);
-		executeQuery(insertQueryBuildDetails);
-		System.out.println("Insertion successful !!");
+		//check whether build is already inserted or not
+		ResultSet rs = getResultSet(buildDetailsQuery);
+		try {
+			while(rs.next()){
+				int bID = rs.getInt("BuildID");
+				if( bID == buildId){
+					isBuildInserted = true;
+					break;
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Exception occured during select query : " + buildDetailsQuery);
+			e.printStackTrace();
+		}finally{
+			rs.close();
+		}
+		if( !isBuildInserted ){
+			System.out.println("Insert Build Details Query : " + insertQueryBuildDetails);
+			executeQuery(insertQueryBuildDetails);
+			System.out.println("Insertion successful !!");
+		}else{
+			System.out.println("Build details are already exist in art.BuildDetails");
+		}
 	}
 
 

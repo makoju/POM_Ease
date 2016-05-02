@@ -18,6 +18,7 @@
         <antcallback target="t0"/>
         <antcallback target="t1"/>
         <antcallback target="t2"/>
+        <antcallback target="t3"/>
     </target>
     <target name="t0">
         <jsystem showoutput="true">
@@ -29,13 +30,21 @@
     </target>
     <target name="t1">
         <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="4c4dbac3-4235-4573-8ccb-764940b3d728"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.misc.MiscTests.loginToEase"/>
+        </jsystem>
+    </target>
+    <target name="t2">
+        <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="1435ebf1-3e30-400f-a75b-fde8bbee7e69"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.claims.ClaimsTests.selectStatusLocationInAdvanceSearchPageAndSearch"/>
         </jsystem>
     </target>
-    <target name="t2">
+    <target name="t3">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="ee1249a9-fad1-496a-a0c1-834118a8d1eb"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>

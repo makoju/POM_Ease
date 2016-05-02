@@ -96,11 +96,12 @@ public class ChangeSchedulePage extends AbstractPageObject {
 			XPath xpath = xpathFactory.newXPath();
 			XPathExpression expr1 = xpath.compile(sXpathExpression);
 			String sValue = (String) expr1.evaluate(document, XPathConstants.STRING);
-			System.out.println("Field Value :"+ sValue);
-
-			flag=sValue.equals(value);
+			report.report("Expected Value :"+ value);
+			report.report("Actual Value :"+ sValue);
+			flag = sValue.equals(value);
+			
 		}catch(Exception e){
-
+			
 		}
 		return flag;
 		//return (sValue.equals(value));

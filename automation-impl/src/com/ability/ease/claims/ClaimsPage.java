@@ -381,7 +381,7 @@ public class ClaimsPage extends AbstractPageObject{
 		boolean result = false;
 		String xPathPCN = "//*[@name='ub3a']";
 		WebElement pcn = null;
-		String sXpathOfRenchIcon = "//a[contains(text(),'"+patientControlNumber+"')]/../preceding-sibling::td[3]/span/a/img";
+		String sXpathOfRenchIcon = "//a[contains(text(),'"+patientControlNumber+"')]/../preceding-sibling::td[4]/span/a/img";
 
 		waitForElementVisibility(By.xpath(sXpathOfRenchIcon));
 		WebElement renchIcon = driver.findElement(By.xpath(sXpathOfRenchIcon));
@@ -494,7 +494,8 @@ public class ClaimsPage extends AbstractPageObject{
 	 */
 	public boolean openExistingClaimFromPendingAQB(String HIC)throws Exception{
 
-		String xpathToRenchIcon = "//a[contains(text(),'"+ HIC +"')]/../preceding-sibling::td[3]/a/img";
+		//String xpathToRenchIcon = "//a[contains(text(),'"+ HIC +"')]/../preceding-sibling::td[3]/a/img";
+		String xpathToRenchIcon = "//a[contains(text(),'"+ HIC +"')]/../../preceding-sibling::td[4]/span/a/img | //a[contains(text(),'"+ HIC +"')]/../preceding-sibling::td[3]/a/img";
 
 		int pendingactivitycountprev = helper.getActivitycount("tdPendingActivity");
 		Thread.sleep(30000);

@@ -88,6 +88,20 @@ public class HMOHelper extends AbstractPageObject {
 		safeJavaScriptClick("HMO/Adv Catcher Patients");
 	}
 	
+	/**
+	 * @author nageswar.bodduri
+	 * This method just updates the termination time stamp for one of the existing records to perform the extend operation on HMO catcher
+	 */
+	
+	public boolean updateTerminationTime(String sHIC){
+		String updateQuery = "UPDATE ddez.hmocatcherpatient SET Termination='2016-05-01' WHERE HIC = '" + sHIC + "'";
+		int result = MySQLDBUtil.getUpdateResultFromMySQLDB(updateQuery);
+		if( result == 1){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	
 	public void ganerateRandom9DigitNumberfollowedByChar(){
 		

@@ -26,7 +26,8 @@ public class CommonEaseUIEnum {
 		ProvidersInformation("ProvidersInformation"),
 		SetUpAgency("SetUpAgency"),
 		ServiceDate("ServiceDate"),
-		CustomSchedule("CustomSchedule");
+		CustomSchedule("CustomSchedule"),
+		Permissions("Permissions");
 
 		private String value;
 		private UIAttributeStyle(String value){

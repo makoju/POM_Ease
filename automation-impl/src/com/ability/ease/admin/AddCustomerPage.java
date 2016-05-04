@@ -420,7 +420,7 @@ public class AddCustomerPage extends AbstractPageObject{
 		boolean updatestatus = false;
 		int noOfrowsUpdated = 0;
 		noOfrowsUpdated = MySQLDBUtil
-				.getUpdateResultFromMySQLDB("UPDATE User SET Password=PASSWORD(CONCAT('"+newpassword+"','PeakRevenue',UserName)),ForcePasswordChange=0 WHERE Username='"+username+"'");
+				.getUpdateResultFromMySQLDB("UPDATE ddez.User SET Password=PASSWORD(CONCAT('"+newpassword+"','PeakRevenue',UserName)),ForcePasswordChange=0 WHERE Username='"+username+"'");
 		if (noOfrowsUpdated > 0) {
 			updatestatus = true;
 		}

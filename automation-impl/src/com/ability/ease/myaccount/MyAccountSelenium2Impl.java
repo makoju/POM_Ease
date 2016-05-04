@@ -84,7 +84,7 @@ public class MyAccountSelenium2Impl implements IMyAccount {
 
 	@Override
 	public boolean disableEase(String disableeaseforgroupnameoragency,String grouporagencyname, String disabletype, String expectedalertmessage) throws Exception {
--		return new DisableEasePage().disableEase(disableeaseforgroupnameoragency,grouporagencyname,disabletype,expectedalertmessage);
+		return new DisableEasePage().disableEase(disableeaseforgroupnameoragency,grouporagencyname,disabletype,expectedalertmessage);
 	}
 
 	@Override

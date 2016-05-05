@@ -9,7 +9,7 @@ import com.sun.org.apache.bcel.internal.generic.Select;
 public interface IMyAccount{
 	public boolean verifyChangePassword(String sOldPassword,String sNewPassword, String verifypassword,String expectedMessage)throws Exception;
 	public boolean verifyChangeSchedule(Map<String,String> mapAttrValues)throws Exception;
-	public boolean submitCustomSchedule(Map<String,String> mapAttrValues)throws Exception;
+	public boolean submitCustomSchedule(Map<String,String> mapAttrValues, String expectedalertmessage)throws Exception;
 	public boolean verifyCustomSchedule(String agencyName,String sDay, String EndDay, String runtime, String credential,String timezone, int rownumber);
 	public boolean verifyJobScheduleCurrentAction(String agencyName);
 	public boolean verifyOptionsUnderAddFISSDDESetup() throws Exception;

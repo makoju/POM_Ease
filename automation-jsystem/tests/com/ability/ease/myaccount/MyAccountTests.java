@@ -15,12 +15,10 @@ import com.ability.ease.auto.enums.tests.TestType;
 import com.ability.ease.common.AttributePair;
 import com.ability.ease.common.BaseTest;
 import com.ability.ease.testapi.IMyAccount;
-import com.sun.org.apache.bcel.internal.generic.Select;
 
 import jsystem.framework.ParameterProperties;
 import jsystem.framework.TestProperties;
 import jsystem.framework.report.Reporter;
-import jsystem.framework.report.Reporter.ReportAttribute;
 import jsystem.framework.scenario.Parameter;
 import jsystem.framework.scenario.UseProvider;
 
@@ -47,7 +45,6 @@ public class MyAccountTests extends BaseTest {
 	private String newpassword;
 	private String expectedmessage;
 	private String verifypassword;
-	private String fExpectedMessage;
 	private String description;
 	
 
@@ -78,7 +75,7 @@ public class MyAccountTests extends BaseTest {
 
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Submit Custom Schedule", paramsInclude = { "AttributeNameValueDialogProvider,testType" })
+	@TestProperties(name = "Submit Custom Schedule", paramsInclude = { "AttributeNameValueDialogProvider,testType, expectedalertmessage" })
 	public void submitCustomSchedule() throws Exception 
 	{
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
@@ -95,7 +92,7 @@ public class MyAccountTests extends BaseTest {
 			keepAsGloablParameter("Credential"+i, schedule[3].trim());
 		}
 
-		if(myaccount.submitCustomSchedule(mapAttrValues)){
+		if(myaccount.submitCustomSchedule(mapAttrValues,expectedalertmessage)){
 			report.report("Succesfully updated CustomConfiguration !!", Reporter.PASS);
 		}else{
 			report.report("Failed to updated customconfigurationForUser", Reporter.FAIL);

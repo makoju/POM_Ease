@@ -26,9 +26,9 @@ public class MyAccountSelenium2Impl implements IMyAccount {
 	}
 
 	@Override
-	public boolean submitCustomSchedule(Map<String, String> mapAttrValues) throws Exception {
+	public boolean submitCustomSchedule(Map<String, String> mapAttrValues, String expectedalertmessage) throws Exception {
 		
-		return custschedpage.submitCustomSchedule(mapAttrValues);
+		return custschedpage.submitCustomSchedule(mapAttrValues, expectedalertmessage);
 	}
 
 	@Override

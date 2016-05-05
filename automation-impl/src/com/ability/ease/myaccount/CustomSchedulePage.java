@@ -36,7 +36,7 @@ public class CustomSchedulePage extends AbstractPageObject {
 
 	MyAccountHelper helper = new MyAccountHelper();
 
-	public boolean submitCustomSchedule(Map<String, String> mapAttrValues) throws Exception {
+	public boolean submitCustomSchedule(Map<String, String> mapAttrValues, String expectedalertmessage) throws Exception {
 
 		navigateToPage();
 		clickLink("Change Schedule");
@@ -50,7 +50,8 @@ public class CustomSchedulePage extends AbstractPageObject {
 		changeSchedule.fillScreenAttributes(lsAttributes);
 		
 		clickButtonV2("Save");
-		if(!verifyAlert("Custom Schedule saved successfully!")){
+		//"Custom Schedule saved successfully!"
+		if(!verifyAlert(expectedalertmessage)){
 			report.report("Custom schedule setup was unsuccessful");
 			return false;
 		}

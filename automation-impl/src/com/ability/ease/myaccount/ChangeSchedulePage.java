@@ -42,24 +42,25 @@ public class ChangeSchedulePage extends AbstractPageObject {
 
 		//validations
 		String sTimeZone = mapAttrValues.get("Timezone");
-		report.report("Timezone is added");
+		report.report("Timezone: "+sTimeZone);
 		String sAgencyNumber = mapAttrValues.get("Agency");
+		report.report("Agency: "+sAgencyNumber);
 		Map<Integer,String> xmlFileMap = helper.getScheduleXMLFilesFromDB(sAgencyNumber);
 
 		//code to convert claim schedule time to CST
 		String sClaimsScheduleTime = mapAttrValues.get("claimsTimeDropDown");
-		report.report("Timezone clamis is added");
 		String CSTValue_Claims = TimeZoneConversionUtil.convertToCSTTimeZone(sClaimsScheduleTime, sTimeZone);
+		report.report("Claim Schedule Time in CST: "+CSTValue_Claims);
 		
 		//code to convert Eligibility schedule time to CST
 		String sEligibilityScheduleTime = mapAttrValues.get("EligibilityTimeDropDown");
-		report.report("Timezone eligibility  is added");
 		String CSTValue_Eligibility = TimeZoneConversionUtil.convertToCSTTimeZone(sEligibilityScheduleTime, sTimeZone);
-
+		report.report("Eligibility Schedule Time in CST: "+CSTValue_Eligibility);
+		
 		//code to convert EFT schedule time to CST
 		String sEftScheduleTime = mapAttrValues.get("EFTTimeDropDown");
-		report.report("Timezone EFT is added");
 		String CSTValue_EFT = TimeZoneConversionUtil.convertToCSTTimeZone(sEftScheduleTime, sTimeZone);
+		report.report("EFT Schedule Time in CST: "+CSTValue_EFT);
 
 		String sXpathExpression = "//schedule/@hour";
 		Document claimsXMLDocument = convertStringToDocument(xmlFileMap.get(10));
@@ -96,15 +97,13 @@ public class ChangeSchedulePage extends AbstractPageObject {
 			XPath xpath = xpathFactory.newXPath();
 			XPathExpression expr1 = xpath.compile(sXpathExpression);
 			String sValue = (String) expr1.evaluate(document, XPathConstants.STRING);
-			System.out.println("Field Value :"+ sValue);
-
+			report.report("Actual Value in DataBase XML:"+ sValue);
+			report.report("Expected Value after converting to CST:"+ value);
 			flag=sValue.equals(value);
 		}catch(Exception e){
 
 		}
 		return flag;
-		//return (sValue.equals(value));
-
 	}
 
 

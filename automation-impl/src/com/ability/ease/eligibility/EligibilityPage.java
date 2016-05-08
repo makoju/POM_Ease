@@ -28,14 +28,14 @@ public class EligibilityPage extends AbstractPageObject{
 
 	public boolean submitEligibilityCheck(Map<String, String> mapAttrVal) throws Exception{
 		navigateToPage();
-		
+
 		//Fill Screen
 		UIAttributeXMLParser parser = UIAttributeXMLParser.getInstance();
 		List<Attribute>	lsAttributes = parser.getUIAttributesFromXMLV2
 				(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Eligibility\\Eligibility.xml", mapAttrVal);
 		UIActions eligibility = new UIActions();
 		eligibility.fillScreenAttributes(lsAttributes);
-		
+
 		WebElement submit = waitForElementVisibility(By.xpath("//input[@value='Submit']"));
 		safeJavaScriptClick(submit);
 
@@ -46,7 +46,7 @@ public class EligibilityPage extends AbstractPageObject{
 		else
 			return true;
 	}
-	
+
 	/*public boolean verifyEligibilityStatus(String firstname, String lastname, String status) throws Exception {
 		navigateToPage();
 		//validation
@@ -60,14 +60,14 @@ public class EligibilityPage extends AbstractPageObject{
 			if(!verifyEligibilityRequestStatusCompleted(firstlastname.toUpperCase()))
 				return false;
 		}
-		
+
 		else if(status.equalsIgnoreCase("failed")){
 			if(!verifyEligibilityRequestStatusFailed(firstlastname.toUpperCase()))
 				return false;
 		}
 		return true;
 	}*/
-	
+
 	/*
 	 * added by nageswar.bodduri
 	 */
@@ -84,7 +84,7 @@ public class EligibilityPage extends AbstractPageObject{
 			if(!verifyEligibilityRequestStatusCompleted(firstname))
 				return false;
 		}
-		
+
 		else if(status.equalsIgnoreCase("failed")){
 			if(!verifyEligibilityRequestStatusFailed(firstlastname.toUpperCase()))
 				return false;
@@ -98,89 +98,89 @@ public class EligibilityPage extends AbstractPageObject{
 		//To Do - we've to get the first record from the table not any record matches with the given name
 		if(!navigatetoclaimdetails(firstlastname))
 			return false;
-		
+
 		Thread.sleep(5000);
 		String claimdetails = getElementText(By.xpath(".//*[@id='reportarea']//td[@class='headergreen']"));
 		String expectedclaimdetails = "CLAIM CHANGE REQUEST STATUS - "+firstlastname+" ("+hic+")";
 
 		if(!Verify.StringEquals(claimdetails, expectedclaimdetails))
 			return false;
-		
+
 		return true;
 	}
-	
+
 	public boolean acknoweldgeEligibility(String firstname, String lastname) throws Exception{
-	
+
 		//String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 		String firstnamesuffix = firstname.replaceAll("[^0-9]", "");
-		
+
 		navigateToPage();
 		WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
 		//Acknowledge the Request - To do - we've to get the first record from the table not any record matches with the given name
 		int goodactivitycountprev = getActivitycount("tdGoodActivity");
-	
+
 		moveToElement(tblcompletedactivity);
 		WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstnamesuffix+"')]/../td[1]/a"));
-		  if(we!=null){
-			  we.click();
-		  }
-		  else
-		  {
-			  report.report("Specified activity was not found in good activity table", Reporter.WARNING);
-			  return false;
-		  }
-			Thread.sleep(3000);
-			int goodactivitycountlatest = getActivitycount("tdGoodActivity");
+		if(we!=null){
+			we.click();
+		}
+		else
+		{
+			report.report("Specified activity was not found in good activity table", Reporter.WARNING);
+			return false;
+		}
+		Thread.sleep(3000);
+		int goodactivitycountlatest = getActivitycount("tdGoodActivity");
 
-			if(goodactivitycountprev-1!=goodactivitycountlatest){
-				report.report("actual and expected activity count doesn't match in good activity table. actual: "+goodactivitycountlatest+ "Expected: "+(goodactivitycountprev-1));
-			}
-		  return true;
+		if(goodactivitycountprev-1!=goodactivitycountlatest){
+			report.report("actual and expected activity count doesn't match in good activity table. actual: "+goodactivitycountlatest+ "Expected: "+(goodactivitycountprev-1));
+		}
+		return true;
 	}
 
 	public boolean verifyHETSActivitiesCompletedStatusReport(String hic,String agency, String firstname, String lastname) throws Exception {
 		int failurecount=0;
 		navigateToPage();
-		
+
 		String firstnamesuffix = firstname.replaceAll("[^0-9]", "");
 		//String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 		if(!verifyEligibilityRequestStatusCompleted(firstnamesuffix))
 			return false;
-		
+
 		//Handle the report link of Eligibility Check Request and data validation
 		String expectedreportheader = "ELIGIBILITY CHECK REPORT";
 		if(!navigatetoEligibilityReport(firstnamesuffix))
 			return false;
-		
+
 		//WebElement reportheader = waitForElementVisibility(By.xpath("//td[@class='headergreen']"));
-		WebElement reportheader = waitForElementToBeClickable(ByLocator.xpath, "//td[@class='headergreen']", 10);
+		WebElement reportheader = waitForElementToBeClickable(ByLocator.xpath, "//td[@class='headergreen']", 30);
 		if(reportheader!=null && !Verify.StringEquals(reportheader.getText(),expectedreportheader)){
 			report.report("Unable to find Expected Header of a Report"+expectedreportheader, Reporter.WARNING);
 			failurecount++;
 		}
-		
+
 		if(!(waitForElementVisibility(By.linkText("Add patient to my HMO Move Catcher list."))!=null)){
-		  report.report("Unable to find Add to HMO Catcher link", Reporter.WARNING);
-		  failurecount++;
+			report.report("Unable to find Add to HMO Catcher link", Reporter.WARNING);
+			failurecount++;
 		}
-		
+
 		if(!(waitForElementVisibility(By.xpath("//span[text()='General Information']"))!=null)){
-			  report.report("Unable to find General Patient Information Section", Reporter.WARNING);
-			  failurecount++;
+			report.report("Unable to find General Patient Information Section", Reporter.WARNING);
+			failurecount++;
 		}
 		if(!(waitForElementVisibility(By.xpath("//span[text()='MSP Information']"))!=null)){
-			  report.report("Unable to find Add to HMO Catcher link", Reporter.WARNING);
-			  failurecount++;
+			report.report("Unable to find Add to HMO Catcher link", Reporter.WARNING);
+			failurecount++;
 		}
 		if(!(waitForElementVisibility(By.xpath("//span[text()='Other HHA Information']"))!=null)){
-			  report.report("Unable to find General Patient Information Section", Reporter.WARNING);
-			  failurecount++;
+			report.report("Unable to find General Patient Information Section", Reporter.WARNING);
+			failurecount++;
 		}
 		if(!(waitForElementVisibility(By.xpath("//span[text()='Hospice Information']"))!=null)){
-			  report.report("Unable to find Add to HMO Catcher link", Reporter.WARNING);
-			  failurecount++;
+			report.report("Unable to find Add to HMO Catcher link", Reporter.WARNING);
+			failurecount++;
 		}
-					
+
 		/*if(!Verify.isElementPresent(By.xpath("//pre/h2[contains(text(), 'Agency: "+agency+"')]"))){
 			  report.report("Unable to find agency information in Eligibility Check Report. Expected Agency: "+agency, Reporter.WARNING);
 			  failurecount++;
@@ -196,21 +196,22 @@ public class EligibilityPage extends AbstractPageObject{
 		int failurecount=0;
 		navigateToPage();
 		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
+
 		if(!navigatetoPatientInfoScreen(firstlastname, hic))
 			return false;
-		
+
 		if(!isTextPresent("New Claim UB04")){
 			report.report("Unable to Navigate to UB04 Form from Patient Info. Screen", Reporter.WARNING);
 			failurecount++;
 		}
-		
+
 		return failurecount==0?true:false;
 	}
-	
+
 	public boolean verifyNavigationToClaimInfoFromPatientInfoScreen(String hic,String agency, String firstname, String lastname) throws Exception {
 		int failurecount=0;
 		navigateToPage();
-		
+
 		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 		if(!navigatetoPatientInfoScreen(firstlastname, hic))
 			return false;
@@ -228,16 +229,16 @@ public class EligibilityPage extends AbstractPageObject{
 
 		return failurecount==0?true:false;
 	}
-	
+
 	public boolean verifyNavigationToHomeScreenFromPatientInfoScreen(String hic) throws Exception {
 
 		navigateToPage();
 		if(!navigatetoPatientInfoScreen(hic))
 			return false;
 		clickLink("reporthome");
-		
+
 		Thread.sleep(5000);
-		
+
 		if(isTextPresent("OVERNIGHT SUMMARY REPORT"))
 		{
 			report.report("Successfully navigated to home page", ReportAttribute.BOLD);
@@ -249,7 +250,7 @@ public class EligibilityPage extends AbstractPageObject{
 			return false;
 		}
 	}
-	
+
 	public boolean verifyOptionsUnderPendingActivityLogScreen() throws Exception {
 		int failurecount=0;
 
@@ -257,21 +258,21 @@ public class EligibilityPage extends AbstractPageObject{
 		WebElement tdPendingActivity = waitForElementVisibility(By.id("tdPendingActivity"));
 		if(tdPendingActivity!=null)
 			tdPendingActivity.click();
-		
+
 		//Check Agency Selected
 		WebElement agency = waitForElementToBeClickable(ByLocator.id, "UserProvIDs", 60);
 		if(!isOptionSelected(agency, "All")){
 			report.report("Failed to verify Agency Option Selected under Pending Activity Log Screen", Reporter.WARNING);
 			failurecount++;
 		}
-	
+
 		//Check Status Selected
 		WebElement status = waitForElementToBeClickable(ByLocator.id, "UserStatus", 60);
 		if(!isOptionSelected(status, "Pending")){
 			report.report("Failed to verify Status Option Selected under Pending Activity Log Screen", Reporter.WARNING);
 			failurecount++;
 		}
-				
+
 		//Check Type Selected
 		WebElement usertype = waitForElementToBeClickable(ByLocator.id, "UserType", 60);
 		if(!isOptionSelected(usertype, "All")){
@@ -284,12 +285,12 @@ public class EligibilityPage extends AbstractPageObject{
 			report.report("Failed to Verify FromDate, Todate and not acknowledge Options states in Pending Activity Log Screen", Reporter.WARNING);
 			failurecount++;
 		}
-		
+
 		//TODO - Need to Implement code for verifying Search and Print Options 
 
 		return failurecount==0?true:false;
 	}
-	
+
 	public boolean verifyOptionsUnderCompletedActivityLogScreen() throws Exception {
 		int failurecount=0;
 
@@ -297,28 +298,28 @@ public class EligibilityPage extends AbstractPageObject{
 		WebElement tdGoodActivity = waitForElementToBeClickable(ByLocator.id,"tdGoodActivity",60);
 		if(tdGoodActivity!=null)
 			tdGoodActivity.click();
-		
+
 		//Check Agency Selected
 		WebElement agency = waitForElementToBeClickable(ByLocator.id, "UserProvIDs", 60);
 		if(!isOptionSelected(agency, "All")){
 			report.report("Failed to verify agency Option Selected under Completed Activity Log Screen", Reporter.WARNING);
 			failurecount++;
 		}
-		
+
 		//Check Status Selected
 		WebElement status = waitForElementToBeClickable(ByLocator.id, "UserStatus", 60);
 		if(!isOptionSelected(status, "Completed")){
 			report.report("Failed to verify Status Option Selected under Completed Activity Log Screen", Reporter.WARNING);
 			failurecount++;
 		}
-		
+
 		//Check Type Selected
 		WebElement usertype = waitForElementToBeClickable(ByLocator.id, "UserType", 60);
 		if(!isOptionSelected(usertype, "All")){
 			report.report("Failed to verify type Option Selected under Completed Activity Log Screen", Reporter.WARNING);
 			failurecount++;
 		}
-		
+
 		if(!validateFromTODateNotAcknowledgeOptions())
 		{
 			report.report("Failed to Verify FromDate, Todate and not acknowledge Options states in Completed Activity Log Screen", Reporter.WARNING);
@@ -337,64 +338,64 @@ public class EligibilityPage extends AbstractPageObject{
 		WebElement tdFailedActivity = waitForElementVisibility(By.id("tdFailedActivity"));
 		if(tdFailedActivity!=null)
 			tdFailedActivity.click();
-		
+
 		//Check Agency Selected
 		WebElement agency = waitForElementToBeClickable(ByLocator.id, "UserProvIDs", 60);
 		if(!isOptionSelected(agency, "All")){
 			report.report("Failed to verify agency Option Selected under Failed Activity Log Screen", Reporter.WARNING);
 			failurecount++;
 		}
-		
+
 		//Check Status Selected
 		WebElement status = waitForElementToBeClickable(ByLocator.id, "UserStatus", 60);
 		if(!isOptionSelected(status, "Failed")){
 			report.report("Failed to verify Status Option Selected under Failed Activity Log Screen", Reporter.WARNING);
 			failurecount++;
 		}
-		
+
 		//Check type Selected
 		WebElement usertype = waitForElementToBeClickable(ByLocator.id, "UserType", 60);
 		if(!isOptionSelected(usertype, "All")){
 			report.report("Failed to verify type Option Selected under Failed Activity Log Screen", Reporter.WARNING);
 			failurecount++;
 		}
-			
+
 		if(!validateFromTODateNotAcknowledgeOptions())
 		{
 			report.report("Failed to Verify FromDate, Todate and not acknowledge Options states in Failed Activity Log Screen", Reporter.WARNING);
 			failurecount++;
 		}
-		
+
 		//TODO - Need to Implement code for verifying Search and Print Options 
 
 		return failurecount==0?true:false;
 	}
-	
+
 	public int getActivityCount(String status) {
 		int count=0;
 		if(status.equalsIgnoreCase("pending"))
 			count = getActivitycount("tdPendingActivity");
-		
+
 		else
 			if(status.equalsIgnoreCase("completed"))
-			count = getActivitycount("tdGoodActivity");
-			
-		else
-			if(status.equalsIgnoreCase("failed"))
-			count = getActivitycount("tdFailedActivity");
-		else
-		{
-			report.report("Invalid Status option: "+status, Reporter.FAIL);
-		}
-		
+				count = getActivitycount("tdGoodActivity");
+
+			else
+				if(status.equalsIgnoreCase("failed"))
+					count = getActivitycount("tdFailedActivity");
+				else
+				{
+					report.report("Invalid Status option: "+status, Reporter.FAIL);
+				}
+
 		return count;
 	}
-	
+
 
 	public boolean verifyOptionsUnderPatientInformationScreen(String hic, String firstname, String lastname) throws Exception {
 		int failurecount=0;
 		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
-		
+
 		if(!navigatetoPatientInfoScreen(firstlastname, hic))
 			return false;
 		/*Verify  the following options
@@ -406,7 +407,7 @@ public class EligibilityPage extends AbstractPageObject{
 		6.View271 link
 		7.Refresh Data
 		8. Admissions*/
-		
+
 		//1.Patient information
 		String headertext = getElementText(By.className("headergreen"));
 		if (headertext!=null && headertext.contains("PATIENT INFORMATION")){
@@ -420,7 +421,7 @@ public class EligibilityPage extends AbstractPageObject{
 		//2. HMO Plans
 		//3. MSP Information
 		//8. Admissions
-		
+
 		//4.Show Previous eligibility checks link
 		WebElement showprevelig = waitForElementVisibility(By.partialLinkText("Show previous eligibility checks"));
 		if(showprevelig!=null)
@@ -437,7 +438,7 @@ public class EligibilityPage extends AbstractPageObject{
 			report.report("Show previous eligibility checks link not found", Reporter.WARNING);
 			failurecount++;
 		}
-		
+
 		//5. + Expand Eligibility Results
 		WebElement expandeligresults = waitForElementVisibility(By.partialLinkText("Expand Eligibility Results"));
 		if(expandeligresults!=null)
@@ -452,24 +453,24 @@ public class EligibilityPage extends AbstractPageObject{
 			String[] expectedHeaders = {"Insured/Subscriber Information", "Provider Information", "Eligibility", "Deductibles / Caps", "Plan Coverage"};
 			String[] actualHeaders;
 			int i=0;
-			
+
 			List<WebElement> lseligresultsheaders = findElements(By.className("resultHeading"));
 			actualHeaders = new String[lseligresultsheaders.size()];
-			
+
 			for(WebElement we:lseligresultsheaders)
 				actualHeaders[i++] = we.getText();
-			
+
 			if(!Verify.verifyArrayofStrings(actualHeaders, expectedHeaders, true)){
 				report.report("Actual and expected headers of eligibility results not matched", Reporter.WARNING);
 				failurecount++;
 			}
-			
+
 		}
 		else{
 			report.report("Expand Eligibility Results link not found", Reporter.WARNING);
 			failurecount++;
 		}
-		
+
 		//6. View 271
 		WebElement  view271element = waitForElementVisibility(By.partialLinkText("View 271"));
 		if(view271element!=null)
@@ -486,7 +487,7 @@ public class EligibilityPage extends AbstractPageObject{
 			report.report("View 271 link not found", Reporter.WARNING);
 			failurecount++;
 		}
-		
+
 		//7. Refresh Data
 		if(waitForElementVisibility(By.partialLinkText("Refresh Data"))!=null)
 		{
@@ -497,12 +498,12 @@ public class EligibilityPage extends AbstractPageObject{
 			report.report("Refresh Data link not found", Reporter.WARNING);
 			failurecount++;
 		}
-				
+
 		return failurecount==0?true:false;
 	}
-	
-	
-	
+
+
+
 	//Helper methods
 	private void navigatetoClaimInfoScreen() {
 		WebElement startdatelink = waitForElementVisibility(By.xpath("//tr[@class='tableline1']/td[3]/a"));
@@ -511,96 +512,102 @@ public class EligibilityPage extends AbstractPageObject{
 	}
 
 	private boolean navigatetoclaimdetails(String firstlastname) {
-		  WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
-		  moveToElement(tblcompletedactivity);
-		  WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstlastname+"')]/following-sibling::td/a[text()='Details']"));
-		  if(we!=null){
-			  we.click();
-		  }
-		  else
-		  {
-			  report.report("Specified activity was not found in good activity table", Reporter.WARNING);
-			  return false;
-		  }
-		  return true;
+		WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
+		moveToElement(tblcompletedactivity);
+		WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstlastname+"')]/following-sibling::td/a[text()='Details']"));
+		if(we!=null){
+			we.click();
+		}
+		else
+		{
+			report.report("Specified activity was not found in good activity table", Reporter.WARNING);
+			return false;
+		}
+		return true;
 	}
-	
+
 	public boolean navigatetoEligibilityReport(String firstlastname) {
-		  WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
-		  if(tblcompletedactivity!=null){
-			  moveToElement(tblcompletedactivity);
-			  WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstlastname+"')]/following-sibling::td/a[text()='Report']"));
-			  if(we!=null){
-				  we.click();
-			  }
-			  else
-			  {
-				  report.report("Specified activity was not found in good activity table", Reporter.WARNING);
-				  return false;
-			  }
-		  }
-		  else
-		  {
-			  report.report("Good Activity Table was not found", Reporter.WARNING);
-			  return false;
-		  }
-		  return true;
- 	 }
-	
-	public boolean navigatetoPatientInfoScreen(String firstlastname, String hic) {
-		  WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
-		  moveToElement(tblcompletedactivity);
-		  WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstlastname+"')]/preceding-sibling::td/a[text()='"+hic+"']"));
-		  if(we!=null){
-			  we.click();
-		  }
-		  else
-		  {
-			  report.report("Specified activity was not found in good activity table", Reporter.WARNING);
-			  return false;
-		  }
-		  
-		  WebElement wepatientinfo = waitForElementVisibility(By.xpath("//td[contains(text(),'PATIENT INFORMATION')]"));
-			if(wepatientinfo!=null)
-				report.report("Successfully navigated to Patient Information Screen", ReportAttribute.BOLD);
+		WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
+		if(tblcompletedactivity!=null){
+			moveToElement(tblcompletedactivity);
+			WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstlastname+"')]/following-sibling::td/a[text()='Report']"));
+			if(we!=null){
+				we.click();
+			}
 			else
 			{
-				report.report("Navigation to Patient Information Page has failed", Reporter.WARNING);
+				report.report("Specified activity was not found in good activity table", Reporter.WARNING);
 				return false;
 			}
-			
-		  return true;
-	 }
-	
+		}
+		else
+		{
+			report.report("Good Activity Table was not found", Reporter.WARNING);
+			return false;
+		}
+		return true;
+	}
+
+	public boolean navigatetoPatientInfoScreen(String firstlastname, String hic) {
+
+		/*
+		 * added by nageswar.bodduri
+		 */
+		String firstnamesuffix = firstlastname.replaceAll("[^0-9]", "");
+
+		WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
+		moveToElement(tblcompletedactivity);
+		WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstnamesuffix+"')]/preceding-sibling::td/a[text()='"+hic+"']"));
+		if(we!=null){
+			we.click();
+		}
+		else
+		{
+			report.report("Specified activity was not found in good activity table", Reporter.WARNING);
+			return false;
+		}
+
+		WebElement wepatientinfo = waitForElementVisibility(By.xpath("//td[contains(text(),'PATIENT INFORMATION')]"));
+		if(wepatientinfo!=null)
+			report.report("Successfully navigated to Patient Information Screen", ReportAttribute.BOLD);
+		else
+		{
+			report.report("Navigation to Patient Information Page has failed", Reporter.WARNING);
+			return false;
+		}
+
+		return true;
+	}
+
 	public boolean navigatetoPatientInfoScreen(String hic){
 		WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
-		  moveToElement(tblcompletedactivity);
-		  WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td/a[text()='"+hic+"']"));
-		  if(we!=null){
-			  we.click();
-		  }
-		  else
-		  {
-			  report.report("Specified activity with hic: "+hic+"was not found in good activity table", Reporter.WARNING);
-			  return false;
-		  }
-		  
-		  WebElement wepatientinfo = waitForElementVisibility(By.xpath("//td[contains(text(),'PATIENT INFORMATION')]"));
-			if(wepatientinfo!=null)
-				report.report("Successfully navigated to Patient Information Screen", ReportAttribute.BOLD);
-			else
-			{
-				report.report("Navigation to Patient Information Page has failed", Reporter.WARNING);
-				return false;
-			}
-			
-		  return true;
+		moveToElement(tblcompletedactivity);
+		WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td/a[text()='"+hic+"']"));
+		if(we!=null){
+			we.click();
+		}
+		else
+		{
+			report.report("Specified activity with hic: "+hic+"was not found in good activity table", Reporter.WARNING);
+			return false;
+		}
+
+		WebElement wepatientinfo = waitForElementVisibility(By.xpath("//td[contains(text(),'PATIENT INFORMATION')]"));
+		if(wepatientinfo!=null)
+			report.report("Successfully navigated to Patient Information Screen", ReportAttribute.BOLD);
+		else
+		{
+			report.report("Navigation to Patient Information Page has failed", Reporter.WARNING);
+			return false;
+		}
+
+		return true;
 	}
-		
+
 	private int getActivitycount(String activitytablename){
 		return Integer.parseInt(getElementText(By.xpath("//table[@id='activityTable']//td[@id='"+activitytablename+"']")));
 	}
-	
+
 	private boolean verifyEligibilityRequestStatusPending(String lastname){
 		WebElement tblpendingactivity = waitForElementVisibility(By.id("tdPendingActivity"));
 		moveToElement(tblpendingactivity);
@@ -615,25 +622,25 @@ public class EligibilityPage extends AbstractPageObject{
 			return false;
 		}
 	}
-	
+
 	private boolean verifyEligibilityRequestStatusCompleted(String firstname){
-						
-			WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
-			moveToElement(tblcompletedactivity);
-			
-			String firstnamesuffix = firstname.replaceAll("[^0-9]", "");
-			String firstlastname = Verify.getTableData("goodActivity", 1, 6);
-			if (firstlastname!=null && firstlastname.contains(firstnamesuffix)){
-				report.report("Submitted Patient Eligibility was found in Good Activity table(Green).", ReportAttribute.BOLD);
-				return true;
-			}
-			else{
-				report.report("Submitted Patient Eligibility was not found in Good Activity table(Green).", Reporter.WARNING);
-				return false;
-			}
+
+		WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
+		moveToElement(tblcompletedactivity);
+
+		String firstnamesuffix = firstname.replaceAll("[^0-9]", "");
+		String firstlastname = Verify.getTableData("goodActivity", 1, 6);
+		if (firstlastname!=null && firstlastname.contains(firstnamesuffix)){
+			report.report("Submitted Patient Eligibility was found in Good Activity table(Green).", ReportAttribute.BOLD);
+			return true;
+		}
+		else{
+			report.report("Submitted Patient Eligibility was not found in Good Activity table(Green).", Reporter.WARNING);
+			return false;
+		}
 	}
-	
-	
+
+
 	private boolean verifyEligibilityRequestStatusFailed(String lastname) {
 		WebElement tblfailedactivity = waitForElementVisibility(By.id("tdFailedActivity"));
 		moveToElement(tblfailedactivity);
@@ -648,7 +655,7 @@ public class EligibilityPage extends AbstractPageObject{
 			return false;
 		}
 	}
-	
+
 	public boolean isOptionSelected(WebElement select, String option){
 		if(select!=null){
 			Select agencyselect = new Select(select);
@@ -697,10 +704,10 @@ public class EligibilityPage extends AbstractPageObject{
 			report.report("Check Box Only not ack was not selected", Reporter.WARNING);
 			failurecount++;
 		}
-		
+
 		return failurecount==0?true:false;
 	}
-	
+
 	public boolean searchactivitylogByHIC(String status, String hic) throws Exception {
 		navigateToPage();
 		if(status.equalsIgnoreCase("completed"))
@@ -709,7 +716,7 @@ public class EligibilityPage extends AbstractPageObject{
 			clickButton("tdFailedActivity");
 		else if(status.equalsIgnoreCase("pending"))
 			clickButton("tdPendingActivity");
-		
+
 		else{
 			report.report("Wrong Status option supplied", Reporter.WARNING);
 			return false;
@@ -723,16 +730,16 @@ public class EligibilityPage extends AbstractPageObject{
 		moveToElement(element);
 		typeEditBox("reportHICEntry", hic);
 		clickButton("GO");
-		
+
 		return waitForElementVisibility(By.xpath("//td[contains(text(),'PATIENT INFORMATION')]"))!=null?true:false;
 	}
-	
+
 	public boolean verifyView271RespPagehasA7() throws Exception{
 		clickLink("View271");
 		//TODO - Need to validate repsonse page with A7
 		return false;
 	}
-	
+
 	public boolean verifyActivityLogSearchOnlynotacknowledged() throws Exception {
 		navigateToPage();
 		clickButton("tdGoodActivity");
@@ -745,7 +752,7 @@ public class EligibilityPage extends AbstractPageObject{
 		//TODO - Need to add validation code for validating the acknowledged & non-acknowledged eligibility checks
 		return false;
 	}
-	
+
 	public boolean verifyNavigationToHomeScreenFromCompletedActivityLogScreen() throws Exception {
 		navigateToPage();
 		clickButton("tdGoodActivity");
@@ -754,7 +761,7 @@ public class EligibilityPage extends AbstractPageObject{
 		{
 			clickLink("reportHome");
 			Thread.sleep(5000);
-			
+
 			if(isTextPresent("OVERNIGHT SUMMARY REPORT"))
 			{
 				report.report("Successfully navigated to home page", ReportAttribute.BOLD);
@@ -772,7 +779,7 @@ public class EligibilityPage extends AbstractPageObject{
 			return false;
 		}
 	}
-	
+
 	public boolean verifyPDFExportInCompletedActivityLogScreen() throws Exception{
 		navigateToPage();
 		clickButton("tdGoodActivity");
@@ -798,7 +805,7 @@ public class EligibilityPage extends AbstractPageObject{
 			return false;
 		}
 	}
-	
+
 
 	public boolean verifyPrintOptionInCompletedActivityLogScreen() throws Exception {
 		navigateToPage();
@@ -825,10 +832,10 @@ public class EligibilityPage extends AbstractPageObject{
 			return false;
 		}
 	}
-	
+
 	public boolean verifyTrashOptionInCompletedActivityLogScreen() throws Exception{
 		int failurecount=0;
-		
+
 		navigateToPage();
 		clickButton("tdGoodActivity");
 		WebElement we = waitForElementVisibility(By.className("headerblue"));
@@ -844,7 +851,7 @@ public class EligibilityPage extends AbstractPageObject{
 				String sExpectedAlertmessage = "Once you void an item, it is permanently voided and it cannot be reversed. Are you sure that you want to Void the selected items?If you do not wish to Void the selected items, then click \"Cancel\".";
 				WebElement checkbox = waitForElementToBeClickable(ByLocator.xpath, "//tbody/tr[1]//td[1]/input[@type='checkbox']", 10);
 				int prevtablesize = findElements(By.xpath("//table[@id='datatable']/tbody/tr")).size();
-								
+
 				if(checkbox!=null)
 				{
 					checkbox.click();
@@ -866,7 +873,7 @@ public class EligibilityPage extends AbstractPageObject{
 					return false;
 				}
 			}
-			
+
 		}
 		else
 		{
@@ -875,7 +882,7 @@ public class EligibilityPage extends AbstractPageObject{
 		}
 		return failurecount==0?true:false;
 	}
-	
+
 	public boolean VerifyNavigationOfAdvanceSearchFromLiveSearch() throws Exception {
 		navigateToPage();
 		clickButton("tdGoodActivity");
@@ -907,12 +914,12 @@ public class EligibilityPage extends AbstractPageObject{
 			return false;
 		}
 	}
-	
+
 	public boolean verifyMostBenefitSTC45Fields() {
 		//Need to implement the code to get these fields data from EligibilityCheck report page
 		return false;
 	}
-	
+
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub

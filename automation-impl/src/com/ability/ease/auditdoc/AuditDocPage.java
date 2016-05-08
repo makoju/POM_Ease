@@ -23,7 +23,7 @@ public class AuditDocPage extends AbstractPageObject{
 	AuditDocHelper helper = new AuditDocHelper();
 	int failCounter = 0;
 	String sXpathofEsmdReport = "//td[contains(text(),'ADR ESMD STATUS REPORT ')]";
-	String xpathToADRSubPage = "//td[contains(text(),'ADR Response Document Submission Report')]";
+	String xpathToADRSubPage = "//td[contains(text(),'ADR Response Document Submission Report')] | //td[contains(text(),'ADR esMD Delivery Response Report')]";
 
 	String tableheadersxpathHHA = "//table[@id='datatable']//tr[@class='tableheaderblue']/td";
 	ReportsHelper reportshelper = new ReportsHelper();
@@ -83,14 +83,14 @@ public class AuditDocPage extends AbstractPageObject{
 		if(esMD != null){
 			clickLink("esMD Delivery & Status");	
 		}*/
-		
+
 		helper.navigateToESMDStatusPage(agencyValue);
 		waitForElementToBeClickable(ByLocator.xpath,sXpathofEsmdReport, 30);
-		
+
 		String icon=".//*[@id='scrollContent']/tr/td[1]//img";
 		String sloc=".//*[contains(text(),'S/Loc')]";
 		String  cmsStatus=".//*[contains(text(),'CMS')]";
-		
+
 		boolean isicon=helper.verifyColumn(icon);
 		boolean isSLoc=helper.verifyColumn(sloc);
 		boolean isCMSStatus=helper.verifyColumn(cmsStatus);
@@ -374,57 +374,15 @@ public class AuditDocPage extends AbstractPageObject{
 		return (failCounter == 0) ? true : false;
 	}
 
-	public boolean verifyRecordsPresenUnderESMDreport()throws Exception{
+	public boolean verifyRecordsPresenUnderESMDreport(String sAgency)throws Exception{
 
-		String sXpathOfOVERNIGHT = "//span[contains(text(),'OVERNIGHT')]";
-		String ADRPageXpath = "//td[contains(text(),'ADR REPORT, FOR')]";
-		String eSMDPageXpath = "//td[contains(text(),'ESMD DELIVERY & STATUS')]";
-		String sADRDataTableXpath = "//table[@id='datatable']/tbody/tr";
-		String sEaseFoundNoItemsXpath = "//span[contains(text(),'EASE found no items')]";
-		List<WebElement> lsADRRecords = null;
-		List<WebElement> lseSMDAndStatusRecords = null;
 		int recordCountFromADRReport = 0;
 		int recordCountFromeSMDStatusReport = 0;
 
+		recordCountFromADRReport = helper.getRecordCountFromADRReport(sAgency);	
+		recordCountFromeSMDStatusReport = helper.getRecountFromESMDADRSubmission(sAgency);
 
-		int failCounter = 0;
-
-		helper.clickMyDDELink();
-		waitForElementToBeClickable(ByLocator.linktext, "Advanced", 30);
-		clickLink("Advanced");
-		//get the record count from ADR Report
-		if(waitForElementToBeClickable(ByLocator.xpath,sXpathOfOVERNIGHT, 30) != null){
-			clickLink("ADR");
-			if(waitForElementToBeClickable(ByLocator.xpath, ADRPageXpath, 60) != null){
-				lsADRRecords = driver.findElements(By.xpath(sADRDataTableXpath));
-				recordCountFromADRReport = lsADRRecords.size();
-			}	
-			clickLink("esMD Delivery & Status");
-			if(waitForElementToBeClickable(ByLocator.xpath, eSMDPageXpath, 10) != null){
-				if( waitForElementToBeClickable(ByLocator.xpath, sEaseFoundNoItemsXpath, 10) != null){
-					helper.changeTimeFrame();
-					if (waitForElementToBeClickable(ByLocator.xpath, eSMDPageXpath, 10) != null ){
-						lsADRRecords = driver.findElements(By.xpath(sADRDataTableXpath));
-						recordCountFromADRReport = lsADRRecords.size();
-					}else{
-						failCounter++;
-						report.report("ESMD DELIVERY & STATUS...text is not present on page after clicking eSMD Delivery & Status Report");
-					}
-				}else{
-					failCounter++;
-					report.report("EASE found no items...text is not present on page after clicking eSMD Delivery & Status Report");
-				}
-				lseSMDAndStatusRecords = driver.findElements(By.xpath(sADRDataTableXpath));
-				recordCountFromeSMDStatusReport = lseSMDAndStatusRecords.size();
-			}
-		}else{
-			failCounter++;
-			report.report("Fail : Unable to find ADR link on page");
-		}
-
-		if( failCounter == 0 && recordCountFromADRReport == recordCountFromeSMDStatusReport){
-			report.report("Records count under ADR Report are : " + recordCountFromADRReport, ReportAttribute.BOLD);
-			report.report("Records count under eSMD Delivery & Status Report are : " + recordCountFromADRReport, ReportAttribute.BOLD);
+		if( recordCountFromADRReport == recordCountFromeSMDStatusReport){
 			return true;
 		}else{
 			return false;
@@ -439,10 +397,11 @@ public class AuditDocPage extends AbstractPageObject{
 
 	public boolean isDocSplitted(String claimIDorDCN)throws Exception{
 
-		String sXpathToSplitSubmissionColumn = "//td[contains(text(),'" + claimIDorDCN + "')]/following-sibling::td[10]";
+		String sXpathToSplitSubmissionColumn = "//td[contains(text(),'" + claimIDorDCN + "')]/following-sibling::td[11]";
 		WebElement we = waitForElementToBeClickable(ByLocator.xpath, sXpathToSplitSubmissionColumn, 30);
 		if( we != null){
 			String submissionSplitText = we.getText();
+			report.report("Submission split text from CMS status screen details table : " + submissionSplitText);
 			if(!submissionSplitText.isEmpty()){
 				if(submissionSplitText.equalsIgnoreCase("Yes")){
 					report.report("Is Document splitted : " + submissionSplitText , ReportAttribute.BOLD);

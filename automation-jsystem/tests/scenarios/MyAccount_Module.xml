@@ -75,15 +75,15 @@
         </jsystem-ant>
     </target>
     <target name="t7">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE1.2_MYACC_013_VerifyDDECredentialsDeleteUnderChangeFISSDDESettings.xml">
-            <property name="jsystem.uuid" value="997c33ee-a664-4aa1-b57b-e84295ef3565"/>
+        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE1.2_MYACC_012_VerifyDDECredentialsEditUnderChangeFISSDDESettings.xml">
+            <property name="jsystem.uuid" value="aa4d41a0-52ec-4ba5-9372-9284583d44fa"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>
     </target>
     <target name="t8">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE1.2_MYACC_012_VerifyDDECredentialsEditUnderChangeFISSDDESettings.xml">
-            <property name="jsystem.uuid" value="aa4d41a0-52ec-4ba5-9372-9284583d44fa"/>
+        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE1.2_MYACC_013_VerifyDDECredentialsDeleteUnderChangeFISSDDESettings.xml">
+            <property name="jsystem.uuid" value="997c33ee-a664-4aa1-b57b-e84295ef3565"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>

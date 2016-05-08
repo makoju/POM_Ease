@@ -398,15 +398,18 @@ public class ClaimsHelper extends AbstractPageObject{
 		/*String sExpected = "Warning! There are potential errors with this Claim. Click 'Review' to change the values or Click 'Submit'";
 		String sActual = null;
 		 */
+		boolean result = false;
 		WebElement we = driver.switchTo().activeElement();
 		if( we != null){
 			report.report("Text present on warning dailoge : " + we.getText());
 			clickButtonV2("ub04-warning-submit-button");
-			return true;
+			if (waitForElementToBeClickable(ByLocator.id, "yesConfirmEditClaimButton", 30) != null )
+				result = true;
 		}else{
 			report.report("UB04 From Submit Warning : Model dailog box reference is null");
-			return false;
+			result = false;
 		}
+		return result;
 	}
 
 	public List<String> getFiledValuesFromEditClaimLineModelDailogWindow()throws Exception{

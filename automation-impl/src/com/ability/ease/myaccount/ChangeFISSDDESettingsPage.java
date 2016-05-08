@@ -168,7 +168,7 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 		}
 		if(we!=null){
 			clickLink("Edit");
-			typeEditBox("name", groupname.concat("1"));
+
 			if(!agencies.isEmpty())
 			{
 				WebElement selectagencies = waitForElementVisibility(By.id("UserProvID"));

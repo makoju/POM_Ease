@@ -5,11 +5,12 @@ import com.ability.ease.testapi.ICommon;
 public class CommonSelenium2Impl implements ICommon{
 	
 	CommonPage cp = new CommonPage();
-	
+
 	@Override
-	public boolean stopStartEaseServer(String status) throws Exception {
-		return false;
-	//	return cp.stopStartEaseServer(status);
+	public boolean launchARTDashboardURL(String sURL) throws Exception {
+		return cp.launchARTDashboardURL(sURL);
 	}
+	
+	
 
 }

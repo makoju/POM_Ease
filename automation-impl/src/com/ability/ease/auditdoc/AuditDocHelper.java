@@ -154,7 +154,7 @@ public class AuditDocHelper extends AbstractPageObject{
 		}
 	}
 
-	
+
 	@SuppressWarnings("static-access")
 	public List<String> getADRFilePath(ADRFileFomat adrFileType,char relationalOperator){
 		List<String> filePaths = new ArrayList<String>();
@@ -465,6 +465,46 @@ public class AuditDocHelper extends AbstractPageObject{
 		}
 		return lsFileNamesFromViewColumn;
 	}
+
+	public int getRecordCountFromADRReport(String sAgency) throws Exception{
+
+		List<WebElement> lsADRRecords = null;
+		int recordCountFromADRReport = 0;
+		String ADRPageXpath = "//td[contains(text(),'ADR REPORT, FOR')]";
+		String sADRDataTableXpath = "//table[@id='datatable']/tbody/tr";
+
+		if( waitForElementToBeClickable(ByLocator.linktext, "MY DDE", 30) != null){
+			safeJavaScriptClick("MY DDE");
+			if( waitForElementToBeClickable(ByLocator.linktext, "Advanced", 30) != null){
+				safeJavaScriptClick("Advanced");
+				if( waitForElementToBeClickable(ByLocator.linktext, "ADR", 15) != null){
+					if(waitForElementToBeClickable(ByLocator.xpath, ADRPageXpath, 60) != null){
+						lsADRRecords = driver.findElements(By.xpath(sADRDataTableXpath));
+						recordCountFromADRReport = lsADRRecords.size();
+						report.report("Record(s) present under ADR Report for agency " + sAgency + " is : " + recordCountFromADRReport);
+					}
+				}
+			}
+		}
+		return recordCountFromADRReport;
+	}
+
+	public int getRecountFromESMDADRSubmission(String sAgency)throws Exception{
+
+		List<WebElement> lsADRRecords = null;
+		int recordCountFromADRReport = 0;
+		String sADRDataTableXpath = "//table[@id='datatable']/tbody/tr";
+		String sXpathToADResMDStatusReport = "//td[contains(text(),'ADR ESMD STATUS REPORT')]";
+
+		navigateToESMDStatusPage(sAgency);
+		if ( waitForElementToBeClickable(ByLocator.xpath, sXpathToADResMDStatusReport, 20) != null){
+			lsADRRecords = driver.findElements(By.xpath(sADRDataTableXpath));
+			recordCountFromADRReport = lsADRRecords.size();
+			report.report("Record(s) present under ADR ESMD STATUS REPORT for agency " + sAgency + " is : " +  recordCountFromADRReport);
+		}
+		return recordCountFromADRReport;
+	}
+
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub

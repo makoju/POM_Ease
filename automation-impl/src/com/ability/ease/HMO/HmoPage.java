@@ -68,10 +68,7 @@ public class HmoPage extends AbstractPageObject  {
 	public boolean extendHMO(String sHIC) throws Exception{
 		boolean isExtended=false;
 		int idays;
-		if( !hhp.updateTerminationTime(sHIC)){
-			report.report("Termination date updation failed !!!");
-			return false;
-		}
+		hhp.updateTerminationTime(sHIC);
 		hhp.navigateToHMOCatcherExtendPage();
 		idays=Integer.parseInt(driver.findElement(By.xpath(".//*[contains(text(),"+"'"+sHIC+"'"+")]/../following-sibling::td[4]")).getText())+75;
 		driver.findElement(By.xpath(".//*[contains(text(),"+"'"+sHIC+"'"+")]/../preceding-sibling::td/input")).click();

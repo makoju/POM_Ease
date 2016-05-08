@@ -85,10 +85,10 @@ public class AuditDocTests extends BaseTest{
 
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify Records Present Under eSMDreport", paramsInclude = { "testType" })
+	@TestProperties(name = "Verify Records Present Under eSMDreport", paramsInclude = { "agency, testType" })
 	public void verifyRecordsPresenUnderESMDreport()throws Exception{
 
-		if(!auditdoc.verifyRecordsPresenUnderESMDreport()){
+		if(!auditdoc.verifyRecordsPresenUnderESMDreport(agency)){
 			report.report("Records present under ADR report and records present under eSMD status report are not equal" , Reporter.FAIL);
 		}else{
 			report.report("Records present under ADR report and records present under eSMD status report are equal", Reporter.ReportAttribute.BOLD);

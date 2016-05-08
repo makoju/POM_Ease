@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import com.ability.auto.common.ShellExecUtil;
 import com.ability.ease.auto.system.WorkingEnvironment;
 import com.ability.ease.auto.systemobjects.DefaultWorkingEnvironment;
+import com.mysql.jdbc.Driver;
 
 public class CommonUtils {
 
@@ -133,6 +134,7 @@ public class CommonUtils {
 		String output = runCommand(command.toString(), mailserver);
 		System.out.println("Command : " + command);
 		System.out.println("Output : " + output);
+		
 		if(output.contains("e-mail has been sent successfully")){
 			return true;
 		}else{

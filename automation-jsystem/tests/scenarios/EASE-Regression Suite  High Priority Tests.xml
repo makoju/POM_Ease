@@ -93,10 +93,10 @@
     </target>
     <target name="t9">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="575f19ee-773f-42a8-bcb9-c3aa29ccc778"/>
+            <sysproperty key="jsystem.uuid" value="4481691f-b346-4b6b-ab01-bbfea03ba538"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-            <test name="com.ability.ease.common.CommonTests.httpSendPOST"/>
+            <test name="com.ability.ease.common.CommonTests.launchARTDashboard"/>
         </jsystem>
     </target>
     <target name="t10">

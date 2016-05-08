@@ -7,6 +7,7 @@ import jsystem.framework.report.Reporter.ReportAttribute;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
 
 import com.ability.ease.auto.common.annotations.SupportTestTypes;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.easeServerStatus;
@@ -62,6 +63,7 @@ public class CommonTests extends BaseTest{
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "Send e-mail notification", paramsInclude = { "testType" })
 	public void sendEmailNotification()throws Exception{
+		Thread.sleep(5000);
 		if (CommonUtils.sendEmailNotification()){
 			report.report("E-mail has been sent successfully !!!", ReportAttribute.BOLD);
 		}else{
@@ -69,6 +71,17 @@ public class CommonTests extends BaseTest{
 		}
 	}
 
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Launch ART Dashboard URL", paramsInclude = { "sReferenceURI, testType" })
+	public void launchARTDashboard()throws Exception{
+		if (common.launchARTDashboardURL(sReferenceURI)){
+			report.report("ART Dashboard launch successful!!!", ReportAttribute.BOLD);
+		}else{
+			report.report("ART Dashboard launch failed !!!", Reporter.FAIL);
+		}
+	}
+	
 	/*####
 	# Getters and Setters
 	####*/

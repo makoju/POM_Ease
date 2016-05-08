@@ -33,8 +33,8 @@ public class AuditDocSelenium2Impl implements IAuditDoc{
 	}
 
 	@Override
-	public boolean verifyRecordsPresenUnderESMDreport() throws Exception {
-		return auditdocpage.verifyRecordsPresenUnderESMDreport();
+	public boolean verifyRecordsPresenUnderESMDreport(String sAgency) throws Exception {
+		return auditdocpage.verifyRecordsPresenUnderESMDreport(sAgency);
 	}
 
 	@Override

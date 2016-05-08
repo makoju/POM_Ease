@@ -21,7 +21,7 @@ public class HMOHelper extends AbstractPageObject {
 	 */
 	public void fillHmo(String  sAgency,String sHIC,String sLastName, String sFirstName,String sDob,String sSex) throws Exception{
 		String xpathToEligCheckPage = "//td[contains(text(),'ELIGIBILITY CHECK')]";
-		
+
 		waitForElementToBeClickable(ByLocator.linktext, "ELIG.", 20);
 		safeJavaScriptClick("ELIG.");
 		if (waitForElementToBeClickable(ByLocator.xpath, xpathToEligCheckPage, 30) != null){
@@ -87,24 +87,21 @@ public class HMOHelper extends AbstractPageObject {
 		waitForElementToBeClickable(ByLocator.linktext,"HMO/Adv Catcher Patients",8);
 		safeJavaScriptClick("HMO/Adv Catcher Patients");
 	}
-	
+
 	/**
 	 * @author nageswar.bodduri
 	 * This method just updates the termination time stamp for one of the existing records to perform the extend operation on HMO catcher
 	 */
-	
-	public boolean updateTerminationTime(String sHIC){
-		String updateQuery = "UPDATE ddez.hmocatcherpatient SET Termination='2016-05-01' WHERE HIC = '" + sHIC + "'";
-		int result = MySQLDBUtil.getUpdateResultFromMySQLDB(updateQuery);
-		if( result == 1){
-			return true;
-		}else{
-			return false;
-		}
+
+	public void updateTerminationTime(String sHIC){
+		String updateQuery = "UPDATE ddez.hmocatcherpatient SET CreateDate=now(),Termination=Date_ADD(CreateDate, INTERVAL 5 DAY) WHERE HIC = '" + sHIC + "'";
+		MySQLDBUtil.getUpdateResultFromMySQLDB(updateQuery);
+		report.report("Termination date updation successful !!!");
 	}
-	
+
+
 	public void ganerateRandom9DigitNumberfollowedByChar(){
-		
+
 	}
 	@Override
 	public void assertInPage() {

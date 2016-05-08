@@ -16,18 +16,10 @@
     <taskdef classname="com.aqua.anttask.jsystem.JSystemSetAntProperties" name="jsystemsetantproperties"/>
     <target name="execute scenario">
         <antcallback target="t0"/>
-        <antcallback target="t1"/>
     </target>
     <target name="t0">
         <jsystem-ant antfile="${scenarios.base}/scenarios/VerifyAnalytics.xml">
             <property name="jsystem.uuid" value="29accff3-584b-46df-a900-790eea145015"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t1">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/BIUserLogin.xml">
-            <property name="jsystem.uuid" value="47bf1b35-bdb4-4dcc-a9c1-ef59e1cbe8e5"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>

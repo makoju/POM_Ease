@@ -27,7 +27,7 @@ public interface IAuditDoc {
 	/*
 	 * method to verify the esmd report recods count
 	 */
-	public boolean verifyRecordsPresenUnderESMDreport()throws Exception; 
+	public boolean verifyRecordsPresenUnderESMDreport(String sAgency)throws Exception; 
 
 	/*
 	 * method to verify REJECT and RESEND Submission functionality

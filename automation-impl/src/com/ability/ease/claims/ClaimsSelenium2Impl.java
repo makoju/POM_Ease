@@ -7,6 +7,7 @@ import com.ability.ease.testapi.IClaims;
 public class ClaimsSelenium2Impl implements IClaims{
 
 	ClaimsPage claims = new ClaimsPage();
+	ClaimsPageVersion2 claimsv2 = new ClaimsPageVersion2();
 	
 	@Override
 	public boolean verifyUB04FormFeatures(Map<String, String> mapAttrVal) throws Exception {
@@ -64,6 +65,11 @@ public class ClaimsSelenium2Impl implements IClaims{
 	public boolean addOrRemoveClaimLinesInExistingClaim(String claimLineEntries,String claimLineNumberToDelete,
 			String claimLineNumberToAdd, String newClaimLineEntry)throws Exception {
 		return claims.addOrRemoveClaimLinesInExistingClaim(claimLineEntries,claimLineNumberToDelete, claimLineNumberToAdd, newClaimLineEntry);
+	}
+
+	@Override
+	public boolean hoverMouseOnClaimCharge() throws Exception {
+		return claimsv2.hoverMouseOnClaimCharge();
 	}
 
 

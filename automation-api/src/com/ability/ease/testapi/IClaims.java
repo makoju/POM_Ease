@@ -50,8 +50,8 @@ public interface IClaims {
 	public boolean addOrRemoveClaimLinesInExistingClaim(String claimLineEntries,String claimLineNumberToDelete,
 			String claimLineNumberToAdd, String newClaimLineEntry)throws Exception;
 
-	/*
-	 * method to verify help text in UB04 form fields
-	 */
-	public boolean verifyHelpTextInUB04Form()throws Exception; 
+	public boolean verifyHelpTextInUB04Form()throws Exception;
+	
+	public boolean hoverMouseOnClaimCharge()throws Exception;
+	
 }

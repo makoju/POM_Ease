@@ -101,13 +101,6 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 		String[] actual = new String[agencieslist.length];
 		int i=0;
 		
-		navigateToPage();
-		WebElement webelement = waitForElementVisibility(By.linkText("Password Protection"));
-		if(webelement == null){
-			WebElement select = waitForElementVisibility(By.id("group"));
-			if(select!=null)
-				selectByNameOrID("group", groupname);
-		}
 		clickLink("Edit");
 		WebElement selectagencies = waitForElementVisibility(By.id("UserProvID"));
 		Select select = new Select(selectagencies);

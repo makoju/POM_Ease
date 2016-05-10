@@ -30,12 +30,11 @@
 		<description>Provide email id</description>
 	</UIAttribute>
 	
-	
 	<UIAttribute>
 		<locator>Permissions</locator>
-		<style>Table</style>
+		<style>Permissions</style>
 		<displayName>Permissions</displayName>
-		<description>Provide permissions</description>
+		<description>Provide permissions like Agencyname,Claim:View-0:Edit-0,Eligibility:View-0:Check-0,HMO Catcher:0,Export:0,DDEUser:0,Schedule:0,Admin:0;agencyname,Claim:View-0:Edit-0,Eligibility:View-0:Check-0,HMO Catcher:0,Export:0,DDEUser:0,Schedule:0,Admin:0</description>
 	</UIAttribute>
 	
 </UIAttributes>

@@ -1683,10 +1683,9 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			Alert alert = wait.until(ExpectedConditions.alertIsPresent());
 			report.report("Alert is found now comparing text..");
 			sActual = alert.getText().toString().replaceAll("[\r\n]+", "");
-			report.report("Expected text on alert box is :" +sExpected);
-			report.report("Actual text on alert box is :" +sActual);
-			if( sActual.equalsIgnoreCase(sExpected)){
-				report.report("Actual text on alert box is : "+ sActual);
+			report.report("Expected text on alert box is :" +sExpected.trim());
+			report.report("Actual text on alert box is :" +sActual.trim());
+			if( sActual.trim().equalsIgnoreCase(sExpected.trim())){
 				alert.accept();
 				return true;
 			}

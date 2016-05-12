@@ -34,10 +34,10 @@ public class MyAccountTests extends BaseTest {
 	private String timeZone,username,groupname,agency,claimsTime, eligibilityTime, eFTTime, sDay, EndDay, runtime, credential, timezone,ddeuserid,ddepassword,grouporagencycheckboxname,grouporagencyname,disableuntil,expectedalertmessage;
 	private int rownumber;
 	private boolean isnewcustomer;
+	private int value;
 
 
 	private String expectedColor,agency1;
-	private String username1;
 	private String sUsername;
 	private String dAgency;
 	private String agencyOne;
@@ -276,13 +276,13 @@ public class MyAccountTests extends BaseTest {
 
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "updateDDEpasswordProblem ", paramsInclude = { "username1,testType" })
+	@TestProperties(name = "updateDDEpasswordProblem ", paramsInclude = { "username,value,testType" })
 	public void updateDDEpasswordProblem() throws Exception
 	{
-		if(myaccount.updateDDEpasswordProblem(username1)){
-			report.report("UserName is successfully made invalid : "+username1, Reporter.PASS);
+		if(myaccount.updateDDEpasswordProblem(username,value)){
+			report.report("User DDEPasswordProblem is successfully Updated : "+username, Reporter.PASS);
 		}else{
-			report.report("UserName is UNsuccessfully made invalid: "+username1, Reporter.FAIL);
+			report.report("User DDEPasswordProblem failed to Update: "+username, Reporter.FAIL);
 		}
 	}
 
@@ -512,14 +512,6 @@ public class MyAccountTests extends BaseTest {
 		this.agency1 = agency1;
 	}
 
-	public String getUsername1() {
-		return username1;
-	}
-
-	public void setUsername1(String username1) {
-		this.username1 = username1;
-	}
-
 	public String getsUsername() {
 		return sUsername;
 	}
@@ -599,4 +591,13 @@ public class MyAccountTests extends BaseTest {
 	public void setExpectedalertmessage(String expectedalertmessage) {
 		this.expectedalertmessage = expectedalertmessage;
 	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
+	
 }

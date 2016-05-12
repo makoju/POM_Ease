@@ -104,8 +104,8 @@ public class MyAccountSelenium2Impl implements IMyAccount {
 	}
 
 	@Override
-	public boolean updateDDEpasswordProblem(String username) throws Exception {	
-		return custschedpage.updateDDEpasswordProblem(username);
+	public boolean updateDDEpasswordProblem(String username,int value) throws Exception {	
+		return custschedpage.updateDDEpasswordProblem(username,value);
 	}
 
 	@Override

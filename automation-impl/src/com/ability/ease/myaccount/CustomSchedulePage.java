@@ -170,11 +170,11 @@ public class CustomSchedulePage extends AbstractPageObject {
 		return false;
 	}
 	
-	public boolean updateDDEpasswordProblem(String username) throws SQLException {
+	public boolean updateDDEpasswordProblem(String username, int value) throws SQLException {
 
 		int noOfrowsUpdated = 0;
 
-		String query = "update ddez.userddecredential set DDEPasswordProblem='1', LoginErrorMessage='problem' where DDEPasswordHolder IN (Select UserID from ddez.user where username='"
+		String query = "update ddez.userddecredential set DDEPasswordProblem='"+value+"', LoginErrorMessage='problem' where DDEPasswordHolder IN (Select UserID from ddez.user where username='"
 				+ username + "')";
 		try {
 			noOfrowsUpdated = MySQLDBUtil.getUpdateResultFromMySQLDB(query);

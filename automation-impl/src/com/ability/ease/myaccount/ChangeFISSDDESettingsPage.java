@@ -121,14 +121,8 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 	}
 	
 	public boolean setupDDECredential(String groupname, String ddeuserid, String ddepassword) throws Exception{
-		navigateToPage();
-		WebElement we = waitForElementVisibility(By.linkText("Password Protection"));
-		if(we == null){
-			WebElement select = waitForElementVisibility(By.id("group"));
-			if(select!=null)
-				selectByNameOrID("group", groupname);
-		}
-		we = waitForElementVisibility(By.id("ddeuser"));
+		navigateToManageDDESettingsPage(groupname);
+		WebElement we = waitForElementVisibility(By.id("ddeuser"));
 		if(we!=null){
 			typeEditBox("ddeuser", ddeuserid);
 			typeEditBox("ddepassword", ddeuserid);
@@ -247,6 +241,45 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 
 		return true;
 	}
+	
+	public void navigateToManageDDESettingsPage(String groupname) throws Exception{
+		navigateToPage();
+		WebElement we = waitForElementVisibility(By.linkText("Password Protection"));
+		if(we == null){
+			WebElement select = waitForElementVisibility(By.id("group"));
+			if(select!=null)
+				selectByNameOrID("group", groupname);
+		}
+	}
+	//There are jobs scheduled in this time window. Please change the start time. Job Scheduled time : 09:00 
+	
+	public boolean configureBlackoutTime(String groupname, String starttime,
+			String endtime, String expectedalertmessage) throws Exception {
+		navigateToManageDDESettingsPage(groupname);
+		WebElement we = waitForElementVisibility(By.id("restrict_usage"));
+		if(we!=null){
+			typeEditBox("ddepassword", "test");
+			typeEditBox("Verify", "test");
+			uncheckChkBox("restrict_usage");
+			selectByNameOrID("credential_start_time", starttime);
+			selectByNameOrID("credential_end_time", endtime);
+			clickButtonV2("Submit");
+			
+			WebDriverWait wait = new WebDriverWait(driver, 85);
+			wait.until(ExpectedConditions.alertIsPresent());
+			
+			if(!verifyAlert(expectedalertmessage)){
+				report.report("Expected alert: "+expectedalertmessage+"was not present",Reporter.WARNING);
+				return false;
+			}
+			return true;
+		}
+		else{
+			report.report("Unable to navigate or No Usage time Restriction checkbox is not available in Manage FISS/DDE Settings page", Reporter.WARNING);
+			return false;
+		}
+		
+	}
 
 	
 	@Override
@@ -265,5 +298,4 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 			HomePage.getInstance().navigateTo(Menu.MYACCOUNT, null);
 		clickLink("Change FISS/DDE Settings");
 	}
-
 }

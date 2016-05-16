@@ -46,6 +46,7 @@ public class MyAccountTests extends BaseTest {
 	private String expectedmessage;
 	private String verifypassword;
 	private String description;
+	private String starttime, endtime;
 	
 
 
@@ -328,6 +329,18 @@ public class MyAccountTests extends BaseTest {
 		}
 	}
 	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Configure blackout time for a group", paramsInclude = { "testType,groupname, starttime,endtime,expectedalertmessage" })
+	public void configureBlackoutTime()throws Exception{
+
+		if(myaccount.configureBlackoutTime(groupname, starttime,endtime,expectedalertmessage)){
+			report.report("Succesfully Configured Blackout time for group!!", Reporter.PASS);
+		}else {
+			report.report("Failed to Configure Blackout time for group", Reporter.FAIL);
+		}
+	}
+	
 	/*##
 	# Getters and Setters
 	##*/
@@ -598,6 +611,22 @@ public class MyAccountTests extends BaseTest {
 
 	public void setValue(int value) {
 		this.value = value;
+	}
+
+	public String getStarttime() {
+		return starttime;
+	}
+
+	public void setStarttime(String starttime) {
+		this.starttime = starttime;
+	}
+
+	public String getEndtime() {
+		return endtime;
+	}
+
+	public void setEndtime(String endtime) {
+		this.endtime = endtime;
 	}
 	
 }

@@ -2,7 +2,6 @@ package com.ability.ease.testapi;
 
 import java.util.Map;
 
-import com.sun.org.apache.bcel.internal.generic.Select;
 
 
 
@@ -23,8 +22,8 @@ public interface IMyAccount{
 	public boolean deleteAllCustomSchedule(String agency) throws Exception;
 	public boolean verifyInvalidDDEcredentials(String agency, String credential) throws Exception;
 	public boolean updateDDEpasswordProblem(String username, int value) throws Exception;
-	public boolean verifyCustomScheduleDelete(String agency) throws Exception;
 	public boolean verifySetupalerts(String username) throws Exception;
 	public boolean deletecustomScheduleRows(String dAgency) throws Exception;
 	public boolean verifyDeleteOptionNotEnableforFirstSchedule(String agency) throws Exception;
+	public boolean configureBlackoutTime(String groupname, String starttime,String endtime,String expectedalertmessage) throws Exception;
 }

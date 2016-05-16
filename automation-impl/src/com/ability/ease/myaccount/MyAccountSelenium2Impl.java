@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.util.Map;
 
 import com.ability.ease.testapi.IMyAccount;
-import com.sun.org.apache.bcel.internal.generic.Select;
 
 public class MyAccountSelenium2Impl implements IMyAccount {
 	
@@ -123,8 +122,14 @@ public class MyAccountSelenium2Impl implements IMyAccount {
 		return custschedpage.verifyDeleteOptionNotEnableforFirstSchedule(agency);
 	}
 
-	@Override
+/*	@Override
 	public boolean verifyCustomScheduleDelete(String agency) throws Exception {
 		return false;
+	}*/
+
+	@Override
+	public boolean configureBlackoutTime(String groupname, String starttime,
+			String endtime, String expectedalertmessage) throws Exception {
+		return cfdp.configureBlackoutTime(groupname,starttime,endtime,expectedalertmessage);
 	}
 }

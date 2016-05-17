@@ -35,18 +35,11 @@ public class MyAccountTests extends BaseTest {
 	private int rownumber;
 	private boolean isnewcustomer;
 	private int value;
-
-
-	private String expectedColor,agency1;
-	private String sUsername;
-	private String dAgency;
-	private String agencyOne;
 	private String oldpassword;
 	private String newpassword;
-	private String expectedmessage;
 	private String verifypassword;
 	private String description;
-	private String starttime, endtime;
+	private String starttime, endtime,jobtype,customerid;
 	
 
 
@@ -116,10 +109,10 @@ public class MyAccountTests extends BaseTest {
 
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify JobSchedule CurrentAction for ${agency}", paramsInclude = { "agency,testType" })
+	@TestProperties(name = "Verify JobSchedule CurrentAction for ${agency}", paramsInclude = { "agency,jobtype,customerid,testType" })
 	public void verifyJobScheduleCurrentAction()
 	{
-		if(myaccount.verifyJobScheduleCurrentAction(agency)){
+		if(myaccount.verifyJobScheduleCurrentAction(agency,jobtype,customerid)){
 			report.report("Succesfully verified Job Schedule Current Action as 'Initializing connection' !!", Reporter.PASS);
 		}else{
 			report.report("Failed to Verify Job Schedule Current Action as 'Initializing connection' ", Reporter.FAIL);
@@ -250,10 +243,10 @@ public class MyAccountTests extends BaseTest {
 	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify Custom Schedule Delete last two rows", paramsInclude = { " dAgency,testType" })
+	@TestProperties(name = "Verify Custom Schedule Delete last two rows", paramsInclude = { " agency,testType" })
 	public void CustomScheduleDeleteTwoRows() throws Exception 
 	{
-		if(myaccount.deletecustomScheduleRows(dAgency)){
+		if(myaccount.deletecustomScheduleRows(agency)){
 			report.report("Succesfully updated CustomConfiguration !!", Reporter.PASS);
 		}else{
 			report.report("Failed to updated customconfigurationForUser", Reporter.FAIL);
@@ -290,11 +283,11 @@ public class MyAccountTests extends BaseTest {
 
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "VerifySetUpAlertsFunctionlity", paramsInclude = { "testType,sUsername" })
+	@TestProperties(name = "VerifySetUpAlertsFunctionlity", paramsInclude = { "testType,username" })
 
 	public void verifysetUpAlerts()throws Exception{
 
-		if(myaccount.verifySetupalerts(sUsername)){
+		if(myaccount.verifySetupalerts(username)){
 			report.report("Set up Alerts modified", Reporter.PASS);
 		}else {
 			report.report(" updated user password", Reporter.FAIL);
@@ -319,10 +312,10 @@ public class MyAccountTests extends BaseTest {
 
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify Change Password ${description}", paramsInclude = { "testType,oldpassword, newpassword,verifypassword,expectedmessage,description" })
+	@TestProperties(name = "Verify Change Password ${description}", paramsInclude = { "testType,oldpassword, newpassword,verifypassword,expectedalertmessage,description" })
 	public void verifyChangePassword()throws Exception{
 
-		if(myaccount.verifyChangePassword(oldpassword, newpassword,verifypassword,expectedmessage)){
+		if(myaccount.verifyChangePassword(oldpassword, newpassword,verifypassword,expectedalertmessage)){
 			report.report("Succesfully Changed user password !!", Reporter.PASS);
 		}else {
 			report.report("Failed to Change user password", Reporter.FAIL);
@@ -509,46 +502,6 @@ public class MyAccountTests extends BaseTest {
 		this.disableuntil = disableuntil;
 	}
 
-	public String getExpectedColor() {
-		return expectedColor;
-	}
-
-	public void setExpectedColor(String expectedColor) {
-		this.expectedColor = expectedColor;
-	}
-
-	public String getAgency1() {
-		return agency1;
-	}
-
-	public void setAgency1(String agency1) {
-		this.agency1 = agency1;
-	}
-
-	public String getsUsername() {
-		return sUsername;
-	}
-
-	public void setsUsername(String sUsername) {
-		this.sUsername = sUsername;
-	}
-
-	public String getAgencyOne() {
-		return agencyOne;
-	}
-
-	public void setAgencyOne(String agencyOne) {
-		this.agencyOne = agencyOne;
-	}
-
-	public String getdAgency() {
-		return dAgency;
-	}
-
-	public void setdAgency(String dAgency) {
-		this.dAgency = dAgency;
-	}
-
 	public String getOldpassword() {
 		return oldpassword;
 	}
@@ -563,14 +516,6 @@ public class MyAccountTests extends BaseTest {
 
 	public void setNewpassword(String newpassword) {
 		this.newpassword = newpassword;
-	}
-
-	public String getExpectedmessage() {
-		return expectedmessage;
-	}
-
-	public void setExpectedmessage(String expectedmessage) {
-		this.expectedmessage = expectedmessage;
 	}
 
 	public String getVerifypassword() {
@@ -628,5 +573,20 @@ public class MyAccountTests extends BaseTest {
 	public void setEndtime(String endtime) {
 		this.endtime = endtime;
 	}
-	
+
+	public String getJobtype() {
+		return jobtype;
+	}
+
+	public void setJobtype(String jobtype) {
+		this.jobtype = jobtype;
+	}
+
+	public String getCustomerid() {
+		return customerid;
+	}
+
+	public void setCustomerid(String customerid) {
+		this.customerid = customerid;
+	}
 }

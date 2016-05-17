@@ -44,8 +44,8 @@ public class MyAccountSelenium2Impl implements IMyAccount {
 	}
 
 	@Override
-	public boolean verifyJobScheduleCurrentAction(String agencyName) {
-		return custschedpage.verifyJobScheduleCurrentAction(agencyName);
+	public boolean verifyJobScheduleCurrentAction(String agencyName, String jobtype, String customerid) {
+		return custschedpage.verifyJobScheduleCurrentAction(agencyName,jobtype, customerid);
 	}
 
 	@Override

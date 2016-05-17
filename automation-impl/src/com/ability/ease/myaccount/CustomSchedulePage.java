@@ -120,9 +120,13 @@ public class CustomSchedulePage extends AbstractPageObject {
 		return failurecount==0?true:false;
 	}
 	
-	public boolean verifyJobScheduleCurrentAction(String agencyName){
-		String query1 =  "DELETE From ddez.jobschedule where providerid=(select p.id from ddez.provider p where p.DisplayName='"+agencyName+"'  and p.customerid='1')";
-		String query2 = "INSERT INTO ddez.jobschedule (CustomerID,ProviderID,JobType,ScheduleTime,SchedulePriority,Trace) select p.customerid,p.id, 10, now(),0,-102 from ddez.provider p where p.DisplayName='"+agencyName+"' and p.customerid='1'";
+	public boolean verifyJobScheduleCurrentAction(String agencyName, String jobtype, String customerid){
+		String currentime = new String(""+System.currentTimeMillis());
+		String jobid = currentime.substring(currentime.length()-5, currentime.length());
+		
+		
+		String query1 =  "DELETE From ddez.jobschedule where providerid in (select p.id from ddez.provider p where p.DisplayName='"+agencyName+"'  and p.customerid="+customerid+")";
+		String query2 = "INSERT INTO ddez.jobschedule (CustomerID,ProviderID,JobType,JobID,ScheduleTime,SchedulePriority,Trace) select p.customerid,p.id,"+jobtype+","+jobid+",now(),0,-102 from ddez.provider p where p.DisplayName='"+agencyName+"' and p.customerid="+customerid;
 		
 		//Delete the entry from job schedule table if it already exists
 		MySQLDBUtil.getUpdateResultFromMySQLDB(query1);
@@ -132,16 +136,16 @@ public class CustomSchedulePage extends AbstractPageObject {
 			return false;
 		}
 		
-		//Wait for 5 seconds to refresh in database
+		//Wait for 10 seconds to refresh in database
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 				
 		//get the last row from the jobschedule table whose jobtype is 10
-		String sQueryName = "SELECT * FROM ddez.jobschedule js where js.JobType=10 order by jobid desc limit 1";
+		String sQueryName = "SELECT * FROM ddez.jobschedule js where js.JobType="+jobtype+" and js.customerid ="+customerid+" order by jobid desc limit 1";
 		ResultSet rs1 = MySQLDBUtil.getResultFromMySQLDB(sQueryName);
 		String currentaction = MySQLDBUtil.getColumnValue(rs1, "CurrentAction");
 		return (currentaction!=null && Verify.StringEquals(currentaction, "Initializing connection"))?true:false;

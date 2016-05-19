@@ -27,9 +27,6 @@ public class MyAccountTests extends BaseTest {
 	IMyAccount myaccount;
 
 	private AttributePair[] attrpair;
-
-
-
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
 	private String timeZone,username,groupname,agency,claimsTime, eligibilityTime, eFTTime, sDay, EndDay, runtime, credential, timezone,ddeuserid,ddepassword,grouporagencycheckboxname,grouporagencyname,disableuntil,expectedalertmessage;
 	private int rownumber;
@@ -41,7 +38,6 @@ public class MyAccountTests extends BaseTest {
 	private String description;
 	private String starttime, endtime,jobtype,customerid;
 	
-
 
 	@Before
 	public void setUpTests() throws Exception{

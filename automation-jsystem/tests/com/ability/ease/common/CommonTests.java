@@ -176,7 +176,7 @@ public class CommonTests extends BaseTest{
 			endtime = sdf.format(new Date(calendar.getTimeInMillis())); 
 
 		}
-		else if (time == TIMEINTERVAL.AFTER_ONE_HOUR_FROMCURRENTTIME){
+		else if (time == TIMEINTERVAL.BEFORE_ONE_HOUR_FROM_CURRENTTIME){
 			dstarttime = roundTimeMinutes(System.currentTimeMillis()-3600000);
 
 			starttime = sdf.format(dstarttime);

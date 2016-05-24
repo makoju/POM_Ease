@@ -29,6 +29,22 @@ public class EligibilityTests extends BaseTest{
 	private AttributePair[] attrpair;
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
 	private String hic,agency,firstname,lastname,description, status;
+	private String customername;
+	private HETSStatus hetsstatus;
+	
+	private enum HETSStatus{
+		ENABLE("enable"),
+		DISABLE("disable");
+		
+		String value;
+		private HETSStatus(String value){
+			this.value=value;
+		}
+		
+		public String getValue(){
+			return value;
+		}
+	}
 
 	@Before
 	public void setupTests()throws Exception{
@@ -224,7 +240,7 @@ public class EligibilityTests extends BaseTest{
 		do{
 			report.report("Activities count not increased so trying again attempt#"+(count+1));
 			latestactivitycount = elig.getActivityCount(status);
-			Thread.sleep(8500);
+			Thread.sleep(10000);
 		}while(count++ < 5 && latestactivitycount == activitycount);
 		
 		if(activitycount+1 == latestactivitycount)
@@ -377,6 +393,18 @@ public class EligibilityTests extends BaseTest{
 		}	
 	}
 	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "${hetsstatus} HETS for ${customername}", paramsInclude = { "testType, customername, hetsstatus" })
+	public void enableordisableHETS() throws Exception {
+		
+		if(!elig.enableordisableHETS(customername,hetsstatus.getValue())) {
+			report.report("Failed to "+hetsstatus.getValue()+" HETS for customer"+customername,	Reporter.FAIL);
+		} else {
+			report.report("Successfully "+hetsstatus.getValue()+" HETS for customer"+customername,	Reporter.PASS);
+		}	
+	}
+	
 	/*######
 	Getters and Setters
 	######*/
@@ -436,6 +464,22 @@ public class EligibilityTests extends BaseTest{
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getCustomername() {
+		return customername;
+	}
+
+	public void setCustomername(String customername) {
+		this.customername = customername;
+	}
+
+	public HETSStatus getHetsstatus() {
+		return hetsstatus;
+	}
+
+	public void setHetsstatus(HETSStatus hetsstatus) {
+		this.hetsstatus = hetsstatus;
 	}
 
 	public AttributeNameValueDialogProvider[] getAttributeNameValueDialogProvider() {

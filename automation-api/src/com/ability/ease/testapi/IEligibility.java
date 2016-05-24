@@ -31,5 +31,6 @@ public interface IEligibility {
 	abstract public boolean VerifyNavigationOfAdvanceSearchFromLiveSearch() throws Exception;
 	abstract public boolean navigatetoEligibilityReport(String firstname, String lastname) throws Exception; 
 	abstract public boolean verifyMostBenefitSTC45Fields() throws Exception;
+	abstract public boolean enableordisableHETS(String customername, String status) throws Exception;
 }
 

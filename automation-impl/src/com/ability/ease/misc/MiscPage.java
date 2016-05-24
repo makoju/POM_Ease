@@ -62,8 +62,8 @@ public class MiscPage extends AbstractPageObject {
 			driver.manage().window().maximize();
 			isBrowserOpen = true;
 			}catch(Exception e){
-				report.report("Exception occured" + e.getMessage());
-				report.report(e.toString());
+				report.report("Exception occured while driver.get() method is executed");
+				report.report(e.getMessage());
 			}
 		}
 		if (isLoggedIn) {

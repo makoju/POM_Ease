@@ -13,6 +13,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.TestCommonResource;
 import com.ability.ease.auto.common.UIActions;
 import com.ability.ease.auto.common.Verify;
@@ -913,6 +914,20 @@ public class EligibilityPage extends AbstractPageObject{
 			report.report("Unable to naviagte to Completed Activity Log Screen", Reporter.WARNING);
 			return false;
 		}
+	}
+	
+	public boolean enableordisableHETS(String customername, String status) {
+		String query = "update ddez.customer set useHets=";
+		if(status.equalsIgnoreCase("enable"))
+			query+=1;
+		else
+			query+=0;
+		
+		report.report("Running query to enable or disable hets user: "+ query, ReportAttribute.BOLD);
+		
+		int result = MySQLDBUtil.getUpdateResultFromMySQLDB(query);
+		
+		return result>0?true:false; 
 	}
 
 	public boolean verifyMostBenefitSTC45Fields() {

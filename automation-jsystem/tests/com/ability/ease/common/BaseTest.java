@@ -2,6 +2,7 @@ package com.ability.ease.common;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -869,6 +870,7 @@ public class BaseTest extends  SystemTestCase4Custom { /*SystemTestCase4*/
 			e.printStackTrace();
 		}
 	}
+	
 	/**
 	 * This method returns the absolute name of the scenario Times file 
 	 */

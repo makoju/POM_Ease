@@ -67,11 +67,10 @@ public class ClaimsSelenium2Impl implements IClaims{
 		return claims.addOrRemoveClaimLinesInExistingClaim(claimLineEntries,claimLineNumberToDelete, claimLineNumberToAdd, newClaimLineEntry);
 	}
 
-	@Override
-	public boolean hoverMouseOnClaimCharge() throws Exception {
-		return claimsv2.hoverMouseOnClaimCharge();
-	}
-
-
 	
+	@Override
+	public boolean verifyEditClaimLineOptions(String HIC, String claimLineToEdit)
+			throws Exception {
+		return claimsv2.verifyEditClaimLineOptions(HIC, claimLineToEdit);
+	}
 }

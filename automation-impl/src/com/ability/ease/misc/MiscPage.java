@@ -57,9 +57,14 @@ public class MiscPage extends AbstractPageObject {
 	 */
 	public boolean validLogin(String sUserName, String sPassword) throws Exception {
 		if (isBrowserOpen == false || !driver.getCurrentUrl().contains(WorkingEnvironment.getEaseURL())) {
+			try{
 			driver.get(WorkingEnvironment.getEaseURL());
 			driver.manage().window().maximize();
 			isBrowserOpen = true;
+			}catch(Exception e){
+				report.report("Exception occured" + e.getMessage());
+				report.report(e.toString());
+			}
 		}
 		if (isLoggedIn) {
 			if (waitForElementToBeClickable(ByLocator.linktext, "LOGOUT", 10) != null) {
@@ -478,7 +483,7 @@ public class MiscPage extends AbstractPageObject {
 				//nothing to do
 			}
 		}
-		report.report("MY DDE Link element is not avaible on page");
+		report.report("MY ACCOUNT Link element is not avaible on page");
 	}
 	/*
 	 * This method is used to get the alert option value from UI and used as part of verifyAlertOption() method

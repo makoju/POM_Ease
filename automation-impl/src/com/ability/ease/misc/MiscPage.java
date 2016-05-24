@@ -57,9 +57,14 @@ public class MiscPage extends AbstractPageObject {
 	 */
 	public boolean validLogin(String sUserName, String sPassword) throws Exception {
 		if (isBrowserOpen == false || !driver.getCurrentUrl().contains(WorkingEnvironment.getEaseURL())) {
+			try{
 			driver.get(WorkingEnvironment.getEaseURL());
 			driver.manage().window().maximize();
 			isBrowserOpen = true;
+			}catch(Exception e){
+				report.report("Exception occured while driver.get() method is executed");
+				report.report(e.getMessage());
+			}
 		}
 		if (isLoggedIn) {
 			if (waitForElementToBeClickable(ByLocator.linktext, "LOGOUT", 10) != null) {

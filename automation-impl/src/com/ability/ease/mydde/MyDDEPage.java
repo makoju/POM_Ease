@@ -69,13 +69,13 @@ public class MyDDEPage extends AbstractPageObject{
 	}
 
 	public boolean verifyColumnsAndSorting(String reportText, String expectedColumnsFromJSystem, String columnName, int columnIndex) throws Exception {
-		
+
 		int failurecount = 0;String[] expectedColumns = null;
 		if(expectedColumnsFromJSystem != null){
 			expectedColumns = expectedColumnsFromJSystem.split(",");
 		}
 		navigateToPage();
-		
+
 		WebElement verifyAdvanced = waitForElementToBeClickable(ByLocator.xpath, "//a[@id='reportComplexity']", 30);
 		if ( verifyAdvanced.getText().contains("Basic")) {
 			safeJavaScriptClick("Basic");
@@ -106,7 +106,7 @@ public class MyDDEPage extends AbstractPageObject{
 			safeJavaScriptClick("Basic");
 		}
 		Thread.sleep(3000);
-		
+
 		moveToElement("Agency");
 		selectByNameOrID("reportAgencySelect", agency);
 		clickButton("Change Agency");
@@ -126,10 +126,10 @@ public class MyDDEPage extends AbstractPageObject{
 			if(!isTextPresent("EASE found no items for this report")){
 				if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 5))
 					failurecount++;
-				
+
 				if (!Verify.validateTableColumnSortOrder("datatable", "Type", 7))
 					failurecount++;
-				
+
 				if (!Verify.validateTableColumnSortOrder("datatable", "Last Updt", 13))
 					failurecount++;
 			}
@@ -333,19 +333,22 @@ public class MyDDEPage extends AbstractPageObject{
 		String payerNameExpected = "MEDICARE";
 		String payerNameActual = null;
 		navigateToPage();
-		clickLinkV2("reportNewUB04");
-		do{
-			payerNameActual = driver.findElement(By.xpath("//input[@name='ub50a']")).getAttribute("value");
-			if(payerNameActual != null){
-				break;
-			}
-			count++;
-		}while(payerNameActual == null || count < 3);
+		if ( waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 80) != null){
+			do{
+				payerNameActual = driver.findElement(By.xpath("//input[@name='ub50a']")).getAttribute("value");
+				if(payerNameActual != null){
+					break;
+				}
+				count++;
+			}while(payerNameActual == null || count < 3);
 
-		if(payerNameExpected.equalsIgnoreCase(payerNameActual.trim())){
-			report.report("User is in UB04 Form page.");
+			if(payerNameExpected.equalsIgnoreCase(payerNameActual.trim())){
+				report.report("User is in UB04 Form page.");
+			}else{
+				failurecount++;
+			}
 		}else{
-			failurecount++;
+			report.report("UB04 icon is not visible on the page");
 		}
 		return failurecount == 0 ? true : false;
 	}
@@ -403,9 +406,9 @@ public class MyDDEPage extends AbstractPageObject{
 		int failurecount = 0;
 		String[] options = {"reportHICSearch","reportHome","reportTimeframe","reportAgency","reportPieChart","reportPrint","reportExport",
 				"reportNewUB04","reportComplexity"};
-		
+
 		//Click Advanced using Advanced building block in MyDDEReportsPage
-		
+
 		for(String optionsId : options){
 			WebElement verifyOptions = waitForElementVisibility(By.id(optionsId));
 			if ( verifyOptions != null) {
@@ -660,7 +663,7 @@ public class MyDDEPage extends AbstractPageObject{
 		}
 		return failurecount == 0 ? true : false;
 	}
-	
+
 
 	public boolean searchByHICAndNavigatetoPatientInfoScreen(String hic) throws Exception {
 		navigateToPage();

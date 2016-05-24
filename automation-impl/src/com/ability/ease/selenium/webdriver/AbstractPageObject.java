@@ -395,6 +395,18 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	public void uncheckChkBox(String chkBoxName) {
 		checkCheckbox(chkBoxName, false);
 	}
+	
+	public void uncheckChkBox(By bylocator) {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, 8); 
+			wait.until(ExpectedConditions.elementToBeClickable(bylocator));
+		} catch (org.openqa.selenium.TimeoutException ex) {
+		}
+
+		if (driver.findElement(bylocator).isSelected() ) {
+			driver.findElement(bylocator).click();
+		}
+	}
 
 	/**
 	 * A private method to do check/uncheck 
@@ -421,6 +433,17 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 	}
 
+	public void checkCheckbox(By bylocator) {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, 8); 
+			wait.until(ExpectedConditions.elementToBeClickable(bylocator));
+		} catch (org.openqa.selenium.TimeoutException ex) {
+		}
+
+		if (!driver.findElement(bylocator).isSelected() ) {
+			driver.findElement(bylocator).click();
+		}
+	}
 
 	public  void checkCheckboxes(List<String> checkboxName) {
 		for (String item : checkboxName) {
@@ -1656,12 +1679,13 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			report.report("Inside verify alert method....");
 			WebDriverWait wait = new WebDriverWait(driver, 5);
 			//Alert alert = driver.switchTo().alert();
+			report.report("Waiting for the alert to present...");
 			Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+			report.report("Alert is found now comparing text..");
 			sActual = alert.getText().toString().replaceAll("[\r\n]+", "");
-			report.report("Expected text on alert box is :" +sExpected);
-			report.report("Actual text on alert box is :" +sActual);
-			if( sActual.equalsIgnoreCase(sExpected)){
-				report.report("Actual text on alert box is : "+ sActual);
+			report.report("Expected text on alert box is :" +sExpected.trim());
+			report.report("Actual text on alert box is :" +sActual.trim());
+			if( sActual.trim().equalsIgnoreCase(sExpected.trim())){
 				alert.accept();
 				return true;
 			}

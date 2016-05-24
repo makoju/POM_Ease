@@ -157,6 +157,11 @@ public class UIAttributeXMLParser {
 					if(Style.toString().equalsIgnoreCase("ServiceDate")){
 						attrStyle= UIAttributeStyle.ServiceDate;
 					}
+					
+					if(Style.toString().equalsIgnoreCase("Permissions")){
+						attrStyle= UIAttributeStyle.Permissions;
+					}
+					
 					attr.setStyle(attrStyle);
 					lsattrs.add(attr);
 					locator=displayName=Style=null;

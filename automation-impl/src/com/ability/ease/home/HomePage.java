@@ -103,7 +103,7 @@ public class HomePage extends AbstractPageObject{
 		boolean isfound = true ;
 		//String menuLinkXpath = "//a[./text()='" + linkText + "']";
 		WebElement  link = null;
-		WebDriverWait wait = new WebDriverWait(driver, shortTimeOutInSeconds);
+		WebDriverWait wait = new WebDriverWait(driver, 10);
 		link  = wait.until(ExpectedConditions.elementToBeClickable(By.linkText(linkText)));
 		if (link!=null) {
 			WebDriverHelper.highlightElement(driver, link);

@@ -138,4 +138,10 @@ public class EligibilitySelenium2Impl implements IEligibility{
 	public boolean verifyMostBenefitSTC45Fields() throws Exception {
 		return eligPage.verifyMostBenefitSTC45Fields();
 	}
+
+	@Override
+	public boolean enableordisableHETS(String customername, String status)
+			throws Exception {
+		return eligPage.enableordisableHETS(customername,status);
+	}
 }

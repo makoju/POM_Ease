@@ -130,7 +130,7 @@ public class MyDDEPage extends AbstractPageObject{
 				if (!Verify.validateTableColumnSortOrder("datatable", "Type", 7))
 					failurecount++;
 
-				if (!Verify.validateTableColumnSortOrder("datatable", "Last Updt", 13))
+				if (!Verify.validateTableColumnSortOrder("datatable", "Updt", 13))
 					failurecount++;
 			}
 		}
@@ -333,7 +333,12 @@ public class MyDDEPage extends AbstractPageObject{
 		String payerNameExpected = "MEDICARE";
 		String payerNameActual = null;
 		navigateToPage();
-		if ( waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 80) != null){
+		Thread.sleep(5000);
+		WebElement verifyUB04 = waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 80);
+		if ( verifyUB04 != null){
+			clickLinkV2("reportNewUB04");
+			report.report("Clicked UB04 icon");
+			Thread.sleep(5000);
 			do{
 				payerNameActual = driver.findElement(By.xpath("//input[@name='ub50a']")).getAttribute("value");
 				if(payerNameActual != null){
@@ -341,7 +346,7 @@ public class MyDDEPage extends AbstractPageObject{
 				}
 				count++;
 			}while(payerNameActual == null || count < 3);
-
+			report.report("PAYERNAME_ACTUAL : "+payerNameActual);
 			if(payerNameExpected.equalsIgnoreCase(payerNameActual.trim())){
 				report.report("User is in UB04 Form page.");
 			}else{

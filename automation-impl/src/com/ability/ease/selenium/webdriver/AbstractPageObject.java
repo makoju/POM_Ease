@@ -1730,9 +1730,11 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	public Alert waitForAlert(WebDriver driver) throws InterruptedException {
 
 		boolean isAlertPresent = false;
+		int count =0;
 		Alert alert = null;
 		report.report("Waiting for alert to be present, this will take 10 - 15 minutes time please be patient...");
-		while(!isAlertPresent)
+		//90*10secs = 900 Sec [15 Minutes]
+		while(!isAlertPresent && count++ < 90)
 		{
 			try{
 				alert = driver.switchTo().alert();

@@ -42,6 +42,15 @@ import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 public class ClaimsHelper extends AbstractPageObject{
 
+	String searchResultXpath = elementprop.getProperty("ADVANCE_SEARCH_RESULTS_PAGE_HEADER");
+	String rptSearchIcon = elementprop.getProperty("REPORT_HIC_SEARCH_ICON");
+	String advSearchLink = elementprop.getProperty("ADV_SEARCH_LINK");
+	String hic = elementprop.getProperty("HIC_TEXT");
+	String lookBackMonths = elementprop.getProperty("LOOK_BACK_MONTHS_TEXT");
+	String statusLoc = elementprop.getProperty("SLOC_STATUS_DROP_DOWN");
+	String searchBtn = elementprop.getProperty("SEARCH_BUTTON");
+	String myDDELink = elementprop.getProperty("MY_DDE_LINK");
+	
 
 	public ProviderTable getFiledLocator1Values(String sQuery)throws Exception{
 
@@ -87,12 +96,13 @@ public class ClaimsHelper extends AbstractPageObject{
 	public void clickMYDDELink() throws Exception{
 
 		//WebElement mydde = waitForElementVisibility(By.linkText("MY DDE"));
-		WebElement mydde = waitForElementToBeClickable(ByLocator.linktext, "MY DDE", 30);
+		Thread.sleep(5000);
+		WebElement mydde = waitForElementToBeClickable(ByLocator.linktext, "MY DDE", 60);
 		String classAttr = mydde.getAttribute("class");
 		if ( mydde != null) {
 			if( !classAttr.equalsIgnoreCase("topNavAnchor topNavAnchorSelected")){
 				safeJavaScriptClick("MY DDE");
-				waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 30);
+				waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 60);
 				return;
 			}else{
 				//nothing to do
@@ -533,6 +543,30 @@ public class ClaimsHelper extends AbstractPageObject{
 		}
 		return (failCounter == 0) ? true : false;
 	}
+
+	public void openRejectedClaimRecordFromAdvanceSearchPage(String HIC)throws Exception{
+
+		WebElement searchResult = null;
+		int count = 0;
+	
+		clickMYDDELink();
+		WebElement searchIcon = waitForElementToBeClickable(ByLocator.id, rptSearchIcon, 10);
+		if(searchIcon != null){
+			moveToElement(searchIcon);
+			safeJavaScriptClick(driver.findElement(By.id(advSearchLink)));
+			typeEditBox(hic, HIC);
+			typeEditBox(lookBackMonths, "30");
+			selectByNameOrID(statusLoc, "Rejected");
+			clickButtonV2(searchBtn);
+			do{
+				searchResult = waitForElementToBeClickable(ByLocator.xpath, searchResultXpath, 30);
+				if(searchResult != null){
+					break;
+				}
+			}while( searchResult == null || count++ < 5);
+		}
+	}
+
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub

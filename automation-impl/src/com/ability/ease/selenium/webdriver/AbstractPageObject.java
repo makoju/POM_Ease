@@ -1,6 +1,8 @@
 package com.ability.ease.selenium.webdriver;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -37,18 +40,17 @@ import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.events.WebDriverEventListener;
 import org.openqa.selenium.support.pagefactory.Annotations;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.ability.ease.auto.common.TestCommonResource;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
 import com.ability.ease.auto.enums.portal.BrowserType;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.auto.enums.portal.selenium.WebDriverType;
 import com.ability.ease.auto.events.ui.UIEvents;
 import com.ability.ease.auto.system.WorkingEnvironment;
+
 
 /**
  * The page object design pattern makes it easier to access HTML elements in a
@@ -97,6 +99,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	protected static final long DefaultTimeOutInSeconds = 30;  
 	protected static final long shortTimeOutInSeconds = 1;
 	protected static final long MaxTimeOutInSeconds = 300; //5 minutes
+	protected static Properties elementprop;
 
 
 	// declaration of commonly used web elements
@@ -110,6 +113,10 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 
 
 	private static boolean wasAddedAsWebdriverObserver = false;
+
+	static {
+		loadElementLocators();
+	}
 
 	//C'tor
 	public AbstractPageObject() {
@@ -2020,6 +2027,34 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 		return false;
 	}
+
+
+	/**
+	 * read element property file
+	 * @author nageswar.bodduri
+	 */
+	public static void loadElementLocators(){
+		elementprop = new Properties();
+		String workingDir = System.getProperty("user.dir");
+		report.report(workingDir);
+		File f = new File(workingDir + "/../../automation-impl/elementlocators.properties");
+
+		if( f.exists()){
+			report.report(f.getName() + " is exist !");
+			try {
+				elementprop.load(new FileInputStream(f));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else{
+			report.report(f.getName() + " not found!!!");
+		}
+	}
+
 	//#########################################   Getters & Setters ###################################################
 	/**
 	 * 

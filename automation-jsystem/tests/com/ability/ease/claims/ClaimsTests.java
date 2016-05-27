@@ -182,7 +182,7 @@ public class ClaimsTests extends BaseTest{
 
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Add or Remove Claim Lines in Existing Claim", paramsInclude = { "claimLineEntries, claimLineNumberToDelete, claimLineNumberToAdd, newClaimLineEntry testType" })
+	@TestProperties(name = "Add or Remove Claim Lines in Existing Claim", paramsInclude = { "claimLineEntries, claimLineNumberToDelete, claimLineNumberToAdd, newClaimLineEntry, testType" })
 	public void addOrRemoveClaimLinesInExistingClaim()throws Exception{
 		
 		if(!claims.addOrRemoveClaimLinesInExistingClaim(claimLineEntries, claimLineNumberToDelete, claimLineNumberToAdd, newClaimLineEntry)){
@@ -192,7 +192,21 @@ public class ClaimsTests extends BaseTest{
 		}
 	}
 
-
+	/**
+	 * Use this method to verify drop down options in edit claim line
+	 * @throws Exception
+	 */
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Edit Claim Line Dropdown Options", paramsInclude = { "HIC, claimLineNumberToEdit, testType" })
+	public void verifyEditClaimLineOptions()throws Exception{
+		
+		if(!claims.verifyEditClaimLineOptions(HIC, claimLineNumberToEdit)){
+			report.report("Failed to verify edit claim line dropdown options !!!", Reporter.FAIL);
+		}else{
+			report.report("Successfully verified edit claim line dropdown options !!!", Reporter.ReportAttribute.BOLD);
+		}
+	}
 
 	/*
 	 * Handle UI event method

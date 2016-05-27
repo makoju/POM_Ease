@@ -483,7 +483,7 @@ public class MiscPage extends AbstractPageObject {
 				//nothing to do
 			}
 		}
-		report.report("MY DDE Link element is not avaible on page");
+		report.report("MY ACCOUNT Link element is not avaible on page");
 	}
 	/*
 	 * This method is used to get the alert option value from UI and used as part of verifyAlertOption() method

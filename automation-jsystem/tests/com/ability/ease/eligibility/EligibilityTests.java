@@ -417,6 +417,17 @@ public class EligibilityTests extends BaseTest{
 		}	
 	}
 	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "verifyTrashOptionIncompletedActivityLogScreen", paramsInclude = { "testType"})
+	public void verifyTrashOptionInCompletedActivityLogScreen() throws Exception {
+		
+		if(!elig.verifyTrashOptionInCompletedActivityLogScreen()) {
+			report.report("Failed to verifyTrashOptionInCompletedActivityLogScreen", Reporter.FAIL);
+		} else {
+			report.report("Successfully verified TrashOptionInCompletedActivityLogScreen", Reporter.PASS);
+		}	
+	}
 	
 	/*######
 	Getters and Setters

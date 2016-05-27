@@ -1,5 +1,6 @@
 package com.ability.ease.eligibility;
 
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
 
@@ -915,39 +916,105 @@ public class EligibilityPage extends AbstractPageObject{
 			return false;
 		}
 	}
-	
+
 	public boolean enableordisableHETS(String customername, String status) {
 		String query = "update ddez.customer set useHets=";
 		if(status.equalsIgnoreCase("enable"))
 			query+=1;
 		else
 			query+=0;
-		
+
 		report.report("Running query to enable or disable hets user: "+ query, ReportAttribute.BOLD);
-		
+
 		int result = MySQLDBUtil.getUpdateResultFromMySQLDB(query);
-		
+
 		return result>0?true:false; 
 	}
 
-	public boolean verifyMostBenefitSTC45Fields() {
-		//Need to implement the code to get these fields data from EligibilityCheck report page
-		return false;
-	}
 
-	@Override
-	public void assertInPage() {
-		// TODO Auto-generated method stub
+	public boolean enableandVerifyPsychiatricSTCforNPI(String contactname, String agencyDisplayName) throws Exception {
 
-	}
+		String expectedalertmsg = "Warning: You are verifying that you are a Psychiatric/Mental Health provider.  Appropriate use of Psychiatric/Mental Health service type code information will be subject to CMS auditing.";
+		HomePage.getInstance().navigateTo(Menu.Admin, null);
 
-	@Override
-	public void navigateToPage() throws Exception {
-		int count=0;
-		while(!isTextPresent("Eligiblity Check") && count++ < 3){
-			HomePage.getInstance().navigateTo(Menu.ELIGIBILITY, null);
+		WebElement eligconfig = waitForElementToBeClickable(ByLocator.linktext, "Eligibility Configuration", 15);
+		eligconfig.click();
+
+		if(!waitForTextVisibility(ByLocator.css, ".headerblue", "CHANGE ELIGIBILITY CONFIGURATION")){
+			report.report("Unable to navigate to Eligibility Configuration page");
+			return false;
 		}
-		if(!isTextPresent("Enter the patient search information below"))
-			clickLink("Eligiblity Check");
+
+		//Get the NPI of an agency based on contactname, displayname
+		String NPI="";
+		int providerid=0;
+
+		String sQueryName = "Select id,NPI from ddez.provider where DisplayName='"+agencyDisplayName+"' and customerid=(Select customerid from ddez.customer where contactname='"+contactname+"')";
+		ResultSet rs = MySQLDBUtil.getResultFromMySQLDB(sQueryName);		
+
+		while(rs.next()){
+			providerid = rs.getInt(1);
+			NPI = String.valueOf(rs.getInt(2));
+		}
+
+		//Get the total row count before enabling STC for an NPI
+		ResultSet rs1 = MySQLDBUtil.getResultFromMySQLDB("SELECT count(*) FROM ddez.psychiatricproviderchange");
+		int count=0;
+		while(rs1.next())
+			count = rs1.getInt(1);
+
+		//Write the logic to check the NPI checkbox in the UI
+		checkCheckbox(By.xpath("//td[span[text()='"+NPI+"']]/following-sibling::td/input[@type='checkbox']"));
+
+		if(!verifyAlert(expectedalertmsg)){
+			report.report("Expected Alert not present", Reporter.WARNING);
+		}
+		
+		clickButtonV2("Submit");
+
+		//Get the total row count after enabling STC for an NPI 
+		ResultSet rs2 = MySQLDBUtil.getResultFromMySQLDB("SELECT count(*) FROM ddez.psychiatricproviderchange");
+
+		while(rs2.next()){
+			if(count+1 != rs2.getInt(1))
+			{
+				report.report("Expected count is"+ (count+1)+"But Actual count: "+rs2.getInt(1), Reporter.WARNING);
+				return false;
+			}
+		}
+
+		ResultSet rs3 = MySQLDBUtil.getResultFromMySQLDB("Select providerID, ChangedTo from ddez.psychiatricproviderchange order by id desc limit 1");
+		
+		int provid=0;
+		boolean changedto=false;
+		
+		while(rs3.next()){
+			provid = rs3.getInt(1);
+			changedto = rs3.getBoolean(2);
+		}
+		
+		return (provid == providerid && changedto)?true:false;
 	}
-}
+
+		public boolean verifyMostBenefitSTC45Fields() {
+			//Need to implement the code to get these fields data from EligibilityCheck report page
+			return false;
+		}
+
+		@Override
+		public void assertInPage() {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void navigateToPage() throws Exception {
+			int count=0;
+			while(!isTextPresent("Eligiblity Check") && count++ < 3){
+				HomePage.getInstance().navigateTo(Menu.ELIGIBILITY, null);
+			}
+			if(!isTextPresent("Enter the patient search information below"))
+				clickLink("Eligiblity Check");
+		}
+
+	}

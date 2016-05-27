@@ -736,6 +736,7 @@ public class EligibilityPage extends AbstractPageObject{
 		return waitForElementVisibility(By.xpath("//td[contains(text(),'PATIENT INFORMATION')]"))!=null?true:false;
 	}
 
+	//apadavala: A7 in response is not coming in time. So, It can't be verified right now as per srinivas Bandari. So, will consider later
 	public boolean verifyView271RespPagehasA7() throws Exception{
 		clickLink("View271");
 		//TODO - Need to validate repsonse page with A7

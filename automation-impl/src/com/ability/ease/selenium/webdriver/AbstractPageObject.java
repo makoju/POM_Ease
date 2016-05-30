@@ -402,7 +402,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	public void uncheckChkBox(String chkBoxName) {
 		checkCheckbox(chkBoxName, false);
 	}
-	
+
 	public void uncheckChkBox(By bylocator) {
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, 8); 
@@ -440,15 +440,15 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 	}
 
-	public void checkCheckbox(By bylocator) {
+	public void checkCheckbox(By by) {
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, 8); 
-			wait.until(ExpectedConditions.elementToBeClickable(bylocator));
+			wait.until(ExpectedConditions.elementToBeClickable(by));
 		} catch (org.openqa.selenium.TimeoutException ex) {
 		}
 
-		if (!driver.findElement(bylocator).isSelected() ) {
-			driver.findElement(bylocator).click();
+		if (!driver.findElement(by).isSelected() ) {
+			driver.findElement(by).click();
 		}
 	}
 
@@ -1400,13 +1400,12 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		case xpath:
 			webElement = waitForElementVisibility(By.xpath(elementLocator + "[contains(text(),\""+ text +"\")]"), timeoutInSeconds);
 			break;
-		case classname:
 		case css:
-		case linktext:
-		case id:
-		case name:
-		case title:
+			webElement = waitForElementVisibility(By.cssSelector(elementLocator), timeoutInSeconds);
+			break;
+		default:
 			report.report("Currently waitForTextVisibility method doesn't support this locator type: " + by.name(), Reporter.FAIL);
+			break;
 		}
 		return (webElement !=null)?true:false;
 	}

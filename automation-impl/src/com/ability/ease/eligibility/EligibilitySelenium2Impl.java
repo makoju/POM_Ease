@@ -144,4 +144,10 @@ public class EligibilitySelenium2Impl implements IEligibility{
 			throws Exception {
 		return eligPage.enableordisableHETS(customername,status);
 	}
+
+	@Override
+	public boolean enableandVerifyPsychiatricSTCforNPI(String contactname,
+			String agencyDisplayName) throws Exception {
+		return eligPage.enableandVerifyPsychiatricSTCforNPI(contactname,agencyDisplayName);
+	}
 }

@@ -32,5 +32,6 @@ public interface IEligibility {
 	abstract public boolean navigatetoEligibilityReport(String firstname, String lastname) throws Exception; 
 	abstract public boolean verifyMostBenefitSTC45Fields() throws Exception;
 	abstract public boolean enableordisableHETS(String customername, String status) throws Exception;
+	abstract public boolean enableandVerifyPsychiatricSTCforNPI(String contactname, String agencyDisplayName) throws Exception;
 }
 

@@ -28,7 +28,7 @@ public class EligibilityTests extends BaseTest{
 	private IEligibility elig;
 	private AttributePair[] attrpair;
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
-	private String hic,agency,firstname,lastname,description, status;
+	private String hic,agency,firstname,lastname,description, status,contactname;
 	private String customername;
 	private HETSStatus hetsstatus;
 	
@@ -402,6 +402,30 @@ public class EligibilityTests extends BaseTest{
 			report.report("Failed to "+hetsstatus.getValue()+" HETS for customer"+customername,	Reporter.FAIL);
 		} else {
 			report.report("Successfully "+hetsstatus.getValue()+" HETS for customer"+customername,	Reporter.PASS);
+		}	
+	}
+	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "enableAndVerifyPsychiatricSTCforNPI", paramsInclude = { "testType, customername, agency" })
+	public void enableandVerifyPsychiatricSTCforNPI() throws Exception {
+		
+		if(!elig.enableandVerifyPsychiatricSTCforNPI(customername,agency)) {
+			report.report("Failed to enable PsychiatricSTCforNPI of agency: "+agency,	Reporter.FAIL);
+		} else {
+			report.report("Successfully enable PsychiatricSTCforNPI of agency: "+agency,	Reporter.PASS);
+		}	
+	}
+	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "verifyTrashOptionIncompletedActivityLogScreen", paramsInclude = { "testType"})
+	public void verifyTrashOptionInCompletedActivityLogScreen() throws Exception {
+		
+		if(!elig.verifyTrashOptionInCompletedActivityLogScreen()) {
+			report.report("Failed to verifyTrashOptionInCompletedActivityLogScreen", Reporter.FAIL);
+		} else {
+			report.report("Successfully verified TrashOptionInCompletedActivityLogScreen", Reporter.PASS);
 		}	
 	}
 	

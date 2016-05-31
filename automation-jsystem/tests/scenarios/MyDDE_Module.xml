@@ -23,28 +23,6 @@
         <antcallback target="t4"/>
         <antcallback target="t5"/>
         <antcallback target="t6"/>
-        <antcallback target="t7"/>
-        <antcallback target="t8"/>
-        <antcallback target="t9"/>
-        <antcallback target="t10"/>
-        <antcallback target="t11"/>
-        <antcallback target="t12"/>
-        <antcallback target="t13"/>
-        <antcallback target="t14"/>
-        <antcallback target="t15"/>
-        <antcallback target="t16"/>
-        <antcallback target="t17"/>
-        <antcallback target="t18"/>
-        <antcallback target="t19"/>
-        <antcallback target="t20"/>
-        <antcallback target="t21"/>
-        <antcallback target="t22"/>
-        <antcallback target="t23"/>
-        <antcallback target="t24"/>
-        <antcallback target="t25"/>
-        <antcallback target="t26"/>
-        <antcallback target="t27"/>
-        <antcallback target="t28"/>
     </target>
     <target name="t0">
         <jsystem-ant antfile="${scenarios.base}/scenarios/EASE 1.2_MISC_002_Verify the Login Functionality.xml">
@@ -82,169 +60,15 @@
         </jsystem-ant>
     </target>
     <target name="t5">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_005_Verifying the Pie and Print Options.xml">
-            <property name="jsystem.uuid" value="32e5adfb-b06b-47aa-a1e3-6add8c896c71"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t6">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_006_Verifying the option UB04 Form.xml">
-            <property name="jsystem.uuid" value="a2fb7d94-670d-457d-9c19-c8ac0cf96239"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t7">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_007_Verifying Advanced Option.xml">
-            <property name="jsystem.uuid" value="bd5d48b5-fd29-44d5-b201-89cc861771ac"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t8">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_008_Verifying Live Search Option.xml">
-            <property name="jsystem.uuid" value="6e54d62c-71ae-4078-b727-f2d819926488"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t9">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_009_Verifying the options under Advanced View.xml">
-            <property name="jsystem.uuid" value="54bc5249-d028-42f8-a3b3-e0c076b8da72"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t10">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_010_Verifying the options under Advanced Search.xml">
-            <property name="jsystem.uuid" value="26aa1b26-cc00-4275-adf3-272583bec6a1"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t11">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_011_Verifying  Save Profile option under Advance Search.xml">
-            <property name="jsystem.uuid" value="d10644e8-7481-42de-b185-2e2f68e14d98"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t12">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_012_Verifying Saved Profile Data.xml">
-            <property name="jsystem.uuid" value="04f8a006-51b5-4574-ba94-73f95a36adbb"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t13">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_013_Verifying Column Headers in the Search Results.xml">
-            <property name="jsystem.uuid" value="1e8c32cd-0b78-495a-b99b-644da74764c6"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t14">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_014_Verifying Totals for Advanced Search results.xml">
-            <property name="jsystem.uuid" value="ba38a4fa-5970-4d3d-9edb-e99692ecd6ae"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t15">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_015_Verify the Filters in the Advance Search Results.xml">
-            <property name="jsystem.uuid" value="e58cbf31-7e95-44e2-900b-a3ee31b01ddb"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t16">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_016_Verifying  Saved Profile with duplicate name.xml">
-            <property name="jsystem.uuid" value="cd42ea4a-3df0-4b73-8cd6-76e60d2aa0b3"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t17">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_017_Verify the Save Summary Report to PDF Functionality.xml">
-            <property name="jsystem.uuid" value="38de108e-b8a4-4b6e-b01f-a6fa9c8a76e0"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t18">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_018_Verify the Save Summary Report to Excel Functionality.xml">
-            <property name="jsystem.uuid" value="9cbd92c0-55f1-4ff6-8dea-cc5366e6b6e9"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t19">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_019_Verify the Complete Report to PDF Functionality.xml">
-            <property name="jsystem.uuid" value="9c43ee07-807c-4550-82c0-cf254ee7b221"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t20">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_020_Verify the Complete Report to Excel Functionality.xml">
-            <property name="jsystem.uuid" value="bfc09257-c752-4252-a555-edc479a359fa"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t21">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_021_Verifying the  Options under MY DDE Page for NonHHA.xml">
-            <property name="jsystem.uuid" value="ae3daebd-ff9e-4e5c-8f86-4546250e1ca7"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t22">
         <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_022_Verifying the Time Frame Option under Advanced View.xml">
             <property name="jsystem.uuid" value="8fc9c67c-fff8-4a03-a8ae-b396946b5af6"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>
     </target>
-    <target name="t23">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_023_Verify Home functionality.xml">
-            <property name="jsystem.uuid" value="eca0a5fb-ada5-4e00-9f8e-9c4a6045318b"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t24">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_024_Verify Advance Search report for given date range.xml">
-            <property name="jsystem.uuid" value="2d5cb128-dd60-47d7-ad90-b8859bf7f890"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t25">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_025_Verify Advance Search report for given months.xml">
-            <property name="jsystem.uuid" value="b5287ed1-580d-43b6-ad6d-dc5599b19ca2"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t26">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_026_Verify Advance Search report for given months and date range.xml">
-            <property name="jsystem.uuid" value="12447719-8309-4e98-86d8-ed3b8ca17fe1"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t27">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_027_Verify Advance Search report for max given fields data.xml">
-            <property name="jsystem.uuid" value="0b1a0dec-26b2-492d-bc05-b13238e104cb"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t28">
+    <target name="t6">
         <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_Regression_MY DDE_028_Verify Advance Search for Status Suspense and Location B6001.xml">
-            <property name="jsystem.uuid" value="c846795a-f428-4c02-a94c-27fd58e0a01a"/>
+            <property name="jsystem.uuid" value="e8957b3e-a727-4e3b-bc83-bc3a814bf932"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>

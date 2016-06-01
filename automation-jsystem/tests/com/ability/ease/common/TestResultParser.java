@@ -58,7 +58,15 @@ public class TestResultParser {
 			while((sLine = reader.readLine()) != null){
 				sValues = sLine.split(",");
 
-				String sModuleName = sValues[0];
+				String sModuleName = null;
+				String temp = sValues[0];
+				if( temp != null){
+					if(temp.contains("Medium")){
+						sModuleName = temp.replaceAll("_.*?_", "_");
+					}else{
+						sModuleName = temp;
+					}
+				}
 				String sScenarioName = sValues[1];
 				String sStatus = sValues[2];
 				//if prev.modulename and prev.scenario name are same with the current module and scenario names then check for the scenario status
@@ -93,6 +101,12 @@ public class TestResultParser {
 						else
 							r.setStatus("pass");
 						lsScenarioResult.add(r);  
+						//To save the previous key (module) value in result map
+						if( resultmap.containsKey(sPrevModuleName) ){
+							List<Result> ls = resultmap.get(sPrevModuleName);
+							ls.addAll(lsScenarioResult);
+							resultmap.put(sPrevModuleName, ls);
+						}
 						resultmap.put(sPrevModuleName, lsScenarioResult);
 						lsScenarioResult = new ArrayList<TestResultParser.Result>();
 					}
@@ -284,7 +298,7 @@ public class TestResultParser {
 	}
 
 	public static void insertBuildDetails() throws SQLException{
-		
+
 		String buildDetailsQuery = "Select BuildID from art.BuildDetails";
 		boolean isBuildInserted = false;
 		int buildId = 0;
@@ -293,11 +307,11 @@ public class TestResultParser {
 		String buildDate = WorkingEnvironment.getEasebuildDate();
 		int i = sBuildID.lastIndexOf(".");
 		buildId = Integer.valueOf(sBuildID.substring(i+1));
-		
+
 		System.out.println("Ease Build ID : " + buildId);
 		System.out.println("Ease Build Name : " + buildName);
 		System.out.println("Ease Build Generated Date : " + buildDate);
-		
+
 		String insertQueryBuildDetails = "Insert into art.BuildDetails(BuildID, BuildName, BuildDate) values ("+ buildId +", '"+ buildName +
 				"', STR_TO_DATE('" + buildDate + "', '%d-%m-%Y'));";
 		//check whether build is already inserted or not

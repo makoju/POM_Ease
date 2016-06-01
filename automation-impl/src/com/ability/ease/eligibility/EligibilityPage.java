@@ -201,7 +201,7 @@ public class EligibilityPage extends AbstractPageObject{
 
 		if(!navigatetoPatientInfoScreen(firstlastname, hic))
 			return false;
-		
+
 		clickOnElement(ByLocator.id, "reportNewUB04", 20);
 
 		if(!isTextPresent("New Claim UB04")){
@@ -745,17 +745,64 @@ public class EligibilityPage extends AbstractPageObject{
 		return false;
 	}
 
+	/**
+	 * This method will check for both acknowledge as well as non-acknowledged eligibility checks displaying in the completed activity log or not 
+	 * @return
+	 * @throws Exception
+	 */
 	public boolean verifyActivityLogSearchOnlynotacknowledged() throws Exception {
 		navigateToPage();
 		clickButton("tdGoodActivity");
 		if(!isChecked("non_ack"))
 			checkChkBox("non_ack");
+
+		typeEditBox("from", "05/11/2013"); //Setting from date to 2013 as we don't have Elig. acknowledged data prior to this time
 		clickButton("Search");
-		//TODO - Need to add validation code for validating the not acknowledged eligibility checks
+		WebElement table = Verify.getTable("datatable");
+		if(table!=null){
+			List<WebElement> lswebelements = findElements(By.xpath("//table[@id='datatable']/tbody/tr/td[2]/span/img"));
+			for(WebElement we: lswebelements){
+				String imageicontext = we.getAttribute("src");
+				if(!imageicontext.endsWith("opened_eye.png")){
+					report.report("It should display only not acknowledged Eligibility requests!!! But found acknowledged request too", Reporter.WARNING);
+					return false;
+				}
+			}
+		}
+		else
+		{
+			report.report("WebTable not found. It requires some data. Please change the date settings accordingly", Reporter.WARNING);
+			return false;
+		}
+
 		uncheckChkBox("non_ack");
 		clickButton("Search");
-		//TODO - Need to add validation code for validating the acknowledged & non-acknowledged eligibility checks
-		return false;
+
+		table = Verify.getTable("datatable");
+		int nonacknowledge=0, acknowledge=0;
+
+		if(table!=null){
+			List<WebElement> lswebelements = findElements(By.xpath("//table[@id='datatable']/tbody/tr/td[2]/span/img"));
+			for(WebElement we: lswebelements){
+				String imageicontext = we.getAttribute("src");
+				if(imageicontext.endsWith("opened_eye.png"))
+					nonacknowledge++;
+				else
+					if(!imageicontext.endsWith("closed_eye.png"))
+						acknowledge++;
+					else{
+						report.report("It should display either acknowledged or not acknowledged Eligibility requests only!!! But found other requests too. Which is invalid", Reporter.WARNING);
+						return false;
+					}	
+			}
+		}
+		else
+		{
+			report.report("WebTable not found. It requires some data. Please change the date settings accordingly", Reporter.WARNING);
+			return false;
+		}
+		//The table should display both non-acknowledged and acknowledged requests otherwise return false
+		return (nonacknowledge>0 && acknowledge>0);
 	}
 
 	public boolean verifyNavigationToHomeScreenFromCompletedActivityLogScreen() throws Exception {
@@ -972,7 +1019,7 @@ public class EligibilityPage extends AbstractPageObject{
 		if(!verifyAlert(expectedalertmsg)){
 			report.report("Expected Alert not present", Reporter.WARNING);
 		}
-		
+
 		clickButtonV2("Submit");
 
 		//Get the total row count after enabling STC for an NPI 
@@ -987,37 +1034,37 @@ public class EligibilityPage extends AbstractPageObject{
 		}
 
 		ResultSet rs3 = MySQLDBUtil.getResultFromMySQLDB("Select providerID, ChangedTo from ddez.psychiatricproviderchange order by id desc limit 1");
-		
+
 		int provid=0;
 		boolean changedto=false;
-		
+
 		while(rs3.next()){
 			provid = rs3.getInt(1);
 			changedto = rs3.getBoolean(2);
 		}
-		
+
 		return (provid == providerid && changedto)?true:false;
 	}
 
-		public boolean verifyMostBenefitSTC45Fields() {
-			//Need to implement the code to get these fields data from EligibilityCheck report page
-			return false;
-		}
+	public boolean verifyMostBenefitSTC45Fields() {
+		//Need to implement the code to get these fields data from EligibilityCheck report page
+		return false;
+	}
 
-		@Override
-		public void assertInPage() {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void navigateToPage() throws Exception {
-			int count=0;
-			while(!isTextPresent("Eligiblity Check") && count++ < 3){
-				HomePage.getInstance().navigateTo(Menu.ELIGIBILITY, null);
-			}
-			if(!isTextPresent("Enter the patient search information below"))
-				clickLink("Eligiblity Check");
-		}
+	@Override
+	public void assertInPage() {
+		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void navigateToPage() throws Exception {
+		int count=0;
+		while(!isTextPresent("Eligiblity Check") && count++ < 3){
+			HomePage.getInstance().navigateTo(Menu.ELIGIBILITY, null);
+		}
+		if(!isTextPresent("Enter the patient search information below"))
+			clickLink("Eligiblity Check");
+	}
+
+}

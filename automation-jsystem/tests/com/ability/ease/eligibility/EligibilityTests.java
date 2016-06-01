@@ -310,13 +310,13 @@ public class EligibilityTests extends BaseTest{
 	
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
-	@TestProperties(name = "verifyActivityLogSearchOnlynotacknowledged", paramsInclude = { "testType" })
-	public void verifyActivityLogSearchOnlynotacknowledged() throws Exception{
-		report.report("Inside verifyActivityLogSearchOnlynotacknowledged test method");
+	@TestProperties(name = "verifyActivityLogSearchacknowledgedandNotAcknowledged", paramsInclude = { "testType" })
+	public void verifyActivityLogSearchAcknowledgedAndNotAcknowledged() throws Exception{
+		report.report("Inside verifyActivityLogSearchacknowledgedandNotAcknowledged test method");
 		if(!elig.verifyActivityLogSearchOnlynotacknowledged()) {
-			report.report("Failed to verify ActivityLogSearch Only notacknowledged!!!",	Reporter.FAIL);
+			report.report("Failed to verify Completed ActivityLogSearchacknowledgedandNotAcknowledged!!!",	Reporter.FAIL);
 		} else {
-			report.report("Successfully verified ActivityLogSearch Only notacknowledged!!!", Reporter.PASS);
+			report.report("Successfully verified Completed ActivityLogSearchacknowledgedandNotAcknowledged!!!", Reporter.PASS);
 		}	
 	}
 

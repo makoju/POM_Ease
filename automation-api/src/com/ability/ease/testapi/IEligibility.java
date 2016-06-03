@@ -4,9 +4,6 @@ import java.util.Map;
 
 public interface IEligibility {
 
-	/*
-	 * Verify the Eligibility check for HETS user with a valid HIC id
-	 */
 	abstract public boolean submitEligibilityCheck(Map<String, String> mapAttrVal)throws Exception;
 	abstract public boolean verifyEligibilityStatus(String firstname, String lastname, String status) throws Exception;
 	abstract public boolean navigatetoClaimDetails(String firstname, String lastname, String hic)throws Exception;
@@ -33,5 +30,6 @@ public interface IEligibility {
 	abstract public boolean verifyMostBenefitSTC45Fields() throws Exception;
 	abstract public boolean enableordisableHETS(String customername, String status) throws Exception;
 	abstract public boolean enableandVerifyPsychiatricSTCforNPI(String contactname, String agencyDisplayName) throws Exception;
+	abstract public boolean validateResponsePageAndRawFile(String firstname, String lastname) throws Exception;
 }
 

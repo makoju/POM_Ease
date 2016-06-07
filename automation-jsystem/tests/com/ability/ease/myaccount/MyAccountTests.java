@@ -330,6 +330,18 @@ public class MyAccountTests extends BaseTest {
 		}
 	}
 	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "insert Schedulers To Agency", paramsInclude = { "testType,agency" })
+	public void insertSchedulersToAgency()throws Exception{
+
+		if(myaccount.insertSchedulersToAgency(agency)){
+			report.report("Succesfully Inserted Schedulers 10,11,12 to the agency!!"+agency, Reporter.PASS);
+		}else {
+			report.report("Failed to Insert Schedulers for the agency", Reporter.FAIL);
+		}
+	}
+	
 	/*##
 	# Getters and Setters
 	##*/

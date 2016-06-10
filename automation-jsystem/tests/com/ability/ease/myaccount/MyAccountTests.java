@@ -325,8 +325,8 @@ public class MyAccountTests extends BaseTest {
 
 		if(myaccount.configureBlackoutTime(groupname, starttime,endtime,expectedalertmessage)){
 			report.report("Succesfully Configured Blackout time for group!!", Reporter.PASS);
-			keepAsGloablParameter("blackoutstarttime", starttime);
-			keepAsGloablParameter("blackoutendtime", endtime);
+			keepAsGloablParameter("starttime", starttime);
+			keepAsGloablParameter("endtime", endtime);
 		}else {
 			report.report("Failed to Configure Blackout time for group", Reporter.FAIL);
 		}

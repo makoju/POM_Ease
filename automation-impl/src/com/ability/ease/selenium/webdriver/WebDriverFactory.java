@@ -94,7 +94,7 @@ public class WebDriverFactory {
 			ieCapabilities.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
 			//ieCapabilities.setCapability("enablePersistentHover", false);
 			ieCapabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-			
+			ieCapabilities.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
 			/*ieCapabilities.setCapability("ignoreProtectedModeSettings", true);
 			ieCapabilities.setCapability("unexpectedAlertBehaviour", "accept");
 			ieCapabilities.setCapability("enablePersistentHover", false);

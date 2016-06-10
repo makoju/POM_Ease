@@ -106,9 +106,12 @@ public class TestResultParser {
 							List<Result> ls = resultmap.get(sPrevModuleName);
 							ls.addAll(lsScenarioResult);
 							resultmap.put(sPrevModuleName, ls);
+							lsScenarioResult = new ArrayList<TestResultParser.Result>();
 						}
-						resultmap.put(sPrevModuleName, lsScenarioResult);
-						lsScenarioResult = new ArrayList<TestResultParser.Result>();
+						else{
+							resultmap.put(sPrevModuleName, lsScenarioResult);
+							lsScenarioResult = new ArrayList<TestResultParser.Result>();
+						}
 					}
 				}
 
@@ -130,7 +133,13 @@ public class TestResultParser {
 			else
 				r.setStatus("pass");
 			lsScenarioResult.add(r);  
+			if( resultmap.containsKey(sPrevModuleName) ){
+				List<Result> ls = resultmap.get(sPrevModuleName);
+				ls.addAll(lsScenarioResult);
+				resultmap.put(sPrevModuleName, ls);
+			}else{
 			resultmap.put(sPrevModuleName, lsScenarioResult);
+			}
 			Set<String> moduleNames= resultmap.keySet();
 			int moduleID = 0;
 			int scenarioCount = 0, scenarioPassed = 0, scenarioFailed = 0;

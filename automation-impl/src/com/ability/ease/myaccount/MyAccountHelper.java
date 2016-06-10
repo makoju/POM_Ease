@@ -41,7 +41,7 @@ public class MyAccountHelper extends AbstractPageObject{
 	public Map<Integer, String> getScheduleXMLFilesFromDB(String sAgencyNumber){		
 		Map<Integer, String> listOfXMLs = new HashMap<Integer, String>();
 
-		String  sSQLQueryToGetTheXMLFile ="Select ps.JobType, ps.Schedule from ddez.provider p join ddez.providerschedule ps ON p.id = ps.providerid where p.DisplayName='"+sAgencyNumber+"'"; 
+		String  sSQLQueryToGetTheXMLFile ="Select ps.JobType, ps.Schedule from ddez.provider p join ddez.providerschedule ps ON p.id = ps.providerid where p.DisplayName='"+sAgencyNumber+"' and p.customerid=1"; 
 		ResultSet rs =MySQLDBUtil.getResultFromMySQLDB(sSQLQueryToGetTheXMLFile);
 		if(rs==null){
 			report.report("Result set was null there are no records matching the select query", Reporter.WARNING);

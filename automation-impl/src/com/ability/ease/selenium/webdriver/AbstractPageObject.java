@@ -89,6 +89,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	protected static WebDriver driver;
 	private boolean clearCookiesBeforeOpen = false;
 	private String seleniumTimeOut = "30000";
+	private String pageLoadTimeout = "180000";
 	protected String webDriverEventListenerClasses = "com.ability.ease.selenium.webdriver.WebDriverScreenshotEventHandler;" +
 			"com.ability.ease.selenium.webdriver.WebDriverReportEventHandler";
 	protected static Reporter report = ListenerstManager.getInstance();
@@ -183,7 +184,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	private int pollingMillis = 500;
 	public void assertMustExistElements() {		
 		if (driver!=null) {
-			driver.manage().timeouts().implicitlyWait(pollingMillis, TimeUnit.MILLISECONDS);
+			//driver.manage().timeouts().implicitlyWait(pollingMillis, TimeUnit.MILLISECONDS);
 			Field[] fields = this.getClass().getDeclaredFields();
 			for (final Field currField : fields) {
 				currField.setAccessible(true);
@@ -229,6 +230,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 
 				if (seleniumTimeOut != null && WorkingEnvironment.getWebdriverType() != null) {
 					setImplicitlyWait(driverWrapper, seleniumTimeOut);
+					setPageloadTimeOut(driverWrapper, pageLoadTimeout);
 				}
 
 				driver = driverWrapper;
@@ -267,6 +269,17 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			webDriverWrapper.getDriver().manage().timeouts().implicitlyWait(miliSecs, TimeUnit.MILLISECONDS);
 		} catch (Exception e) {
 			report.report("unable to set WebDriver implicitlyWait seleniumTimeOut,please check the SUT seleniumTimeOut parameter(Milliseconds  as String)");
+		}
+
+	}
+	
+	private void setPageloadTimeOut(WebDriverWrapper webDriverWrapper, String pageLoadTimeout) {
+		try {
+			long miliSecs = Long.valueOf(pageLoadTimeout);
+			report.report("Set WebDriver Page load TimeOut to " + pageLoadTimeout + "(Milliseconds)");
+			webDriverWrapper.getDriver().manage().timeouts().pageLoadTimeout(miliSecs, TimeUnit.MILLISECONDS);
+		} catch (Exception e) {
+			report.report("unable to set WebDriver pageLoadTimeout,please check the SUT pageloadtimeout parameter(Milliseconds  as String)");
 		}
 
 	}

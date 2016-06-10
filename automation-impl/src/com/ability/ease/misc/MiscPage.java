@@ -57,33 +57,42 @@ public class MiscPage extends AbstractPageObject {
 	 */
 	public boolean validLogin(String sUserName, String sPassword) throws Exception {
 		if (isBrowserOpen == false || !driver.getCurrentUrl().contains(WorkingEnvironment.getEaseURL())) {
+			currentLoggedInUser="";
 			try{
-			driver.get(WorkingEnvironment.getEaseURL());
-			driver.manage().window().maximize();
-			isBrowserOpen = true;
+				driver.get(WorkingEnvironment.getEaseURL());
+				driver.manage().window().maximize();
+				isBrowserOpen = true;
 			}catch(Exception e){
 				report.report("Exception occured while driver.get() method is executed");
 				report.report(e.getMessage());
+				quitAndRelaunchBrowser();
 			}
 		}
 		if (isLoggedIn) {
-			if (waitForElementToBeClickable(ByLocator.linktext, "LOGOUT", 10) != null) {
-				report.report("Logging out user: " +  currentLoggedInUser);
-				//HomePage.getInstance().signOut();
-				safeJavaScriptClick("LOGOUT");
-				//clickLinkV2("LOGOUT");
-				try {
-					report.report("QUIT method called after logging out user "+ currentLoggedInUser +"...Closing all browser instances!!!");
-					quitAndRelaunchBrowser();
-				} 
-				catch (Exception e) {
-					report.report("Exception in launching browser: "+ e.getMessage());
-					if(e instanceof NoSuchWindowException){
-						//TO DO
+			if (waitForElementToBeClickable(ByLocator.linktext, "LOGOUT", 10) != null){
+				if(!currentLoggedInUser.equalsIgnoreCase(sUserName)) {
+					report.report("Logging out user: " +  currentLoggedInUser);
+					//HomePage.getInstance().signOut();
+					safeJavaScriptClick("LOGOUT");
+					//clickLinkV2("LOGOUT");
+					try {
+						report.report("QUIT method called after logging out user "+ currentLoggedInUser +"...Closing all browser instances!!!");
+						quitAndRelaunchBrowser();
+					} 
+					catch (Exception e) {
+						report.report("Exception in launching browser: "+ e.getMessage());
+						if(e instanceof NoSuchWindowException){
+							//TO DO
+						}
+					}
+					finally{
+						isLoggedIn=false;
 					}
 				}
-				finally{
-					isLoggedIn=false;
+				else
+				{
+					report.report("User: "+sUserName+"is already logged in. Hence returning");
+					return true;
 				}
 			}
 			else {
@@ -95,15 +104,15 @@ public class MiscPage extends AbstractPageObject {
 			int countTry = 0;
 			do {
 				try {
-						Thread.sleep(6000);
-						driver.switchTo().frame(0);
-						report.report( "Login to Ease as:" + sUserName);
-						typeEditBox("txtUser", sUserName);						
-						typeEditBox("txtPassword", sPassword);
-						Thread.sleep(3000);
-						clickButtonV2("loginbutton");
-						mainWindowHanlder = returnMainWindowHandle();
-						returnCurrentWindowHandle(mainWindowHanlder);
+					Thread.sleep(6000);
+					driver.switchTo().frame(0);
+					report.report( "Login to Ease as:" + sUserName);
+					typeEditBox("txtUser", sUserName);						
+					typeEditBox("txtPassword", sPassword);
+					Thread.sleep(3000);
+					clickButtonV2("loginbutton");
+					mainWindowHanlder = returnMainWindowHandle();
+					returnCurrentWindowHandle(mainWindowHanlder);
 
 					if (waitForElementToBeClickable(ByLocator.linktext, "LOGOUT", 10) != null) {
 						isLoggedIn = true;
@@ -136,16 +145,16 @@ public class MiscPage extends AbstractPageObject {
 			//This code is to handle intermediate Manage FISS/DDE Settings page
 			if(isTextPresent("MANAGE FISS/DDE SETTINGS"))
 			{
-					typeEditBox("ddeuser", "tset");
-					typeEditBox("ddepassword", "test1234");
-					typeEditBox("Verify", "test1234");
-					clickButtonV2("Submit");
-					WebDriverWait wait = new WebDriverWait(driver, 85);
-					wait.until(ExpectedConditions.alertIsPresent());
-					
-					if(!verifyAlert("DDE information changed")){
-						report.report("DDE Information Submitted was not acknowledged",Reporter.WARNING);
-					}
+				typeEditBox("ddeuser", "tset");
+				typeEditBox("ddepassword", "test1234");
+				typeEditBox("Verify", "test1234");
+				clickButtonV2("Submit");
+				WebDriverWait wait = new WebDriverWait(driver, 85);
+				wait.until(ExpectedConditions.alertIsPresent());
+
+				if(!verifyAlert("DDE information changed")){
+					report.report("DDE Information Submitted was not acknowledged",Reporter.WARNING);
+				}
 			}
 			return true;
 		} else {
@@ -505,8 +514,13 @@ public class MiscPage extends AbstractPageObject {
 		Thread.sleep(10000);
 		isBrowserOpen = false;
 		openBrowser();
-		driver.get(WorkingEnvironment.getEaseURL());
-		//driver.manage().window().maximize();
+
+		try{
+			driver.get(WorkingEnvironment.getEaseURL());
+		}
+		catch(Exception e){
+			report.report("Unable to load the page" + e.getMessage());
+		}
 	}
 	@Override
 	public void assertInPage() {

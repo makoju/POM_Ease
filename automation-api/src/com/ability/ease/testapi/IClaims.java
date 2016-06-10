@@ -28,4 +28,6 @@ public interface IClaims {
 
 	public boolean verifyEditClaimLineOptions(String patientControlNumberHIC, String claimLineToEdit)throws Exception;
 
+	
+	public boolean openClaimRecordFromAdvanceSearchPage(Map<String, String> mapAttrVal, String patientControlNumber)throws Exception;
 }

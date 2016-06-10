@@ -73,4 +73,10 @@ public class ClaimsSelenium2Impl implements IClaims{
 			throws Exception {
 		return claimsv2.verifyEditClaimLineOptions(HIC, claimLineToEdit);
 	}
+
+	@Override
+	public boolean openClaimRecordFromAdvanceSearchPage(
+			Map<String, String> mapAttrVal, String patientControlNumber) throws Exception {
+		return claimsv2.openClaimRecordFromAdvanceSearchPage(mapAttrVal, patientControlNumber);
+	}
 }

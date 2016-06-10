@@ -53,7 +53,7 @@ public class ClaimsTests extends BaseTest{
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "Verify UB04 Form Fields", paramsInclude = { "AttributeNameValueDialogProvider, testType" })
 	public void verifyUB04FormFields()throws Exception{
-		
+
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
 		if(!claims.verifyUB04FormFeatures(mapAttrValues)){
 			report.report("Failed to verify the fields in UB04 form!", Reporter.FAIL);
@@ -157,7 +157,7 @@ public class ClaimsTests extends BaseTest{
 			report.report("Succesfully filled up values in UB04 form!!!", Reporter.ReportAttribute.BOLD);
 		}
 	}
-	
+
 	/**
 	 * Use this method to open an existing claim from pending activity box
 	 * @throws Exception
@@ -167,14 +167,14 @@ public class ClaimsTests extends BaseTest{
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "Open Claim From Pending Activity Query Box", paramsInclude = { "HIC, testType" })
 	public void openExistingClaimFromPendingAQB()throws Exception{
-		
+
 		if(!claims.openExistingClaimFromPendingAQB(HIC)){
 			report.report("Failed to open claim from pending AQB", Reporter.FAIL);
 		}else{
 			report.report("Succesfully opened claim from pending AQB", Reporter.ReportAttribute.BOLD);
 		}
 	}
-	
+
 	/**
 	 * Use this method add or remove claim lines in existing claim
 	 * @throws Exception
@@ -184,7 +184,7 @@ public class ClaimsTests extends BaseTest{
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "Add or Remove Claim Lines in Existing Claim", paramsInclude = { "claimLineEntries, claimLineNumberToDelete, claimLineNumberToAdd, newClaimLineEntry, testType" })
 	public void addOrRemoveClaimLinesInExistingClaim()throws Exception{
-		
+
 		if(!claims.addOrRemoveClaimLinesInExistingClaim(claimLineEntries, claimLineNumberToDelete, claimLineNumberToAdd, newClaimLineEntry)){
 			report.report("Failed to add or remove claim line(s) in existing claim!!!", Reporter.FAIL);
 		}else{
@@ -200,7 +200,7 @@ public class ClaimsTests extends BaseTest{
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "Verify Edit Claim Line Dropdown Options", paramsInclude = { "HIC, claimLineNumberToEdit, testType" })
 	public void verifyEditClaimLineOptions()throws Exception{
-		
+
 		if(!claims.verifyEditClaimLineOptions(HIC, claimLineNumberToEdit)){
 			report.report("Failed to verify edit claim line dropdown options !!!", Reporter.FAIL);
 		}else{
@@ -208,12 +208,33 @@ public class ClaimsTests extends BaseTest{
 		}
 	}
 
-	/*
+	/**
+	 * Use this method to open a claim record from advance search page
+	 * @throws Exception
+	 */
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Open Claim Record From Advance Search Page", paramsInclude = { "AttributeNameValueDialogProvider, patientControlNumber, testType" })
+	public void openClaimRecordFromAdvanceSearchPage()throws Exception{
+
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(!claims.openClaimRecordFromAdvanceSearchPage(mapAttrValues, patientControlNumber)){
+			report.report("Failed to verify edit claim line dropdown options !!!", Reporter.FAIL);
+		}else{
+			report.report("Successfully verified edit claim line dropdown options !!!", Reporter.ReportAttribute.BOLD);
+		}
+	}
+
+	/**
 	 * Handle UI event method
 	 */
 	public void handleUIEvent(HashMap<String, Parameter> map, String methodName)throws Exception{
 		super.handleUIEvent(map, methodName);
-		UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Claims\\UB04.xml");
+		if( methodName.equalsIgnoreCase("openClaimRecordFromAdvanceSearchPage")){
+			UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\AdvancedSearch.xml");
+		}else{
+			UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Claims\\UB04.xml");
+		}
 	}
 
 	/*###
@@ -311,6 +332,6 @@ public class ClaimsTests extends BaseTest{
 	public void setClaimLineEntries(String claimLineEntries) {
 		this.claimLineEntries = claimLineEntries;
 	}
-	
-	
+
+
 }

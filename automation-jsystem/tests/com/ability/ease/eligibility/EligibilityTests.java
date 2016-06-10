@@ -429,6 +429,18 @@ public class EligibilityTests extends BaseTest{
 		}	
 	}
 	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "VerifyResponsePageAndRaw271File", paramsInclude = { "testType, firstname,lastname"})
+	public void VerifyResponsePageAndRaw271FileContents() throws Exception {
+		
+		if(!elig.validateResponsePageAndRawFile(firstname,lastname)) {
+			report.report("Failed to Verify Response And Raw File Contents", Reporter.FAIL);
+		} else {
+			report.report("Successfully verified Response Page and Raw File Contents", Reporter.PASS);
+		}	
+	}
+	
 	/*######
 	Getters and Setters
 	######*/

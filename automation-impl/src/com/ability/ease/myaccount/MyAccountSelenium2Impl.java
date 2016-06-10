@@ -42,6 +42,12 @@ public class MyAccountSelenium2Impl implements IMyAccount {
 		}
 		return false;
 	}
+	
+	@Override
+	public boolean insertSchedulersToAgency(String agencyname) throws Exception {
+		
+		return custschedpage.insertSchedulersToAgency(agencyname);
+	}
 
 	@Override
 	public boolean verifyJobScheduleCurrentAction(String agencyName, String jobtype, String customerid) {
@@ -132,4 +138,11 @@ public class MyAccountSelenium2Impl implements IMyAccount {
 			String endtime, String expectedalertmessage) throws Exception {
 		return cfdp.configureBlackoutTime(groupname,starttime,endtime,expectedalertmessage);
 	}
+
+	@Override
+	public boolean verifyBlackoutTimeHelpTextinChangeandCustomScheduleWindow(String agency, String starttime, String endtime) throws Exception{
+		
+		return cfdp.verifyBlackoutTimeHelpTextinChangeandCustomScheduleWindow(agency,starttime,endtime);
+	}
+
 }

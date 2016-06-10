@@ -150,4 +150,9 @@ public class EligibilitySelenium2Impl implements IEligibility{
 			String agencyDisplayName) throws Exception {
 		return eligPage.enableandVerifyPsychiatricSTCforNPI(contactname,agencyDisplayName);
 	}
+
+	@Override
+	public boolean validateResponsePageAndRawFile(String firstname, String lastname) throws Exception {
+		return eligPage.validateResponsePageAndRawFile(firstname, lastname);
+	}
 }

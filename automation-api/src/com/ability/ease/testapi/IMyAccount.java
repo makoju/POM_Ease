@@ -26,4 +26,6 @@ public interface IMyAccount{
 	public boolean deletecustomScheduleRows(String dAgency) throws Exception;
 	public boolean verifyDeleteOptionNotEnableforFirstSchedule(String agency) throws Exception;
 	public boolean configureBlackoutTime(String groupname, String starttime,String endtime,String expectedalertmessage) throws Exception;
+	public boolean insertSchedulersToAgency(String agencyname) throws Exception;
+	public boolean verifyBlackoutTimeHelpTextinChangeandCustomScheduleWindow(String agency, String starttime, String endtime) throws Exception;
 }

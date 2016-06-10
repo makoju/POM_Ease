@@ -744,6 +744,8 @@ public class EligibilityPage extends AbstractPageObject{
 		//TODO - Need to validate repsonse page with A7
 		return false;
 	}
+	
+	
 
 	/**
 	 * This method will check for both acknowledge as well as non-acknowledged eligibility checks displaying in the completed activity log or not 
@@ -1044,6 +1046,18 @@ public class EligibilityPage extends AbstractPageObject{
 		}
 
 		return (provid == providerid && changedto)?true:false;
+	}
+	
+
+	public boolean validateResponsePageAndRawFile(String firstname, String lastname) throws Exception {
+		navigateToPage();
+
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
+		navigatetoEligibilityReport(firstlastname);
+		//TODO - Need to validate raw271 page content with response page content
+		
+	
+		return false;
 	}
 
 	public boolean verifyMostBenefitSTC45Fields() {

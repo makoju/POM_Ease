@@ -261,6 +261,28 @@ public class CustomSchedulePage extends AbstractPageObject {
 		}
 		return failurecount==0?true:false;
 	}
+	
+	public boolean insertSchedulersToAgency(String agencyname) throws SQLException {
+		String query1 = "Select id from ddez.provider where displayname='"+agencyname+"' and customerid=1"; 
+		ResultSet rs1 = MySQLDBUtil.getResultFromMySQLDB(query1);
+		int providerid=0;
+		while (rs1.next()) {
+			providerid = rs1.getInt("id");
+		}
+		
+		if(providerid!=0){
+			String query2 = "insert into ddez.providerschedule(customerid,providerid,ddeuserid,jobtype,jobprioritybounce,onoff,schedule,startday,endday,laststarttime,lastendtime,cronschedule) Select customerid,"+providerid+",ddeuserid,jobtype,jobprioritybounce,onoff,schedule,startday,endday,laststarttime,lastendtime,cronschedule from ddez.providerschedule where providerid=1 and customerid=1";
+			int updatecount = MySQLDBUtil.getUpdateResultFromMySQLDB(query2);
+			report.report("insertion query has been executed and "+updatecount+" records were inserted successfully", ReportAttribute.BOLD);
+			return updatecount>0?true:false;
+		}
+		else
+		{
+			report.report("Unable to retrieve the providerid for the agency: "+agencyname);
+			return false;
+		}
+		
+	}
 
 	public boolean isRecordExist(String providerSchedule) throws SQLException {
 		int providerScheduleId = Integer.parseInt(providerSchedule);

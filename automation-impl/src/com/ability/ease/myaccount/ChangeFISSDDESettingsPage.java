@@ -271,7 +271,7 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 			if(!verifyAlert(expectedalertmessage)){
 				report.report("Expected alert: "+expectedalertmessage+"was not present",Reporter.WARNING);
 				return false;
-			}
+			}			
 			return true;
 		}
 		else{
@@ -279,6 +279,30 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 			return false;
 		}
 		
+	}
+	
+
+	public boolean verifyBlackoutTimeHelpTextinChangeandCustomScheduleWindow(String agency, String starttime, String endtime) throws Exception {
+		int failurecount=0;
+		
+		String expectedblackouthelptext = "Credential Time Window : "+starttime+" - "+endtime;
+		//Verify the helptext in Changeschedule page
+		clickLink("Change Schedule");
+		selectByNameOrID("user_prov_id", agency.trim());
+		String actualblackouttimehelptext = getElementText(By.xpath("//span[contains(text(),'Credential Time Window')]"));
+		
+		if(!Verify.StringEquals(expectedblackouthelptext, actualblackouttimehelptext)){
+			failurecount++;
+			report.report("Expected and Actual Blackout time helptext doesn't match", Reporter.WARNING);
+		}
+		//verify the helptext in Custom Schedule page
+		clickButton("Custom");
+		actualblackouttimehelptext = getElementText(By.xpath("//span[contains(text(),'Credential Time Window')]"));
+		if(!Verify.StringEquals(expectedblackouthelptext, actualblackouttimehelptext)){
+			failurecount++;
+			report.report("Expected and Actual Blackout time helptext doesn't match", Reporter.WARNING);
+		}
+		return failurecount==0?true:false;
 	}
 
 	
@@ -298,4 +322,5 @@ public class ChangeFISSDDESettingsPage extends AbstractPageObject {
 			HomePage.getInstance().navigateTo(Menu.MYACCOUNT, null);
 		clickLink("Change FISS/DDE Settings");
 	}
+
 }

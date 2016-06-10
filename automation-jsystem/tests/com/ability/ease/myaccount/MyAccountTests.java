@@ -325,8 +325,34 @@ public class MyAccountTests extends BaseTest {
 
 		if(myaccount.configureBlackoutTime(groupname, starttime,endtime,expectedalertmessage)){
 			report.report("Succesfully Configured Blackout time for group!!", Reporter.PASS);
+			keepAsGloablParameter("starttime", starttime);
+			keepAsGloablParameter("endtime", endtime);
 		}else {
 			report.report("Failed to Configure Blackout time for group", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "insert Schedulers To Agency", paramsInclude = { "testType,agency" })
+	public void insertSchedulersToAgency()throws Exception{
+
+		if(myaccount.insertSchedulersToAgency(agency)){
+			report.report("Succesfully Inserted Schedulers 10,11,12 to the agency!!"+agency, Reporter.PASS);
+		}else {
+			report.report("Failed to Insert Schedulers for the agency", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "VerifyBlackoutTimeHelpTextforAgency", paramsInclude = { "testType,agency, starttime,endtime" })
+	public void verifyBlackoutTimeHelpTextinChangeandCustomScheduleWindow()throws Exception{
+
+		if(myaccount.verifyBlackoutTimeHelpTextinChangeandCustomScheduleWindow(agency, starttime,endtime)){
+			report.report("Succesfully verified Blackout time helptext in change and custom schedule page!!", Reporter.PASS);
+		}else {
+			report.report("Failed to verify Blackout time helptext in change and custom schedule page", Reporter.FAIL);
 		}
 	}
 	

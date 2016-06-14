@@ -1105,6 +1105,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 */
 	private void enterTextToField(String xpath , String textToType) {
 		WebElement editBox = driver.findElement(By.xpath(xpath));
+		WebDriverHelper.setFocusToElement(driver, editBox);
 		WebDriverHelper.highlightElement(driver, editBox);
 		editBox.clear();
 		editBox.sendKeys(textToType);
@@ -1764,19 +1765,17 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 * get current active window handle
 	 * Nageswar.Bodduri
 	 */
-	public void returnCurrentWindowHandle(String mainWindowHandle){
-		Set windowHandles=driver.getWindowHandles();
-		Iterator ite=windowHandles.iterator();
+	public void switchToChildWindow(String mainWindowHandle){
+		Set<String> windowHandles=driver.getWindowHandles();
 
-		while(ite.hasNext())
+		for(String popupHandle:windowHandles)
 		{
-			String popupHandle=ite.next().toString();
-			if(!popupHandle.contains(mainWindowHandle))
+			if(!popupHandle.equalsIgnoreCase(mainWindowHandle))
 			{
 				driver.switchTo().window(popupHandle);
+				break;
 			}
 		}
-
 	}
 
 	public String getElementText(By by){

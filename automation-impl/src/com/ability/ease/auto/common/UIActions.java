@@ -159,23 +159,23 @@ public class UIActions extends AbstractPageObject {
 					}
 
 					break;
-					
+
 					/* Setting up agencies for a new customer */
-					
+
 				case SetUpAgency:
 					String[] agencylocators = scrAttr.getLocator().split(",");
 					String[] agencyvalues = scrAttr.getValue().split("~");			
-					
+
 					for(String str:agencyvalues){						
 						String[] avalues = str.split(",");
 						for(int i=0;i < avalues.length; i++){
 							typeEditBox(agencylocators[i],avalues[i]);
 							clickButtonV2("Submit");
 						}
-												
+
 					}
 					break;
-				
+
 				case SpanCodes:
 					String[] sSpanCodesDates = null;
 					String[] sLocatorsSpanCodes = scrAttr.getLocator().split(",");
@@ -250,7 +250,7 @@ public class UIActions extends AbstractPageObject {
 						((JavascriptExecutor) driver).executeScript("$('#reportCustomDateFrom').val('"+fromdate+"');");
 						((JavascriptExecutor) driver).executeScript("$('#reportCustomDateTo').val('"+todate+"');");
 						((JavascriptExecutor) driver).executeScript("$('#reportTimeframeButton').click();");
-						
+
 					}
 					else 
 						clickLink(timeframe.trim());
@@ -304,46 +304,174 @@ public class UIActions extends AbstractPageObject {
 					break;
 				case CustomSchedule:
 					String startxpath = "//input[@name='schedule_start']";
-                    String endxpath = "//input[@name='schedule_end']";
-                    String runtime = "//select[@name='schedule_runtime']";
-                    String credential =  "//select[@name='schedule_credential']";
-                    List<WebElement> lsStartSchedule = new ArrayList<WebElement>();
-                    List<WebElement> lsendSchedule = new ArrayList<WebElement>();
-                    List<WebElement> lsruntime = new ArrayList<WebElement>();
-                    List<WebElement> lscredential = new ArrayList<WebElement>();
-                    
-                    clickButton("Custom");
-                    waitForElementToBeClickable(ByLocator.xpath, "//td[text()='ASSIGN CUSTOM SCHEDULE']", 15);
-                    
-                    String[] customschedulevalue = scrAttr.getValue().split(";");
-                    int count = Integer.parseInt(customschedulevalue[0]);
-             
-                    for(int i=0;i<count;i++){
-                           //click on addscheduler to get the new row of schedule from 4th scheduler onwards; by default 3 rows present
-                           
-                           if(i>3)
-                                  clickButton("Add Scheduler");
-                           
-                           String[] schedule = customschedulevalue[i+1].split(",");
+					String endxpath = "//input[@name='schedule_end']";
+					String runtime = "//select[@name='schedule_runtime']";
+					String credential =  "//select[@name='schedule_credential']";
+					List<WebElement> lsStartSchedule = new ArrayList<WebElement>();
+					List<WebElement> lsendSchedule = new ArrayList<WebElement>();
+					List<WebElement> lsruntime = new ArrayList<WebElement>();
+					List<WebElement> lscredential = new ArrayList<WebElement>();
 
-                           lsStartSchedule = driver.findElements(By.xpath(startxpath));
-                           typeEditBoxByWebElement(lsStartSchedule.get(i),schedule[0].trim());
-                           
-                           lsendSchedule = driver.findElements(By.xpath(endxpath));
-                           typeEditBoxByWebElement(lsendSchedule.get(i),schedule[1].trim());
-                           
-                           lsruntime = driver.findElements(By.xpath(runtime));
-                           Select selectruntime = new Select(lsruntime.get(i));
-                           selectruntime.selectByVisibleText(schedule[2].trim());
-                           
-                           lscredential = driver.findElements(By.xpath(credential));
-                           Select selectcredential = new Select(lscredential.get(i));
-                           selectcredential.selectByVisibleText(schedule[3].trim());
-                    }
-                    break; 
-			
+					clickButton("Custom");
+					waitForElementToBeClickable(ByLocator.xpath, "//td[text()='ASSIGN CUSTOM SCHEDULE']", 15);
 
-					default:
+					String[] customschedulevalue = scrAttr.getValue().split(";");
+					int count = Integer.parseInt(customschedulevalue[0]);
+
+					for(int i=0;i<count;i++){
+						//click on addscheduler to get the new row of schedule from 4th scheduler onwards; by default 3 rows present
+
+						if(i>3)
+							clickButton("Add Scheduler");
+
+						String[] schedule = customschedulevalue[i+1].split(",");
+
+						lsStartSchedule = driver.findElements(By.xpath(startxpath));
+						typeEditBoxByWebElement(lsStartSchedule.get(i),schedule[0].trim());
+
+						lsendSchedule = driver.findElements(By.xpath(endxpath));
+						typeEditBoxByWebElement(lsendSchedule.get(i),schedule[1].trim());
+
+						lsruntime = driver.findElements(By.xpath(runtime));
+						Select selectruntime = new Select(lsruntime.get(i));
+						selectruntime.selectByVisibleText(schedule[2].trim());
+
+						lscredential = driver.findElements(By.xpath(credential));
+						Select selectcredential = new Select(lscredential.get(i));
+						selectcredential.selectByVisibleText(schedule[3].trim());
+					}
+					break; 
+
+				case Permissions:
+					String[] permissionsset = scrAttr.getValue().trim().split(";");
+					for(int i=0;i<permissionsset.length;i++){
+						String[] s = permissionsset[i].split(",");
+						String agency = s[0];
+						for(int l=1;l<s.length;l++){
+							//Handle Claim View And Edit
+							if(s[l].toLowerCase().startsWith("claim"))
+							{
+								String[] claim = s[l].split(":");
+								for(int m=1;m<claim.length;m++){
+									if(claim[m].toLowerCase().startsWith("view"))
+									{
+										String[] view = claim[m].split("-");
+										if(view[1].equalsIgnoreCase("0"))
+											uncheckChkBox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'claims')]"));
+										else
+											if(view[1].equalsIgnoreCase("1"))
+												checkCheckbox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'claims')]"));
+									}
+									else if(claim[m].toLowerCase().startsWith("edit"))
+									{
+										String[] view = claim[m].split("-");
+										if(view[1].equalsIgnoreCase("0"))
+											uncheckChkBox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'editclaims')]"));
+										else
+											if(view[1].equalsIgnoreCase("1"))
+												checkCheckbox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'editclaims')]"));
+									}
+								}
+
+							}
+							//Handle Eligibility View and Check options
+							else
+								if(s[l].toLowerCase().startsWith("eligibility"))
+								{
+									String[] claim = s[l].split(":");
+									for(int m=1;m<claim.length;m++){
+										if(claim[m].toLowerCase().startsWith("view"))
+										{
+											String[] view = claim[m].split("-");
+											if(view[1].equalsIgnoreCase("0"))
+												uncheckChkBox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'cwf')]"));
+											else
+												if(view[1].equalsIgnoreCase("1"))
+													checkCheckbox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'cwf')]"));
+										}
+										else if(claim[m].toLowerCase().startsWith("check"))
+										{
+											String[] view = claim[m].split("-");
+											if(view[1].equalsIgnoreCase("0"))
+												uncheckChkBox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'liveelig')]"));
+											else
+												if(view[1].equalsIgnoreCase("1"))
+													checkCheckbox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'liveelig')]"));
+										}
+									}
+
+								}
+
+							//Handle HMO Catcher
+								else
+									if(s[l].toLowerCase().startsWith("hmo catcher"))
+									{
+										String[] hmocatcher = s[l].split(":");
+										for(int m=1;m<hmocatcher.length;m++){
+											if(hmocatcher[m].equals("0"))
+												uncheckChkBox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'hmocatcher')]"));
+											if(hmocatcher[m].equals("1"))
+												checkCheckbox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'hmocatcher')]"));
+										}
+									}
+
+							//Handle Export 
+									else
+										if(s[l].toLowerCase().startsWith("export"))
+										{
+											String[] export = s[l].split(":");		
+											for(int m=1;m<export.length;m++){
+												if(export[m].equals("0"))
+													uncheckChkBox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'export')]"));
+												if(export[m].equals("1"))
+													checkCheckbox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'export')]"));
+											}
+										}
+
+							//Handle DDE User
+										else
+											if(s[l].toLowerCase().startsWith("dde user"))
+											{
+												String[] ddeuser = s[l].split(":");
+												for(int m=1;m<ddeuser.length;m++){
+													if(ddeuser[m].equals("0"))
+														uncheckChkBox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'ddeuser')]"));
+													if(ddeuser[m].equals("1"))
+														checkCheckbox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'ddeuser')]"));
+												}
+											}
+
+							//Handle Schedule
+											else
+												if(s[l].toLowerCase().startsWith("schedule"))
+												{
+													String[] schedule = s[l].split(":");
+													for(int m=1;m<schedule.length;m++){
+														if(schedule[m].equals("0"))
+															uncheckChkBox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'agencyschedule')]"));
+														if(schedule[m].equals("1"))
+															checkCheckbox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'agencyschedule')]"));
+													}
+												}
+
+							//Handle Admin
+												else
+													if(s[l].toLowerCase().startsWith("admin")){			
+														String[] admin = s[l].split(":");	
+														for(int m=1;m<admin.length;m++){
+															if(admin[m].equals("0"))
+																uncheckChkBox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'admin')]"));
+															if(admin[m].equals("1"))
+																checkCheckbox(By.xpath("//td[contains(text(),'"+agency+"')]/following-sibling::td/input[starts-with(@name,'admin')]"));
+														}
+													}
+						}
+					}
+
+
+					break;
+
+				default:
 					report.report("The attribute Style is not implemented.",
 							ReportAttribute.BOLD);
 					break;

@@ -10,7 +10,9 @@ import jsystem.framework.report.Reporter.ReportAttribute;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.internal.WebElementToJsonConverter;
 
 import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.TestCommonResource;
@@ -532,8 +534,17 @@ public class ClaimsPage extends AbstractPageObject{
 		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Claims\\UB04.xml", mapAttrValues);
 
 		//click on MY DDE link and capture Agency name
-		helper.clickMYDDELink();
-		waitForElementToBeClickable(ByLocator.xpath, xpathToOverNightReportHeader, 60);
+		//helper.clickMYDDELink();
+		Thread.sleep(5000);
+		waitForElementToBeClickable(ByLocator.linktext, "MY DDE", 60);
+		safeJavaScriptClick("MY DDE");
+		waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 60);
+		try{
+			waitForElementToBeClickable(ByLocator.xpath, xpathToOverNightReportHeader, 60);
+		}catch(NoSuchElementException nsee){
+			report.report("Overnight Report Header is not present...trying again!!");
+			//fluentWaitForElement(By.xpath(xpathToOverNightReportHeader));
+		}
 		uiactions.fillScreenAttributes(lsAttributes);
 		clickLinkV2("claimSubmit");
 		if (helper.handleSubmitWarningAlert(lsAttributes) ){

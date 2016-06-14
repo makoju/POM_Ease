@@ -50,7 +50,7 @@ public class ClaimsHelper extends AbstractPageObject{
 	String statusLoc = elementprop.getProperty("SLOC_STATUS_DROP_DOWN");
 	String searchBtn = elementprop.getProperty("SEARCH_BUTTON");
 	String myDDELink = elementprop.getProperty("MY_DDE_LINK");
-	
+
 
 	public ProviderTable getFiledLocator1Values(String sQuery)throws Exception{
 
@@ -105,10 +105,9 @@ public class ClaimsHelper extends AbstractPageObject{
 				waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 60);
 				return;
 			}else{
-				//nothing to do
+				
 			}
 		}
-		report.report("MY DDE Link element is not avaible on page");
 	}
 
 	//this method compared totals provided in JSYSTEM and totals in xml file in data base
@@ -548,7 +547,7 @@ public class ClaimsHelper extends AbstractPageObject{
 
 		WebElement searchResult = null;
 		int count = 0;
-	
+
 		clickMYDDELink();
 		WebElement searchIcon = waitForElementToBeClickable(ByLocator.id, rptSearchIcon, 10);
 		if(searchIcon != null){

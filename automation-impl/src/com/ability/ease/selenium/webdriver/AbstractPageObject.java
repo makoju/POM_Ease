@@ -41,7 +41,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.events.WebDriverEventListener;
 import org.openqa.selenium.support.pagefactory.Annotations;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
@@ -50,6 +52,7 @@ import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.auto.enums.portal.selenium.WebDriverType;
 import com.ability.ease.auto.events.ui.UIEvents;
 import com.ability.ease.auto.system.WorkingEnvironment;
+import com.google.common.base.Function;
 
 
 /**
@@ -272,7 +275,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 
 	}
-	
+
 	private void setPageloadTimeOut(WebDriverWrapper webDriverWrapper, String pageLoadTimeout) {
 		try {
 			long miliSecs = Long.valueOf(pageLoadTimeout);
@@ -1857,6 +1860,28 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			return false; 
 		}   // catch 
 	} 
+
+	/**
+	 * Fluent wait
+	 */
+
+	public WebElement fluentWaitForElement(final By by){
+
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+				.withTimeout(30, TimeUnit.SECONDS)
+				.pollingEvery(5, TimeUnit.SECONDS)
+				.ignoring(NoSuchElementException.class);
+
+		WebElement we= wait.until(new Function<WebDriver, WebElement>() {
+			@Override
+			public WebElement apply(WebDriver driver) {
+				return driver.findElement(by);
+			}
+
+		});
+		return we;
+	}
+
 
 	/**
 	 * Clicks a Link : when you can not locate any anchor element by its text.Use this method to locate an anchor tag with its id or name

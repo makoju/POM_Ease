@@ -429,7 +429,8 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, 8); 
-			wait.until(ExpectedConditions.elementToBeClickable(By.xpath(checkBoxXpath)));
+			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(checkBoxXpath)));
+			WebDriverHelper.setFocusToElement(driver, element);
 		} catch (org.openqa.selenium.TimeoutException ex) {
 		}
 		if ( enable && !driver.findElement(By.xpath(checkBoxXpath)).isSelected() ) {
@@ -601,6 +602,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			// ignore exception, return null instead
 		}		
 		if (element!=null) {
+			WebDriverHelper.setFocusToElement(driver, element);
 			WebDriverHelper.highlightElement(driver, element);
 			if (WorkingEnvironment.getWebdriverType() == WebDriverType.INTERNET_EXPLORER_DRIVER) {
 				element.click();
@@ -763,6 +765,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			break;
 		}		
 		if (element!=null) {
+			WebDriverHelper.setFocusToElement(driver, element);
 			WebDriverHelper.highlightElement(driver, element);
 
 			if (WorkingEnvironment.getWebdriverType() == WebDriverType.INTERNET_EXPLORER_DRIVER) {
@@ -841,6 +844,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 
 		if (link!=null){
+			WebDriverHelper.setFocusToElement(driver, link);
 			WebDriverHelper.highlightElement(driver, link);
 			link.click();
 		} else {
@@ -1060,6 +1064,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 */
 	public void typeEditBoxByWebElement(WebElement editBox, String textToType) throws Exception{
 		int count = 0 ;
+		WebDriverHelper.setFocusToElement(driver, editBox);
 		editBox.clear();
 		editBox.sendKeys(textToType);
 		if (!editBox.getAttribute("value").contains(textToType) & count < 3){
@@ -1131,6 +1136,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				"contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "')] | " + 
 				"//span[@id='"+ selectNameOrID +"']/select | " + "//td[span[contains(@title,"+"'"+ selectNameOrID +"'"+")]]/following-sibling::td/select | " + "//td[contains(text(),"+"'"+ selectNameOrID +"'"+")]/select"));
 
+		WebDriverHelper.setFocusToElement(driver, we);
 		WebDriverHelper.highlightElement(driver, we);
 		setSelectedField(we, valueToSelect);
 
@@ -1159,6 +1165,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 * @param optionToSelect
 	 */
 	public void selectByWebElement(WebElement selectTag, String optionToSelect) {
+		WebDriverHelper.setFocusToElement(driver, selectTag);
 		WebDriverHelper.highlightElement(driver, selectTag);
 		setSelectedField(selectTag, optionToSelect);
 
@@ -1215,7 +1222,8 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 					"@title[contains(.,'"+ radioNameOrID + "')]" + " or " + "@title='" + "Select " + "\"" + radioNameOrID + "\"" + "')  and @value='" + valueToSelect + "']";
 		}
 
-		waitForElementVisibility(By.xpath(xpath));
+		WebElement element = waitForElementVisibility(By.xpath(xpath));
+		WebDriverHelper.setFocusToElement(driver, element);	
 		driver.findElement(By.xpath(xpath)).click();
 	}
 	/**
@@ -1780,6 +1788,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 
 	public String getElementText(By by){
 		WebElement element = waitForElementVisibility(by);
+		WebDriverHelper.setFocusToElement(driver, element);
 		return getElementText(element);
 	}
 
@@ -1797,7 +1806,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		try {
 			if (element.isEnabled() && element.isDisplayed()) {
 				System.out.println("Clicking on element using java script click");
-
+				WebDriverHelper.setFocusToElement(driver, element);
 				((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
 			} else {
 				System.out.println("Unable to click on element");
@@ -1864,6 +1873,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			WebDriverHelper.highlightElement(driver, element);
 			if (WorkingEnvironment.getWebdriverType() == WebDriverType.INTERNET_EXPLORER_DRIVER) {
 				int count=0;
+				WebDriverHelper.setFocusToElement(driver, element);
 				element.click();
 
 				/*while(isAlertPresent() && count++ < 10){
@@ -1876,6 +1886,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 					element.click();*/
 				return;
 			}else{
+				WebDriverHelper.setFocusToElement(driver, element);
 				element.click();
 			}
 

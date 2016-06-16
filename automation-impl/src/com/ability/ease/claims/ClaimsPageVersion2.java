@@ -83,13 +83,14 @@ public class ClaimsPageVersion2 extends AbstractPageObject{
 		report.report("Clicked on Advanced Search link");
 		//fill advance search page filters and click search
 		fillscreen.fillScreenAttributes(lsAttributes);
-		clickButton(elementprop.getProperty("SEARCH_BUTTON"));
+		clickButtonV2(elementprop.getProperty("SEARCH_BUTTON"));
 
 		//wait for search result to be displayed
 		if(waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty(searchResPageHdr), 60) != null){
 			WebElement renchIcon = waitForElementToBeClickable(ByLocator.xpath, claimRenchIconXpath, 30);
 			renchIcon.click();
 			if (waitForElementToBeClickable(ByLocator.name, elementprop.getProperty("UB04_LOCK_ICON"), 30) != null){
+				report.report("Claim has been opened in edit mode");
 				stepResult = true;
 			}
 		}

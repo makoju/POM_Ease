@@ -8,13 +8,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 public class WebDriverHelper {
-	
-	
+
+
 	private static boolean _debugMode_ = false; 
-	
+
 	/**
 	 * Use this method for xpath/css/ .. expressions with arguments set in the @FindBy annotation over field in page object class..
 	 * For example: say you have this string:   .class:contains'{0}' > a:contains('{1}') as a generic CSS locator expression displayed by @FindBy annotation.
@@ -28,7 +29,7 @@ public class WebDriverHelper {
 	public static String constructFindByMessage(Class<?> clazz, String fieldName, Object... args) throws SecurityException, NoSuchFieldException {
 		return  MessageFormat.format(getFieldFindByValue(clazz, fieldName), args);
 	}
-	
+
 	/**
 	 * Use this method to format a message with arguments.
 	 * For example: say you have this generic string:   .class:contains{'0'} > a:contains('{1}) as a CSS locator expression.
@@ -42,8 +43,8 @@ public class WebDriverHelper {
 	public static String constructMessage(String message, Object... args)  {
 		return  MessageFormat.format(message, args);
 	}
-	
-	
+
+
 	/**
 	 * Use this method to highlight selected elements during run time for debug
 	 * @param driver
@@ -51,16 +52,30 @@ public class WebDriverHelper {
 	 */
 	public static void highlightElement(WebDriver driver, WebElement element) {
 		if (_debugMode_) {
-			 if (driver instanceof JavascriptExecutor) {
-			        ((JavascriptExecutor)driver).executeScript("arguments[0].style.backgroundColor = '#FF0000'", element);
-			    }
+			if (driver instanceof JavascriptExecutor) {
+				((JavascriptExecutor)driver).executeScript("arguments[0].style.backgroundColor = '#FF0000'", element);
+			}
 		}
 	}
 
-	
-	
+	/**
+	 * Use this method to highlight selected elements during run time for debug
+	 * @param driver
+	 * @param element
+	 */
+	public static void setFocusToElement(WebDriver driver, WebElement element) {
+		new Actions(driver).moveToElement(element).click().perform();
+		if (_debugMode_) {
+			if (driver instanceof JavascriptExecutor) {
+				((JavascriptExecutor)driver).executeScript("arguments[0].focus()", element);
+			}
+		}
+	}
+
+
+
 	//############################# private methods ######################################
-	
+
 	private static String getFieldFindByValue(Class<?> clazz, String fieldName) throws SecurityException, NoSuchFieldException {
 		Field field = clazz.getDeclaredField(fieldName);
 		if (field!=null) { 

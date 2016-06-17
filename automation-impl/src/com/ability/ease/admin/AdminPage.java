@@ -30,7 +30,7 @@ public class AdminPage extends AbstractPageObject{
 			}
 		}
 		admin.fillScreenAttributes(lsAttributes);
-		clickButton("Submit");
+		clickButtonV2("Submit");
 		report.report("User "+ sActual + " added!");
 		return verifyAlert("User "+ sActual + " added!");
 	}

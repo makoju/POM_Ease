@@ -217,7 +217,7 @@ public class CommonTests extends BaseTest{
 		return easeSrvStauts;
 	}
 
-	@ParameterProperties(description = "Select start or stop from drop down")
+	@ParameterProperties(description = "Select start, stop or restart from drop down")
 	public void setEaseSrvStauts(easeServerStatus easeSrvStauts) {
 		this.easeSrvStauts = easeSrvStauts;
 	}

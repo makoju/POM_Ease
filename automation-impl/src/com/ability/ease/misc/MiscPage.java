@@ -61,19 +61,19 @@ public class MiscPage extends AbstractPageObject {
 		if (isBrowserOpen == false || !driver.getCurrentUrl().contains(WorkingEnvironment.getEaseURL())) {
 			try{
 				driver.get(WorkingEnvironment.getEaseURL());
-			//driver.manage().window().maximize();
-			mainWindowHanlde = driver.getWindowHandle();
+				//driver.manage().window().maximize();
+				mainWindowHanlde = driver.getWindowHandle();
 				isBrowserOpen = true;
 			}catch(Exception e){
 				report.report("Exception occured during driver.get() method execution");
 				report.report(e.getMessage());
 			}
 		}
-		
+
 		//If some user already logs in and if the new user doesn't matches with the already logged in user, Then do logout and login with the new user
 		if (isLoggedIn && !currentLoggedInUser.equalsIgnoreCase(sUserName)) {
 			if (waitForElementToBeClickable(ByLocator.linktext, "LOGOUT", 10) != null){
-					report.report("Logging out user: " +  currentLoggedInUser);
+				report.report("Logging out user: " +  currentLoggedInUser);
 				try{
 					safeJavaScriptClick("LOGOUT");
 				}
@@ -84,7 +84,7 @@ public class MiscPage extends AbstractPageObject {
 				isLoggedIn = false;
 				//Once logged out from the current user session, Lets switch to mainwindow
 				driver.switchTo().window(mainWindowHanlde); 
-				
+
 				/*try {
 						report.report("QUIT method called after logging out user "+ currentLoggedInUser +"...Closing all browser instances!!!");
 						quitAndRelaunchBrowser();
@@ -109,15 +109,16 @@ public class MiscPage extends AbstractPageObject {
 			int countTry = 0;
 			do {
 				try {
-						mainWindowHanlde = returnMainWindowHandle(); //save the current window for later use
+					mainWindowHanlde = returnMainWindowHandle(); //save the current window for later use
 					Thread.sleep(6000);
 					driver.switchTo().frame(0);
 					report.report( "Login to Ease as:" + sUserName);
 					typeEditBox("txtUser", sUserName);						
 					typeEditBox("txtPassword", sPassword);
 					Thread.sleep(3000);
-						clickButton("loginbutton");
-						switchToChildWindow(mainWindowHanlde);
+					clickButtonV2("loginbutton");
+					Thread.sleep(5000);
+					switchToChildWindow(mainWindowHanlde);
 
 					if (waitForElementToBeClickable(ByLocator.linktext, "LOGOUT", 10) != null) {
 						isLoggedIn = true;
@@ -521,10 +522,10 @@ public class MiscPage extends AbstractPageObject {
 		Thread.sleep(10000);
 		isBrowserOpen = false;
 		openBrowser();
-			driver.get(WorkingEnvironment.getEaseURL());
+		driver.get(WorkingEnvironment.getEaseURL());
 		mainWindowHanlde = driver.getWindowHandle();
 		//driver.manage().window().maximize();
-		}
+	}
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub

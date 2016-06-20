@@ -114,7 +114,8 @@ public class EaseSubMenuItems {
 
 	public static enum easeServerStatus{
 		Stop("Stop"),
-		Start("Start");
+		Start("Start"),
+		ReStart("ReStart");
 		
 		private String value;
 		private easeServerStatus(String value) {

@@ -30,7 +30,11 @@ public class CommonUtils {
 			return true;
 		}else if(request.equalsIgnoreCase("Start") && serverStatus.equalsIgnoreCase("Stopped")){
 			result = startServer(sPID);
-		}else{
+		}
+		else if(request.equalsIgnoreCase("ReStart")){
+			result = restartServer(sPID);
+		}
+		else{
 			System.out.println("EASE server is already running...!!!");
 			return true;
 		}
@@ -81,6 +85,29 @@ public class CommonUtils {
 			}
 		}
 		return isServerStopped;
+	}
+	
+	private static boolean restartServer(String pid) throws InterruptedException{
+		boolean isServerStarted = false;
+		int count = 0;
+		StringBuilder shellCommand = new StringBuilder("sh /opt/abilitynetwork/ease/bin/easeServer.sh ");
+		
+		shellCommand.append("restart");
+		while(!isServerStarted && count++ < 3){
+			runCommand(shellCommand.toString(), gridserver);
+			System.out.println("Waiting for 10 seconds to EASE server to start !!!");
+			Thread.sleep(10000);
+			pDetails = getServerStatus();
+			if( pDetails.get(1).equalsIgnoreCase("Stopped")){
+				System.out.println("EASE server not started. So, retyring to start :: attempt " + count);
+				continue;
+			}else{
+				System.out.println("EASE server started successfully");
+				isServerStarted = true;
+				break;
+			}
+		}
+		return isServerStarted;
 	}
 
 	private static ArrayList<String> getServerStatus(){

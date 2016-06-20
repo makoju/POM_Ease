@@ -1136,7 +1136,6 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				"contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "')] | " + 
 				"//span[@id='"+ selectNameOrID +"']/select | " + "//td[span[contains(@title,"+"'"+ selectNameOrID +"'"+")]]/following-sibling::td/select | " + "//td[contains(text(),"+"'"+ selectNameOrID +"'"+")]/select"));
 
-		WebDriverHelper.setFocusToElement(driver, we);
 		WebDriverHelper.highlightElement(driver, we);
 		setSelectedField(we, valueToSelect);
 

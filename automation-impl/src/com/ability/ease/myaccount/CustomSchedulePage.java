@@ -219,6 +219,12 @@ public class CustomSchedulePage extends AbstractPageObject {
 		navigateToPage();
 		clickLink("Change Schedule");
 		selectByNameOrID("user_prov_id", agency);
+		/*WebElement selectelement = waitForElementVisibility(By.id("user_prov_id"));
+		if(selectelement==null)
+			report.report("Unable to find Select drop down with the id: 'user_prov_id'");
+		Select select = new Select(selectelement);
+		select.selectByVisibleText(agency.trim());*/
+		
 		clickButton("Custom");
 		if(!isTextPresent("ASSIGN CUSTOM SCHEDULE"))
 		{

@@ -1705,6 +1705,10 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	public boolean verifyAlert(String sExpected){
 
 		String sActual=null;
+		if( sExpected==null || sExpected.isEmpty()){
+			report.report("Expected Alert text should not be null", Reporter.WARNING);
+			return false;
+		}
 		try{
 			//Wait 10 seconds till alert is present
 			report.report("Inside verify alert method....");
@@ -1804,6 +1808,10 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 
 	public String getElementText(By by){
 		WebElement element = waitForElementVisibility(by);
+		if(element==null){
+			report.report("Unable to find an element: "+by.toString(), Reporter.WARNING);
+			return "";
+		}
 		
 		return getElementText(element);
 	}

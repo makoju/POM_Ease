@@ -86,7 +86,7 @@ public class ChangeSchedulePage extends AbstractPageObject {
 		//Verify the helptext in Changeschedule page
 		clickLink("Change Schedule");
 		selectByNameOrID("user_prov_id", agency.trim());
-		String actualblackouttimehelptext = getElementText(By.xpath("//span[contains(text(),'Credential Time Window')]"));
+		String actualblackouttimehelptext = getElementText(By.xpath("//*[contains(text(),'Credential Time Window')]"));
 		
 		if(!Verify.StringEquals(expectedblackouthelptext, actualblackouttimehelptext)){
 			failurecount++;

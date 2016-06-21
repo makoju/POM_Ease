@@ -105,10 +105,9 @@ public class ClaimsHelper extends AbstractPageObject{
 				waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 60);
 				return;
 			}else{
-				//nothing to do
+				
 			}
 		}
-		report.report("MY DDE Link element is not avaible on page");
 	}
 
 	//this method compared totals provided in JSYSTEM and totals in xml file in data base

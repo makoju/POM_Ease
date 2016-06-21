@@ -142,7 +142,7 @@ public class MyAccountSelenium2Impl implements IMyAccount {
 	@Override
 	public boolean verifyBlackoutTimeHelpTextinChangeandCustomScheduleWindow(String agency, String starttime, String endtime) throws Exception{
 		
-		return cfdp.verifyBlackoutTimeHelpTextinChangeandCustomScheduleWindow(agency,starttime,endtime);
+		return csp.verifyBlackoutTimeHelpTextinChangeandCustomScheduleWindow(agency,starttime,endtime);
 	}
 
 }

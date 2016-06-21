@@ -34,21 +34,13 @@
     </target>
     <target name="t1">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="4f957a73-f0bb-4fd7-8f4b-06d63b1c3177"/>
-            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-            <test name="com.ability.ease.common.CommonTests.stopStartEaseServer"/>
-        </jsystem>
-    </target>
-    <target name="t2">
-        <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="f28d5b3f-8eb6-4f49-98ed-1af26a7bf91e"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.myaccount.MyAccountTests.deleteAllCustomSchedule"/>
         </jsystem>
     </target>
-    <target name="t3">
+    <target name="t2">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="dfee258b-ad8e-45b8-81cb-feca3644ba38"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -56,7 +48,7 @@
             <test name="com.ability.ease.myaccount.MyAccountTests.verifyChangeSchedule"/>
         </jsystem>
     </target>
-    <target name="t4">
+    <target name="t3">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="f2e27adf-9c0a-4d25-a0d3-88f77746ad0f"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -64,12 +56,20 @@
             <test name="com.ability.ease.common.CommonTests.setBlackoutStartandEndTime"/>
         </jsystem>
     </target>
-    <target name="t5">
+    <target name="t4">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="195ef053-c41f-4440-b735-f4b89e20bb72"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.myaccount.MyAccountTests.configureBlackoutTime"/>
+        </jsystem>
+    </target>
+    <target name="t5">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="4f957a73-f0bb-4fd7-8f4b-06d63b1c3177"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.common.CommonTests.stopStartEaseServer"/>
         </jsystem>
     </target>
     <target name="t6">

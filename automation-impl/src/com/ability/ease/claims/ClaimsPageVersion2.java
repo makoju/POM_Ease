@@ -15,7 +15,7 @@ import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
-public class ClaimsPageVersion2 extends AbstractPageObject{
+public class ClaimsPageVersion2 extends AbstractPageObject {
 
 	int failCounter = 0;
 	ClaimsHelper helper = new ClaimsHelper();
@@ -25,10 +25,10 @@ public class ClaimsPageVersion2 extends AbstractPageObject{
 	String myDDELink = elementprop.getProperty("MY_DDE_LINK");
 	String searchResPageHdr = elementprop.getProperty("ADVANCE_SEARCH_RESULTS_PAGE_HEADER");
 	String ub04LockIcon = elementprop.getProperty("UB04_LOCK_ICON");
-	String ub04LockResubmit = elementprop.getProperty("UB04_LOCK__RESUBMIT_LINK");
+	String ub04LockResubmit = elementprop
+			.getProperty("UB04_LOCK__RESUBMIT_LINK");
 
-
-	//C-tor
+	// C-tor
 	public ClaimsPageVersion2() {
 		super();
 	}

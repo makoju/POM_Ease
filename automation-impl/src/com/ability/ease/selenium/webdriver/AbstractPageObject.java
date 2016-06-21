@@ -41,7 +41,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.events.WebDriverEventListener;
 import org.openqa.selenium.support.pagefactory.Annotations;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
@@ -50,6 +52,7 @@ import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.auto.enums.portal.selenium.WebDriverType;
 import com.ability.ease.auto.events.ui.UIEvents;
 import com.ability.ease.auto.system.WorkingEnvironment;
+import com.google.common.base.Function;
 
 
 /**
@@ -89,6 +92,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	protected static WebDriver driver;
 	private boolean clearCookiesBeforeOpen = false;
 	private String seleniumTimeOut = "30000";
+	private String pageLoadTimeout = "180000";
 	protected String webDriverEventListenerClasses = "com.ability.ease.selenium.webdriver.WebDriverScreenshotEventHandler;" +
 			"com.ability.ease.selenium.webdriver.WebDriverReportEventHandler";
 	protected static Reporter report = ListenerstManager.getInstance();
@@ -183,7 +187,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	private int pollingMillis = 500;
 	public void assertMustExistElements() {		
 		if (driver!=null) {
-			driver.manage().timeouts().implicitlyWait(pollingMillis, TimeUnit.MILLISECONDS);
+			//driver.manage().timeouts().implicitlyWait(pollingMillis, TimeUnit.MILLISECONDS);
 			Field[] fields = this.getClass().getDeclaredFields();
 			for (final Field currField : fields) {
 				currField.setAccessible(true);
@@ -229,6 +233,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 
 				if (seleniumTimeOut != null && WorkingEnvironment.getWebdriverType() != null) {
 					setImplicitlyWait(driverWrapper, seleniumTimeOut);
+					setPageloadTimeOut(driverWrapper, pageLoadTimeout);
 				}
 
 				driver = driverWrapper;
@@ -267,6 +272,17 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			webDriverWrapper.getDriver().manage().timeouts().implicitlyWait(miliSecs, TimeUnit.MILLISECONDS);
 		} catch (Exception e) {
 			report.report("unable to set WebDriver implicitlyWait seleniumTimeOut,please check the SUT seleniumTimeOut parameter(Milliseconds  as String)");
+		}
+
+	}
+
+	private void setPageloadTimeOut(WebDriverWrapper webDriverWrapper, String pageLoadTimeout) {
+		try {
+			long miliSecs = Long.valueOf(pageLoadTimeout);
+			report.report("Set WebDriver Page load TimeOut to " + pageLoadTimeout + "(Milliseconds)");
+			webDriverWrapper.getDriver().manage().timeouts().pageLoadTimeout(miliSecs, TimeUnit.MILLISECONDS);
+		} catch (Exception e) {
+			report.report("unable to set WebDriver pageLoadTimeout,please check the SUT pageloadtimeout parameter(Milliseconds  as String)");
 		}
 
 	}
@@ -430,7 +446,6 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, 8); 
 			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(checkBoxXpath)));
-			WebDriverHelper.setFocusToElement(driver, element);
 		} catch (org.openqa.selenium.TimeoutException ex) {
 		}
 		if ( enable && !driver.findElement(By.xpath(checkBoxXpath)).isSelected() ) {
@@ -602,7 +617,6 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			// ignore exception, return null instead
 		}		
 		if (element!=null) {
-			WebDriverHelper.setFocusToElement(driver, element);
 			WebDriverHelper.highlightElement(driver, element);
 			if (WorkingEnvironment.getWebdriverType() == WebDriverType.INTERNET_EXPLORER_DRIVER) {
 				element.click();
@@ -765,7 +779,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			break;
 		}		
 		if (element!=null) {
-			WebDriverHelper.setFocusToElement(driver, element);
+			
 			WebDriverHelper.highlightElement(driver, element);
 
 			if (WorkingEnvironment.getWebdriverType() == WebDriverType.INTERNET_EXPLORER_DRIVER) {
@@ -816,6 +830,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				checkandignoremodaldialog();
 			}
 		} catch (Exception e) {
+			//element.click();
 		}	
 	}
 
@@ -844,7 +859,6 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 
 		if (link!=null){
-			WebDriverHelper.setFocusToElement(driver, link);
 			WebDriverHelper.highlightElement(driver, link);
 			link.click();
 		} else {
@@ -1064,7 +1078,6 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 */
 	public void typeEditBoxByWebElement(WebElement editBox, String textToType) throws Exception{
 		int count = 0 ;
-		WebDriverHelper.setFocusToElement(driver, editBox);
 		editBox.clear();
 		editBox.sendKeys(textToType);
 		if (!editBox.getAttribute("value").contains(textToType) & count < 3){
@@ -1110,7 +1123,6 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 */
 	private void enterTextToField(String xpath , String textToType) {
 		WebElement editBox = driver.findElement(By.xpath(xpath));
-		WebDriverHelper.setFocusToElement(driver, editBox);
 		WebDriverHelper.highlightElement(driver, editBox);
 		editBox.clear();
 		editBox.sendKeys(textToType);
@@ -1131,12 +1143,17 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		/* WebElement we = waitForElementVisibility(By.xpath("//select[contains(@name,'" + selectNameOrID + "') or " +
 				 										  "contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "')]"));
 		 */ 
-		//added by nageswar.bodduri to handle a select element if it is inside a span tag when a name / id couldn't able to identify
-		WebElement we = waitForElementVisibility(By.xpath("//select[contains(@name,'" + selectNameOrID + "') or " + 
+		String xpath = "//select[contains(@name,'" + selectNameOrID + "') or " + 
 				"contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "')] | " + 
-				"//span[@id='"+ selectNameOrID +"']/select | " + "//td[span[contains(@title,"+"'"+ selectNameOrID +"'"+")]]/following-sibling::td/select | " + "//td[contains(text(),"+"'"+ selectNameOrID +"'"+")]/select"));
+				"//span[@id='"+ selectNameOrID +"']/select | " + "//td[span[contains(@title,"+"'"+ selectNameOrID +"'"+")]]/following-sibling::td/select | " + "//td[contains(text(),"+"'"+ selectNameOrID +"'"+")]/select";
+		//added by nageswar.bodduri to handle a select element if it is inside a span tag when a name / id couldn't able to identify
+		WebElement we = waitForElementVisibility(By.xpath(xpath));
 
-		WebDriverHelper.setFocusToElement(driver, we);
+		if(we==null){
+			report.report("Unable to find an element with the xpath: "+ xpath, ReportAttribute.BOLD);
+			return;
+		}
+		
 		WebDriverHelper.highlightElement(driver, we);
 		setSelectedField(we, valueToSelect);
 
@@ -1165,7 +1182,6 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 * @param optionToSelect
 	 */
 	public void selectByWebElement(WebElement selectTag, String optionToSelect) {
-		WebDriverHelper.setFocusToElement(driver, selectTag);
 		WebDriverHelper.highlightElement(driver, selectTag);
 		setSelectedField(selectTag, optionToSelect);
 
@@ -1223,7 +1239,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 
 		WebElement element = waitForElementVisibility(By.xpath(xpath));
-		WebDriverHelper.setFocusToElement(driver, element);	
+			
 		driver.findElement(By.xpath(xpath)).click();
 	}
 	/**
@@ -1788,7 +1804,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 
 	public String getElementText(By by){
 		WebElement element = waitForElementVisibility(by);
-		WebDriverHelper.setFocusToElement(driver, element);
+		
 		return getElementText(element);
 	}
 
@@ -1806,7 +1822,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		try {
 			if (element.isEnabled() && element.isDisplayed()) {
 				System.out.println("Clicking on element using java script click");
-				WebDriverHelper.setFocusToElement(driver, element);
+				
 				((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
 			} else {
 				System.out.println("Unable to click on element");
@@ -1854,6 +1870,28 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	} 
 
 	/**
+	 * Fluent wait
+	 */
+
+	public WebElement fluentWaitForElement(final By by){
+
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+				.withTimeout(30, TimeUnit.SECONDS)
+				.pollingEvery(5, TimeUnit.SECONDS)
+				.ignoring(NoSuchElementException.class);
+
+		WebElement we= wait.until(new Function<WebDriver, WebElement>() {
+			@Override
+			public WebElement apply(WebDriver driver) {
+				return driver.findElement(by);
+			}
+
+		});
+		return we;
+	}
+
+
+	/**
 	 * Clicks a Link : when you can not locate any anchor element by its text.Use this method to locate an anchor tag with its id or name
 	 * You can add other possible ways to identify an anchor tag without link text to existing xpath
 	 * @author nageswar.bodduri
@@ -1873,7 +1911,6 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			WebDriverHelper.highlightElement(driver, element);
 			if (WorkingEnvironment.getWebdriverType() == WebDriverType.INTERNET_EXPLORER_DRIVER) {
 				int count=0;
-				WebDriverHelper.setFocusToElement(driver, element);
 				element.click();
 
 				/*while(isAlertPresent() && count++ < 10){
@@ -1886,7 +1923,6 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 					element.click();*/
 				return;
 			}else{
-				WebDriverHelper.setFocusToElement(driver, element);
 				element.click();
 			}
 

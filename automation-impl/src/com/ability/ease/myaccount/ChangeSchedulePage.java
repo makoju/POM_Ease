@@ -12,11 +12,15 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import jsystem.framework.report.Reporter;
+
+import org.openqa.selenium.By;
 import org.w3c.dom.Document;
 
 import com.ability.ease.auto.common.TestCommonResource;
 import com.ability.ease.auto.common.TimeZoneConversionUtil;
 import com.ability.ease.auto.common.UIActions;
+import com.ability.ease.auto.common.Verify;
 import com.ability.ease.auto.dataStructure.common.AttibuteXMLParser.UIAttributeXMLParser;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
 import com.ability.ease.home.HomePage;
@@ -72,6 +76,30 @@ public class ChangeSchedulePage extends AbstractPageObject {
 				isValueFoundinXML(eligibilityXMLDocument, sXpathExpression,  CSTValue_Eligibility) &
 				isValueFoundinXML(eftXMLDocument, sXpathExpression,  CSTValue_EFT)
 				);
+	}
+	
+	public boolean verifyBlackoutTimeHelpTextinChangeandCustomScheduleWindow(String agency, String starttime, String endtime) throws Exception {
+		int failurecount=0;
+		
+		String expectedblackouthelptext = "Credential Time Window : "+starttime+" - "+endtime;
+		navigateToPage();
+		//Verify the helptext in Changeschedule page
+		clickLink("Change Schedule");
+		selectByNameOrID("user_prov_id", agency.trim());
+		String actualblackouttimehelptext = getElementText(By.xpath("//span[contains(text(),'Credential Time Window')]"));
+		
+		if(!Verify.StringEquals(expectedblackouthelptext, actualblackouttimehelptext)){
+			failurecount++;
+			report.report("Expected and Actual Blackout time helptext doesn't match", Reporter.WARNING);
+		}
+		//verify the helptext in Custom Schedule page
+		clickButton("Custom");
+		actualblackouttimehelptext = getElementText(By.xpath("//span[contains(text(),'Credential Time Window')]"));
+		if(!Verify.StringEquals(expectedblackouthelptext, actualblackouttimehelptext)){
+			failurecount++;
+			report.report("Expected and Actual Blackout time helptext doesn't match", Reporter.WARNING);
+		}
+		return failurecount==0?true:false;
 	}
 
 	private static Document convertStringToDocument(String xmlStr) {

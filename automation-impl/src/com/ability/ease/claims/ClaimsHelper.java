@@ -566,6 +566,69 @@ public class ClaimsHelper extends AbstractPageObject{
 		}
 	}
 
+
+	/**
+	 * This method capture the all rows of total charge column in UB04 form and calculates
+	 * individual charges with final total charges
+	 * @return
+	 * @throws Exception
+	 */
+	public float validateTotalChargeClaimLineCount(String coveredOrNonCovered) throws Exception{
+
+		String temp = null;
+		List<WebElement> lsTotChargesCols = new ArrayList<WebElement>();
+		float actualTotalCharges = 0;
+		int i = 0,size = 0;
+		String coveredOrNonCoveredChargesColumnXPATH = null;
+
+		coveredOrNonCoveredChargesColumnXPATH = setCoveredOrNonCoveredChargesColumnXPATH(coveredOrNonCovered);
+
+		try{
+			if(isElementPresent(By.id(elementprop.getProperty("NEW_UB04_ID")))){
+				if(waitForElementToBeClickable(ByLocator.name, elementprop.getProperty("UB04_LOCK_ICON"), 30) != null){
+					lsTotChargesCols = driver.findElements(By.xpath(coveredOrNonCoveredChargesColumnXPATH));
+					size = lsTotChargesCols.size();
+					if(lsTotChargesCols.size() > 0 ){
+						for(WebElement totChargeLine:lsTotChargesCols){
+							temp = totChargeLine.getAttribute("value");
+							if((!temp.isEmpty() || !temp.equalsIgnoreCase("")) &&  (i < size-1)){
+								actualTotalCharges = actualTotalCharges +  (Float.valueOf(temp));
+							}
+							i++;
+						}
+					}
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return actualTotalCharges;
+	}
+
+	String setTotalChargesCellXPATH(String coveredOrNonCovered){
+		String totalChargesCellXpath = null;
+		if(coveredOrNonCovered.equalsIgnoreCase("COVERED")){
+			totalChargesCellXpath = elementprop.getProperty("FINAL_TOTAL_CHARGES_XPATH");
+		}else if(coveredOrNonCovered.equalsIgnoreCase("NON-COVERED")){
+			totalChargesCellXpath = elementprop.getProperty("FINAL_TOTAL_NON_COVERED_CHARGES_XPATH");
+		}else{
+			report.report("Please provide either Covered or Non-Covered");
+		}
+		return totalChargesCellXpath;
+	}
+
+	String setCoveredOrNonCoveredChargesColumnXPATH(String coveredOrNonCovered){
+		String coveredOrNonCoveredChargesColumnXPATH = null;
+		if(coveredOrNonCovered.equalsIgnoreCase("COVERED")){
+			coveredOrNonCoveredChargesColumnXPATH = elementprop.getProperty("TOTAL_COVERED_CHARGES_COLUMN_XPATH");
+		}else if(coveredOrNonCovered.equalsIgnoreCase("NON-COVERED")){
+			coveredOrNonCoveredChargesColumnXPATH = elementprop.getProperty("TOTAL_NON_COVERED_CHARGES_COLUMN_XPATH");
+		}else{
+			report.report("Please provide either Covered or Non-Covered");
+		}
+		return coveredOrNonCoveredChargesColumnXPATH;
+	}
+
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub

@@ -51,8 +51,7 @@ public class ClaimsSelenium2Impl implements IClaims{
 	
 	@Override
 	public boolean verifyHelpTextInUB04Form() throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		return claimsv2.verifyHelpTextInUB04Form();
 	}
 
 	@Override
@@ -69,8 +68,29 @@ public class ClaimsSelenium2Impl implements IClaims{
 
 	
 	@Override
-	public boolean verifyEditClaimLineOptions(String HIC, String claimLineToEdit)
+	public boolean verifyEditClaimLineOptionAvailability(String claimLineToEdit, String expectedOutput)
 			throws Exception {
-		return claimsv2.verifyEditClaimLineOptions(HIC, claimLineToEdit);
+		return claimsv2.verifyEditClaimLineOptionAvailability(claimLineToEdit, expectedOutput);
+	}
+
+	@Override
+	public boolean openClaimRecordFromAdvanceSearchPage(
+			Map<String, String> mapAttrVal, String patientControlNumber) throws Exception {
+		return claimsv2.openClaimRecordFromAdvanceSearchPage(mapAttrVal, patientControlNumber);
+	}
+
+	@Override
+	public boolean verifyDataInClaimLinePopupWindow() throws Exception {
+		return false;
+	}
+
+	@Override
+	public boolean verifyTotChargesWithIndividualCharges(String coveredOrNonCovered) throws Exception {
+		return claimsv2.verifyTotChargesWithIndividualCharges(coveredOrNonCovered);
+	}
+
+	@Override
+	public boolean checkContentInRelatedClaims() throws Exception {
+		return claimsv2.checkContentInRelatedClaims();
 	}
 }

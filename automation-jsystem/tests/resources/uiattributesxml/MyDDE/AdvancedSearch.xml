@@ -47,7 +47,7 @@
 	
 	<UIAttribute>
 		<locator>Status</locator>
-		<style>Select</style>
+		<style>DropDown</style>
 		<displayName>Status</displayName>
 		<description>Select the status {Denied,Rejected,RTP,Suspense,Paid,Not Paid}</description>
 	</UIAttribute>

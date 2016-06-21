@@ -26,6 +26,13 @@ public interface IClaims {
 
 	public boolean verifyHelpTextInUB04Form()throws Exception;
 
-	public boolean verifyEditClaimLineOptions(String patientControlNumberHIC, String claimLineToEdit)throws Exception;
-
+	public boolean verifyEditClaimLineOptionAvailability(String patientControlNumberHIC, String claimLineToEdit)throws Exception;
+	
+	public boolean openClaimRecordFromAdvanceSearchPage(Map<String, String> mapAttrVal, String patientControlNumber)throws Exception;
+	
+	public boolean verifyDataInClaimLinePopupWindow()throws Exception;
+	
+	public boolean verifyTotChargesWithIndividualCharges(String coveredOrNonCovered)throws Exception;
+	
+	public boolean checkContentInRelatedClaims() throws Exception;
 }

@@ -33,37 +33,46 @@ public class ClaimsPageVersion2 extends AbstractPageObject{
 		super();
 	}
 
-	public boolean verifyEditClaimLineOptions(String HIC, String claimLineToEdit)throws Exception{
+	/**
+	 * This method perform edit claim line,provided that there should be a rejected claim already opened 
+	 * @param HIC
+	 * @param claimLineToEdit
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean verifyEditClaimLineOptionAvailability(String claimLineToEdit, String expectedOutput)throws Exception{
 
-		String renchIconXpath = MessageFormat.format(elementprop.getProperty("RENCH_ICON_XPATH"), "'"+HIC+"'");
+		boolean stepResult = false;
 		String editIconXpath = MessageFormat.format(elementprop.getProperty("EDIT_CLAIM_LINE_XPATH"), "'ub42_"+claimLineToEdit+"'");
-
 		List<WebElement> editMenuList = new ArrayList<WebElement>();
 
-		helper.openRejectedClaimRecordFromAdvanceSearchPage(HIC);
-		if (waitForElementToBeClickable(ByLocator.xpath, searchResPageHdr, 15) != null){
-			WebElement renchIcon = waitForElementToBeClickable(ByLocator.xpath, renchIconXpath, 5);
-			if( renchIcon != null){
-				renchIcon.click();
-				WebElement lockIcon = waitForElementToBeClickable(ByLocator.name, ub04LockIcon, 15);
-				moveToElement(lockIcon);
-				safeJavaScriptClick(ub04LockResubmit);
-				helper.moveToEditIcon(editIconXpath);
-				editMenuList = driver.findElements(By.xpath(elementprop.getProperty("EDIT_MENU_OPTIONS_XPATH")));
+		WebElement lockIcon = waitForElementToBeClickable(ByLocator.name, ub04LockIcon, 60);
 
-				report.report("Options from edit icon menu");
-				for( WebElement we: editMenuList){
-					report.report(we.getText());
+		if (lockIcon != null){
+			moveToElement(lockIcon);
+			safeJavaScriptClick(ub04LockResubmit);
+			helper.moveToEditIcon(editIconXpath);
+			editMenuList = driver.findElements(By.xpath(elementprop.getProperty("EDIT_MENU_OPTIONS_XPATH")));
+			for( WebElement we: editMenuList){
+				if( we.getText().equalsIgnoreCase(expectedOutput)){	
+					report.report( we.getText() + " is availble for given claim line");
+					stepResult = true;
+					break;
 				}
 			}
-
 		}
 
-
-		return failCounter == 0 ? true : false;
+		return stepResult;
 	}
 
 
+	/**
+	 * This method just open a claim record using the filters provided in advanced search page
+	 * @param mapAttrVal
+	 * @param patientControlNumber
+	 * @return
+	 * @throws Exception
+	 */
 	public boolean openClaimRecordFromAdvanceSearchPage(Map<String, String> mapAttrVal, String patientControlNumber)
 			throws Exception{
 
@@ -76,9 +85,9 @@ public class ClaimsPageVersion2 extends AbstractPageObject{
 		UIActions fillscreen = new UIActions();
 		//navigate to MY DDE page
 		navigateToPage();
-		WebElement searchIcon = waitForElementToBeClickable(ByLocator.id, "reportHICSearch", 30);
+		WebElement searchIcon = waitForElementToBeClickable(ByLocator.id, "reportHICSearch", 60);
 		moveToElement(searchIcon);
-		WebElement advancesearchlink = waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty("ADV_SEARCH_XPATH"), 10);
+		WebElement advancesearchlink = waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty("ADV_SEARCH_XPATH"), 30);
 		safeJavaScriptClick(advancesearchlink);
 		report.report("Clicked on Advanced Search link");
 		//fill advance search page filters and click search
@@ -86,10 +95,10 @@ public class ClaimsPageVersion2 extends AbstractPageObject{
 		clickButtonV2(elementprop.getProperty("SEARCH_BUTTON"));
 
 		//wait for search result to be displayed
-		if(waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty(searchResPageHdr), 60) != null){
+		if(waitForElementToBeClickable(ByLocator.xpath, searchResPageHdr, 60) != null){
 			WebElement renchIcon = waitForElementToBeClickable(ByLocator.xpath, claimRenchIconXpath, 30);
 			renchIcon.click();
-			if (waitForElementToBeClickable(ByLocator.name, elementprop.getProperty("UB04_LOCK_ICON"), 30) != null){
+			if (waitForElementToBeClickable(ByLocator.name, ub04LockIcon, 30) != null){
 				report.report("Claim has been opened in edit mode");
 				stepResult = true;
 			}
@@ -99,7 +108,81 @@ public class ClaimsPageVersion2 extends AbstractPageObject{
 	}
 
 
+	public boolean verifyHelpTextInUB04Form() throws Exception{
 
+		boolean result = false;
+		String sFieldValue = null;
+		List<String> lsTitles = new ArrayList<String>();
+
+		navigateToPage();
+		clickLinkV2(ub04Link);
+		List<WebElement> lsUB04Fields = driver.findElements(By.xpath("//input"));
+		for( WebElement field : lsUB04Fields){
+			sFieldValue = field.getAttribute("title");
+			if(sFieldValue != null){
+				lsTitles.add(sFieldValue);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * This method is used to check the individual claim charges with total claim charges for bot covered and non covered
+	 * @param coveredOrNonCovered - COVERED or NOT-COVERED
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean verifyTotChargesWithIndividualCharges(String coveredOrNonCovered)throws Exception{
+		boolean stepResult = false;
+		float expectedTotalCharges = 0;
+		float actualTotalCharges = 0;
+
+		String totalChargesCellXpath = null;
+
+		totalChargesCellXpath = helper.setTotalChargesCellXPATH(coveredOrNonCovered);
+
+		try{
+			expectedTotalCharges = Float.valueOf(helper.getValueOfValueAttr(totalChargesCellXpath));
+			actualTotalCharges = helper.validateTotalChargeClaimLineCount(coveredOrNonCovered);
+
+			if(expectedTotalCharges > 0 && actualTotalCharges  > 0){
+				if(expectedTotalCharges == actualTotalCharges){
+					stepResult = true;
+				}
+			}
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return stepResult;
+	}
+
+	/**
+	 * This method is used to verify the claim content between related claims
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean checkContentInRelatedClaims() throws Exception{
+
+		boolean stepResult = false;
+
+		try{
+			if(isElementPresent(By.id(elementprop.getProperty("NEW_UB04_ID")))){
+				if(waitForElementToBeClickable(ByLocator.name, elementprop.getProperty("UB04_LOCK_ICON"), 30) != null){
+					moveToElement(elementprop.getProperty("RELATED_CLAIMS_LINK_TEXT"));
+					safeJavaScriptClick(elementprop.getProperty("PREVIUOS_EPSD_FINAL_LINK"));
+					if(waitForElementToBeClickable(ByLocator.name, ub04LockIcon, 60) != null){
+						stepResult = true;
+					}
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return stepResult;
+
+	}
 
 	@Override
 	public void assertInPage() {
@@ -109,17 +192,21 @@ public class ClaimsPageVersion2 extends AbstractPageObject{
 
 	@Override
 	public void navigateToPage() throws Exception {
-
-		WebElement myddelink = waitForElementToBeClickable(ByLocator.linktext, myDDELink, 30);
-		String classAttr = myddelink.getAttribute("class");
-
-		if ( myddelink != null) {
-			if( !classAttr.equalsIgnoreCase("topNavAnchor topNavAnchorSelected")){
-				safeJavaScriptClick(myDDELink);
-				report.report("Clicked on MY DDE link");
+		try{
+			WebElement myddelink = waitForElementToBeClickable(ByLocator.linktext, myDDELink, 60);
+			String classAttr = myddelink.getAttribute("class");
+			if ( myddelink != null) {
+				if( classAttr.equalsIgnoreCase("topNavAnchor topNavAnchorSelected") && 
+						waitForElementToBeClickable(ByLocator.id, ub04Link, 30) == null){
+					safeJavaScriptClick(myDDELink);
+					report.report("Clicked on MY DDE link");
+				}else{
+					safeJavaScriptClick(myddelink);
+					waitForElementToBeClickable(ByLocator.id, ub04Link, 30);
+				}
 			}
-		} 
+		}catch(Exception e){
+			report.report("MY DDE Link is not visible to click...!!!");
+		}
 	}
-
-
 }

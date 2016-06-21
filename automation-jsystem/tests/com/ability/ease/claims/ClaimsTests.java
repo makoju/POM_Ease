@@ -36,6 +36,8 @@ public class ClaimsTests extends BaseTest{
 	private String patientControlNumber;
 	private String HIC;
 	private String claimLineEntries;
+	private String expectedOutput;
+	private String coveredOrNonCovered;
 
 	private AttributePair[] attrpair;
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
@@ -198,13 +200,13 @@ public class ClaimsTests extends BaseTest{
 	 */
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify Edit Claim Line Dropdown Options", paramsInclude = { "HIC, claimLineNumberToEdit, testType" })
-	public void verifyEditClaimLineOptions()throws Exception{
+	@TestProperties(name = "Verify Edit Claim Line Option Availability", paramsInclude = { "claimLineNumberToEdit, expectedOutput, testType" })
+	public void verifyEditClaimLineOptionAvailability()throws Exception{
 
-		if(!claims.verifyEditClaimLineOptions(HIC, claimLineNumberToEdit)){
-			report.report("Failed to verify edit claim line dropdown options !!!", Reporter.FAIL);
+		if(!claims.verifyEditClaimLineOptionAvailability(claimLineNumberToEdit, expectedOutput)){
+			report.report("Failed to verify edit claim line in dropdown option !!!", Reporter.FAIL);
 		}else{
-			report.report("Successfully verified edit claim line dropdown options !!!", Reporter.ReportAttribute.BOLD);
+			report.report("Successfully verified edit claim line in dropdown option !!!", Reporter.ReportAttribute.BOLD);
 		}
 	}
 
@@ -222,6 +224,54 @@ public class ClaimsTests extends BaseTest{
 			report.report("Failed to verify edit claim line dropdown options !!!", Reporter.FAIL);
 		}else{
 			report.report("Successfully verified edit claim line dropdown options !!!", Reporter.ReportAttribute.BOLD);
+		}
+	}
+	
+	/**
+	 * Use this method to verify help text of UB04 form fields
+	 * @throws Exception
+	 */
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Help Text Of UB04 Form Fields", paramsInclude = { "testType" })
+	public void verifyHelpTextInUB04Form()throws Exception{
+
+		if(!claims.verifyHelpTextInUB04Form()){
+			report.report("Failed to verify edit claim line dropdown options !!!", Reporter.FAIL);
+		}else{
+			report.report("Successfully verified edit claim line dropdown options !!!", Reporter.ReportAttribute.BOLD);
+		}
+	}
+
+	/**
+	 * Use this method to verify help text of UB04 form fields
+	 * @throws Exception
+	 */
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify ${coveredOrNonCovered} Total Charges With Individual Claim Line Charges", paramsInclude = { "coveredOrNonCovered, testType" })
+	public void verifyTotChargesWithIndividualCharges()throws Exception{
+
+		if(!claims.verifyTotChargesWithIndividualCharges(coveredOrNonCovered)){
+			report.report("Sum of individual charges is not equal to grand total !!!", Reporter.FAIL);
+		}else{
+			report.report("Sum of individual charges is equal to grand total !!!", Reporter.ReportAttribute.BOLD);
+		}
+	}
+
+	/**
+	 * Use this method to verify help text of UB04 form fields
+	 * @throws Exception
+	 */
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Check Content In Related Claims", paramsInclude = { "testType" })
+	public void checkContentInRelatedClaims()throws Exception{
+
+		if(!claims.checkContentInRelatedClaims()){
+			report.report("Claim Contents seems to swapped between the related claims !!!", Reporter.FAIL);
+		}else{
+			report.report("Claim Contents are not swapped !!!", Reporter.ReportAttribute.BOLD);
 		}
 	}
 
@@ -333,5 +383,24 @@ public class ClaimsTests extends BaseTest{
 		this.claimLineEntries = claimLineEntries;
 	}
 
+	public String getExpectedOutput() {
+		return expectedOutput;
+	}
 
+	@ParameterProperties(description = "Please provide expected output")
+	public void setExpectedOutput(String expectedOutput) {
+		this.expectedOutput = expectedOutput;
+	}
+
+	public String getCoveredOrNonCovered() {
+		return coveredOrNonCovered;
+	}
+
+	@ParameterProperties(description = "Please provide either covered or non-covered")
+	public void setCoveredOrNonCovered(String coveredOrNonCovered) {
+		this.coveredOrNonCovered = coveredOrNonCovered;
+	}
+
+	
+	
 }

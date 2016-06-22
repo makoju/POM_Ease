@@ -145,4 +145,11 @@ public class MyAccountSelenium2Impl implements IMyAccount {
 		return csp.verifyBlackoutTimeHelpTextinChangeandCustomScheduleWindow(agency,starttime,endtime);
 	}
 
+	@Override
+	public boolean insertRecordintoJobSchedule(String agencyName,
+			String jobtype, String customerid) {
+
+		return custschedpage.insertRecordintoJobSchedule(agencyName, jobtype, customerid);
+	}
+
 }

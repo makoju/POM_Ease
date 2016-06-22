@@ -102,6 +102,19 @@ public class MyAccountTests extends BaseTest {
 		}
 
 	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Insert record into JobSchedule Table", paramsInclude = { "agency,jobtype,customerid,testType" })
+	public void insertRecordintoJobSchedule()
+	{
+		if(myaccount.insertRecordintoJobSchedule(agency,jobtype,customerid)){
+			report.report("Succesfully Inserted Record into Job Schedule Table !!", Reporter.PASS);
+		}else{
+			report.report("Failed to insert record into Job Schedule Table", Reporter.FAIL);
+		}
+	}
+
 
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )

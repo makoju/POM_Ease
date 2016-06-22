@@ -120,7 +120,7 @@ public class CustomSchedulePage extends AbstractPageObject {
 		return failurecount==0?true:false;
 	}
 	
-	public boolean verifyJobScheduleCurrentAction(String agencyName, String jobtype, String customerid){
+	public boolean insertRecordintoJobSchedule(String agencyName, String jobtype, String customerid){
 		String currentime = new String(""+System.currentTimeMillis());
 		String jobid = currentime.substring(currentime.length()-5, currentime.length());
 		
@@ -136,19 +136,16 @@ public class CustomSchedulePage extends AbstractPageObject {
 			return false;
 		}
 		
-		//Wait for 10 seconds to refresh in database
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-				
-		//get the last row from the jobschedule table whose jobtype is 10
-		String sQueryName = "SELECT * FROM ddez.jobschedule js where js.JobType="+jobtype+" and js.customerid ="+customerid+" order by jobid desc limit 1";
-		ResultSet rs1 = MySQLDBUtil.getResultFromMySQLDB(sQueryName);
-		String currentaction = MySQLDBUtil.getColumnValue(rs1, "CurrentAction");
-		return (currentaction!=null && Verify.StringEquals(currentaction, "Initializing connection"))?true:false;
+		return true;
+	}
+	
+	
+	public boolean verifyJobScheduleCurrentAction(String agencyName, String jobtype, String customerid){
+	//get the last row from the jobschedule table whose jobtype is 10
+			String sQueryName = "SELECT * FROM ddez.jobschedule js where providerid in (select p.id from ddez.provider p where p.DisplayName='"+agencyName+"') and js.JobType="+jobtype+" and js.customerid ="+customerid+" order by jobid desc limit 1";
+			ResultSet rs1 = MySQLDBUtil.getResultFromMySQLDB(sQueryName);
+			String currentaction = MySQLDBUtil.getColumnValue(rs1, "CurrentAction");
+			return (currentaction!=null && Verify.StringEquals(currentaction, "Initializing connection"))?true:false;
 	}
 		
 	public boolean verifyInvalidDDEcredentials(String agency, String credential) throws Exception {

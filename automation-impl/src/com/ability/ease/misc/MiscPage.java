@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import jsystem.framework.report.Reporter; 
+import jsystem.framework.report.Reporter.ReportAttribute;
 
 import org.jdom.Parent;
 import org.openqa.selenium.By;
@@ -161,7 +162,8 @@ public class MiscPage extends AbstractPageObject {
 				wait.until(ExpectedConditions.alertIsPresent());
 
 				if(!verifyAlert("DDE information changed")){
-					report.report("DDE Information Submitted was not acknowledged",Reporter.WARNING);
+					report.report("DDE Information Submitted was not acknowledged. Clearing the alert",ReportAttribute.BOLD);
+					driver.switchTo().alert().accept();
 				}
 			}
 			return true;

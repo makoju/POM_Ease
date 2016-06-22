@@ -36,8 +36,12 @@ public class AdminPage extends AbstractPageObject{
 		if(alert!=null)
 		{
 			report.report(alert.getText());
+			if(alert.getText().matches("User.*added.*")){
+				alert.accept();
+				return true;
+			}
 			alert.accept();
-			return true;
+			return false;
 		}
 		else
 		{

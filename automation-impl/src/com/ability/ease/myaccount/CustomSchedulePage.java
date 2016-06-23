@@ -141,11 +141,20 @@ public class CustomSchedulePage extends AbstractPageObject {
 	
 	
 	public boolean verifyJobScheduleCurrentAction(String agencyName, String jobtype, String customerid){
-	//get the last row from the jobschedule table whose jobtype is 10
+		    if(jobtype.equalsIgnoreCase("11")){
+		    	String sQuery = "SELECT * from ddez.joblog where jobid=(SELECT js.jobid FROM ddez.jobschedule js where providerid in (select p.id from ddez.provider p where p.DisplayName='"+agencyName+"') and js.JobType="+jobtype+" and js.customerid ="+customerid+" order by jobid desc limit 1)";
+		    	ResultSet rs1 = MySQLDBUtil.getResultFromMySQLDB(sQuery);
+				String errorcode = MySQLDBUtil.getColumnValue(rs1, "ErrorCode");
+				return (errorcode!=null && Verify.StringEquals(errorcode, "0"))?true:false;
+		    }
+			//get the last row from the jobschedule table whose jobtype is 10
+		    else{
 			String sQueryName = "SELECT * FROM ddez.jobschedule js where providerid in (select p.id from ddez.provider p where p.DisplayName='"+agencyName+"') and js.JobType="+jobtype+" and js.customerid ="+customerid+" order by jobid desc limit 1";
 			ResultSet rs1 = MySQLDBUtil.getResultFromMySQLDB(sQueryName);
 			String currentaction = MySQLDBUtil.getColumnValue(rs1, "CurrentAction");
 			return (currentaction!=null && Verify.StringEquals(currentaction, "Initializing connection"))?true:false;
+		    }
+	
 	}
 		
 	public boolean verifyInvalidDDEcredentials(String agency, String credential) throws Exception {

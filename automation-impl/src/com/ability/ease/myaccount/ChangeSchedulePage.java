@@ -88,7 +88,7 @@ public class ChangeSchedulePage extends AbstractPageObject {
 			}
 		}
 
-		return failurecount>0?true:false; 
+		return failurecount==0?true:false; 
 	}
 
 	public boolean verifyBlackoutTimeHelpTextinChangeandCustomScheduleWindow(String agency, String starttime, String endtime) throws Exception {
@@ -107,7 +107,7 @@ public class ChangeSchedulePage extends AbstractPageObject {
 		}
 		//verify the helptext in Custom Schedule page
 		clickButton("Custom");
-		actualblackouttimehelptext = getElementText(By.xpath("//span[contains(text(),'Credential Time Window')]"));
+		actualblackouttimehelptext = getElementText(By.xpath("//*[contains(text(),'Credential Time Window')]"));
 		if(!Verify.StringEquals(expectedblackouthelptext, actualblackouttimehelptext)){
 			failurecount++;
 			report.report("Expected and Actual Blackout time helptext doesn't match", Reporter.WARNING);

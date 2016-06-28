@@ -181,6 +181,26 @@ public class MySQLDBUtil {
 		}
 		return lsValues;
 	}
+	
+	public static <CallableStatement> boolean insertEligibilityCheckSP(int userID,String DOB,String Fname,String HIC,String Lname,String sex) {
+        readConnParamsFromWE();
+        initializeDBConnection();
+        try {
+               java.sql.CallableStatement cs = connection.prepareCall("{call ddez.InsertEligibility(?,?,?,?,?,?)}");
+               cs.setInt(1, userID);
+               cs.setString(2, DOB);
+               cs.setString(3, Fname);
+               cs.setString(4,HIC);
+               cs.setString(5, Lname);
+               cs.setString(6, sex);
+               cs.execute();
+               return true;
+
+        } catch (Exception e) {
+               e.printStackTrace();
+               return false;
+        }
+	}
 
 
 	public static void closeAllDBConnections(){

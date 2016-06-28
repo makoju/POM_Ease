@@ -48,6 +48,28 @@ public class EligibilityPage extends AbstractPageObject{
 		else
 			return true;
 	}
+	
+	/**
+	 * @author Anjaneyulu Padavala
+	 * @param mapAttrVal
+	 * @return
+	 */
+	public boolean insertEligibilityCheckWithCompletedStatus(Map<String, String> mapAttrVal) {
+
+		//StringBuilder query = new StringBuilder("INSERT INTO ddez.UserDDERequest (UserID,RequestID,RequestType,ProviderID,Request,ReqStatus,CreateTime,SubmitTime,ExecutionTime,RunOn,CompletionTime,ErrorMessage,Acknowledged,Trace) VALUES(");
+
+		String hic = mapAttrVal.containsKey("HIC")?mapAttrVal.get("HIC"):"";
+		String agency = mapAttrVal.containsKey("Agency")?mapAttrVal.get("Agency"):"";
+		String fname = mapAttrVal.containsKey("First Name")?mapAttrVal.get("First Name"):"";
+		String lname = mapAttrVal.containsKey("Last Name")?mapAttrVal.get("Last Name"):"";
+		String DOB = mapAttrVal.containsKey("DOB")?mapAttrVal.get("DOB"):"12/09/1940";
+		String sex = mapAttrVal.containsKey("Sex")?mapAttrVal.get("Sex"):"F";
+		String appdate = mapAttrVal.containsKey("Application Date")?mapAttrVal.get("Application Date"):"";
+		String servicedate = mapAttrVal.containsKey("Service Date(s)")?mapAttrVal.get("Service Date(s)"):"";
+		
+		return MySQLDBUtil.insertEligibilityCheckSP(1453, DOB, fname, hic, lname, sex);
+		
+	}
 
 	/*public boolean verifyEligibilityStatus(String firstname, String lastname, String status) throws Exception {
 		navigateToPage();

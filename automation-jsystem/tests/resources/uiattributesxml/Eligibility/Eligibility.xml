@@ -58,4 +58,11 @@
 		<description>Supply the Service Date(s) Values like {All, Current Eligibility Information, FromDate(MM/DD/YYYY):ToDate(MM/DD/YYYY)}</description>
 	</UIAttribute>
 	
+	<UIAttribute>
+		<locator>UserName</locator>
+		<style>UserName</style>
+		<displayName>UserName</displayName>
+		<description>Provide the User Name</description>
+	</UIAttribute>
+	
 </UIAttributes>

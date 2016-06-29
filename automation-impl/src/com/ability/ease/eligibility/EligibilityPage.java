@@ -164,18 +164,21 @@ public class EligibilityPage extends AbstractPageObject{
 
 	public boolean verifyHETSActivitiesCompletedStatusReport(String hic,String agency, String firstname, String lastname) throws Exception {
 		int failurecount=0;
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (lastname +", "+firstname).toUpperCase();
+	
 		navigateToPage();
-
-		String firstnamesuffix = firstname.replaceAll("[^0-9]", "");
-		//String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
-		if(!verifyEligibilityRequestStatusCompleted(firstnamesuffix))
+		
+	
+		
+		if(!verifyEligibilityRequestStatusCompleted(firstlastname))
 			return false;
 
 		//Handle the report link of Eligibility Check Request and data validation
 		String expectedreportheader = "ELIGIBILITY CHECK REPORT";
-		if(!navigatetoEligibilityReport(firstnamesuffix))
+		if(!navigatetoEligibilityReport(firstlastname))
 			return false;
-
+		
+		Thread.sleep(6000);
 		//WebElement reportheader = waitForElementVisibility(By.xpath("//td[@class='headergreen']"));
 		WebElement reportheader = waitForElementToBeClickable(ByLocator.xpath, "//td[@class='headergreen']", 30);
 		if(reportheader!=null && !Verify.StringEquals(reportheader.getText(),expectedreportheader)){

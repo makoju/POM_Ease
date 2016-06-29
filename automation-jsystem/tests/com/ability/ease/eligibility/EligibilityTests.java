@@ -432,7 +432,7 @@ public class EligibilityTests extends BaseTest{
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
 	@TestProperties(name = "VerifyResponsePageAndRaw271File", paramsInclude = { "testType, firstname,lastname"})
-	public void VerifyResponsePageAndRaw271FileContents() throws Exception {
+	public void verifyResponsePageAndRaw271FileContents() throws Exception {
 		
 		if(!elig.validateResponsePageAndRawFile(firstname,lastname)) {
 			report.report("Failed to Verify Response And Raw File Contents", Reporter.FAIL);
@@ -448,7 +448,8 @@ public class EligibilityTests extends BaseTest{
 		
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
 		//adding milliseconds to firstname to avoid data duplicate problems
-		mapAttrValues.put("First Name", mapAttrValues.get("First Name")+System.currentTimeMillis());
+		if(mapAttrValues.containsKey("First Name"))
+			mapAttrValues.put("First Name", mapAttrValues.get("First Name")+System.currentTimeMillis());
 
 		keepAsGloablParameter("hic", mapAttrValues.get("HIC"));
 		keepAsGloablParameter("agency", mapAttrValues.get("Agency"));

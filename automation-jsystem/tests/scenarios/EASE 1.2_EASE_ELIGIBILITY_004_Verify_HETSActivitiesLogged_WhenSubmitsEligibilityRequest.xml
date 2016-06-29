@@ -23,6 +23,7 @@
         <antcallback target="t5"/>
         <antcallback target="t6"/>
         <antcallback target="t7"/>
+        <antcallback target="t8"/>
     </target>
     <target name="t0">
         <jsystem showoutput="true">
@@ -50,13 +51,21 @@
     </target>
     <target name="t3">
         <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="84c0a775-4190-47ff-8b66-e035b99c1a0d"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.eligibility.EligibilityTests.insertEligibilityCheckWithCompletedStatus"/>
+        </jsystem>
+    </target>
+    <target name="t4">
+        <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="bc812b04-81ce-47db-94ac-291fca637ba1"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.eligibility.EligibilityTests.submitEligibilityCheck"/>
         </jsystem>
     </target>
-    <target name="t4">
+    <target name="t5">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="42a3a2e7-4057-4900-8799-9b533072e4c9"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -64,7 +73,7 @@
             <test name="com.ability.ease.eligibility.EligibilityTests.VerifyActivityCountIncreasedByOne"/>
         </jsystem>
     </target>
-    <target name="t5">
+    <target name="t6">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="a9fb5a57-019e-4d90-b671-982c5ca53499"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -72,7 +81,7 @@
             <test name="com.ability.ease.eligibility.EligibilityTests.verifyEligibilityStatus"/>
         </jsystem>
     </target>
-    <target name="t6">
+    <target name="t7">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="7eccd9a3-2531-4352-a3dc-4c43dfdfb8cf"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -80,7 +89,7 @@
             <test name="com.ability.ease.eligibility.EligibilityTests.VerifyActivityCountIncreasedByOne"/>
         </jsystem>
     </target>
-    <target name="t7">
+    <target name="t8">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="56a30b95-afaf-4a58-b422-1c77bdbf6e95"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>

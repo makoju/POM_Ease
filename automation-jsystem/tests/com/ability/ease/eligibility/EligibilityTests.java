@@ -441,6 +441,27 @@ public class EligibilityTests extends BaseTest{
 		}	
 	}
 	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Insert Eligibility Check into DB", paramsInclude = { "AttributeNameValueDialogProvider, testType" })
+	public void insertEligibilityCheckWithCompletedStatus() throws Exception {
+		
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		//adding milliseconds to firstname to avoid data duplicate problems
+		mapAttrValues.put("First Name", mapAttrValues.get("First Name")+System.currentTimeMillis());
+
+		keepAsGloablParameter("hic", mapAttrValues.get("HIC"));
+		keepAsGloablParameter("agency", mapAttrValues.get("Agency"));
+		keepAsGloablParameter("lastname", mapAttrValues.get("Last Name"));
+		keepAsGloablParameter("firstname", mapAttrValues.get("First Name"));
+	
+		if(!elig.insertEligibilityCheckWithCompletedStatus(mapAttrValues)) {
+			report.report("Failed to Insert eligibility Check record into DB!!!",	Reporter.FAIL);
+		} else {
+			report.report("Eligibility Check Record Successfully Inserted into DB!!!", Reporter.PASS);
+		}
+	}
+	
 	/*######
 	Getters and Setters
 	######*/

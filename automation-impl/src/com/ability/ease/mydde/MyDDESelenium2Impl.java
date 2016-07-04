@@ -11,8 +11,8 @@ public class MyDDESelenium2Impl implements IMyDDE{
 	private MyDDEPage mydde = new MyDDEPage();
 
 	@Override
-	public boolean verifyPageViewAndOptions() throws Exception {
-		return mydde.verifyPageViewAndOptions();
+	public boolean verifyPageViewAndOptionsUnderBasicView() throws Exception {
+		return mydde.verifyPageViewAndOptionsUnderBasicView();
 	}
 	
 	@Override
@@ -84,17 +84,27 @@ public class MyDDESelenium2Impl implements IMyDDE{
 	public boolean verifyOptionsUnderAdvancedSearch(Map<String, String> mapAttrValues) throws Exception {
 		return mydde.verifyOptionsUnderAdvancedSearch(mapAttrValues);
 	}
+	
+	@Override
+	public boolean verifySaveProfileUnderAdvancedSearch(String agency, String monthsAgo, String saveProfileNameAS) throws Exception {
+		return mydde.verifySaveProfileUnderAdvancedSearch(agency, monthsAgo, saveProfileNameAS);
+	}
 
 	@Override
 	public boolean verifyColumnHeadersInSearchResults(String expectedColumns) throws Exception {
 		return mydde.verifyColumnHeadersInSearchResults(expectedColumns);
 	}
 
-	/*@Override
-	public boolean verifyTotalsForAdvancedSearchResult(String savedProfile) throws Exception {
-		return mydde.verifyTotalsForAdvancedSearchResult(savedProfile);
-	}*/
-
+	@Override
+	public boolean verifyTotalsForAdvancedSearchResult(String betweenDate, String andDate) throws Exception {
+		return mydde.verifyTotalsForAdvancedSearchResult(betweenDate, andDate);
+	}
+	
+	@Override
+	public boolean verifyFiltersInAdvancedSearchResults(String monthsAgo, String agency, String hic, String tob) throws Exception {
+		return mydde.verifyFiltersInAdvancedSearchResults(monthsAgo, agency, hic, tob);
+	}
+	
 	@Override
 	public boolean verifySaveProfileOptionWithDuplicateName(String agency, String monthsAgo, String saveProfileNameAS) throws Exception {
 		return mydde.verifySaveProfileOptionWithDuplicateName(agency, monthsAgo, saveProfileNameAS);
@@ -119,4 +129,8 @@ public class MyDDESelenium2Impl implements IMyDDE{
 	public boolean searchByHICAndNavigatetoPatientInfoScreen(String hic) throws Exception {
 		return mydde.searchByHICAndNavigatetoPatientInfoScreen(hic);
 	}
+
+	
+
+	
 }

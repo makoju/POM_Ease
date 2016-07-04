@@ -1063,7 +1063,9 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		String xpath = "//input[@name='" + editBoxName + "' or " +
 				"@title='" + editBoxName + "' or " +
 				"@id='"+ editBoxName + "' or " +
-				"@type='" + editBoxName + "' ] | //textarea[@name='" + editBoxName + "' or "+" @id='"+ editBoxName + "'] | //td[contains(text(),'"+ editBoxName + "')]/input[@type='text'] |  //table[@id = '"+ editBoxName + "']//input[@type='text'] ";
+				"@type='" + editBoxName + "' ] | //textarea[@name='" + editBoxName + "' or "+" @id='"+ editBoxName + "'] | "
+						+ "//td[contains(text(),'"+ editBoxName + "')]/input[@type='text'] | "
+								+ "//table[@id = '"+ editBoxName + "']//input[@type='text'] | //input[@data-column='"+editBoxName+"']";
 		int count = 0 ;
 		waitForElementVisibility(By.xpath(xpath));
 		enterTextToField (xpath, textToType); 
@@ -1144,8 +1146,9 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				 										  "contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "')]"));
 		 */ 
 		String xpath = "//select[contains(@name,'" + selectNameOrID + "') or " + 
-				"contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "')] | " + 
-				"//span[@id='"+ selectNameOrID +"']/select | " + "//td[span[contains(@title,"+"'"+ selectNameOrID +"'"+")]]/following-sibling::td/select | " + "//td[contains(text(),"+"'"+ selectNameOrID +"'"+")]/select";
+				"contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "') or " + "@class='" + selectNameOrID + "'] | " + 
+				"//span[@id='"+ selectNameOrID +"']/select | " + "//td[span[contains(@title,"+"'"+ selectNameOrID +"'"+")]]/following-sibling::td/select | " +
+				"//td[contains(text(),"+"'"+ selectNameOrID +"'"+")]/select | //select[@data-column='"+selectNameOrID+"']";
 		//added by nageswar.bodduri to handle a select element if it is inside a span tag when a name / id couldn't able to identify
 		WebElement we = waitForElementVisibility(By.xpath(xpath));
 

@@ -3424,19 +3424,15 @@ public class MyDDEReportsPage extends AbstractPageObject {
 	public boolean clickAdvanced() throws Exception{
 		int failurecount = 0;
 		navigateToPage();
-		WebElement pageView = waitForElementToBeClickable(ByLocator.xpath, "//a[@id='reportComplexity']", 30);
+		WebElement pageView = waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty("PAGE_VIEW_XPATH"), 30);
 		if(pageView != null){
 			String viewText = pageView.getText();
 			if(viewText.equalsIgnoreCase("Advanced")){
-				clickLink("Advanced");
+				clickLink(elementprop.getProperty("ADVANCED_LINKTEXT"));
 			}
 		}else{
 			failurecount++;
 		}
 		return failurecount == 0 ? true : false;
 	}
-
-
-
-
 }

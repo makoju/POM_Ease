@@ -656,7 +656,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				"//input[@type='" + btnName +"'] | "+
 				"//input[@value='" + btnName + "'] | //input[contains(@value,'" + btnName+ "')] | //input[(@title='" + btnName + "')] | //input[(@name='" + btnName + "')] | " +
 				"//input[@id='" + btnName + "'] | //span[@id='" + btnName + "'] | //span[contains(text(),'" + btnName + "')]/following-sibling::span[@role='img'] | "+ 				
-				"//span[contains(text(),'" + btnName + "')][@class='x-btn-inner x-btn-inner-center']";
+				"//span[contains(text(),'" + btnName + "')][@class='x-btn-inner x-btn-inner-center'] | //td[@id='"+btnName+"']";
 
 		clickOnElement(ByLocator.xpath, btnXpath, timeoutInSeconds);
 	}
@@ -1483,7 +1483,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 
 		if(webElement==null)
-			report.report("waited for "+timeOutInSeconds+" seconds for the WebElement to be visible but not found", ReportAttribute.BOLD);
+			report.report("waited for "+timeOutInSeconds+" seconds for the WebElement to be visible but not found. Identifier: "+by.toString(), ReportAttribute.BOLD);
 
 		return webElement;
 	}

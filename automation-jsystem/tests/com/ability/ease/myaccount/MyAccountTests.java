@@ -108,7 +108,12 @@ public class MyAccountTests extends BaseTest {
 	@TestProperties(name = "Insert record into JobSchedule Table", paramsInclude = { "agency,jobtype,customerid,testType" })
 	public void insertRecordintoJobSchedule()
 	{
-		if(myaccount.insertRecordintoJobSchedule(agency,jobtype,customerid)){
+		String currentime = new String(""+System.currentTimeMillis());
+		String jobid = currentime.substring(currentime.length()-5, currentime.length());
+	
+		globalParamMap.put("jobid", jobid);
+		
+		if(myaccount.insertRecordintoJobSchedule(agency,jobtype,jobid,customerid)){		
 			report.report("Succesfully Inserted Record into Job Schedule Table !!", Reporter.PASS);
 		}else{
 			report.report("Failed to insert record into Job Schedule Table", Reporter.FAIL);
@@ -121,7 +126,8 @@ public class MyAccountTests extends BaseTest {
 	@TestProperties(name = "Verify JobSchedule CurrentAction for ${agency}", paramsInclude = { "agency,jobtype,customerid,testType" })
 	public void verifyJobScheduleCurrentAction()
 	{
-		if(myaccount.verifyJobScheduleCurrentAction(agency,jobtype,customerid)){
+		String jobid = globalParamMap.get("jobid");
+		if(myaccount.verifyJobScheduleCurrentAction(agency,jobtype,jobid,customerid)){
 			report.report("Succesfully verified Job Schedule Current Action as 'Initializing connection' !!", Reporter.PASS);
 		}else{
 			report.report("Failed to Verify Job Schedule Current Action as 'Initializing connection' ", Reporter.FAIL);
@@ -624,4 +630,5 @@ public class MyAccountTests extends BaseTest {
 	public void setCustomerid(String customerid) {
 		this.customerid = customerid;
 	}
+
 }

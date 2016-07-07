@@ -50,8 +50,8 @@ public class MyAccountSelenium2Impl implements IMyAccount {
 	}
 
 	@Override
-	public boolean verifyJobScheduleCurrentAction(String agencyName, String jobtype, String customerid) {
-		return custschedpage.verifyJobScheduleCurrentAction(agencyName,jobtype, customerid);
+	public boolean verifyJobScheduleCurrentAction(String agencyName, String jobtype, String jobid, String customerid) {
+		return custschedpage.verifyJobScheduleCurrentAction(agencyName,jobtype, jobid, customerid);
 	}
 
 	@Override
@@ -147,9 +147,9 @@ public class MyAccountSelenium2Impl implements IMyAccount {
 
 	@Override
 	public boolean insertRecordintoJobSchedule(String agencyName,
-			String jobtype, String customerid) {
+			String jobtype, String jobid, String customerid) {
 
-		return custschedpage.insertRecordintoJobSchedule(agencyName, jobtype, customerid);
+		return custschedpage.insertRecordintoJobSchedule(agencyName, jobtype, jobid, customerid);
 	}
 
 }

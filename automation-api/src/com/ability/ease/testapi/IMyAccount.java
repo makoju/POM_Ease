@@ -10,8 +10,8 @@ public interface IMyAccount{
 	public boolean verifyChangeSchedule(Map<String,String> mapAttrValues)throws Exception;
 	public boolean submitCustomSchedule(Map<String,String> mapAttrValues, String expectedalertmessage)throws Exception;
 	public boolean verifyCustomSchedule(String agencyName,String sDay, String EndDay, String runtime, String credential,String timezone, int rownumber);
-	public boolean verifyJobScheduleCurrentAction(String agencyName, String jobtype, String customerid);
-	public boolean insertRecordintoJobSchedule(String agencyName, String jobtype, String customerid);
+	public boolean verifyJobScheduleCurrentAction(String agencyName, String jobtype, String jobid, String customerid);
+	public boolean insertRecordintoJobSchedule(String agencyName, String jobtype, String jobid, String customerid);
 	public boolean verifyOptionsUnderAddFISSDDESetup() throws Exception;
 	public boolean addFISSDDESetup(String username, String groupname,String agencies, boolean isnewcustomer) throws Exception;
 	public boolean setupDDECredential(String groupname, String ddeuserid, String ddepassword) throws Exception;

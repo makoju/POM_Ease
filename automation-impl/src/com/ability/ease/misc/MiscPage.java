@@ -84,7 +84,7 @@ public class MiscPage extends AbstractPageObject {
 				}
 				isLoggedIn = false;
 				//Once logged out from the current user session, Lets switch to mainwindow
-				driver.switchTo().window(mainWindowHanlde); 
+				driver.switchTo().window(mainWindowHanlde);
 
 				/*try {
 						report.report("QUIT method called after logging out user "+ currentLoggedInUser +"...Closing all browser instances!!!");

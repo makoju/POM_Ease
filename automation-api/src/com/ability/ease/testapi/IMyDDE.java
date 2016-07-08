@@ -2,9 +2,6 @@ package com.ability.ease.testapi;
 
 import java.util.Map;
 
-import com.ability.ease.auto.enums.tests.SelectTimeframe;
-import com.ability.ease.auto.enums.tests.Status;
-
 public interface IMyDDE {
 
 	boolean verifyPageViewAndOptionsUnderBasicView() throws Exception;

@@ -21,14 +21,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import jsystem.framework.report.Reporter;
 import jsystem.framework.report.Reporter.ReportAttribute;
 
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -105,7 +103,7 @@ public class ClaimsHelper extends AbstractPageObject{
 				waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 60);
 				return;
 			}else{
-				
+
 			}
 		}
 	}
@@ -279,7 +277,7 @@ public class ClaimsHelper extends AbstractPageObject{
 		if( totalCoveredCharges != 0 && totalNonCoveredCharges != 0){
 			totals = new float[]{round(totalCoveredCharges,2), round(totalNonCoveredCharges,2)};
 		}else{
-			report.report("Can not read totals from JSYSTEM", report.WARNING);
+			report.report("Can not read totals from JSYSTEM", Reporter.WARNING);
 			totals = new float[]{0,0};
 		}
 		return totals;
@@ -298,7 +296,7 @@ public class ClaimsHelper extends AbstractPageObject{
 		if( sActualTotals != null && sActualNonCoveredTotals != null){
 			totals = new float[]{Float.valueOf(sActualTotals), Float.valueOf(sActualNonCoveredTotals)};
 		}else{
-			report.report("Can not read totals from UB04 form", report.WARNING);
+			report.report("Can not read totals from UB04 form", Reporter.WARNING);
 			totals = new float[]{0, 0};
 		}
 		return totals;
@@ -356,6 +354,24 @@ public class ClaimsHelper extends AbstractPageObject{
 			}
 		}else{
 			report.report("Unable to get the total claim number before 0001 rev code");
+		}
+	}
+
+	public void moveAndClick(String claimLineNumberToAdd, String position) throws Exception{
+
+		String xPathToIdentifyAtWhichLineToAdd = "//*[@name='ub42_"+claimLineNumberToAdd+"']";
+		moveToEditIcon(xPathToIdentifyAtWhichLineToAdd);
+		waitForElementVisibility(By.id("editmenutext"));
+		if(isElementPresent(By.id("editmenutext"))){
+			if(position.equalsIgnoreCase("before")){
+				safeJavaScriptClick("Add claim line before");
+				report.report("Clicked on before at line nuber : "+ claimLineNumberToAdd);
+			}else if(position.equalsIgnoreCase("after")){
+				safeJavaScriptClick("Add claim line after");
+				report.report("Clicked on after at line nuber : "+ claimLineNumberToAdd);
+			}else{
+				report.report("Please provide correct position either before or after in jsystem");
+			}
 		}
 	}
 
@@ -585,17 +601,16 @@ public class ClaimsHelper extends AbstractPageObject{
 
 		try{
 			if(isElementPresent(By.id(elementprop.getProperty("NEW_UB04_ID")))){
-				if(waitForElementToBeClickable(ByLocator.name, elementprop.getProperty("UB04_LOCK_ICON"), 30) != null){
-					lsTotChargesCols = driver.findElements(By.xpath(coveredOrNonCoveredChargesColumnXPATH));
-					size = lsTotChargesCols.size();
-					if(lsTotChargesCols.size() > 0 ){
-						for(WebElement totChargeLine:lsTotChargesCols){
-							temp = totChargeLine.getAttribute("value");
-							if((!temp.isEmpty() || !temp.equalsIgnoreCase("")) &&  (i < size-1)){
-								actualTotalCharges = actualTotalCharges +  (Float.valueOf(temp));
-							}
-							i++;
+				lsTotChargesCols = driver.findElements(By.xpath(coveredOrNonCoveredChargesColumnXPATH));
+				size = lsTotChargesCols.size();
+				if(lsTotChargesCols.size() > 0 ){
+					for(WebElement totChargeLine:lsTotChargesCols){
+						temp = totChargeLine.getAttribute("value");
+						if((!temp.isEmpty() || !temp.equalsIgnoreCase("")) &&  (i < size-1)){
+							actualTotalCharges = round(actualTotalCharges,2) +  round(Float.valueOf(temp),2);
+
 						}
+						i++;
 					}
 				}
 			}
@@ -627,6 +642,12 @@ public class ClaimsHelper extends AbstractPageObject{
 			report.report("Please provide either Covered or Non-Covered");
 		}
 		return coveredOrNonCoveredChargesColumnXPATH;
+	}
+
+	public boolean comeBackToHomePage() throws Exception{
+		String expectedAlertText = "If you leave this page you will lose any changes you have made. Are you sure you wish to continue?";
+		clickLinkV2(elementprop.getProperty("CLAIM_HOME_ID"));
+		return verifyAlert(expectedAlertText);
 	}
 
 	@Override

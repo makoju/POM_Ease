@@ -166,7 +166,7 @@ public class AddCustomerPage extends AbstractPageObject{
 	{
 		clickLink("Find Customer...");
 		typeEditBox("customer_name",customerName);	
-		clickButtonV2("searchSubmitButton");
+		clickButtonV2("Submit");
 		if(waitForElementVisibility(By.linkText(customerName)) != null){
 			return true;
 		}

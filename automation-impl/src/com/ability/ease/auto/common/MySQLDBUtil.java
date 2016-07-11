@@ -99,7 +99,7 @@ public class MySQLDBUtil {
 	 */
 	public static String getColumnValue(ResultSet oResultSet, String sColumnName){
 		String sColumnValue = null;
-		int iColumnValue = 0;
+		int iColumnValue = 0, type=0;
 
 		ResultSetMetaData metaData=null;
 		try {
@@ -108,11 +108,20 @@ public class MySQLDBUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		try {
+			for(int i=1;i<=metaData.getColumnCount();i++){
+				if(sColumnName.equalsIgnoreCase(metaData.getColumnName(i))){
+					type = metaData.getColumnType(i);
+					break;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		try {
-			for (int i = 1; i <= metaData.getColumnCount(); i++) {
-
-				int type = metaData.getColumnType(i);
 				while( oResultSet.next()){
 					if (type == Types.VARCHAR) {
 						sColumnValue = oResultSet.getString(sColumnName);
@@ -121,9 +130,13 @@ public class MySQLDBUtil {
 						iColumnValue = oResultSet.getInt(sColumnName);
 						return String.valueOf(iColumnValue);
 					}
+					else if(type == Types.DECIMAL){
+						iColumnValue = oResultSet.getInt(sColumnName);
+						return String.valueOf(iColumnValue);
+					}
 				}
 			}
-		} catch (SQLException e) {
+		 catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -180,6 +193,26 @@ public class MySQLDBUtil {
 			e.printStackTrace();
 		}
 		return lsValues;
+	}
+	
+	public static <CallableStatement> boolean insertEligibilityCheckSP(int userID,String DOB,String Fname,String HIC,String Lname,String sex) {
+        readConnParamsFromWE();
+        initializeDBConnection();
+        try {
+               java.sql.CallableStatement cs = connection.prepareCall("{call ddez.InsertEligibility(?,?,?,?,?,?)}");
+               cs.setInt(1, userID);
+               cs.setString(2, DOB);
+               cs.setString(3, Fname);
+               cs.setString(4,HIC);
+               cs.setString(5, Lname);
+               cs.setString(6, sex);
+               cs.execute();
+               return true;
+
+        } catch (Exception e) {
+               e.printStackTrace();
+               return false;
+        }
 	}
 
 

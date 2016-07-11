@@ -432,13 +432,35 @@ public class EligibilityTests extends BaseTest{
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
 	@TestProperties(name = "VerifyResponsePageAndRaw271File", paramsInclude = { "testType, firstname,lastname"})
-	public void VerifyResponsePageAndRaw271FileContents() throws Exception {
+	public void verifyResponsePageAndRaw271FileContents() throws Exception {
 		
 		if(!elig.validateResponsePageAndRawFile(firstname,lastname)) {
 			report.report("Failed to Verify Response And Raw File Contents", Reporter.FAIL);
 		} else {
 			report.report("Successfully verified Response Page and Raw File Contents", Reporter.PASS);
 		}	
+	}
+	
+	@Test(timeout = TEST_TIMEOUT)
+	@SupportTestTypes(testTypes = { TestType.Selenium2 })
+	@TestProperties(name = "Insert Eligibility Check into DB", paramsInclude = { "AttributeNameValueDialogProvider, testType" })
+	public void insertEligibilityCheckWithCompletedStatus() throws Exception {
+		
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		//adding milliseconds to firstname to avoid data duplicate problems
+		if(mapAttrValues.containsKey("First Name"))
+			mapAttrValues.put("First Name", mapAttrValues.get("First Name")+System.currentTimeMillis());
+
+		keepAsGloablParameter("hic", mapAttrValues.get("HIC"));
+		keepAsGloablParameter("agency", mapAttrValues.get("Agency"));
+		keepAsGloablParameter("lastname", mapAttrValues.get("Last Name"));
+		keepAsGloablParameter("firstname", mapAttrValues.get("First Name"));
+	
+		if(!elig.insertEligibilityCheckWithCompletedStatus(mapAttrValues)) {
+			report.report("Failed to Insert eligibility Check record into DB!!!",	Reporter.FAIL);
+		} else {
+			report.report("Eligibility Check Record Successfully Inserted into DB!!!", Reporter.PASS);
+		}
 	}
 	
 	/*######

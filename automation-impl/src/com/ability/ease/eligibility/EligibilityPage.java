@@ -49,6 +49,28 @@ public class EligibilityPage extends AbstractPageObject{
 			return true;
 	}
 
+	/**
+	 * @author Anjaneyulu Padavala
+	 * @param mapAttrVal
+	 * @return
+	 */
+	public boolean insertEligibilityCheckWithCompletedStatus(Map<String, String> mapAttrVal) {
+
+		//StringBuilder query = new StringBuilder("INSERT INTO ddez.UserDDERequest (UserID,RequestID,RequestType,ProviderID,Request,ReqStatus,CreateTime,SubmitTime,ExecutionTime,RunOn,CompletionTime,ErrorMessage,Acknowledged,Trace) VALUES(");
+
+		String hic = mapAttrVal.containsKey("HIC")?mapAttrVal.get("HIC"):"";
+		String agency = mapAttrVal.containsKey("Agency")?mapAttrVal.get("Agency"):"";
+		String fname = mapAttrVal.containsKey("First Name")?mapAttrVal.get("First Name"):"";
+		String lname = mapAttrVal.containsKey("Last Name")?mapAttrVal.get("Last Name"):"";
+		String DOB = mapAttrVal.containsKey("DOB")?mapAttrVal.get("DOB"):"12/09/1940";
+		String sex = mapAttrVal.containsKey("Sex")?mapAttrVal.get("Sex"):"F";
+		String appdate = mapAttrVal.containsKey("Application Date")?mapAttrVal.get("Application Date"):"";
+		String servicedate = mapAttrVal.containsKey("Service Date(s)")?mapAttrVal.get("Service Date(s)"):"";
+
+		return MySQLDBUtil.insertEligibilityCheckSP(1453, DOB, fname, hic, lname, sex);
+
+	}
+
 	/*public boolean verifyEligibilityStatus(String firstname, String lastname, String status) throws Exception {
 		navigateToPage();
 		//validation
@@ -142,18 +164,21 @@ public class EligibilityPage extends AbstractPageObject{
 
 	public boolean verifyHETSActivitiesCompletedStatusReport(String hic,String agency, String firstname, String lastname) throws Exception {
 		int failurecount=0;
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (lastname +", "+firstname).toUpperCase();
+
 		navigateToPage();
 
-		String firstnamesuffix = firstname.replaceAll("[^0-9]", "");
-		//String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
-		if(!verifyEligibilityRequestStatusCompleted(firstnamesuffix))
+
+
+		if(!verifyEligibilityRequestStatusCompleted(firstlastname))
 			return false;
 
 		//Handle the report link of Eligibility Check Request and data validation
 		String expectedreportheader = "ELIGIBILITY CHECK REPORT";
-		if(!navigatetoEligibilityReport(firstnamesuffix))
+		if(!navigatetoEligibilityReport(firstlastname))
 			return false;
 
+		Thread.sleep(6000);
 		//WebElement reportheader = waitForElementVisibility(By.xpath("//td[@class='headergreen']"));
 		WebElement reportheader = waitForElementToBeClickable(ByLocator.xpath, "//td[@class='headergreen']", 30);
 		if(reportheader!=null && !Verify.StringEquals(reportheader.getText(),expectedreportheader)){
@@ -744,8 +769,8 @@ public class EligibilityPage extends AbstractPageObject{
 		//TODO - Need to validate repsonse page with A7
 		return false;
 	}
-	
-	
+
+
 
 	/**
 	 * This method will check for both acknowledge as well as non-acknowledged eligibility checks displaying in the completed activity log or not 
@@ -1047,7 +1072,7 @@ public class EligibilityPage extends AbstractPageObject{
 
 		return (provid == providerid && changedto)?true:false;
 	}
-	
+
 
 	public boolean validateResponsePageAndRawFile(String firstname, String lastname) throws Exception {
 		navigateToPage();
@@ -1055,8 +1080,8 @@ public class EligibilityPage extends AbstractPageObject{
 		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 		navigatetoEligibilityReport(firstlastname);
 		//TODO - Need to validate raw271 page content with response page content
-		
-	
+
+
 		return false;
 	}
 

@@ -655,7 +655,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				"//input[@type='" + btnName +"'] | "+
 				"//input[@value='" + btnName + "'] | //input[contains(@value,'" + btnName+ "')] | //input[(@title='" + btnName + "')] | //input[(@name='" + btnName + "')] | " +
 				"//input[@id='" + btnName + "'] | //span[@id='" + btnName + "'] | //span[contains(text(),'" + btnName + "')]/following-sibling::span[@role='img'] | "+ 				
-				"//span[contains(text(),'" + btnName + "')][@class='x-btn-inner x-btn-inner-center']";
+				"//span[contains(text(),'" + btnName + "')][@class='x-btn-inner x-btn-inner-center'] | //td[@id='"+btnName+"']";
 
 		clickOnElement(ByLocator.xpath, btnXpath, timeoutInSeconds);
 	}
@@ -1062,7 +1062,9 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		String xpath = "//input[@name='" + editBoxName + "' or " +
 				"@title='" + editBoxName + "' or " +
 				"@id='"+ editBoxName + "' or " +
-				"@type='" + editBoxName + "' ] | //textarea[@name='" + editBoxName + "' or "+" @id='"+ editBoxName + "'] | //td[contains(text(),'"+ editBoxName + "')]/input[@type='text'] |  //table[@id = '"+ editBoxName + "']//input[@type='text'] ";
+				"@type='" + editBoxName + "' ] | //textarea[@name='" + editBoxName + "' or "+" @id='"+ editBoxName + "'] | "
+						+ "//td[contains(text(),'"+ editBoxName + "')]/input[@type='text'] | "
+								+ "//table[@id = '"+ editBoxName + "']//input[@type='text'] | //input[@data-column='"+editBoxName+"']";
 		int count = 0 ;
 		waitForElementVisibility(By.xpath(xpath));
 		enterTextToField (xpath, textToType); 
@@ -1143,8 +1145,9 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				 										  "contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "')]"));
 		 */ 
 		String xpath = "//select[contains(@name,'" + selectNameOrID + "') or " + 
-				"contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "')] | " + 
-				"//span[@id='"+ selectNameOrID +"']/select | " + "//td[span[contains(@title,"+"'"+ selectNameOrID +"'"+")]]/following-sibling::td/select | " + "//td[contains(text(),"+"'"+ selectNameOrID +"'"+")]/select";
+				"contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "') or " + "@class='" + selectNameOrID + "'] | " + 
+				"//span[@id='"+ selectNameOrID +"']/select | " + "//td[span[contains(@title,"+"'"+ selectNameOrID +"'"+")]]/following-sibling::td/select | " +
+				"//td[contains(text(),"+"'"+ selectNameOrID +"'"+")]/select | //select[@data-column='"+selectNameOrID+"']";
 		//added by nageswar.bodduri to handle a select element if it is inside a span tag when a name / id couldn't able to identify
 		WebElement we = waitForElementVisibility(By.xpath(xpath));
 
@@ -1482,7 +1485,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 
 		if(webElement==null)
-			report.report("waited for "+timeOutInSeconds+" seconds for the WebElement to be visible but not found", ReportAttribute.BOLD);
+			report.report("waited for "+timeOutInSeconds+" seconds for the WebElement to be visible but not found. Identifier: "+by.toString(), ReportAttribute.BOLD);
 
 		return webElement;
 	}

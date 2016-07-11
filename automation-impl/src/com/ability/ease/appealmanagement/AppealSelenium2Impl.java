@@ -43,5 +43,11 @@ public class AppealSelenium2Impl implements IAppealManagement {
 		return appeal.verifyExportOptionsUnderAppealsReport();
 	}
 
+	@Override
+	public boolean verifyClaimTagMultiSelectListBoxinAdnacedSearch()
+			throws Exception {
+		return appeal.verifyClaimTagMultiSelectListBoxinAdnacedSearch();
+	}
+
 	
 }

@@ -1,5 +1,6 @@
 package com.ability.ease.appealmanagement;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.Verify;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.home.HomePage;
@@ -172,7 +174,7 @@ public class AppealManagementPage extends AbstractPageObject{
 		moveToElement(reporthicsearch);
 		typeEditBox("reportHICEntry", "000002936A");
 		clickButton("GO");
-		
+
 		Thread.sleep(3000);
 		WebElement patientinformationheader = waitForElementVisibility(By.cssSelector(".headergreen"));
 		if(patientinformationheader!=null){
@@ -236,7 +238,7 @@ public class AppealManagementPage extends AbstractPageObject{
 			return false;
 		}
 	}
-	
+
 
 	public boolean verifyExportOptionsUnderAppealsReport() throws Exception {
 		int i=0;
@@ -246,12 +248,76 @@ public class AppealManagementPage extends AbstractPageObject{
 		moveToElement("Export");
 		List<WebElement> lsexportoptions = findElements(By.xpath("//ul[@id='reportExportMenu']/li/a"));
 		actuals = new String[lsexportoptions.size()];
-		
+
 		for(WebElement exportoption:lsexportoptions)
 			actuals[i++] = new String(exportoption.getText());
-		
-		return Verify.verifyArrayofStrings(expectedoptions, actuals, true);
 
+		return Verify.verifyArrayofStrings(expectedoptions, actuals, true);
+	}
+
+
+	public boolean verifyClaimTagMultiSelectListBoxinAdnacedSearch() throws Exception {
+		List<String> expectedclaimappealtags = new ArrayList<String>();
+		List<String> expectedclaimfollowuptags = new ArrayList<String>();
+		
+		List<String> actualclaimappealtags = new ArrayList<String>();
+		List<String> actualclaimfollowuptags = new ArrayList<String>();
+		
+		int i=0;
+		navigateToPage();
+		WebElement reporthicsearch = waitForElementVisibility(By.id(elementprop.getProperty("REPORT_HIC_SEARCH")));
+		moveToElement(reporthicsearch);
+		clickLink("Advanced Search");
+		Thread.sleep(3000);
+		WebElement selectelement = waitForElementVisibility(By.id("UserClaimAppealTag"));
+		Select select = new Select(selectelement);
+		List<WebElement> lsclaimtagoptions = select.getOptions();
+		report.report("ClaimTags displayed in UI are:");
+		for(WebElement claimtag: lsclaimtagoptions){
+			if(!claimtag.getText().trim().equalsIgnoreCase("All"))
+				actualclaimappealtags.add(claimtag.getText().trim());
+		}		
+		
+		ResultSet rs = MySQLDBUtil.getResultFromMySQLDB("select TagName from ddez.systemclaimtag where TagCategory='APPEAL'");
+		
+		while(rs.next())
+			expectedclaimappealtags.add(rs.getString(1).trim());
+		
+		if(!Verify.listEquals(expectedclaimappealtags,actualclaimappealtags)){
+			report.report("Expected and Actual APPEAL claim Tags are not equal", Reporter.WARNING);
+			return false;
+		}
+		
+		WebElement selectclaimfollowup = waitForElementVisibility(By.id("UserClaimFollowupTag"));
+		Select claimfollowup = new Select(selectclaimfollowup);
+		List<WebElement> lsclaimfollowuptagoptions = claimfollowup.getOptions();
+		report.report("ClaimTags displayed in UI are:");
+		for(WebElement claimtag: lsclaimfollowuptagoptions){
+			if(!claimtag.getText().trim().equalsIgnoreCase("All"))
+				actualclaimfollowuptags.add(claimtag.getText().trim());
+		}		
+		
+		
+		
+		rs = MySQLDBUtil.getResultFromMySQLDB("select TagName from ddez.systemclaimtag where TagCategory='FOLLOWUP'");
+		while(rs.next())
+			expectedclaimfollowuptags.add(rs.getString(1).trim());
+		
+		if(!Verify.listEquals(actualclaimfollowuptags, expectedclaimfollowuptags)){
+			report.report("Expected and Actual APPEAL claim Tags are not equal", Reporter.WARNING);
+			return false;
+		}
+		
+		/*Thread.sleep(3000);
+		WebElement advancesearchheader = waitForElementVisibility(By.cssSelector(".headerblue"));
+		if(advancesearchheader!=null){
+			String headertText = advancesearchheader.getText();
+			if(!Verify.StringMatches(headertText, "ADVANCED SEARCH")){
+				report.report("Unable to navigate to Advanced Search Screen", Reporter.WARNING);
+				return false;
+			}
+		}*/
+		return true;
 	}
 
 

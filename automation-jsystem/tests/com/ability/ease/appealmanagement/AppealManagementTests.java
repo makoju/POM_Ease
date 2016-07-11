@@ -123,6 +123,18 @@ public class AppealManagementTests extends BaseTest{
 			report.report("Failed to verify Agency Select option under appeals claims submission report.", Reporter.FAIL);
 		}
 	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify the Claim Tag MultiSelectListBox Option in Advacned Search", paramsInclude = { "testType" })
+	public void verifyClaimTagMultiSelectListBoxinAdnacedSearch()throws Exception{
+		if(appeal.verifyClaimTagMultiSelectListBoxinAdnacedSearch()){
+			report.report("Successfully verified Claim Tag MultiSelectListBox Option in Advacned Search.", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to verify Claim Tag MultiSelectListBox Option in Advacned Search.", Reporter.FAIL);
+		}
+	}
+	
 
 	public String getMonthsAgo() {
 		return monthsAgo;

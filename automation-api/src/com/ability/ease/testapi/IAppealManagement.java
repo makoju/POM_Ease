@@ -9,4 +9,5 @@ public interface IAppealManagement {
 	boolean verifyHICSearchOptionUnderAppealsReport() throws Exception;
 	boolean verifyAgencyOptionUnderAppealsReport() throws Exception;
 	boolean verifyExportOptionsUnderAppealsReport() throws Exception;
+	boolean verifyClaimTagMultiSelectListBoxinAdnacedSearch() throws Exception;
 }

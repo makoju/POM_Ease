@@ -66,6 +66,51 @@ public class AppealManagementTests extends BaseTest{
 			report.report("Failed to verify whether the Tag drop down is displaying only the tags that are not added earlier.", Reporter.FAIL);
 		}
 	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify the TimeFrame Options under appeals report", paramsInclude = { "testType" })
+	public void verifyTimeFrameOptionsFunctionalityUnderAppealsReport()throws Exception{
+		if(appeal.verifyTimeFrameOptionsFunctionalityUnderAppealsReport()){
+			report.report("Successfully verified Timeframe options under appeals claims submission report.", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to verify Timeframe options under appeals claims submission report.", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify the Menu Options under appeals report", paramsInclude = { "testType" })
+	public void verifyMenuOptionsAvailableUnderAppealsReport()throws Exception{
+		if(appeal.verifyMenuOptionsAvailableUnderAppealsReport()){
+			report.report("Successfully verified Menu options under appeals claims submission report.", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to verify Menu options under appeals claims submission report.", Reporter.FAIL);
+		}
+	}
+	
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify the HIC Search Options under appeals report", paramsInclude = { "testType" })
+	public void verifyHICSearchOptionUnderAppealsReport()throws Exception{
+		if(appeal.verifyHICSearchOptionUnderAppealsReport()){
+			report.report("Successfully verified HIC Search options under appeals claims submission report.", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to verify HIC Search options under appeals claims submission report.", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify the Agency Select Option under appeals report", paramsInclude = { "testType" })
+	public void verifyAgencyOptionUnderAppealsReport()throws Exception{
+		if(appeal.verifyAgencyOptionUnderAppealsReport()){
+			report.report("Successfully verified Agency Select option under appeals claims submission report.", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to verify Agency Select option under appeals claims submission report.", Reporter.FAIL);
+		}
+	}
 
 	public String getMonthsAgo() {
 		return monthsAgo;

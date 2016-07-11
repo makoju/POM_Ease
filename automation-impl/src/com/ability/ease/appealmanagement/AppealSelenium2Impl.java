@@ -16,5 +16,27 @@ public class AppealSelenium2Impl implements IAppealManagement {
 		return appeal.verifyTagDropdownDisplayingOnlyTagsThoseDidntAddedEarlier();
 	}
 
+	@Override
+	public boolean verifyTimeFrameOptionsFunctionalityUnderAppealsReport()
+			throws Exception {
+		return appeal.verifyTimeFrameOptionsFunctionalityUnderAppealsReport();
+	}
+
+	@Override
+	public boolean verifyMenuOptionsAvailableUnderAppealsReport()
+			throws Exception {
+		return appeal.verifyMenuOptionsAvailableUnderAppealsReport();
+	}
+
+	@Override
+	public boolean verifyHICSearchOptionUnderAppealsReport() throws Exception {
+		return appeal.verifyHICSearchOptionUnderAppealsReport();
+	}
+
+	@Override
+	public boolean verifyAgencyOptionUnderAppealsReport() throws Exception {
+		return appeal.verifyAgencyOptionUnderAppealsReport();
+	}
+
 	
 }

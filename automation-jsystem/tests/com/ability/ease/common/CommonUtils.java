@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.jsoup.select.Evaluator.IsEmpty;
+
 import com.ability.auto.common.ShellExecUtil;
 import com.ability.ease.auto.system.WorkingEnvironment;
 import com.ability.ease.auto.systemobjects.DefaultWorkingEnvironment;
@@ -87,17 +89,48 @@ public class CommonUtils {
 		return isServerStopped;
 	}
 	
-	private static boolean restartServer(String pid) throws InterruptedException{
-		boolean isServerStarted = false;
+	private static boolean restartServer(String pid) throws Exception{
+		boolean isServerStopped = false;
 		int count = 0;
-		StringBuilder shellCommand = new StringBuilder("sh /opt/abilitynetwork/ease/bin/easeServer.sh ");
+		String killPPIDCommand = "kill -9 `ps -wwfC java |awk -F \" \" 'FNR == 2 {print $3}'`";
+		String killPIDCommand = "kill -9 `ps -wwfC java |awk -F \" \" 'FNR == 2 {print $2}'`";
 		
-		shellCommand.append("restart");
+		runCommand(killPPIDCommand,gridserver);
+		runCommand(killPIDCommand,gridserver);
+		
+		while(!isServerStopped && count++ < 3){
+			pDetails = getServerStatus();
+			if( pDetails.get(1).equalsIgnoreCase("Running")){
+				System.out.println("EASE server not stopped. So, retyring to stop :: attempt " + count);
+				runCommand(killPPIDCommand,gridserver);
+				runCommand(killPIDCommand,gridserver);
+				continue;
+			}else{
+				System.out.println("EASE server stopped successfully");
+				isServerStopped = true;
+				break;
+			}
+		}
+		
+		return stopStartEaseServer("Start");
+		
+		
+		//StringBuilder shellCommand = new StringBuilder("sh /opt/abilitynetwork/ease/bin/easeServer.sh ");
+		/*StringBuilder shellCommand = new StringBuilder(statusCommand); //force kill by PPID of EaseServer Process
+		
+		//shellCommand.append("restart");
 		while(!isServerStarted && count++ < 3){
 			runCommand(shellCommand.toString(), gridserver);
-			System.out.println("Waiting for 10 seconds to EASE server to start !!!");
-			Thread.sleep(10000);
-			pDetails = getServerStatus();
+			System.out.println("Waiting for 3 seconds to EASE server to stop !!!");
+			Thread.sleep(3000);
+			
+			String ppid = ShellExecUtil.executeShellCmd(statusCommand,gridserver);
+			if(ppid==null || ppid.isEmpty()) //if no process lists then 
+				isServerStarted=true;
+				
+				*/
+			
+			/*pDetails = getServerStatus();
 			if( pDetails.get(1).equalsIgnoreCase("Stopped")){
 				System.out.println("EASE server not started. So, retyring to start :: attempt " + count);
 				continue;
@@ -105,9 +138,7 @@ public class CommonUtils {
 				System.out.println("EASE server started successfully");
 				isServerStarted = true;
 				break;
-			}
-		}
-		return isServerStarted;
+			}*/
 	}
 
 	private static ArrayList<String> getServerStatus(){

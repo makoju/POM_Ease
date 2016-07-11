@@ -8,4 +8,5 @@ public interface IAppealManagement {
 	boolean verifyMenuOptionsAvailableUnderAppealsReport() throws Exception;
 	boolean verifyHICSearchOptionUnderAppealsReport() throws Exception;
 	boolean verifyAgencyOptionUnderAppealsReport() throws Exception;
+	boolean verifyExportOptionsUnderAppealsReport() throws Exception;
 }

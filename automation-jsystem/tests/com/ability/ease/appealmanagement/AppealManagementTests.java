@@ -101,6 +101,18 @@ public class AppealManagementTests extends BaseTest{
 		}
 	}
 	
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Export Options under appeals report", paramsInclude = { "testType" })
+	public void verifyExportOptionsUnderAppealsReport()throws Exception{
+		if(appeal.verifyExportOptionsUnderAppealsReport()){
+			report.report("Successfully verified Export options under appeals claims submission report.", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to verify Export options under appeals claims submission report.", Reporter.FAIL);
+		}
+	}
+	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "Verify the Agency Select Option under appeals report", paramsInclude = { "testType" })

@@ -38,5 +38,10 @@ public class AppealSelenium2Impl implements IAppealManagement {
 		return appeal.verifyAgencyOptionUnderAppealsReport();
 	}
 
+	@Override
+	public boolean verifyExportOptionsUnderAppealsReport() throws Exception {
+		return appeal.verifyExportOptionsUnderAppealsReport();
+	}
+
 	
 }

@@ -236,6 +236,23 @@ public class AppealManagementPage extends AbstractPageObject{
 			return false;
 		}
 	}
+	
+
+	public boolean verifyExportOptionsUnderAppealsReport() throws Exception {
+		int i=0;
+		String[] expectedoptions = {"Save Appeal Submission report to PDF", "Save Appeal Submission report to Excel"};
+		String[] actuals;
+		navigateToPage();
+		moveToElement("Export");
+		List<WebElement> lsexportoptions = findElements(By.xpath("//ul[@id='reportExportMenu']/li/a"));
+		actuals = new String[lsexportoptions.size()];
+		
+		for(WebElement exportoption:lsexportoptions)
+			actuals[i++] = new String(exportoption.getText());
+		
+		return Verify.verifyArrayofStrings(expectedoptions, actuals, true);
+
+	}
 
 
 	/**
@@ -297,4 +314,5 @@ public class AppealManagementPage extends AbstractPageObject{
 			}
 		}
 	}
+
 }

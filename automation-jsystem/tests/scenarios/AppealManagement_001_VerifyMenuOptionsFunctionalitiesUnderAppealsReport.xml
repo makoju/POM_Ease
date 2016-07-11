@@ -20,6 +20,7 @@
         <antcallback target="t2"/>
         <antcallback target="t3"/>
         <antcallback target="t4"/>
+        <antcallback target="t5"/>
     </target>
     <target name="t0">
         <jsystem showoutput="true">
@@ -59,6 +60,14 @@
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.appealmanagement.AppealManagementTests.verifyTimeFrameOptionsFunctionalityUnderAppealsReport"/>
+        </jsystem>
+    </target>
+    <target name="t5">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="8a880e9a-0f63-4a90-a616-b588ea49ddec"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.appealmanagement.AppealManagementTests.verifyExportOptionsUnderAppealsReport"/>
         </jsystem>
     </target>
 </project>

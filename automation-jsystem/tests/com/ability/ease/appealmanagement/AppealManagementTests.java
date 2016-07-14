@@ -33,6 +33,8 @@ public class AppealManagementTests extends BaseTest{
 	
 
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
+	private String tagname;
+	private String expectedalertmessage;
 
 	@Before
 	public void setupTests()throws Exception{
@@ -135,6 +137,38 @@ public class AppealManagementTests extends BaseTest{
 		}
 	}
 	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Add Tag", paramsInclude = { "testType, tagname" })
+	public void verifyAddTag()throws Exception{
+		if(appeal.verifyAddTag(tagname)){
+			report.report("Successfully added tag and verified", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to add tag and verify", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify View Tag", paramsInclude = { "testType, tagname" })
+	public void verifyViewTag()throws Exception{
+		if(appeal.verifyViewTag(tagname)){
+			report.report("Successfully Viewed the added tag", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to View the added tag", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify Delete Tag", paramsInclude = { "testType, tagname, expectedalertmessage" })
+	public void verifyDeleteTag()throws Exception{
+		if(appeal.verifyDeleteTag(tagname, expectedalertmessage)){
+			report.report("Successfully deleted the added tag", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to delete added tag", Reporter.FAIL);
+		}
+	}
 
 	public String getMonthsAgo() {
 		return monthsAgo;
@@ -150,6 +184,22 @@ public class AppealManagementTests extends BaseTest{
 
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+	
+	public String getTagname() {
+		return tagname;
+	}
+
+	public void setTagname(String tagname) {
+		this.tagname = tagname;
+	}
+	
+	public String getExpectedalertmessage() {
+		return expectedalertmessage;
+	}
+
+	public void setExpectedalertmessage(String expectedalertmessage) {
+		this.expectedalertmessage = expectedalertmessage;
 	}
 
 	@ParameterProperties(description = "Provide the UI Screen Attributes to be set as a AttributeName,AttributeValue Pair")

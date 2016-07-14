@@ -10,4 +10,7 @@ public interface IAppealManagement {
 	boolean verifyAgencyOptionUnderAppealsReport() throws Exception;
 	boolean verifyExportOptionsUnderAppealsReport() throws Exception;
 	boolean verifyClaimTagMultiSelectListBoxinAdnacedSearch() throws Exception;
+	boolean verifyAddTag(String tagtoadd) throws Exception;
+	boolean verifyViewTag(String tagname) throws Exception;
+	boolean verifyDeleteTag(String tagname, String expectedalertmessage) throws Exception;
 }

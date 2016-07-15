@@ -391,9 +391,9 @@ public class AppealManagementPage extends AbstractPageObject{
 					}
 
 					//VerifyClaimsTag History Table
-					Date d = new Date();
-					SimpleDateFormat format = new SimpleDateFormat("mm/dd/yyyy");				
-					String expecteddate = format.format(d);
+					Date date = new Date();
+					SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");				
+					String expecteddate = format.format(date);
 
 					List<WebElement> lsClaimtaghistory = findElements(By.cssSelector("#claimTagHisTable  td"));
 					String actualtagname=null;

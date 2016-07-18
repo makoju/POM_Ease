@@ -501,9 +501,13 @@ public class AppealManagementPage extends AbstractPageObject{
 	public boolean sendDocumentToCMS(String hic, String claimIDorDCN, String caseID, String reviewContractorName) throws Exception {
 		String sExpectedAlertMessageBeforeADRSubmission = "Proceed with ADR Document Submission to Review Contractor : "+ reviewContractorName +"?";
 		String sExpectedAlertMessageAfterSuccessfulADRSubmission = "Successfully processed ADR response documents Submission";
+		SimpleDateFormat todaydate = new SimpleDateFormat("MM//DD//YYYY");
+		String today = new String(todaydate.format(new Date())); 
+		
 		
 		AuditDocHelper helper = new AuditDocHelper();
 		navigateToPage();
+		setTimeFrame("FromDate(10/01/2013):ToDate("+today+")");
 		String actualheadertext = getAppealClaimsreportHeaderMessage();
 		if(actualheadertext!=null && actualheadertext.contains("LEVEL 1 APPEAL CLAIMS ESMD STATUS REPORT")){
 			WebElement documentuploadlink = waitForElementVisibility(By.xpath("//td[a[text()='"+hic.trim()+"']]/preceding-sibling::td//a"));

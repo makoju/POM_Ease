@@ -29,7 +29,7 @@ public class AppealManagementTests extends BaseTest{
 	private IAppealManagement appeal;
 	private String monthsAgo;
 	private String notes;
-	private String hic;
+	private String hic,claimIDorDCN,caseID,reviewContractorName;
 
 	
 
@@ -170,6 +170,17 @@ public class AppealManagementTests extends BaseTest{
 			report.report("Failed to delete added tag", Reporter.FAIL);
 		}
 	}
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "sendDocumentToCMS", paramsInclude = { "testType,hic,claimIDorDCN,caseID,reviewContractorName,expectedalertmessage" })
+	public void sendDocumentToCMS()throws Exception{
+		if(appeal.sendDocumentToCMS(hic,claimIDorDCN,caseID,reviewContractorName)){
+			report.report("Successfully deleted the added tag", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to delete added tag", Reporter.FAIL);
+		}
+	}
+	
 
 	public String getMonthsAgo() {
 		return monthsAgo;
@@ -209,6 +220,30 @@ public class AppealManagementTests extends BaseTest{
 
 	public void setHic(String hic) {
 		this.hic = hic;
+	}
+	
+	public String getClaimIDorDCN() {
+		return claimIDorDCN;
+	}
+
+	public void setClaimIDorDCN(String claimIDorDCN) {
+		this.claimIDorDCN = claimIDorDCN;
+	}
+
+	public String getCaseID() {
+		return caseID;
+	}
+
+	public void setCaseID(String caseID) {
+		this.caseID = caseID;
+	}
+
+	public String getReviewContractorName() {
+		return reviewContractorName;
+	}
+
+	public void setReviewContractorName(String reviewContractorName) {
+		this.reviewContractorName = reviewContractorName;
 	}
 
 	@ParameterProperties(description = "Provide the UI Screen Attributes to be set as a AttributeName,AttributeValue Pair")

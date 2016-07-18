@@ -50,18 +50,24 @@ public class AppealSelenium2Impl implements IAppealManagement {
 	}
 
 	@Override
-	public boolean verifyAddTag(String tagtoadd) throws Exception {
-		return appeal.verifyAddTag(tagtoadd);
+	public boolean verifyAddTag(String tagname, String hic) throws Exception {
+		return appeal.verifyAddTag(tagname, hic);
 	}
 
 	@Override
-	public boolean verifyViewTag(String tagname) throws Exception {
-		return appeal.verifyViewTag(tagname);
+	public boolean verifyViewTag(String tagname, String hic) throws Exception {
+		return appeal.verifyViewTag(tagname, hic);
 	}
 
 	@Override
-	public boolean verifyDeleteTag(String tagname, String expectedalertmessage) throws Exception {
-		return appeal.verifyDeleteTag(tagname, expectedalertmessage);
+	public boolean verifyDeleteTag(String tagname, String hic, String expectedalertmessage) throws Exception {
+		return appeal.verifyDeleteTag(tagname, hic, expectedalertmessage);
+	}
+
+	@Override
+	public boolean sendDocumentToCMS(String hic, String claimIDorDCN, String caseID, String reviewContractorName)
+			throws Exception {
+		return appeal.sendDocumentToCMS(hic,claimIDorDCN,caseID,reviewContractorName);
 	}
 
 }

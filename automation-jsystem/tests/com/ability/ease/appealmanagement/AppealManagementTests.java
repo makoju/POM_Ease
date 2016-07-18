@@ -29,6 +29,7 @@ public class AppealManagementTests extends BaseTest{
 	private IAppealManagement appeal;
 	private String monthsAgo;
 	private String notes;
+	private String hic;
 
 	
 
@@ -139,9 +140,9 @@ public class AppealManagementTests extends BaseTest{
 	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify Add Tag", paramsInclude = { "testType, tagname" })
+	@TestProperties(name = "Verify Add Tag", paramsInclude = { "testType, hic, tagname" })
 	public void verifyAddTag()throws Exception{
-		if(appeal.verifyAddTag(tagname)){
+		if(appeal.verifyAddTag(tagname,hic)){
 			report.report("Successfully added tag and verified", Reporter.ReportAttribute.BOLD);
 		}else{
 			report.report("Failed to add tag and verify", Reporter.FAIL);
@@ -150,9 +151,9 @@ public class AppealManagementTests extends BaseTest{
 	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify View Tag", paramsInclude = { "testType, tagname" })
+	@TestProperties(name = "Verify View Tag", paramsInclude = { "testType,hic, tagname" })
 	public void verifyViewTag()throws Exception{
-		if(appeal.verifyViewTag(tagname)){
+		if(appeal.verifyViewTag(tagname,hic)){
 			report.report("Successfully Viewed the added tag", Reporter.ReportAttribute.BOLD);
 		}else{
 			report.report("Failed to View the added tag", Reporter.FAIL);
@@ -161,9 +162,9 @@ public class AppealManagementTests extends BaseTest{
 	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify Delete Tag", paramsInclude = { "testType, tagname, expectedalertmessage" })
+	@TestProperties(name = "Verify Delete Tag", paramsInclude = { "testType, tagname, hic, expectedalertmessage" })
 	public void verifyDeleteTag()throws Exception{
-		if(appeal.verifyDeleteTag(tagname, expectedalertmessage)){
+		if(appeal.verifyDeleteTag(tagname, hic,expectedalertmessage)){
 			report.report("Successfully deleted the added tag", Reporter.ReportAttribute.BOLD);
 		}else{
 			report.report("Failed to delete added tag", Reporter.FAIL);
@@ -200,6 +201,14 @@ public class AppealManagementTests extends BaseTest{
 
 	public void setExpectedalertmessage(String expectedalertmessage) {
 		this.expectedalertmessage = expectedalertmessage;
+	}
+	
+	public String getHic() {
+		return hic;
+	}
+
+	public void setHic(String hic) {
+		this.hic = hic;
 	}
 
 	@ParameterProperties(description = "Provide the UI Screen Attributes to be set as a AttributeName,AttributeValue Pair")

@@ -1,10 +1,10 @@
 package com.ability.ease.appealmanagement;
 
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import javax.security.auth.login.FailedLoginException;
 
 import jsystem.framework.report.Reporter;
 import jsystem.framework.report.Reporter.ReportAttribute;
@@ -14,9 +14,11 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import com.ability.ease.auditdoc.AuditDocHelper;
 import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.Verify;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
+import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFileFomat;
 import com.ability.ease.home.HomePage;
 import com.ability.ease.home.HomePage.Menu;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
@@ -28,6 +30,10 @@ import com.ability.ease.selenium.webdriver.AbstractPageObject;
  */
 
 public class AppealManagementPage extends AbstractPageObject{
+
+	String expectedtagname, tagAgencytext;
+	static int firstaddtagrownumber = -1;
+	static String hic;
 
 	public boolean verifyValidationsUnderViewNotes(String monthsAgo, String notes) throws Exception {
 		int failurecount = 0;
@@ -259,10 +265,10 @@ public class AppealManagementPage extends AbstractPageObject{
 	public boolean verifyClaimTagMultiSelectListBoxinAdnacedSearch() throws Exception {
 		List<String> expectedclaimappealtags = new ArrayList<String>();
 		List<String> expectedclaimfollowuptags = new ArrayList<String>();
-		
+
 		List<String> actualclaimappealtags = new ArrayList<String>();
 		List<String> actualclaimfollowuptags = new ArrayList<String>();
-		
+
 		int i=0;
 		navigateToPage();
 		WebElement reporthicsearch = waitForElementVisibility(By.id(elementprop.getProperty("REPORT_HIC_SEARCH")));
@@ -277,17 +283,17 @@ public class AppealManagementPage extends AbstractPageObject{
 			if(!claimtag.getText().trim().equalsIgnoreCase("All"))
 				actualclaimappealtags.add(claimtag.getText().trim());
 		}		
-		
+
 		ResultSet rs = MySQLDBUtil.getResultFromMySQLDB("select TagName from ddez.systemclaimtag where TagCategory='APPEAL'");
-		
+
 		while(rs.next())
 			expectedclaimappealtags.add(rs.getString(1).trim());
-		
+
 		if(!Verify.listEquals(expectedclaimappealtags,actualclaimappealtags)){
 			report.report("Expected and Actual APPEAL claim Tags are not equal", Reporter.WARNING);
 			return false;
 		}
-		
+
 		WebElement selectclaimfollowup = waitForElementVisibility(By.id("UserClaimFollowupTag"));
 		Select claimfollowup = new Select(selectclaimfollowup);
 		List<WebElement> lsclaimfollowuptagoptions = claimfollowup.getOptions();
@@ -296,28 +302,279 @@ public class AppealManagementPage extends AbstractPageObject{
 			if(!claimtag.getText().trim().equalsIgnoreCase("All"))
 				actualclaimfollowuptags.add(claimtag.getText().trim());
 		}		
-		
-		
-		
+
 		rs = MySQLDBUtil.getResultFromMySQLDB("select TagName from ddez.systemclaimtag where TagCategory='FOLLOWUP'");
 		while(rs.next())
 			expectedclaimfollowuptags.add(rs.getString(1).trim());
-		
+
 		if(!Verify.listEquals(actualclaimfollowuptags, expectedclaimfollowuptags)){
 			report.report("Expected and Actual APPEAL claim Tags are not equal", Reporter.WARNING);
 			return false;
 		}
+		return true;
+	}
+
+
+
+	public boolean verifyAddTag(String tagtoadd, String hic) throws Exception {
+		navigateToPage();
+		navigateToTStatusReport();
 		
-		/*Thread.sleep(3000);
-		WebElement advancesearchheader = waitForElementVisibility(By.cssSelector(".headerblue"));
-		if(advancesearchheader!=null){
-			String headertText = advancesearchheader.getText();
-			if(!Verify.StringMatches(headertText, "ADVANCED SEARCH")){
-				report.report("Unable to navigate to Advanced Search Screen", Reporter.WARNING);
+		WebElement tagelement = waitForElementVisibility(By.xpath("//table[@id='datatable']/tbody//td[a[text()='"+hic+"']]/preceding-sibling::td[2]//img"), 30);
+		if(tagelement!=null){
+			WebElement tagAgency = waitForElementVisibility(By.xpath("//table[@id='datatable']/tbody//td[a[text()='"+hic+"']]/preceding-sibling::td[1]"));
+
+			//Add Tag and View Tag
+			if(tagAgency!=null)
+					this.tagAgencytext = tagAgency.getText();
+
+				tagelement.click();
+				//wait for the Add Tag Model dialog to visible
+				WebElement addtagmodaldialog = waitForElementVisibility(By.xpath("//span[@class='ui-dialog-title' and text()='Add Tag']"), 30);
+				if(addtagmodaldialog!=null){
+					try{
+						WebElement tagsmenu = waitForElementVisibility(By.id("ClaimTagNameDispInputID-button"));
+						if(tagsmenu!=null)
+							tagsmenu.click();
+						//Find all the active list items from the claim tags list box
+						List<WebElement> lstags = findElements(By.xpath("//ul[@id='ClaimTagNameDispInputID-menu']//a[not(contains(@aria-disabled,'true'))]"));
+						//selecting the option from the list menu whose tag equals to input tagtoadd
+						for(int i=0;i<lstags.size();i++){
+							WebElement tag = lstags.get(i); 
+							if(tag.getText().equalsIgnoreCase(tagtoadd.trim()))
+								tag.click();
+						}
+						typeEditBox("ClaimTagNoteTextId", "Test");
+						clickButton("Submit");
+					}
+					catch(Exception e){
+						report.report("Verifying whether modal dialog present. If it's visible closing it");
+						WebElement closelink = waitForElementVisibility(By.xpath("//div[contains(@class,'ui-dialog-titlebar')]/a"));
+						if(closelink!=null){
+							report.report("Modal dialog was found. Hence closing it");
+							closelink.click();
+						}
+					}
+				}
+				else{
+					report.report("Add Tag Modal Dialog not found: ",Reporter.WARNING);
+					return false;
+				}
+			}
+		else{
+			report.report("Row with Add Tag for specific HIC: "+hic+" was not found in the data table",Reporter.WARNING); //Add Tag which is first available in the datatable and return the tagname
+			return false;
+		}
+		return true;
+	}
+
+	public boolean verifyViewTag(String tagname, String hic) throws Exception {
+		int failurecount=0;
+		if(waitForElementVisibility(By.xpath("//table[@id='datatable']"), 2)==null){
+			navigateToPage();
+			navigateToTStatusReport();
+		}
+
+		WebElement viewtagslink = waitForElementVisibility(By.xpath("//table[@id='datatable']/tbody//td[a[text()='"+hic+"']]/preceding-sibling::td//a[contains(text(),'View Tags')]"), 30);
+
+			if(viewtagslink!=null){
+				viewtagslink.click();
+				Thread.sleep(5000);
+				WebElement claimstagheader = waitForElementVisibility(By.cssSelector(".headergreen"));
+				if(claimstagheader!=null)
+				{
+					//VerifyClaims Tag
+					String actualclaimtagname = getElementText(By.xpath("//div[@class='tag']/label[text()='"+tagname.toLowerCase()+"']"));
+					if(!Verify.StringEquals(tagname, actualclaimtagname)){
+						report.report("Actual and Expected Claim tags are not equal:", Reporter.WARNING);
+						failurecount++;
+					}
+
+					//VerifyClaimsTag History Table
+					Date date = new Date();
+					SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");				
+					String expecteddate = format.format(date);
+
+					List<WebElement> lsClaimtaghistory = findElements(By.cssSelector("#claimTagHisTable  td"));
+					String actualtagname=null;
+					String username = null;
+					String taggedon=null;
+					//Get the data from the First row of claim tags history table
+					if(!lsClaimtaghistory.isEmpty()){
+						actualtagname = lsClaimtaghistory.get(0).getText().trim();
+						username = lsClaimtaghistory.get(1).getText().trim();
+						taggedon = lsClaimtaghistory.get(2).getText().trim();
+
+						if(!Verify.StringEquals(tagname.trim(), actualtagname))
+						{
+							report.report("Expected and actual tagnames are not equal", Reporter.WARNING);
+							failurecount++;
+						}
+						if(!Verify.StringEquals(username, "test.customer"))
+						{
+							report.report("Expected and actual usernames not equal", Reporter.WARNING);
+							failurecount++;
+						}
+						if(!Verify.StringEquals(taggedon, expecteddate))
+						{
+							report.report("Expected and actual tagged on dates are not equal", Reporter.WARNING);
+							failurecount++;
+						}
+
+						clickLink("View Notes");
+						try{
+							if(waitForElementVisibility(By.xpath("//td[text()='Test']"))==null)
+							{
+								report.report("View Notes doesn't match with the expected Notes: Test", Reporter.WARNING);
+								failurecount++;
+							}
+						}
+						finally{
+							WebElement closelink = waitForElementVisibility(By.xpath("//div[contains(@class,'ui-dialog-titlebar')]/a"));
+							if(closelink!=null)
+								closelink.click();
+						}
+					}
+					else
+					{
+						report.report("Cliamtag history table not found or doesn't has any data", Reporter.WARNING);
+						failurecount++;
+					}
+				}
+				else
+				{
+					report.report("Unable to navigate to claim tags page", Reporter.WARNING);
+					failurecount++;
+				}
+
+			}
+			else
+			{
+				report.report("view tags link not found for the Added tag", Reporter.WARNING);
+				failurecount++;
+			}
+		return failurecount==0?true:false;
+	}
+
+	public boolean verifyDeleteTag(String tagname, String hic, String expectedalertmessage) throws Exception {
+		if(waitForElementVisibility(By.xpath("//table[@id='datatable']"), 2)==null){
+			navigateToPage();
+			navigateToTStatusReport();
+		}
+		WebElement viewtagslink = waitForElementVisibility(By.xpath("//table[@id='datatable']/tbody//td[a[text()='"+hic+"']]/preceding-sibling::td//a[contains(text(),'View Tags')]"), 30);
+
+			if(viewtagslink!=null){
+				viewtagslink.click();
+				Thread.sleep(5000);
+				WebElement claimstagheader = waitForElementVisibility(By.cssSelector(".headergreen"));
+				if(claimstagheader!=null)
+				{
+					WebElement deletetaglink = waitForElementVisibility(By.xpath("//label[text()='"+tagname.toLowerCase()+"']/following-sibling::a"));
+					if(deletetaglink!=null){
+						deletetaglink.click();
+						if(!verifyAlert(expectedalertmessage))
+						{
+							report.report("Unable to delete the tag. Expected alert not found", Reporter.WARNING);
+							return false;
+						}
+					}
+					else{
+						report.report("Unable to find a tag: "+tagname+"In Claim Tagging Information Page", Reporter.WARNING);
+						return false;
+					}
+
+				}
+				else
+				{
+					report.report("Unable to navigate to Claims Tag Information Page", Reporter.WARNING);
+					return false;
+				}
+			}
+			else{
+				report.report("view tags link not found in data table", Reporter.WARNING);
 				return false;
 			}
-		}*/
 		return true;
+	}
+	
+
+	public boolean sendDocumentToCMS(String hic, String claimIDorDCN, String caseID, String reviewContractorName) throws Exception {
+		String sExpectedAlertMessageBeforeADRSubmission = "Proceed with ADR Document Submission to Review Contractor : "+ reviewContractorName +"?";
+		String sExpectedAlertMessageAfterSuccessfulADRSubmission = "Successfully processed ADR response documents Submission";
+		SimpleDateFormat todaydate = new SimpleDateFormat("MM//DD//YYYY");
+		String today = new String(todaydate.format(new Date())); 
+		
+		
+		AuditDocHelper helper = new AuditDocHelper();
+		navigateToPage();
+		setTimeFrame("FromDate(10/01/2013):ToDate("+today+")");
+		String actualheadertext = getAppealClaimsreportHeaderMessage();
+		if(actualheadertext!=null && actualheadertext.contains("LEVEL 1 APPEAL CLAIMS ESMD STATUS REPORT")){
+			WebElement documentuploadlink = waitForElementVisibility(By.xpath("//td[a[text()='"+hic.trim()+"']]/preceding-sibling::td//a"));
+			if(documentuploadlink!=null){
+				documentuploadlink.click();
+				selectByNameOrID("reviewContractor", reviewContractorName);
+				typeEditBox("CMSClaimIDParam", claimIDorDCN);
+				typeEditBox("CaseIdParam", caseID);
+				
+				List<String> filepath = helper.getADRFilePath(ADRFileFomat.PDF, '<');
+				helper.uploadFilesAutoIT(filepath);
+				clickButtonV2("Send");
+				
+				if(!verifyAlert(sExpectedAlertMessageBeforeADRSubmission))
+				{
+					report.report("Expected Alert not found", Reporter.WARNING);
+					return false;
+				}
+				if(!verifyAlertV2(sExpectedAlertMessageAfterSuccessfulADRSubmission))
+				{
+					report.report("Expected Alert not found", Reporter.WARNING);
+					return false;
+				}
+			}
+			else{
+				report.report("Unable to find document upload link in Appeal Claim Submission table", Reporter.WARNING);
+				return false;
+			}
+		}
+		else
+		{
+			report.report("Unable to navigate to Appeal Claims Submission page", Reporter.WARNING);
+			return false;
+		}
+		return true;
+	}
+
+	/*	public void verifyFieldsInModelDialogAndAddFirstAvailableTag(int firstaddtagrownumber) {
+
+	}*/
+
+/*	int getFirstAddTagRowNumber(String hic){
+		int i=1;
+		List<WebElement> lsrows = findElements(By.xpath("//table[@id='datatable']/tbody/tr"));
+		if(lsrows!=null){
+			int rows = lsrows.size(); //Lets get all row numbers	
+			//Iterate over all rows and whenever a row with addtag finds return that row number
+			for(i=1;i<=rows;i++){
+				if(waitForElementVisibility(By.xpath("//table[@id='datatable']/tbody/tr["+i+"]/td[2]//img[contains(@src,'addclaimtag')]"), 2)!=null)
+					return i;
+			}
+		}
+		else
+			report.report("Search Results data table was not found: ",Reporter.WARNING);
+
+		return -1;
+	}*/
+
+	void navigateToTStatusReport() throws Exception{
+		WebElement reporthicsearch = waitForElementVisibility(By.id(elementprop.getProperty("REPORT_HIC_SEARCH")));
+		moveToElement(reporthicsearch);
+		clickLink("Advanced Search");
+		selectByNameOrID("SelectedProfileName", "T Status Report");
+		/*		WebElement searchbutton = waitForElementVisibility(By.xpath("//input[@value='Search']"));
+		if(searchbutton!=null)
+			moveToElement(searchbutton);*/
+		clickButtonV2("Search");
 	}
 
 
@@ -380,5 +637,4 @@ public class AppealManagementPage extends AbstractPageObject{
 			}
 		}
 	}
-
 }

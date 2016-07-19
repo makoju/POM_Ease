@@ -49,5 +49,25 @@ public class AppealSelenium2Impl implements IAppealManagement {
 		return appeal.verifyClaimTagMultiSelectListBoxinAdnacedSearch();
 	}
 
-	
+	@Override
+	public boolean verifyAddTag(String tagname, String hic) throws Exception {
+		return appeal.verifyAddTag(tagname, hic);
+	}
+
+	@Override
+	public boolean verifyViewTag(String tagname, String hic) throws Exception {
+		return appeal.verifyViewTag(tagname, hic);
+	}
+
+	@Override
+	public boolean verifyDeleteTag(String tagname, String hic, String expectedalertmessage) throws Exception {
+		return appeal.verifyDeleteTag(tagname, hic, expectedalertmessage);
+	}
+
+	@Override
+	public boolean sendDocumentToCMS(String hic, String claimIDorDCN, String caseID, String reviewContractorName)
+			throws Exception {
+		return appeal.sendDocumentToCMS(hic,claimIDorDCN,caseID,reviewContractorName);
+	}
+
 }

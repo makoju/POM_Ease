@@ -143,8 +143,23 @@ public class ClaimsSelenium2Impl implements IClaims{
 	}
 
 	@Override
-	public boolean fillupFieldsInUB04Form(Map<String, String> mapAttrValues) throws Exception {
+	public boolean fillUB04FormAndValidateXMLFile(Map<String, String> mapAttrValues) throws Exception {
 		return claimsv2.fillupFieldsInUB04Form(mapAttrValues);
 	}
 
+	@Override
+	public boolean openUB04FormWithPatientDetails(Map<String, String> mapAttrValues) throws Exception {
+		return claimsv2.openUB04FormWithPatientDetails(mapAttrValues);
+	}
+
+	@Override
+	public boolean navigateToPatientInfoPageFromAdvancedSearchPage(Map<String, String> mapAttrValues, 
+			String patientControlNumber) throws Exception {
+		return claimsv2.navigateToPatientInfoPageFromAdvancedSearchPage(mapAttrValues, patientControlNumber);
+	}
+
+	@Override
+	public boolean comeBackToHomePage() throws Exception {
+		return claimsv2.comeBackToHomePage();
+	}
 }

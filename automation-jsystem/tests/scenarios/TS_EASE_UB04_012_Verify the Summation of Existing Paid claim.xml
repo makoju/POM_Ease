@@ -40,10 +40,10 @@
     </target>
     <target name="t2">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="90dab1f4-67da-4357-9a76-51413134415c"/>
+            <sysproperty key="jsystem.uuid" value="e26c5e4b-c0cc-4ad1-9bbe-ba33b05ec869"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-            <test name="com.ability.ease.claims.ClaimsTests.clickClaimResubmit"/>
+            <test name="com.ability.ease.claims.ClaimsTests.unlockClaim"/>
         </jsystem>
     </target>
     <target name="t3">

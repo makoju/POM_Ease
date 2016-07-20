@@ -54,8 +54,16 @@ public interface IClaims {
 	public boolean verifyPatientInformation(String patientControlNumber)throws Exception;
 
 	public boolean verifyValidationFor0001RevCode(Map<String, String> mapAttrValues)throws Exception;
-	
+
 	public boolean openNewUB04Form()throws Exception;
+
+	public boolean fillUB04FormAndValidateXMLFile(Map<String, String> mapAttrValues)throws Exception;
+
+	public boolean openUB04FormWithPatientDetails(Map<String, String> mapAttrValues)throws Exception;
 	
-	public boolean fillupFieldsInUB04Form(Map<String, String> mapAttrValues)throws Exception;
+	public boolean navigateToPatientInfoPageFromAdvancedSearchPage(Map<String, String> mapAttrValues, 
+			String patientControlNumber)throws Exception;
+	
+	public boolean comeBackToHomePage()throws Exception;
+	
 }

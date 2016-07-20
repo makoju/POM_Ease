@@ -124,7 +124,7 @@ public class CustomSchedulePage extends AbstractPageObject {
 		
 		report.report("Inserting record into jobSchedule Table with jobID: " + jobid, ReportAttribute.BOLD);
 		
-		String query1 =  "DELETE From ddez.jobschedule where providerid in (select p.id from ddez.provider p where p.DisplayName='"+agencyName+"'  and p.customerid="+customerid+") and jobtype="+jobtype;
+		String query1 =  "DELETE From ddez.jobschedule where providerid in (select p.id from ddez.provider p where p.DisplayName='"+agencyName+"'  and p.customerid="+customerid+")";
 		String query2 = "INSERT INTO ddez.jobschedule (CustomerID,ProviderID,JobType,JobID,ScheduleTime,SchedulePriority,Trace) select p.customerid,p.id,"+jobtype+","+jobid+",now(),0,0 from ddez.provider p where p.DisplayName='"+agencyName+"' and p.customerid="+customerid;
 		
 		//Delete the entry from job schedule table if it already exists

@@ -48,7 +48,7 @@ public class EligibilityPage extends AbstractPageObject{
 		else
 			return true;
 	}
-	
+
 	/**
 	 * @author Anjaneyulu Padavala
 	 * @param mapAttrVal
@@ -66,9 +66,9 @@ public class EligibilityPage extends AbstractPageObject{
 		String sex = mapAttrVal.containsKey("Sex")?mapAttrVal.get("Sex"):"F";
 		String appdate = mapAttrVal.containsKey("Application Date")?mapAttrVal.get("Application Date"):"";
 		String servicedate = mapAttrVal.containsKey("Service Date(s)")?mapAttrVal.get("Service Date(s)"):"";
-		
+
 		return MySQLDBUtil.insertEligibilityCheckSP(1453, DOB, fname, hic, lname, sex);
-		
+
 	}
 
 	/*public boolean verifyEligibilityStatus(String firstname, String lastname, String status) throws Exception {
@@ -165,11 +165,11 @@ public class EligibilityPage extends AbstractPageObject{
 	public boolean verifyHETSActivitiesCompletedStatusReport(String hic,String agency, String firstname, String lastname) throws Exception {
 		int failurecount=0;
 		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (lastname +", "+firstname).toUpperCase();
-	
+
 		navigateToPage();
-		
-	
-		
+
+
+
 		if(!verifyEligibilityRequestStatusCompleted(firstlastname))
 			return false;
 
@@ -177,7 +177,7 @@ public class EligibilityPage extends AbstractPageObject{
 		String expectedreportheader = "ELIGIBILITY CHECK REPORT";
 		if(!navigatetoEligibilityReport(firstlastname))
 			return false;
-		
+
 		Thread.sleep(6000);
 		//WebElement reportheader = waitForElementVisibility(By.xpath("//td[@class='headergreen']"));
 		WebElement reportheader = waitForElementToBeClickable(ByLocator.xpath, "//td[@class='headergreen']", 30);
@@ -769,8 +769,8 @@ public class EligibilityPage extends AbstractPageObject{
 		//TODO - Need to validate repsonse page with A7
 		return false;
 	}
-	
-	
+
+
 
 	/**
 	 * This method will check for both acknowledge as well as non-acknowledged eligibility checks displaying in the completed activity log or not 
@@ -1072,7 +1072,7 @@ public class EligibilityPage extends AbstractPageObject{
 
 		return (provid == providerid && changedto)?true:false;
 	}
-	
+
 
 	public boolean validateResponsePageAndRawFile(String firstname, String lastname) throws Exception {
 		navigateToPage();
@@ -1080,8 +1080,8 @@ public class EligibilityPage extends AbstractPageObject{
 		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 		navigatetoEligibilityReport(firstlastname);
 		//TODO - Need to validate raw271 page content with response page content
-		
-	
+
+
 		return false;
 	}
 

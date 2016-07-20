@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,35 +22,36 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import jsystem.framework.report.Reporter;
 import jsystem.framework.report.Reporter.ReportAttribute;
 
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.ProviderTable;
+import com.ability.ease.auto.common.TestCommonResource;
 import com.ability.ease.auto.common.UB04FormXMLParser;
+import com.ability.ease.auto.dataStructure.common.AttibuteXMLParser.UIAttributeXMLParser;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 public class ClaimsHelper extends AbstractPageObject{
 
-	String searchResultXpath = elementprop.getProperty("ADVANCE_SEARCH_RESULTS_PAGE_HEADER");
-	String rptSearchIcon = elementprop.getProperty("REPORT_HIC_SEARCH_ICON");
-	String advSearchLink = elementprop.getProperty("ADV_SEARCH_LINK");
-	String hic = elementprop.getProperty("HIC_TEXT");
-	String lookBackMonths = elementprop.getProperty("LOOK_BACK_MONTHS_TEXT");
-	String statusLoc = elementprop.getProperty("SLOC_STATUS_DROP_DOWN");
-	String searchBtn = elementprop.getProperty("SEARCH_BUTTON");
-	String myDDELink = elementprop.getProperty("MY_DDE_LINK");
+	private String searchResultXpath = elementprop.getProperty("ADVANCE_SEARCH_RESULTS_PAGE_HEADER");
+	private String rptSearchIcon = elementprop.getProperty("REPORT_HIC_SEARCH_ICON");
+	private String advSearchLink = elementprop.getProperty("ADV_SEARCH_LINK");
+	private String hic = elementprop.getProperty("HIC_TEXT");
+	private String lookBackMonths = elementprop.getProperty("LOOK_BACK_MONTHS_TEXT");
+	private String statusLoc = elementprop.getProperty("SLOC_STATUS_DROP_DOWN");
+	private String searchBtn = elementprop.getProperty("SEARCH_BUTTON");
+	private String myDDELink = elementprop.getProperty("MY_DDE_LINK");
+	private int failCounter = 0;
 
 
 	public ProviderTable getFiledLocator1Values(String sQuery)throws Exception{
@@ -105,7 +107,7 @@ public class ClaimsHelper extends AbstractPageObject{
 				waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 60);
 				return;
 			}else{
-				
+
 			}
 		}
 	}
@@ -279,7 +281,7 @@ public class ClaimsHelper extends AbstractPageObject{
 		if( totalCoveredCharges != 0 && totalNonCoveredCharges != 0){
 			totals = new float[]{round(totalCoveredCharges,2), round(totalNonCoveredCharges,2)};
 		}else{
-			report.report("Can not read totals from JSYSTEM", report.WARNING);
+			report.report("Can not read totals from JSYSTEM", Reporter.WARNING);
 			totals = new float[]{0,0};
 		}
 		return totals;
@@ -298,7 +300,7 @@ public class ClaimsHelper extends AbstractPageObject{
 		if( sActualTotals != null && sActualNonCoveredTotals != null){
 			totals = new float[]{Float.valueOf(sActualTotals), Float.valueOf(sActualNonCoveredTotals)};
 		}else{
-			report.report("Can not read totals from UB04 form", report.WARNING);
+			report.report("Can not read totals from UB04 form", Reporter.WARNING);
 			totals = new float[]{0, 0};
 		}
 		return totals;
@@ -359,6 +361,24 @@ public class ClaimsHelper extends AbstractPageObject{
 		}
 	}
 
+	public void moveAndClick(String claimLineNumberToAdd, String position) throws Exception{
+
+		String xPathToIdentifyAtWhichLineToAdd = "//*[@name='ub42_"+claimLineNumberToAdd+"']";
+		moveToEditIcon(xPathToIdentifyAtWhichLineToAdd);
+		waitForElementVisibility(By.id("editmenutext"));
+		if(isElementPresent(By.id("editmenutext"))){
+			if(position.equalsIgnoreCase("before")){
+				safeJavaScriptClick("Add claim line before");
+				report.report("Clicked on before at line nuber : "+ claimLineNumberToAdd);
+			}else if(position.equalsIgnoreCase("after")){
+				safeJavaScriptClick("Add claim line after");
+				report.report("Clicked on after at line nuber : "+ claimLineNumberToAdd);
+			}else{
+				report.report("Please provide correct position either before or after in jsystem");
+			}
+		}
+	}
+
 	public float[] getTotalsFromClaimLine(String sClaimLine){
 		float[] totals = null;
 		String[] sClaimDetails = sClaimLine.split(":");
@@ -368,6 +388,8 @@ public class ClaimsHelper extends AbstractPageObject{
 	}
 
 	public String[] getUB04XMLFromDatabase(String startTime, String endTime) throws SQLException{
+
+		report.report("Inside get Ub04 form from EASE DB method");
 		String requestDetails[] = null;
 		int iClaimRequestID = 0;
 		String sClaimRequestXML = null;
@@ -384,12 +406,13 @@ public class ClaimsHelper extends AbstractPageObject{
 	}
 
 	public boolean validateXMLFileFields(List<Attribute> lsAttributes, String sClaimsXMLFile, String sFileName) throws SAXException, ParserConfigurationException, IOException{
+
+		report.report("Inside validate userdderequest xml file validation...");
 		int failCounter = 0;
 
 		if(sClaimsXMLFile != null){
 			stringToDom(sClaimsXMLFile, sFileName);
 		}else{
-			report.report("Can not submit a claim rquest with same TOB (Type of bill), please provide a different TOB and try again");
 			failCounter++;
 		}
 
@@ -585,17 +608,16 @@ public class ClaimsHelper extends AbstractPageObject{
 
 		try{
 			if(isElementPresent(By.id(elementprop.getProperty("NEW_UB04_ID")))){
-				if(waitForElementToBeClickable(ByLocator.name, elementprop.getProperty("UB04_LOCK_ICON"), 30) != null){
-					lsTotChargesCols = driver.findElements(By.xpath(coveredOrNonCoveredChargesColumnXPATH));
-					size = lsTotChargesCols.size();
-					if(lsTotChargesCols.size() > 0 ){
-						for(WebElement totChargeLine:lsTotChargesCols){
-							temp = totChargeLine.getAttribute("value");
-							if((!temp.isEmpty() || !temp.equalsIgnoreCase("")) &&  (i < size-1)){
-								actualTotalCharges = actualTotalCharges +  (Float.valueOf(temp));
-							}
-							i++;
+				lsTotChargesCols = driver.findElements(By.xpath(coveredOrNonCoveredChargesColumnXPATH));
+				size = lsTotChargesCols.size();
+				if(lsTotChargesCols.size() > 0 ){
+					for(WebElement totChargeLine:lsTotChargesCols){
+						temp = totChargeLine.getAttribute("value");
+						if((!temp.isEmpty() || !temp.equalsIgnoreCase("")) &&  (i < size-1)){
+							actualTotalCharges = round(actualTotalCharges,2) +  round(Float.valueOf(temp),2);
+
 						}
+						i++;
 					}
 				}
 			}
@@ -629,6 +651,53 @@ public class ClaimsHelper extends AbstractPageObject{
 		return coveredOrNonCoveredChargesColumnXPATH;
 	}
 
+	public boolean comeBackToHomePage() throws Exception{
+
+		boolean result = false;
+		String expectedAlertText = "If you leave this page you will lose any changes you have made. Are you sure you wish to continue?";
+
+		if(waitUntilElementVisibility(By.id(elementprop.getProperty("CLAIM_HOME_ID"))) != null){ 
+			clickLinkV2(elementprop.getProperty("CLAIM_HOME_ID"));
+			try{
+				if( !isAlertPresent()){
+					if( waitForElementToBeClickable(ByLocator.id, elementprop.getProperty("REPORT_HOME_ID"), 20) != null){
+						result = true;
+					}
+				}else{
+					result = verifyAlert(expectedAlertText);
+				}
+			}catch(Exception e){
+				report.report("Exception occured while coming back to EASE home page"  + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	public boolean validatePatientDetailsInNewUb04Form(Map<String, String> mapAttrValues)throws Exception{
+
+		String temp = null;
+		UIAttributeXMLParser parser = new UIAttributeXMLParser();
+		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+
+				"uiattributesxml\\Claims\\PatientInfoPage.xml", mapAttrValues);
+
+		report.report("Inside validate patient details in new UB04 form method");
+		report.report("employee details found in UB04 form are");
+
+		for(Attribute scrAtr:lsAttributes){
+			temp = driver.findElement(By.name(scrAtr.getLocator())).getAttribute("value");
+			report.report(scrAtr.getDisplayName() + " = " + temp);
+			if( !temp.isEmpty() || temp != null){
+				if(!scrAtr.getValue().equalsIgnoreCase(temp)){
+					failCounter++;
+				}
+			}
+		}
+
+		return (failCounter == 0) ? true : false;
+
+	}
+
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub
@@ -641,4 +710,4 @@ public class ClaimsHelper extends AbstractPageObject{
 
 	}
 
-}
+} 

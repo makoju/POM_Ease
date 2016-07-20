@@ -72,4 +72,28 @@ public class MiscSelenium2Impl implements IMiscellaneous{
 		MiscPage misc = new MiscPage();
 		return misc.verifyAddHICs(mapAttrVal);
 	}
+
+	@Override
+	public boolean verifyAddSingleHIC(String agency,String hicID,String sExpectedmessage) throws Exception {
+		MiscPage misc = new MiscPage();
+		return misc.verifyAddSingleHIC(agency, hicID, sExpectedmessage);
+	}
+
+	@Override
+	public boolean verifyAddMultipleHICs(String agency, String hicID, String sExpectedmessage) throws Exception {
+		MiscPage misc = new MiscPage();
+		return misc.verifyAddMultpleHICs(agency, hicID, sExpectedmessage);
+	}
+
+	@Override
+	public boolean verifyAddMultipleHICs_Basicview(String agency, String hicID, String sExpectedmessage) throws Exception{
+	MiscPage misc = new MiscPage();
+	return misc.verifyAddMultpleHICs_BasicView(agency, hicID, sExpectedmessage);
+	}
+
+	@Override
+	public boolean verifyAddSingleHIC_BasicView(String agency, String hicID, String sExpectedmessage) throws Exception {
+		MiscPage misc = new MiscPage();
+		return misc.verifyAddSingleHIC_BasicView(agency, hicID, sExpectedmessage);
+	}
 }

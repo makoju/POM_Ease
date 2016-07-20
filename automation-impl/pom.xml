@@ -59,13 +59,13 @@
 		<dependency>
 			 <groupId>com.abilitynetwork.selenium2</groupId> 
 			 <artifactId>chromedriver-win</artifactId>  
-			 <version>2.20</version>  
+			 <version>2.22</version>  
 			<type>zip</type> 		
 		</dependency>
 		<dependency>  
 			<groupId>com.abilitynetwork.selenium2</groupId> 
 			<artifactId>IEDriverServer_Win32</artifactId>  
-			<version>2.49.0</version>  
+			<version>2.53.1</version>  
 			<type>zip</type>  
 		</dependency> 
 		

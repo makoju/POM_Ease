@@ -689,7 +689,7 @@ public class MyDDEPage extends AbstractPageObject{
 		if(monthsAgo.getText().trim().equals("")){
 			clickButtonV2(elementprop.getProperty("AS_SEARCH_BUTTON_TYPE"));
 		}
-		WebElement searchResults = waitForElementVisibility(By.xpath(elementprop.getProperty("AS_RESULTS_PAGE_HEADER_XPATH")));
+		WebElement searchResults = waitForElementVisibility(By.xpath(elementprop.getProperty("ADVANCED_SEARCH_RESULTS_PAGE_HEADER")));
 		if(searchResults != null){
 			report.report("Application is navigated to SEARCH RESULTS page.");
 		}else{
@@ -711,7 +711,7 @@ public class MyDDEPage extends AbstractPageObject{
 		}
 		typeEditBox(elementprop.getProperty("AS_MONTHS_AGO_TEXTBOX_NAME"), monthsAgo);
 		clickButtonV2(elementprop.getProperty("AS_SEARCH_BUTTON_TYPE"));
-		WebElement searchResults = waitForElementVisibility(By.xpath(elementprop.getProperty("AS_RESULTS_PAGE_HEADER_XPATH")));;
+		WebElement searchResults = waitForElementVisibility(By.xpath(elementprop.getProperty("ADVANCED_SEARCH_RESULTS_PAGE_HEADER")));
 		if(searchResults != null){
 			report.report("Application is navigated to SEARCH RESULTS page.");
 		}else{
@@ -734,7 +734,7 @@ public class MyDDEPage extends AbstractPageObject{
 		typeEditBox(elementprop.getProperty("AS_AND_TEXTBOX_NAME"), andDate);
 		typeEditBox(elementprop.getProperty("AS_MONTHS_AGO_TEXTBOX_NAME"), monthsAgo);
 		clickButtonV2(elementprop.getProperty("AS_SEARCH_BUTTON_TYPE"));
-		WebElement searchResults = waitForElementVisibility(By.xpath(elementprop.getProperty("AS_RESULTS_PAGE_HEADER_XPATH")));
+		WebElement searchResults = waitForElementVisibility(By.xpath(elementprop.getProperty("ADVANCED_SEARCH_RESULTS_PAGE_HEADER")));
 		if(searchResults != null){
 			report.report("Application is navigated to SEARCH RESULTS page.");
 		}else{

@@ -22,7 +22,8 @@ public class HomePage extends AbstractPageObject{
 		Admin("ADMINISTRATION"),
 		ELIGIBILITY("ELIG."),
 		MYACCOUNT("MY ACCOUNT"),
-		NA("NA");
+		NA("NA"),
+		ESMD("esMD");
 		private String value;
 
 		private Menu(String value) {
@@ -87,12 +88,12 @@ public class HomePage extends AbstractPageObject{
 		Thread.sleep(3000);
 		clickLinkOnlyIfExists(subMenuName.toString());*/
 		if(menuName!=null)
-		 clickMenuLinkOnlyIfExists(menuName.toString());
+			clickMenuLinkOnlyIfExists(menuName.toString());
 		if(subMenuName!=null)
-		 clickMenuLinkOnlyIfExists(subMenuName.toString());
+			clickMenuLinkOnlyIfExists(subMenuName.toString());
 	}
 
-	
+
 	/**
 	 * Clicks ONLY on MENU link by link text ONLY if it is exists ,otherwise do nothing
 	 * @param linkText
@@ -114,7 +115,7 @@ public class HomePage extends AbstractPageObject{
 				//ignore
 			}
 		}else {
-				isfound = false ;
+			isfound = false ;
 		}
 
 		return isfound;

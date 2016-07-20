@@ -44,6 +44,8 @@ public class MyDDETests extends BaseTest{
 	private String savedProfile;
 	private String betweenDateAS;
 	private String andDateAS;
+	private String tob;
+	private String options;
 
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
 
@@ -67,9 +69,9 @@ public class MyDDETests extends BaseTest{
 
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify the page view", paramsInclude = { "testType" })
-	public void verifyPageViewAndOptions()throws Exception{
-		if(mydde.verifyPageViewAndOptions()){
+	@TestProperties(name = "Verify the options under Basic View of MY DDE Page", paramsInclude = { "testType" })
+	public void verifyPageViewAndOptionsUnderBasicView()throws Exception{
+		if(mydde.verifyPageViewAndOptionsUnderBasicView()){
 			report.report("Successfully Verified Page view and Options under it.", Reporter.ReportAttribute.BOLD);
 		}else{
 			report.report("Failed to Verify Page view and Options under it.Please see the JSystem report log for more details", Reporter.FAIL);
@@ -222,6 +224,17 @@ public class MyDDETests extends BaseTest{
 			report.report("Failed to verify options under Advanced Search of MY DDE Page..Please see the JSystem report log for more details", Reporter.FAIL);
 		}
 	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verifying  Save Profile option under Advance Search", paramsInclude = { "agency, monthsAgo, saveProfileNameAS, testType" })
+	public void verifySaveProfileUnderAdvancedSearch() throws Exception{
+		if(mydde.verifySaveProfileUnderAdvancedSearch(agency, monthsAgo, saveProfileNameAS)){
+			report.report("Successfully verified Save Profile option under Advance Search", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to verify Save Profile option under Advance Search.Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
 
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
@@ -234,21 +247,31 @@ public class MyDDETests extends BaseTest{
 		}
 	}
 	
-	/*@Test
+	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verifying Totals for advanced search result page.", paramsInclude = { "savedProfile,testType" })
+	@TestProperties(name = "Verifying Totals for advanced search result page.", paramsInclude = { "betweenDateAS,andDateAS,testType" })
 	public void verifyTotalsForAdvancedSearchResult() throws Exception{
-		if(mydde.verifyTotalsForAdvancedSearchResult(savedProfile)){
+		if(mydde.verifyTotalsForAdvancedSearchResult(betweenDateAS, andDateAS)){
 			report.report("Successfully verified totals for advanced search result page.", Reporter.ReportAttribute.BOLD);
 		}else{
 			report.report("Failed to verify totals for advanced search result page.Please see the JSystem report log for more details", Reporter.FAIL);
 		}
-	}*/
-	
+	}
 	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verifying Save Profile option under Advance Search with duplicate name", paramsInclude = { "agency,monthsAgo,saveProfileNameAS,testType" })
+	@TestProperties(name = "Verifying the Filters in the Advance Search Results.", paramsInclude = { "monthsAgo,agency,hic,tob,testType" })
+	public void verifyFiltersInAdvancedSearchResults() throws Exception{
+		if(mydde.verifyFiltersInAdvancedSearchResults(monthsAgo, agency, hic, tob)){
+			report.report("Successfully verified totals for advanced search result page.", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to verify totals for advanced search result page.Please see the JSystem report log for more details", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verifying Save Profile option under Advance Search with duplicate name.", paramsInclude = { "agency,monthsAgo,saveProfileNameAS,testType" })
 	public void verifySaveProfileOptionWithDuplicateName() throws Exception{
 		if(mydde.verifySaveProfileOptionWithDuplicateName(agency,monthsAgo,saveProfileNameAS)){
 			report.report("Successfully verified Save Profile option under Advance Search with duplicate name.", Reporter.ReportAttribute.BOLD);
@@ -256,7 +279,6 @@ public class MyDDETests extends BaseTest{
 			report.report("Failed to verify Save Profile option under Advance Search with duplicate name.Please see the JSystem report log for more details", Reporter.FAIL);
 		}
 	}
-	
 	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
@@ -459,6 +481,22 @@ public class MyDDETests extends BaseTest{
 
 	public void setAndDateAS(String andDateAS) {
 		this.andDateAS = andDateAS;
+	}
+	
+	public String getTob() {
+		return tob;
+	}
+
+	public void setTob(String tob) {
+		this.tob = tob;
+	}
+	
+	public String getOptions() {
+		return options;
+	}
+
+	public void setOptions(String options) {
+		this.options = options;
 	}
 
 	@ParameterProperties(description = "Save this search profile as")

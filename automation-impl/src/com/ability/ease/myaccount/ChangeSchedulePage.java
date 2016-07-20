@@ -30,9 +30,10 @@ import com.ability.ease.selenium.webdriver.AbstractPageObject;
 public class ChangeSchedulePage extends AbstractPageObject {
 
 	MyAccountHelper helper = new MyAccountHelper();
-	
-	public boolean verifyChangeSchedule(Map<String,String> mapAttrValues)throws Exception {
+	private int failurecount=0;
 
+	public boolean verifyChangeSchedule(Map<String,String> mapAttrValues)throws Exception {
+		String sXpathExpression = "//schedule/@hour";
 		navigateToPage();
 		clickLink("Change Schedule");
 
@@ -51,50 +52,62 @@ public class ChangeSchedulePage extends AbstractPageObject {
 		report.report("Agency: "+sAgencyNumber);
 		Map<Integer,String> xmlFileMap = helper.getScheduleXMLFilesFromDB(sAgencyNumber);
 
-		//code to convert claim schedule time to CST
-		String sClaimsScheduleTime = mapAttrValues.get("claimsTimeDropDown");
-		String CSTValue_Claims = TimeZoneConversionUtil.convertToCSTTimeZone(sClaimsScheduleTime, sTimeZone);
-		report.report("Claim Schedule Time in CST: "+CSTValue_Claims);
-		
+		//code to convert claim schedule time to CST	
+		if(mapAttrValues.containsKey("claimsTimeDropDown")){
+			String sClaimsScheduleTime = mapAttrValues.get("claimsTimeDropDown");
+			String CSTValue_Claims = TimeZoneConversionUtil.convertToCSTTimeZone(sClaimsScheduleTime, sTimeZone);
+			report.report("Claim Schedule Time in CST: "+CSTValue_Claims);
+			Document claimsXMLDocument = convertStringToDocument(xmlFileMap.get(10));
+			if(!isValueFoundinXML(claimsXMLDocument, sXpathExpression,  CSTValue_Claims)){
+				report.report("Unable to find value in XML for JobType: 10", Reporter.WARNING);
+				failurecount++;
+			}
+		}
+
 		//code to convert Eligibility schedule time to CST
-		String sEligibilityScheduleTime = mapAttrValues.get("EligibilityTimeDropDown");
-		String CSTValue_Eligibility = TimeZoneConversionUtil.convertToCSTTimeZone(sEligibilityScheduleTime, sTimeZone);
-		report.report("Eligibility Schedule Time in CST: "+CSTValue_Eligibility);
-		
+		if(mapAttrValues.containsKey("EligibilityTimeDropDown")){
+			String sEligibilityScheduleTime = mapAttrValues.get("EligibilityTimeDropDown");
+			String CSTValue_Eligibility = TimeZoneConversionUtil.convertToCSTTimeZone(sEligibilityScheduleTime, sTimeZone);
+			report.report("Eligibility Schedule Time in CST: "+CSTValue_Eligibility);
+			Document eligibilityXMLDocument = convertStringToDocument(xmlFileMap.get(11));
+			if(!isValueFoundinXML(eligibilityXMLDocument, sXpathExpression,  CSTValue_Eligibility) ){
+				report.report("Unable to find value in XML for JobType: 11", Reporter.WARNING);
+				failurecount++;
+			}
+		}
+
 		//code to convert EFT schedule time to CST
-		String sEftScheduleTime = mapAttrValues.get("EFTTimeDropDown");
-		String CSTValue_EFT = TimeZoneConversionUtil.convertToCSTTimeZone(sEftScheduleTime, sTimeZone);
-		report.report("EFT Schedule Time in CST: "+CSTValue_EFT);
+		if(mapAttrValues.containsKey("EFTTimeDropDown")){
+			String sEftScheduleTime = mapAttrValues.get("EFTTimeDropDown");
+			String CSTValue_EFT = TimeZoneConversionUtil.convertToCSTTimeZone(sEftScheduleTime, sTimeZone);
+			report.report("EFT Schedule Time in CST: "+CSTValue_EFT);
+			Document eftXMLDocument = convertStringToDocument(xmlFileMap.get(12));
+			if(!isValueFoundinXML(eftXMLDocument, sXpathExpression,  CSTValue_EFT)){
+				report.report("Unable to find value in XML for JobType: 12", Reporter.WARNING);
+				failurecount++;
+			}
+		}
 
-		String sXpathExpression = "//schedule/@hour";
-		Document claimsXMLDocument = convertStringToDocument(xmlFileMap.get(10));
-		Document eligibilityXMLDocument = convertStringToDocument(xmlFileMap.get(11));
-		Document eftXMLDocument = convertStringToDocument(xmlFileMap.get(12));
-
-		return (
-				isValueFoundinXML(claimsXMLDocument, sXpathExpression,  CSTValue_Claims) &
-				isValueFoundinXML(eligibilityXMLDocument, sXpathExpression,  CSTValue_Eligibility) &
-				isValueFoundinXML(eftXMLDocument, sXpathExpression,  CSTValue_EFT)
-				);
+		return failurecount==0?true:false; 
 	}
-	
+
 	public boolean verifyBlackoutTimeHelpTextinChangeandCustomScheduleWindow(String agency, String starttime, String endtime) throws Exception {
 		int failurecount=0;
-		
+
 		String expectedblackouthelptext = "Credential Time Window : "+starttime+" - "+endtime;
 		navigateToPage();
 		//Verify the helptext in Changeschedule page
 		clickLink("Change Schedule");
 		selectByNameOrID("user_prov_id", agency.trim());
-		String actualblackouttimehelptext = getElementText(By.xpath("//span[contains(text(),'Credential Time Window')]"));
-		
+		String actualblackouttimehelptext = getElementText(By.xpath("//*[contains(text(),'Credential Time Window')]"));
+
 		if(!Verify.StringEquals(expectedblackouthelptext, actualblackouttimehelptext)){
 			failurecount++;
 			report.report("Expected and Actual Blackout time helptext doesn't match", Reporter.WARNING);
 		}
 		//verify the helptext in Custom Schedule page
 		clickButton("Custom");
-		actualblackouttimehelptext = getElementText(By.xpath("//span[contains(text(),'Credential Time Window')]"));
+		actualblackouttimehelptext = getElementText(By.xpath("//font[contains(text(),'Credential Time Window')]"));
 		if(!Verify.StringEquals(expectedblackouthelptext, actualblackouttimehelptext)){
 			failurecount++;
 			report.report("Expected and Actual Blackout time helptext doesn't match", Reporter.WARNING);
@@ -129,9 +142,9 @@ public class ChangeSchedulePage extends AbstractPageObject {
 			report.report("Expected Value :"+ value);
 			report.report("Actual Value :"+ sValue);
 			flag = sValue.equals(value);
-			
+
 		}catch(Exception e){
-			
+
 		}
 		return flag;
 	}

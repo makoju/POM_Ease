@@ -155,4 +155,11 @@ public class EligibilitySelenium2Impl implements IEligibility{
 	public boolean validateResponsePageAndRawFile(String firstname, String lastname) throws Exception {
 		return eligPage.validateResponsePageAndRawFile(firstname, lastname);
 	}
+	
+	@Override
+	public boolean insertEligibilityCheckWithCompletedStatus(
+			Map<String, String> mapAttrVal) throws Exception {
+	
+		return eligPage.insertEligibilityCheckWithCompletedStatus(mapAttrVal);
+	}
 }

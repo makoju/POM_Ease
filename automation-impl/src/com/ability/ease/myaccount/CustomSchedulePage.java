@@ -120,10 +120,9 @@ public class CustomSchedulePage extends AbstractPageObject {
 		return failurecount==0?true:false;
 	}
 	
-	public boolean verifyJobScheduleCurrentAction(String agencyName, String jobtype, String customerid){
-		String currentime = new String(""+System.currentTimeMillis());
-		String jobid = currentime.substring(currentime.length()-5, currentime.length());
+	public boolean insertRecordintoJobSchedule(String agencyName, String jobtype, String jobid, String customerid){
 		
+		report.report("Inserting record into jobSchedule Table with jobID: " + jobid, ReportAttribute.BOLD);
 		
 		String query1 =  "DELETE From ddez.jobschedule where providerid in (select p.id from ddez.provider p where p.DisplayName='"+agencyName+"'  and p.customerid="+customerid+")";
 		String query2 = "INSERT INTO ddez.jobschedule (CustomerID,ProviderID,JobType,JobID,ScheduleTime,SchedulePriority,Trace) select p.customerid,p.id,"+jobtype+","+jobid+",now(),0,0 from ddez.provider p where p.DisplayName='"+agencyName+"' and p.customerid="+customerid;
@@ -136,19 +135,35 @@ public class CustomSchedulePage extends AbstractPageObject {
 			return false;
 		}
 		
-		//Wait for 10 seconds to refresh in database
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-				
-		//get the last row from the jobschedule table whose jobtype is 10
-		String sQueryName = "SELECT * FROM ddez.jobschedule js where js.JobType="+jobtype+" and js.customerid ="+customerid+" order by jobid desc limit 1";
-		ResultSet rs1 = MySQLDBUtil.getResultFromMySQLDB(sQueryName);
-		String currentaction = MySQLDBUtil.getColumnValue(rs1, "CurrentAction");
-		return (currentaction!=null && Verify.StringEquals(currentaction, "Initializing connection"))?true:false;
+		return true;
+	}
+	
+	
+	public boolean verifyJobScheduleCurrentAction(String agencyName, String jobtype, String jobid, String customerid){
+		//Wait for the job move on to joblog table if jobtype is 11 or job currentaction changes if jobtype is 10
+			try {
+				Thread.sleep(60000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		    if(jobtype.equalsIgnoreCase("11")){
+		    	String sQuery = "SELECT * from ddez.joblog where jobid="+jobid;
+		    	
+		    	ResultSet rs1 = MySQLDBUtil.getResultFromMySQLDB(sQuery);
+				String errorcode = MySQLDBUtil.getColumnValue(rs1, "ErrorCode");
+		    	
+				return (errorcode!=null && Verify.StringEquals(errorcode, "0"))?true:false;
+		    }
+			//get the last row from the jobschedule table whose jobtype is 10
+		    else{
+			//String sQueryName = "SELECT * FROM ddez.jobschedule js where providerid in (select p.id from ddez.provider p where p.DisplayName='"+agencyName+"') and js.JobType="+jobtype+" and js.customerid ="+customerid+" order by jobid desc limit 1";
+		    String sQueryName = "SELECT * FROM ddez.jobschedule js where jobid="+jobid;	
+			ResultSet rs1 = MySQLDBUtil.getResultFromMySQLDB(sQueryName);
+			String currentaction = MySQLDBUtil.getColumnValue(rs1, "CurrentAction");
+			return (currentaction!=null && Verify.StringEquals(currentaction, "Initializing connection"))?true:false;
+		    }
 	}
 		
 	public boolean verifyInvalidDDEcredentials(String agency, String credential) throws Exception {
@@ -219,6 +234,12 @@ public class CustomSchedulePage extends AbstractPageObject {
 		navigateToPage();
 		clickLink("Change Schedule");
 		selectByNameOrID("user_prov_id", agency);
+		/*WebElement selectelement = waitForElementVisibility(By.id("user_prov_id"));
+		if(selectelement==null)
+			report.report("Unable to find Select drop down with the id: 'user_prov_id'");
+		Select select = new Select(selectelement);
+		select.selectByVisibleText(agency.trim());*/
+		
 		clickButton("Custom");
 		if(!isTextPresent("ASSIGN CUSTOM SCHEDULE"))
 		{

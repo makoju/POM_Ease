@@ -23,6 +23,9 @@
         <antcallback target="t5"/>
         <antcallback target="t6"/>
         <antcallback target="t7"/>
+        <antcallback target="t8"/>
+        <antcallback target="t9"/>
+        <antcallback target="t10"/>
     </target>
     <target name="t0">
         <jsystem showoutput="true">
@@ -42,13 +45,21 @@
     </target>
     <target name="t2">
         <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="c267b1d7-4761-4c5f-82e1-dc99473c3998"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.myaccount.MyAccountTests.deleteAllCustomSchedule"/>
+        </jsystem>
+    </target>
+    <target name="t3">
+        <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="59ad2818-4ce1-4baf-a3c5-59491f52db9c"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.myaccount.MyAccountTests.verifyChangeSchedule"/>
         </jsystem>
     </target>
-    <target name="t3">
+    <target name="t4">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="7abf9d61-5736-4434-bb71-cce59db1dfc7"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -56,7 +67,7 @@
             <test name="com.ability.ease.common.CommonTests.setBlackoutStartandEndTime"/>
         </jsystem>
     </target>
-    <target name="t4">
+    <target name="t5">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="255da2c9-f47f-45e8-ae06-794b8e5ab23a"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -64,7 +75,23 @@
             <test name="com.ability.ease.myaccount.MyAccountTests.configureBlackoutTime"/>
         </jsystem>
     </target>
-    <target name="t5">
+    <target name="t6">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="b63abfd7-5f7e-44fa-9af9-1e9a850c0975"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.myaccount.MyAccountTests.insertRecordintoJobSchedule"/>
+        </jsystem>
+    </target>
+    <target name="t7">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="d93b6aa2-0756-4737-9d0a-9258f9d348ca"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.myaccount.MyAccountTests.insertRecordintoJobSchedule"/>
+        </jsystem>
+    </target>
+    <target name="t8">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="37d1776b-1c6f-4b97-a029-514ca873fb35"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -72,7 +99,7 @@
             <test name="com.ability.ease.common.CommonTests.stopStartEaseServer"/>
         </jsystem>
     </target>
-    <target name="t6">
+    <target name="t9">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="f799b831-8b46-4d30-9b42-23f6869320bd"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -80,7 +107,7 @@
             <test name="com.ability.ease.myaccount.MyAccountTests.verifyJobScheduleCurrentAction"/>
         </jsystem>
     </target>
-    <target name="t7">
+    <target name="t10">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="239379ec-76b4-46e7-a216-0c43e7ceb793"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>

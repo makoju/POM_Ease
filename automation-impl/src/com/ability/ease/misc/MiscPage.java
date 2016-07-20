@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import jsystem.framework.report.Reporter;
+import jsystem.framework.report.Reporter.ReportAttribute;
 
 import org.jdom.Parent;
 import org.openqa.selenium.By;
@@ -110,10 +111,30 @@ public class MiscPage extends AbstractPageObject {
 				 * e.getMessage()); if(e instanceof NoSuchWindowException){ //TO
 				 * DO } } finally{ isLoggedIn=false; }
 				 */
-			} else {
-				/*
+			}/* else {
+				
 				 * isLoggedIn = false; validLogin(sUserName, sPassword);
-				 */
+				 
+				//Once logged out from the current user session, Lets switch to mainwindow
+				driver.switchTo().window(mainWindowHanlde);
+
+				try {
+						report.report("QUIT method called after logging out user "+ currentLoggedInUser +"...Closing all browser instances!!!");
+						quitAndRelaunchBrowser();
+					} 
+					catch (Exception e) {
+						report.report("Exception in launching browser: "+ e.getMessage());
+						if(e instanceof NoSuchWindowException){
+							//TO DO
+						}
+					}
+					finally{
+						isLoggedIn=false;
+				}
+			}*/
+			else {
+				/*isLoggedIn = false;
+				validLogin(sUserName, sPassword);*/
 				quitAndRelaunchBrowser();
 			}
 		}
@@ -179,6 +200,12 @@ public class MiscPage extends AbstractPageObject {
 				if (!verifyAlert("DDE information changed")) {
 					report.report("DDE Information Submitted was not acknowledged", Reporter.WARNING);
 				}
+					
+				/*if(!verifyAlert("DDE information changed")){
+					report.report("DDE Information Submitted was not acknowledged. Clearing the alert",ReportAttribute.BOLD);
+					driver.switchTo().alert().accept();
+
+				}*/
 			}
 			return true;
 		} else {

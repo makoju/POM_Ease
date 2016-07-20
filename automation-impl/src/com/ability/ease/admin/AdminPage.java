@@ -3,6 +3,9 @@ package com.ability.ease.admin;
 import java.util.List;
 import java.util.Map;
 
+import jsystem.framework.report.Reporter;
+import jsystem.framework.report.Reporter.ReportAttribute;
+
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 
@@ -18,21 +21,34 @@ import com.ability.ease.selenium.webdriver.AbstractPageObject;
 public class AdminPage extends AbstractPageObject{
 
 	public boolean addUser(Map<String, String> mapAttrVal)throws Exception{
-		String sActual = null;
+		//String sExpected = null;
 		navigateToPage();
 		UIAttributeXMLParser parser = new UIAttributeXMLParser();
 		List<Attribute> lsAttributes = parser.getUIAttributesFromXMLV2(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Administration\\AddUser.xml", mapAttrVal);
 		UIActions admin = new UIActions();
 
-		for ( Attribute scrAttr:lsAttributes){
-			if( scrAttr.getDisplayName().equalsIgnoreCase("User Name")){
-				sActual = scrAttr.getValue().toString();
-			}
-		}
+		//sExpected = mapAttrVal.get("User Name");
+		
 		admin.fillScreenAttributes(lsAttributes);
 		clickButtonV2("Submit");
-		report.report("User "+ sActual + " added!");
-		return verifyAlert("User "+ sActual + " added!");
+		
+		Alert alert = waitForAlert(driver);
+		if(alert!=null)
+		{
+			report.report(alert.getText());
+			if(alert.getText().matches("User.*added.*")){
+				alert.accept();
+				return true;
+			}
+			alert.accept();
+			return false;
+		}
+		else
+		{
+			report.report("Failed to Add User", Reporter.WARNING);
+			return false;
+		}
+		
 	}
 
 	public boolean editUser(Map<String, String> mapAttrVal)throws Exception{

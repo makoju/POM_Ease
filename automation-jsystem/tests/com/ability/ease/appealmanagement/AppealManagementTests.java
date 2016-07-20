@@ -1,7 +1,15 @@
 package com.ability.ease.appealmanagement;
 
 import java.util.HashMap;
-import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.ability.ease.auto.common.annotations.SupportTestTypes;
+import com.ability.ease.auto.dlgproviders.AttributeNameValueDialogProvider;
+import com.ability.ease.auto.enums.tests.TestType;
+import com.ability.ease.common.BaseTest;
+import com.ability.ease.testapi.IAppealManagement;
 
 import jsystem.framework.ParameterProperties;
 import jsystem.framework.TestProperties;
@@ -9,29 +17,15 @@ import jsystem.framework.report.Reporter;
 import jsystem.framework.scenario.Parameter;
 import jsystem.framework.scenario.UseProvider;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import com.ability.auto.common.AttrStringstoMapConvert;
-import com.ability.ease.auto.common.annotations.SupportTestTypes;
-import com.ability.ease.auto.common.test.resource.TestCommonResource;
-import com.ability.ease.auto.dlgproviders.AttributeNameValueDialogProvider;
-import com.ability.ease.auto.enums.common.UIAttributesXMLFileName;
-import com.ability.ease.auto.enums.tests.SelectTimeframe;
-import com.ability.ease.auto.enums.tests.Status;
-import com.ability.ease.auto.enums.tests.TestType;
-import com.ability.ease.common.BaseTest;
-import com.ability.ease.testapi.IAppealManagement;
-import com.ability.ease.testapi.IMyDDE;
-
 public class AppealManagementTests extends BaseTest{
 
 	private IAppealManagement appeal;
 	private String monthsAgo;
 	private String notes;
+	private String agency;
+	private String expectedColumns;
+	private String fromDate;
 	private String hic,claimIDorDCN,caseID,reviewContractorName;
-
-	
 
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
 	private String tagname;
@@ -56,6 +50,17 @@ public class AppealManagementTests extends BaseTest{
 			report.report("Successfully verified the validations and functionality under the View Notes pop up Screen.", Reporter.ReportAttribute.BOLD);
 		}else{
 			report.report("Failed to verify the validations and functionality under the View Notes pop up Screen.", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Verify the UI fields present under the LEVEL 1 APPEAL CLAIMS ESMD STATUS REPORT for HHA Agency.", paramsInclude = { "agency,expectedColumns,fromDate,testType" })
+	public void verifyUIFieldsUnderLEVEL1APPEALCLAIMSREPORTForHHAAgency()throws Exception{
+		if(appeal.verifyUIFieldsUnderLEVEL1APPEALCLAIMSREPORTForHHAAgency(agency, expectedColumns, fromDate)){
+			report.report("Successfully verified the UI fields present under the LEVEL 1 APPEAL CLAIMS ESMD STATUS REPORT for HHA Agency.", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to verify the UI fields present under the LEVEL 1 APPEAL CLAIMS ESMD STATUS REPORT for HHA Agency.", Reporter.FAIL);
 		}
 	}
 	
@@ -212,6 +217,30 @@ public class AppealManagementTests extends BaseTest{
 
 	public void setExpectedalertmessage(String expectedalertmessage) {
 		this.expectedalertmessage = expectedalertmessage;
+	}
+	
+	public String getAgency() {
+		return agency;
+	}
+
+	public void setAgency(String agency) {
+		this.agency = agency;
+	}
+
+	public String getExpectedColumns() {
+		return expectedColumns;
+	}
+
+	public void setExpectedColumns(String expectedColumns) {
+		this.expectedColumns = expectedColumns;
+	}
+
+	public String getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
 	}
 	
 	public String getHic() {

@@ -202,7 +202,6 @@ public class ClaimsPageVersion2 extends AbstractPageObject {
 							report.report("Claim totals from related claim ( previous episode final ) - " + totalsFromRelatedClaims);
 							if(totalsFromPreviousClaim != totalsFromRelatedClaims){
 								report.report("Claims total are not swapped in related claims");
-								helper.comeBackToHomePage();
 								stepResult = true;
 							}
 						}
@@ -227,12 +226,18 @@ public class ClaimsPageVersion2 extends AbstractPageObject {
 
 		boolean stepResult = false;
 		WebElement lockIcon = null;
+		String beforeUnlockReadOnllyAttrVal = null;
+		String afterUnlockReadOnlyAttrVal = null;
 
 		try{
 			lockIcon = waitForElementToBeClickable(ByLocator.name, ub04LockIcon, 30);
 			moveToElement(lockIcon);
+			WebElement firstClaimLine = waitUntilElementVisibility(By.name(elementprop.getProperty("FIRST_CLAIM_LINE_NAME")));
+			beforeUnlockReadOnllyAttrVal = firstClaimLine.getAttribute("readonly");
 			safeJavaScriptClick(unlockOption);
-			if(waitUntilElementVisibility(By.xpath(elementprop.getProperty("TOB_XPATH"))) != null){
+			firstClaimLine = waitUntilElementVisibility(By.name(elementprop.getProperty("FIRST_CLAIM_LINE_NAME")));
+			afterUnlockReadOnlyAttrVal = firstClaimLine.getAttribute("readonly");
+			if(beforeUnlockReadOnllyAttrVal.equalsIgnoreCase("true") && afterUnlockReadOnlyAttrVal == null){
 				report.report("Unlocked claim with " + unlockOption + " !!!");
 				stepResult = true;
 			}
@@ -291,7 +296,7 @@ public class ClaimsPageVersion2 extends AbstractPageObject {
 					if ( updatedClaimTotalCharges == (previousClaimTotals + correctedClaimCharge) ){
 						report.report("Claim totals are tallied successfully after correction");
 						stepResult = true;
-						helper.comeBackToHomePage();
+						//helper.comeBackToHomePage();
 					}
 			}
 		}catch(Exception e){
@@ -381,7 +386,7 @@ public class ClaimsPageVersion2 extends AbstractPageObject {
 		if( we != null){
 			report.report("Expected 0001 rev code validation message : " + expectedValidationMsg);
 			report.report("Actual 0001 rev code validation message : " + we.getText());
-			helper.comeBackToHomePage();
+			//helper.comeBackToHomePage();
 			stepResult = true;
 		}
 
@@ -406,7 +411,7 @@ public class ClaimsPageVersion2 extends AbstractPageObject {
 		return stepResult;
 	}
 
-	public boolean fillupFieldsInUB04Form(Map<String, String> mapAttrValues)throws Exception{
+	public boolean fillUB04FormAndValidateXMLFile(Map<String, String> mapAttrValues)throws Exception{
 
 		String sRequestDetails[];
 		String sClaimRequestID = null, sClaimRequestXML = null, sFileName=null;
@@ -453,7 +458,7 @@ public class ClaimsPageVersion2 extends AbstractPageObject {
 				report.report("Patient details were incorrect in the new UB04 for opened from patient info page!!!");
 			}
 		}
-		helper.comeBackToHomePage();
+		//helper.comeBackToHomePage();
 		return stepResult;
 	}
 

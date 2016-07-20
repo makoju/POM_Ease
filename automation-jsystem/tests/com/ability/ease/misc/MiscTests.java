@@ -34,6 +34,13 @@ public class MiscTests extends BaseTest{
 	private String sExpectedOutput;
 	private UserActionType userAction;
 	
+	private String mAgency;
+	private String mHicID;
+	private String expectedalertmessage;
+	
+
+	
+	
 	private AttributePair[] attrpair;
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
 	
@@ -187,9 +194,84 @@ public class MiscTests extends BaseTest{
 			UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Misc\\Misc.xml");
 		}
 	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "verifySingleAddHIC_Advanced", paramsInclude = { "testType,mAgency, mHicID,expectedalertmessage" })
+	public void verifySingleAddHIC()throws Exception{
+
+		if(misc.verifyAddSingleHIC(mAgency,mHicID, expectedalertmessage)){
+			report.report("Succesfully added hic!!", Reporter.PASS);
+		}else {
+			report.report("Failed to add hic", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "verifySingleAddHIC_BasicView", paramsInclude = { "testType,mAgency, mHicID,expectedalertmessage" })
+	public void verifySingleAddHIC_BasicView()throws Exception{
+
+		if(misc.verifyAddSingleHIC_BasicView(mAgency,mHicID, expectedalertmessage)){
+			report.report("Succesfully added hic!!", Reporter.PASS);
+		}else {
+			report.report("Failed to add hic", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "verifyMULTIPLEAddHICS_BasicView", paramsInclude = { "testType,mAgency, mHicID,expectedalertmessage" })
+	public void verifyMultipleAddHICs_BasicView()throws Exception{
+
+		if(misc.verifyAddMultipleHICs_Basicview(mAgency,mHicID, expectedalertmessage)){
+			report.report("Succesfully added hicS!!", Reporter.PASS);
+		}else {
+			report.report("Failed to add hicS", Reporter.FAIL);
+		}
+	}
+	
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "verifyMULTIPLEAddHICS_Advanced", paramsInclude = { "testType,mAgency, mHicID,expectedalertmessage" })
+	public void verifyMultipleAddHICs()throws Exception{
+
+		if(misc.verifyAddMultipleHICs(mAgency,mHicID, expectedalertmessage)){
+			report.report("Succesfully added hicS!!", Reporter.PASS);
+		}else {
+			report.report("Failed to add hicS", Reporter.FAIL);
+		}
+	}
+	
+	
 	/*####
 	##Getters and Setters methods
 	######*/
+
+	public String getmAgency() {
+		return mAgency;
+	}
+
+	public void setmAgency(String mAgency) {
+		this.mAgency = mAgency;
+	}
+
+	public String getmHicID() {
+		return mHicID;
+	}
+
+	public void setmHicID(String mHicID) {
+		this.mHicID = mHicID;
+	}
+
+	public String getExpectedalertmessage() {
+		return expectedalertmessage;
+	}
+
+	public void setExpectedalertmessage(String expectedalertmessage) {
+		this.expectedalertmessage = expectedalertmessage;
+	}
 
 	public String getUserName() {
 		return userName;

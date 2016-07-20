@@ -3,11 +3,11 @@ package com.ability.ease.appealmanagement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
-
-import jsystem.framework.report.Reporter;
-import jsystem.framework.report.Reporter.ReportAttribute;
+import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -21,7 +21,11 @@ import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFileFomat;
 import com.ability.ease.home.HomePage;
 import com.ability.ease.home.HomePage.Menu;
+import com.ability.ease.mydde.reports.ReportsHelper;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
+
+import jsystem.framework.report.Reporter;
+import jsystem.framework.report.Reporter.ReportAttribute;
 
 /**
  * 
@@ -33,19 +37,20 @@ public class AppealManagementPage extends AbstractPageObject{
 
 	String expectedtagname, tagAgencytext;
 	static int firstaddtagrownumber = -1;
+	ReportsHelper reportshelper = new ReportsHelper();
+	String tableheadersxpath = "//table[@id='datatable']//tr[@class='tableheaderblue']/td";
 	static String hic;
 
 	public boolean verifyValidationsUnderViewNotes(String monthsAgo, String notes) throws Exception {
-		int failurecount = 0;
-		WebElement tagLabel = null, notesLabel = null, submitButton = null;
 
+		int failurecount = 0;
+		String actualheadertext="";
+		WebElement tagLabel = null, notesLabel = null, submitButton = null;
 		navigateToPage();
-		WebElement liveSearchIcon = waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty("MYDDE_HIC_ICON_XPATH"), 30);
-		moveToElement(liveSearchIcon);
-		clickLink(elementprop.getProperty("LIVESEARCH_ADVANCED_SEARCH_LINKTEXT"));
-		typeEditBox(elementprop.getProperty("AS_MONTHS_AGO_TEXTBOX_NAME"), monthsAgo);
-		clickButtonV2(elementprop.getProperty("AS_SEARCH_BUTTON_TYPE"));
-		Thread.sleep(5000);
+		actualheadertext = getAppealClaimsreportHeaderMessage();
+		if(!Verify.StringMatches(actualheadertext, "OVERNIGHT LEVEL 1 APPEAL CLAIMS ESMD STATUS REPORT FOR.*, FOR AGENCY.*"))
+			failurecount++;
+		navigateToTStatusReport();
 		boolean isPresent = driver.findElements(By.linkText(elementprop.getProperty("SEARCH_RESULTS_VIEW_TAGS_LINKTEXT"))).size() > 0;
 		if(!isPresent){
 			report.report("View tags link identified.....",ReportAttribute.BOLD);
@@ -81,23 +86,85 @@ public class AppealManagementPage extends AbstractPageObject{
 	}
 
 	public boolean verifyTagDropdownDisplayingOnlyTagsThoseDidntAddedEarlier() throws Exception {
-		int failurecount = 0; List<String> tagsUnderClaimTags = new ArrayList<String>();
-		navigateToPage();
-		WebElement liveSearchIcon = waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty("MYDDE_HIC_ICON_XPATH"), 30);
-		moveToElement(liveSearchIcon);
-		clickLink(elementprop.getProperty("LIVESEARCH_ADVANCED_SEARCH_LINKTEXT"));
-		typeEditBox(elementprop.getProperty("AS_MONTHS_AGO_TEXTBOX_NAME"), "26");
-		clickButtonV2(elementprop.getProperty("AS_SEARCH_BUTTON_TYPE"));
-		Thread.sleep(5000);
-		driver.findElement(By.linkText(elementprop.getProperty("SEARCH_RESULTS_VIEW_TAGS_LINKTEXT"))).click();
 
+		int failurecount = 0;
+		List<String> tagsUnderClaimTags = new ArrayList<String>();
+		navigateToPage();
+		navigateToTStatusReport();
+		clickLink(elementprop.getProperty("SEARCH_RESULTS_VIEW_TAGS_LINKTEXT"));
 		List<WebElement> claimTags = driver.findElements(By.xpath("//div[@id='claimTagsId']/div/label"));
 		for(WebElement claimTag : claimTags){
 			tagsUnderClaimTags.add(claimTag.getText());
 		}
 		clickButtonV2(elementprop.getProperty("ADD_TAG_BUTTON_TEXT"));
-		//		List<WebElement> tagsUnderAddTag = driver.findElements(By.xpath("//select[@id='ClaimTagNameDispInputID']"));
-		// pending   ---- selectGetOptions("ClaimTagNameDispInputID");
+		waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty("TAG_DROPDOWN_ADD_TAG_XPATH"), 35);
+		driver.findElement(By.xpath(elementprop.getProperty("TAG_DROPDOWN_ADD_TAG_XPATH"))).click();
+		List<WebElement> tagOptions = driver.findElements(By.xpath(elementprop.getProperty("TAGS_LIST_DROPDOWN_XPATH")));
+		List<String> actualTagTexts = new ArrayList<String>();
+		for(WebElement tagText : tagOptions){
+			if(!tagText.getText().equals("")){
+				actualTagTexts.add(tagText.getText());
+			}
+		}
+		if(tagsUnderClaimTags!=null && actualTagTexts!=null){
+			for(String actual : tagsUnderClaimTags){
+				if(actualTagTexts.contains(actual)){
+					report.report("Tags that already added were still displayed under Add Tag dropdown...!",Reporter.WARNING);
+					failurecount++;
+				}
+			}
+		}
+		return failurecount == 0 ? true : false;
+	}
+
+	public boolean verifyUIFieldsUnderLEVEL1APPEALCLAIMSREPORTForHHAAgency(String agency, String columns, String fromDate) throws Exception {
+
+		int failurecount = 0;
+		String[] expectedColumns = null;
+		String[] expectedheaders = {"Upload Appeal Documents","The Patient HIC number.","The name of the patient.","The claim Status and Location.",
+				"The date the patient was originally admitted.","The claim start date.","The claim through date.","The reimbursement amount posted by Medicare on the claim.",
+				"Total amount billed for claim","The last time the claim was updated in Ease from DDE.","The date the claim was paid (or processed).",
+				"The date an action is required by the FI in order to resolve the Appeal. It is 120 days from paid date.","The number of days left to respond to the Appeal.",
+				"Notes entered during Tagging.","Appeal Response Document Submission status."};
+		if(columns != null){
+			expectedColumns = columns.split(",");
+		}
+		navigateToPage();
+		moveToElement(elementprop.getProperty("AGENCY_LINKTEXT"));
+		selectByNameOrID(elementprop.getProperty("AGENCY_HOVER_DROPDOWN_ID"), agency); 
+		clickButton(elementprop.getProperty("CHANGE_AGENCY_BUTTON_VALUE"));
+
+		moveToElement(elementprop.getProperty("TIMEFRAME_LINKTEXT"));
+		typeEditBox(elementprop.getProperty("TIMEFRAME_FROM_DATE_ID"), fromDate);
+		clickButtonV2(elementprop.getProperty("TIMEFRAME_GO_BUTTON_ID"));
+
+		if(Verify.verifyTableColumnNames("datatable",expectedColumns)){
+			if(!isTextPresent("EASE found no items for this report")){
+				if (!Verify.validateTableColumnSortOrder("datatable", "HIC", 2))
+					failurecount++;
+
+				if (!Verify.validateTableColumnSortOrder("datatable", "Patient", 3))
+					failurecount++;
+				report.report("Comparing actual and expected ToolTips...!");
+				String[] actualheadertooltips = reportshelper.getTableHeaderToolTips(tableheadersxpath);
+				if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders,true))
+					failurecount++;
+			}
+		}
+		else{
+			report.report("EASE found no items for this report at this time.",ReportAttribute.BOLD);
+		}
+
+		String hic = getElementText(By.xpath(elementprop.getProperty("HIC_HYPERLINK_XPATH")));
+		clickOnElement(ByLocator.xpath, elementprop.getProperty("HIC_HYPERLINK_XPATH"), 30);
+		if(!isTextPresent(hic)){
+			failurecount++;
+		}
+		clickLinkV2(elementprop.getProperty("BACK_BUTTON_ID"));
+		clickOnElement(ByLocator.xpath, elementprop.getProperty("PATIENTNAME_HYPERLINK_XPATH"), 30);
+		if(!isTextPresent(hic)){
+			failurecount++;
+		}
 		return failurecount == 0 ? true : false;
 	}
 
@@ -574,7 +641,8 @@ public class AppealManagementPage extends AbstractPageObject{
 		/*		WebElement searchbutton = waitForElementVisibility(By.xpath("//input[@value='Search']"));
 		if(searchbutton!=null)
 			moveToElement(searchbutton);*/
-		clickButtonV2("Search");
+		clickButtonV2(elementprop.getProperty("AS_SEARCH_BUTTON_TYPE"));
+		waitForTextVisibility(ByLocator.xpath, elementprop.getProperty("ADVANCED_SEARCH_RESULTS_PAGE_HEADER"), "SEARCH RESULTS");
 	}
 
 

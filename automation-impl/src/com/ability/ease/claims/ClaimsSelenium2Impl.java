@@ -144,7 +144,7 @@ public class ClaimsSelenium2Impl implements IClaims{
 
 	@Override
 	public boolean fillUB04FormAndValidateXMLFile(Map<String, String> mapAttrValues) throws Exception {
-		return claimsv2.fillupFieldsInUB04Form(mapAttrValues);
+		return claimsv2.fillUB04FormAndValidateXMLFile(mapAttrValues);
 	}
 
 	@Override

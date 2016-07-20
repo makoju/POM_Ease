@@ -655,23 +655,25 @@ public class ClaimsHelper extends AbstractPageObject{
 
 		boolean result = false;
 		String expectedAlertText = "If you leave this page you will lose any changes you have made. Are you sure you wish to continue?";
-		clickLinkV2(elementprop.getProperty("CLAIM_HOME_ID"));
 
-		try{
-			if( !isAlertPresent()){
-				if( waitForElementToBeClickable(ByLocator.id, elementprop.getProperty("REPORT_HOME_ID"), 20) != null){
-					result = true;
+		if(waitUntilElementVisibility(By.id(elementprop.getProperty("CLAIM_HOME_ID"))) != null){ 
+			clickLinkV2(elementprop.getProperty("CLAIM_HOME_ID"));
+			try{
+				if( !isAlertPresent()){
+					if( waitForElementToBeClickable(ByLocator.id, elementprop.getProperty("REPORT_HOME_ID"), 20) != null){
+						result = true;
+					}
+				}else{
+					result = verifyAlert(expectedAlertText);
 				}
-			}else{
-				result = verifyAlert(expectedAlertText);
+			}catch(Exception e){
+				report.report("Exception occured while coming back to EASE home page"  + e.getMessage());
+				e.printStackTrace();
 			}
-		}catch(Exception e){
-			report.report("Exception occured while coming back to EASE home page"  + e.getMessage());
-			e.printStackTrace();
 		}
 		return result;
 	}
-
+	
 	public boolean validatePatientDetailsInNewUb04Form(Map<String, String> mapAttrValues)throws Exception{
 
 		String temp = null;

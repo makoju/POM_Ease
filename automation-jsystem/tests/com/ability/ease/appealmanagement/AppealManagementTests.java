@@ -1,28 +1,21 @@
 package com.ability.ease.appealmanagement;
 
 import java.util.HashMap;
-import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.ability.ease.auto.common.annotations.SupportTestTypes;
+import com.ability.ease.auto.dlgproviders.AttributeNameValueDialogProvider;
+import com.ability.ease.auto.enums.tests.TestType;
+import com.ability.ease.common.BaseTest;
+import com.ability.ease.testapi.IAppealManagement;
 
 import jsystem.framework.ParameterProperties;
 import jsystem.framework.TestProperties;
 import jsystem.framework.report.Reporter;
 import jsystem.framework.scenario.Parameter;
 import jsystem.framework.scenario.UseProvider;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import com.ability.auto.common.AttrStringstoMapConvert;
-import com.ability.ease.auto.common.annotations.SupportTestTypes;
-import com.ability.ease.auto.common.test.resource.TestCommonResource;
-import com.ability.ease.auto.dlgproviders.AttributeNameValueDialogProvider;
-import com.ability.ease.auto.enums.common.UIAttributesXMLFileName;
-import com.ability.ease.auto.enums.tests.SelectTimeframe;
-import com.ability.ease.auto.enums.tests.Status;
-import com.ability.ease.auto.enums.tests.TestType;
-import com.ability.ease.common.BaseTest;
-import com.ability.ease.testapi.IAppealManagement;
-import com.ability.ease.testapi.IMyDDE;
 
 public class AppealManagementTests extends BaseTest{
 
@@ -32,7 +25,7 @@ public class AppealManagementTests extends BaseTest{
 	private String agency;
 	private String expectedColumns;
 	private String fromDate;
-	
+	private String hic,claimIDorDCN,caseID,reviewContractorName;
 
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
 	private String tagname;
@@ -152,9 +145,9 @@ public class AppealManagementTests extends BaseTest{
 	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify Add Tag", paramsInclude = { "testType, tagname" })
+	@TestProperties(name = "Verify Add Tag", paramsInclude = { "testType, hic, tagname" })
 	public void verifyAddTag()throws Exception{
-		if(appeal.verifyAddTag(tagname)){
+		if(appeal.verifyAddTag(tagname,hic)){
 			report.report("Successfully added tag and verified", Reporter.ReportAttribute.BOLD);
 		}else{
 			report.report("Failed to add tag and verify", Reporter.FAIL);
@@ -163,9 +156,9 @@ public class AppealManagementTests extends BaseTest{
 	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify View Tag", paramsInclude = { "testType, tagname" })
+	@TestProperties(name = "Verify View Tag", paramsInclude = { "testType,hic, tagname" })
 	public void verifyViewTag()throws Exception{
-		if(appeal.verifyViewTag(tagname)){
+		if(appeal.verifyViewTag(tagname,hic)){
 			report.report("Successfully Viewed the added tag", Reporter.ReportAttribute.BOLD);
 		}else{
 			report.report("Failed to View the added tag", Reporter.FAIL);
@@ -174,14 +167,25 @@ public class AppealManagementTests extends BaseTest{
 	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify Delete Tag", paramsInclude = { "testType, tagname, expectedalertmessage" })
+	@TestProperties(name = "Verify Delete Tag", paramsInclude = { "testType, tagname, hic, expectedalertmessage" })
 	public void verifyDeleteTag()throws Exception{
-		if(appeal.verifyDeleteTag(tagname, expectedalertmessage)){
+		if(appeal.verifyDeleteTag(tagname, hic,expectedalertmessage)){
 			report.report("Successfully deleted the added tag", Reporter.ReportAttribute.BOLD);
 		}else{
 			report.report("Failed to delete added tag", Reporter.FAIL);
 		}
 	}
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "sendDocumentToCMS", paramsInclude = { "testType,hic,claimIDorDCN,caseID,reviewContractorName,expectedalertmessage" })
+	public void sendDocumentToCMS()throws Exception{
+		if(appeal.sendDocumentToCMS(hic,claimIDorDCN,caseID,reviewContractorName)){
+			report.report("Successfully deleted the added tag", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to delete added tag", Reporter.FAIL);
+		}
+	}
+	
 
 	public String getMonthsAgo() {
 		return monthsAgo;
@@ -237,6 +241,38 @@ public class AppealManagementTests extends BaseTest{
 
 	public void setFromDate(String fromDate) {
 		this.fromDate = fromDate;
+	}
+	
+	public String getHic() {
+		return hic;
+	}
+
+	public void setHic(String hic) {
+		this.hic = hic;
+	}
+	
+	public String getClaimIDorDCN() {
+		return claimIDorDCN;
+	}
+
+	public void setClaimIDorDCN(String claimIDorDCN) {
+		this.claimIDorDCN = claimIDorDCN;
+	}
+
+	public String getCaseID() {
+		return caseID;
+	}
+
+	public void setCaseID(String caseID) {
+		this.caseID = caseID;
+	}
+
+	public String getReviewContractorName() {
+		return reviewContractorName;
+	}
+
+	public void setReviewContractorName(String reviewContractorName) {
+		this.reviewContractorName = reviewContractorName;
 	}
 
 	@ParameterProperties(description = "Provide the UI Screen Attributes to be set as a AttributeName,AttributeValue Pair")

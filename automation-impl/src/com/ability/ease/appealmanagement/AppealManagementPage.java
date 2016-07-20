@@ -14,9 +14,11 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import com.ability.ease.auditdoc.AuditDocHelper;
 import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.Verify;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
+import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFileFomat;
 import com.ability.ease.home.HomePage;
 import com.ability.ease.home.HomePage.Menu;
 import com.ability.ease.mydde.reports.ReportsHelper;
@@ -37,6 +39,7 @@ public class AppealManagementPage extends AbstractPageObject{
 	static int firstaddtagrownumber = -1;
 	ReportsHelper reportshelper = new ReportsHelper();
 	String tableheadersxpath = "//table[@id='datatable']//tr[@class='tableheaderblue']/td";
+	static String hic;
 
 	public boolean verifyValidationsUnderViewNotes(String monthsAgo, String notes) throws Exception {
 
@@ -380,18 +383,16 @@ public class AppealManagementPage extends AbstractPageObject{
 
 
 
-	public boolean verifyAddTag(String tagtoadd) throws Exception {
+	public boolean verifyAddTag(String tagtoadd, String hic) throws Exception {
 		navigateToPage();
 		navigateToTStatusReport();
-		firstaddtagrownumber = getFirstAddTagRowNumber();
-		if(firstaddtagrownumber!=-1){
-
-			WebElement tagelement = waitForElementVisibility(By.xpath("//table[@id='datatable']/tbody/tr["+firstaddtagrownumber+"]/td[2]//img"), 30);
-			WebElement tagAgency = waitForElementVisibility(By.xpath("//table[@id='datatable']/tbody/tr["+firstaddtagrownumber+"]/td[3]"));
+		
+		WebElement tagelement = waitForElementVisibility(By.xpath("//table[@id='datatable']/tbody//td[a[text()='"+hic+"']]/preceding-sibling::td[2]//img"), 30);
+		if(tagelement!=null){
+			WebElement tagAgency = waitForElementVisibility(By.xpath("//table[@id='datatable']/tbody//td[a[text()='"+hic+"']]/preceding-sibling::td[1]"));
 
 			//Add Tag and View Tag
-			if(tagelement!=null){
-				if(tagAgency!=null)
+			if(tagAgency!=null)
 					this.tagAgencytext = tagAgency.getText();
 
 				tagelement.click();
@@ -427,22 +428,21 @@ public class AppealManagementPage extends AbstractPageObject{
 					return false;
 				}
 			}
-		}
 		else{
-			report.report("Row with Add Tag was not found in the data table",Reporter.WARNING); //Add Tag which is first available in the datatable and return the tagname
+			report.report("Row with Add Tag for specific HIC: "+hic+" was not found in the data table",Reporter.WARNING); //Add Tag which is first available in the datatable and return the tagname
 			return false;
 		}
 		return true;
 	}
 
-	public boolean verifyViewTag(String tagname) throws Exception {
+	public boolean verifyViewTag(String tagname, String hic) throws Exception {
 		int failurecount=0;
 		if(waitForElementVisibility(By.xpath("//table[@id='datatable']"), 2)==null){
 			navigateToPage();
 			navigateToTStatusReport();
 		}
-		if(firstaddtagrownumber!=-1){				
-			WebElement viewtagslink = waitForElementVisibility(By.xpath("//table[@id='datatable']/tbody/tr["+firstaddtagrownumber+"]/td[2]//a[contains(text(),'View Tags')]"), 30);
+
+		WebElement viewtagslink = waitForElementVisibility(By.xpath("//table[@id='datatable']/tbody//td[a[text()='"+hic+"']]/preceding-sibling::td//a[contains(text(),'View Tags')]"), 30);
 
 			if(viewtagslink!=null){
 				viewtagslink.click();
@@ -520,21 +520,15 @@ public class AppealManagementPage extends AbstractPageObject{
 				report.report("view tags link not found for the Added tag", Reporter.WARNING);
 				failurecount++;
 			}
-		}
-		else{
-			report.report("Add tag function called earlier seems to be failed. Hence, can't able to perform delete operation", Reporter.WARNING);
-			return false;
-		}
 		return failurecount==0?true:false;
 	}
 
-	public boolean verifyDeleteTag(String tagname, String expectedalertmessage) throws Exception {
+	public boolean verifyDeleteTag(String tagname, String hic, String expectedalertmessage) throws Exception {
 		if(waitForElementVisibility(By.xpath("//table[@id='datatable']"), 2)==null){
 			navigateToPage();
 			navigateToTStatusReport();
 		}
-		if(firstaddtagrownumber!=-1){
-			WebElement viewtagslink = waitForElementVisibility(By.xpath("//table[@id='datatable']/tbody/tr["+firstaddtagrownumber+"]/td[2]//a[contains(text(),'View Tags')]"), 30);
+		WebElement viewtagslink = waitForElementVisibility(By.xpath("//table[@id='datatable']/tbody//td[a[text()='"+hic+"']]/preceding-sibling::td//a[contains(text(),'View Tags')]"), 30);
 
 			if(viewtagslink!=null){
 				viewtagslink.click();
@@ -542,7 +536,7 @@ public class AppealManagementPage extends AbstractPageObject{
 				WebElement claimstagheader = waitForElementVisibility(By.cssSelector(".headergreen"));
 				if(claimstagheader!=null)
 				{
-					WebElement deletetaglink = waitForElementVisibility(By.xpath("//label[text()='level_1_appeal']/following-sibling::a"));
+					WebElement deletetaglink = waitForElementVisibility(By.xpath("//label[text()='"+tagname.toLowerCase()+"']/following-sibling::a"));
 					if(deletetaglink!=null){
 						deletetaglink.click();
 						if(!verifyAlert(expectedalertmessage))
@@ -567,9 +561,52 @@ public class AppealManagementPage extends AbstractPageObject{
 				report.report("view tags link not found in data table", Reporter.WARNING);
 				return false;
 			}
+		return true;
+	}
+	
+
+	public boolean sendDocumentToCMS(String hic, String claimIDorDCN, String caseID, String reviewContractorName) throws Exception {
+		String sExpectedAlertMessageBeforeADRSubmission = "Proceed with ADR Document Submission to Review Contractor : "+ reviewContractorName +"?";
+		String sExpectedAlertMessageAfterSuccessfulADRSubmission = "Successfully processed ADR response documents Submission";
+		SimpleDateFormat todaydate = new SimpleDateFormat("MM//DD//YYYY");
+		String today = new String(todaydate.format(new Date())); 
+		
+		
+		AuditDocHelper helper = new AuditDocHelper();
+		navigateToPage();
+		setTimeFrame("FromDate(10/01/2013):ToDate("+today+")");
+		String actualheadertext = getAppealClaimsreportHeaderMessage();
+		if(actualheadertext!=null && actualheadertext.contains("LEVEL 1 APPEAL CLAIMS ESMD STATUS REPORT")){
+			WebElement documentuploadlink = waitForElementVisibility(By.xpath("//td[a[text()='"+hic.trim()+"']]/preceding-sibling::td//a"));
+			if(documentuploadlink!=null){
+				documentuploadlink.click();
+				selectByNameOrID("reviewContractor", reviewContractorName);
+				typeEditBox("CMSClaimIDParam", claimIDorDCN);
+				typeEditBox("CaseIdParam", caseID);
+				
+				List<String> filepath = helper.getADRFilePath(ADRFileFomat.PDF, '<');
+				helper.uploadFilesAutoIT(filepath);
+				clickButtonV2("Send");
+				
+				if(!verifyAlert(sExpectedAlertMessageBeforeADRSubmission))
+				{
+					report.report("Expected Alert not found", Reporter.WARNING);
+					return false;
+				}
+				if(!verifyAlertV2(sExpectedAlertMessageAfterSuccessfulADRSubmission))
+				{
+					report.report("Expected Alert not found", Reporter.WARNING);
+					return false;
+				}
+			}
+			else{
+				report.report("Unable to find document upload link in Appeal Claim Submission table", Reporter.WARNING);
+				return false;
+			}
 		}
-		else{
-			report.report("Add tag function called earlier seems to be failed. Hence, can't able to perform delete operation", Reporter.WARNING);
+		else
+		{
+			report.report("Unable to navigate to Appeal Claims Submission page", Reporter.WARNING);
 			return false;
 		}
 		return true;
@@ -579,7 +616,7 @@ public class AppealManagementPage extends AbstractPageObject{
 
 	}*/
 
-	int getFirstAddTagRowNumber(){
+/*	int getFirstAddTagRowNumber(String hic){
 		int i=1;
 		List<WebElement> lsrows = findElements(By.xpath("//table[@id='datatable']/tbody/tr"));
 		if(lsrows!=null){
@@ -594,7 +631,7 @@ public class AppealManagementPage extends AbstractPageObject{
 			report.report("Search Results data table was not found: ",Reporter.WARNING);
 
 		return -1;
-	}
+	}*/
 
 	void navigateToTStatusReport() throws Exception{
 		WebElement reporthicsearch = waitForElementVisibility(By.id(elementprop.getProperty("REPORT_HIC_SEARCH")));

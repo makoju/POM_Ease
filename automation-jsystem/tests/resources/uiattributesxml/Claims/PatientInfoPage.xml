@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UIAttributes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="UIAttributes.xsd">
+
+	<UIAttribute>
+      <locator>ub8b</locator>
+      <style>Text</style>
+      <displayName>Patient Name</displayName>
+      <description>Patient First Name, Last Name ex., {DOE, JOHN}</description>
+   </UIAttribute>
+   
+   <UIAttribute>
+      <locator>ub9a</locator>
+      <style>Text</style>
+      <displayName>Patient Street</displayName>
+      <description>Patient Street</description>
+   </UIAttribute>
+  
+   <UIAttribute>
+      <locator>ub9b</locator>
+      <style>Text</style>
+      <displayName>Patient City</displayName>
+      <description>Patient City</description>
+   </UIAttribute>
+   
+   <UIAttribute>
+      <locator>ub9c</locator>
+      <style>Text</style>
+      <displayName>Patient State</displayName>
+      <description>Patient State</description>
+   </UIAttribute>
+   
+   <UIAttribute>
+      <locator>ub9d</locator>
+      <style>Text</style>
+      <displayName>Patient Zip</displayName>
+      <description>Patient Zip</description>
+   </UIAttribute>
+   
+    <UIAttribute>
+      <locator>ub10</locator>
+      <style>Text</style>
+      <displayName>Patient DOB</displayName>
+      <description>Patient DOB</description>
+   </UIAttribute>
+   
+   <UIAttribute>
+      <locator>ub11</locator>
+      <style>Text</style>
+      <displayName>Patient Sex</displayName>
+      <description>Patient Sex</description>
+   </UIAttribute>
+   
+   <UIAttribute>
+      <locator>ub60a</locator>
+      <style>Text</style>
+      <displayName>HIC</displayName>
+      <description>Patient HIC</description>
+   </UIAttribute>
+   
+</UIAttributes>

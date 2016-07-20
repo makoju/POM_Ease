@@ -243,9 +243,9 @@ public class ClaimsTests extends BaseTest{
 	public void verifyHelpTextInUB04Form()throws Exception{
 
 		if(!claims.verifyHelpTextInUB04Form()){
-			report.report("Failed to verify edit claim line dropdown options !!!", Reporter.FAIL);
+			report.report("Failed to verify help text for Ub04 fields !!!", Reporter.FAIL);
 		}else{
-			report.report("Successfully verified edit claim line dropdown options !!!", Reporter.ReportAttribute.BOLD);
+			report.report("Successfully verified help text for UB04 fields !!!", Reporter.ReportAttribute.BOLD);
 		}
 	}
 
@@ -427,16 +427,17 @@ public class ClaimsTests extends BaseTest{
 	 */
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Fillup Fields In UB04 Form", paramsInclude = { "AttributeNameValueDialogProvider, testType" })
-	public void fillupFieldsInUB04Form()throws Exception{
+	@TestProperties(name = "Fillup Fields In UB04 Form and Validate XML File", paramsInclude = { "AttributeNameValueDialogProvider, startTime, endTime, testType" })
+	public void fillUB04FormAndValidateXMLFile()throws Exception{
 
-		report.report("Inside fill up fields in ub04 form method...");
+		report.report("Inside fill up fields in ub04 form and validate xml file method...");
 
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
-		if(!claims.fillupFieldsInUB04Form(mapAttrValues)){
-			report.report("Failed to fill values in UB04 form !!!" , Reporter.FAIL);
+		globalParamMap.putAll(mapAttrValues);
+		if(!claims.fillUB04FormAndValidateXMLFile(mapAttrValues)){
+			report.report("Failed to fill values in UB04 form and validate XML file !!!" , Reporter.FAIL);
 		}else{
-			report.report("Successfully filled values in new claim form !!!", Reporter.ReportAttribute.BOLD);
+			report.report("Successfully filled values in the claim form and also validated the XML file !!!", Reporter.ReportAttribute.BOLD);
 		}
 	}
 
@@ -459,16 +460,79 @@ public class ClaimsTests extends BaseTest{
 		}
 	}
 
+
+	/**
+	 * Use this method to open new claim form from patient information page 
+	 * @throws Exception
+	 */
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Open UB04 Form From Patient Info Page", paramsInclude = { "AttributeNameValueDialogProvider, testType" })
+	public void openUB04FormWithPatientDetails()throws Exception{
+		report.report("Inside open UB04 form with patient details method");
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		if(!claims.openUB04FormWithPatientDetails(mapAttrValues)){
+			report.report("Failed to open UB04 form with the patient details from patient information page!!!" , Reporter.FAIL);
+		}else{
+			report.report("Successfully opened UB04 form with the patient details from patient information page!!!", 
+					Reporter.ReportAttribute.BOLD);
+		}
+	}
+
+	/**
+	 * Use this method to navigate to patient information page from advanced search results page 
+	 * @throws Exception
+	 */
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Navigate To Patient Info Page From Advanced Search Page", 
+	paramsInclude = { "AttributeNameValueDialogProvider, patientControlNumber, testType" })
+	public void navigateToPatientInfoPageFromAdvancedSearchPage()throws Exception{
+		report.report("Inside navigate to patient info page from advanceed search page method");
+		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
+		String hic = mapAttrValues.get("HIC");
+		if(!claims.navigateToPatientInfoPageFromAdvancedSearchPage(mapAttrValues, patientControlNumber)){
+			report.report("Failed to open UB04 form with the patient details from patient information page for the hic : " + hic, 
+					Reporter.FAIL);
+		}else{
+			report.report("Successfully opened UB04 form with the patient details from patient information page for the hic : " + hic , 
+					Reporter.ReportAttribute.BOLD);
+		}
+	}
+
+	/**
+	 * Use this method to come back to EASE home / landing page 
+	 * @throws Exception
+	 */
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Come Back To EASE Home Page", paramsInclude = { "testType" })
+	public void comeBackToHomePage()throws Exception{
+
+		report.report("Inside come back to home page method");
+		if(!claims.comeBackToHomePage()){
+			report.report("Failed to come back to EASE home / landing page!!!",Reporter.FAIL);
+		}else{
+			report.report("Successfully navigated back to EASE home page!!!",Reporter.ReportAttribute.BOLD);
+		}
+	}
+
 	/**
 	 * Handle UI event method
 	 */
 	@Override
 	public void handleUIEvent(HashMap<String, Parameter> map, String methodName)throws Exception{
 		super.handleUIEvent(map, methodName);
-		if( methodName.equalsIgnoreCase("openClaimRecordFromAdvanceSearchPage")){
-			UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\MyDDE\\AdvancedSearch.xml");
-		}else{
-			UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Claims\\UB04.xml");
+		if( methodName.equalsIgnoreCase("openClaimRecordFromAdvanceSearchPage") || 
+				methodName.equalsIgnoreCase("navigateToPatientInfoPageFromAdvancedSearchPage")){
+			UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+
+					"uiattributesxml\\MyDDE\\AdvancedSearch.xml");
+		}else if(methodName.equalsIgnoreCase("openUB04FormWithPatientDetails")){
+			UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+
+					"uiattributesxml\\Claims\\PatientInfoPage.xml");
+		}else{	
+			UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+
+					"uiattributesxml\\Claims\\UB04.xml");
 		}
 	}
 
@@ -612,4 +676,5 @@ public class ClaimsTests extends BaseTest{
 	public void setUnlockOption(String unlockOption) {
 		this.unlockOption = unlockOption;
 	}
+
 }

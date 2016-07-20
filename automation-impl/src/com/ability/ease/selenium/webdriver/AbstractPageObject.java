@@ -1724,6 +1724,11 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				alert.accept();
 				return true;
 			}
+			else{
+				report.report("Expected Alert not found. Hence, Closing the actual alert");
+				alert.dismiss();
+				return false;
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}

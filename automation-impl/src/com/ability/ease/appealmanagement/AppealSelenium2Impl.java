@@ -15,6 +15,11 @@ public class AppealSelenium2Impl implements IAppealManagement {
 	public boolean verifyTagDropdownDisplayingOnlyTagsThoseDidntAddedEarlier() throws Exception {
 		return appeal.verifyTagDropdownDisplayingOnlyTagsThoseDidntAddedEarlier();
 	}
+	
+	@Override
+	public boolean verifyUIFieldsUnderLEVEL1APPEALCLAIMSREPORTForHHAAgency(String agency, String columns, String fromDate) throws Exception {
+		return appeal.verifyUIFieldsUnderLEVEL1APPEALCLAIMSREPORTForHHAAgency(agency, columns, fromDate);
+	}
 
 	@Override
 	public boolean verifyTimeFrameOptionsFunctionalityUnderAppealsReport()
@@ -69,5 +74,7 @@ public class AppealSelenium2Impl implements IAppealManagement {
 			throws Exception {
 		return appeal.sendDocumentToCMS(hic,claimIDorDCN,caseID,reviewContractorName);
 	}
+
+	
 
 }

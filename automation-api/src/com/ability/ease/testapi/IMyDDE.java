@@ -35,5 +35,4 @@ public interface IMyDDE {
 	boolean verifyAdvancedSearchForGivenMonths(String agencyFromJSystem,String monthsAgo) throws Exception;
 	boolean verifyAdvancedSearchForGivenMonthsAndDateRange(String agencyFromJSystem,String betweenDate, String andDate,String monthsAgo) throws Exception;
 	boolean searchByHICAndNavigatetoPatientInfoScreen(String hic) throws Exception;
-	boolean verifyAddSingleHIC() throws Exception;
 }

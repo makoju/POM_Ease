@@ -1204,8 +1204,9 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 
 	public String[] selectGetOptions(String selectNameOrID) {
 		WebElement we = waitForElementVisibility(By.xpath("//select[contains(@name,'" + selectNameOrID + "') or " + 
-				"contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "')] | " + 
-				"//span[@id='"+ selectNameOrID +"']/select | " + "//td[span[contains(@title,"+"'"+ selectNameOrID +"'"+")]]/following-sibling::td/select | " + "//td[contains(text(),"+"'"+ selectNameOrID +"'"+")]/select"));
+				"contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "')] | " + "//select[@id='" + selectNameOrID + "'] | " +
+				"//span[@id='"+ selectNameOrID +"']/select | " + "//td[span[contains(@title,"+"'"+ selectNameOrID +"'"+")]]/following-sibling::td/select | " 
+				+ "//td[contains(text(),"+"'"+ selectNameOrID +"'"+")]/select"));
 
 		WebDriverHelper.highlightElement(driver, we);
 		int i = 0;
@@ -1525,11 +1526,12 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		String xpath = "//input[@name='" + editBoxName + "' or " +
 				"@title='" + editBoxName + "' or " +
 				"@id='"+ editBoxName + "'] | //textarea[@name='" + editBoxName + "' or @id='"+ editBoxName + "']";
-
+		
 		waitForElementVisibility(By.xpath(xpath));
 
 		return driver.findElement(By.xpath(xpath)).getText().trim(); 
 	}
+	
 	/**
 	 * Use this method to get the current state of a check box
 	 * @param checkboxName
@@ -1806,7 +1808,6 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 
 	public String getElementText(By by){
 		WebElement element = waitForElementVisibility(by);
-		
 		return getElementText(element);
 	}
 

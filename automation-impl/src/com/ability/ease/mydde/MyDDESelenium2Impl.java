@@ -119,4 +119,10 @@ public class MyDDESelenium2Impl implements IMyDDE{
 	public boolean searchByHICAndNavigatetoPatientInfoScreen(String hic) throws Exception {
 		return mydde.searchByHICAndNavigatetoPatientInfoScreen(hic);
 	}
+
+	@Override
+	public boolean verifyAddSingleHIC() throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

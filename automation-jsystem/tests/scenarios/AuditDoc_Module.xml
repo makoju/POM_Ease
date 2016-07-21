@@ -32,8 +32,8 @@
         </jsystem-ant>
     </target>
     <target name="t1">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/AuditDocs_001_Verify columns and pages data for HHA provider.xml">
-            <property name="jsystem.uuid" value="6c97b229-58a6-445a-a53c-3d4496a31c67"/>
+        <jsystem-ant antfile="${scenarios.base}/scenarios/AuditDocs_002_Verify columns and pages data for generic provider.xml">
+            <property name="jsystem.uuid" value="37f6babe-c641-4d24-8987-79e7e61506d5"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>

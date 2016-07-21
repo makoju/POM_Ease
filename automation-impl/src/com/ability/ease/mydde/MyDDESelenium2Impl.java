@@ -130,7 +130,4 @@ public class MyDDESelenium2Impl implements IMyDDE{
 		return mydde.searchByHICAndNavigatetoPatientInfoScreen(hic);
 	}
 
-	
-
-	
 }

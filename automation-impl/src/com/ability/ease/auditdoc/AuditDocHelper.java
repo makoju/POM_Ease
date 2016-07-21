@@ -116,7 +116,8 @@ public class AuditDocHelper extends AbstractPageObject{
 		Thread.sleep(5000);
 	}
 
-	/**Use this method to click on esMD Link
+	/**
+	 * Use this method to click on esMD Link
 	 * Updated below code from EASE 1.5 to work accordingly on EASE 1.6 code
 	 * nageswar.bodduri
 	 */

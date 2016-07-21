@@ -76,14 +76,7 @@ public class AuditDocPage extends AbstractPageObject{
 	 * @throws Exception
 	 */
 	public boolean verifyEsmdDeliveryStatusReportColumns(String Timeframe, String Value, String agency, String agencyValue,String hic,String patient,String daysduedate,String duedate,String code) throws Exception {
-		/*helper.clickAgency(agency, agencyValue);
-		helper.clickTimeFrame(Timeframe,Value);
-		Thread.sleep(8000);
-		WebElement esMD = waitForElementToBeClickable(ByLocator.xpath, "//a[text()='esMD Delivery & Status']", 30);
-		if(esMD != null){
-			clickLink("esMD Delivery & Status");	
-		}*/
-
+		
 		helper.navigateToESMDStatusPage(agencyValue);
 		waitForElementToBeClickable(ByLocator.xpath,sXpathofEsmdReport, 30);
 

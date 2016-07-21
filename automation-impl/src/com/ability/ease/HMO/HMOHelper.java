@@ -82,10 +82,19 @@ public class HMOHelper extends AbstractPageObject {
 	 * Navigate to HMO/Adv Catcher Patients
 	 */	
 	public void navigateToHMOCatcherExtendPage() throws Exception	{
-		waitForElementToBeClickable(ByLocator.linktext,"ELIG.",10);
-		safeJavaScriptClick("ELIG.");
-		waitForElementToBeClickable(ByLocator.linktext,"HMO/Adv Catcher Patients",8);
-		safeJavaScriptClick("HMO/Adv Catcher Patients");
+
+		if ((waitForElementToBeClickable(ByLocator.linktext,"ELIG.",20)) != null){
+			safeJavaScriptClick("ELIG.");
+			report.report("Clicked ELIG. link");
+			if(waitForElementToBeClickable(ByLocator.linktext,"HMO/Adv Catcher Patients",60) != null){
+				safeJavaScriptClick("HMO/Adv Catcher Patients");
+				report.report("Clicked HMO/Adv Catcher Patients Tab...");
+			}else{
+				report.report("Failed to navigate to HMO/Adv Catcher Patients Tab");
+			}
+		}else{
+			report.report("Failed to navigate to ELIG. page");
+		}
 	}
 
 	/**

@@ -656,8 +656,9 @@ public class ClaimsHelper extends AbstractPageObject{
 		boolean result = false;
 		String expectedAlertText = "If you leave this page you will lose any changes you have made. Are you sure you wish to continue?";
 
-		if(waitUntilElementVisibility(By.id(elementprop.getProperty("CLAIM_HOME_ID"))) != null){ 
+		if(waitForElementToBeClickable(ByLocator.id, elementprop.getProperty("CLAIM_HOME_ID"), 60) != null){ 
 			clickLinkV2(elementprop.getProperty("CLAIM_HOME_ID"));
+			Thread.sleep(3000);
 			try{
 				if( !isAlertPresent()){
 					if( waitForElementToBeClickable(ByLocator.id, elementprop.getProperty("REPORT_HOME_ID"), 20) != null){

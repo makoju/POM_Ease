@@ -6,8 +6,8 @@ import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFilesSize;
 
 public interface IAuditDoc {
 	
-	public boolean verifyEsmdDeliveryStatusReportColumns(String timeframe, String Value, String agency, String agencyValue,String hic,String patient,
-			String daysduedate,String duedate,String code) throws Exception;
+	public boolean verifyADRESMDStatusReportColumns(String HIC,String patientName,String dueDate,
+			String thirteeDayDueDate,String code,String expectedADRStatusReportTableHeaders) throws Exception;
 	
 	public boolean verifyADRDocumentUploadFileFormats(String agency,String reviewContractorName, String claimIDorDCN, 
 			String caseID, ADRFileFomat adrFileType, ADRFilesSize adrFileSize)throws Exception;
@@ -23,5 +23,9 @@ public interface IAuditDoc {
 	public boolean isDocSplitted(String claimIDorDCN)throws Exception; 
 
 	public long generateRandomInteger(int length)throws Exception;
+	
+	public boolean changeTimeFrame()throws Exception;
+	
+	public boolean changeAgency(String agency)throws Exception;
 	
 }

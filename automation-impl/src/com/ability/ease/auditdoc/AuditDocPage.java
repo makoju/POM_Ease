@@ -61,21 +61,8 @@ public class AuditDocPage extends AbstractPageObject{
 			"The last time the claim was updated in Ease from DDE.",
 	"ADR Response Document Submission status."};
 
-	/**
-	 * 
-	 * @param Timeframe
-	 * @param Value
-	 * @param agency
-	 * @param agencyValue
-	 * @param hic
-	 * @param patient
-	 * @param daysduedate
-	 * @param duedate
-	 * @param code
-	 * @return
-	 * @throws Exception
-	 */
-	public boolean verifyEsmdDeliveryStatusReportColumns(String Timeframe, String Value, String agency, String agencyValue,String hic,String patient,String daysduedate,String duedate,String code) throws Exception {
+	public boolean verifyADRESMDStatusReportColumns(String Timeframe, String Value, String agencyValue,String hic,
+			String patient,String daysduedate,String duedate,String code) throws Exception {
 		
 		helper.navigateToESMDStatusPage(agencyValue);
 		waitForElementToBeClickable(ByLocator.xpath,sXpathofEsmdReport, 30);
@@ -172,7 +159,7 @@ public class AuditDocPage extends AbstractPageObject{
 			String caseID,ADRFileFomat adrFileType, ADRFilesSize adrFileSize)throws Exception{
 
 		String sExpectedAlertMessageBeforeADRSubmission = "Proceed with ADR Document Submission to Review Contractor : "+ reviewContractorName +"?";
-		String sExpectedAlertMessageAfterSuccessfulADRSubmission = "Successfully processed ADR response documents Submission";
+		String sExpectedAlertMessageAfterSuccessfulADRSubmission = "Successfully processed ADR response documents Submission.";
 		String adrPageXpath = "//td[contains(text(),'ADR INFORMATION')]";
 
 

@@ -17,10 +17,12 @@
     <target name="execute scenario">
         <antcallback target="t0"/>
         <antcallback target="t1"/>
+        <antcallback target="t2"/>
+        <antcallback target="t3"/>
     </target>
     <target name="t0">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="08a5f464-3c10-41a1-b230-c9c533d7b1b7"/>
+            <sysproperty key="jsystem.uuid" value="f0d60ad8-c17a-48bd-a1c8-041c990c5f68"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.misc.MiscTests.loginToEase"/>
@@ -28,10 +30,26 @@
     </target>
     <target name="t1">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="af445775-8651-4940-b496-4175077b2a3e"/>
+            <sysproperty key="jsystem.uuid" value="8c655058-d0f7-4446-aae0-59f8ac0d571e"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-            <test name="com.ability.ease.auditdoc.AuditDocTests.verifyEsmdDeliveryStatusReportColumns"/>
+            <test name="com.ability.ease.auditdoc.AuditDocTests.changeTimeFrame"/>
+        </jsystem>
+    </target>
+    <target name="t2">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="5ed4f79b-5e7c-4f54-9bbc-cd157597cf5b"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.auditdoc.AuditDocTests.changeAgency"/>
+        </jsystem>
+    </target>
+    <target name="t3">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="13ec80fc-684b-4ced-861f-57b43e5751f2"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.auditdoc.AuditDocTests.verifyADRESMDStatusReport"/>
         </jsystem>
     </target>
 </project>

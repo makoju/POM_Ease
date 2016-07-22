@@ -1,6 +1,5 @@
 package com.ability.ease.auditdoc;
 
-import java.util.Map;
 
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFileFomat;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFilesSize;
@@ -9,12 +8,14 @@ import com.ability.ease.testapi.IAuditDoc;
 public class AuditDocSelenium2Impl implements IAuditDoc{
 
 	AuditDocPage auditdocpage = new AuditDocPage();
-	
+	AuditDocPageV2 audit = new AuditDocPageV2();
+
 	@Override
-	public boolean verifyEsmdDeliveryStatusReportColumns(String timeframe, String Value, String agency, String agencyValue, String hic,String patient,String daysduedate,String duedate,String code) throws Exception {
-		return auditdocpage.verifyEsmdDeliveryStatusReportColumns(timeframe,Value,agency,agencyValue,hic,patient,daysduedate,duedate,code);
+	public boolean verifyADRESMDStatusReportColumns(String HIC,String patientName,String dueDate,String thirteeDayDueDate,
+			String code,String expectedADRStatusReportTableHeaders) throws Exception {
+		return audit.verifyADRESMDStatusReportColumns(HIC,patientName,dueDate,thirteeDayDueDate,code,expectedADRStatusReportTableHeaders);
 	}
-	
+
 	@Override
 	public boolean verifyADRDocumentUploadFileFormats(String agency, String reviewContractorName, String claimIDorDCN, 
 			String caseID,ADRFileFomat adrFileType, ADRFilesSize adrFileSize) throws Exception {
@@ -46,6 +47,16 @@ public class AuditDocSelenium2Impl implements IAuditDoc{
 	@Override
 	public boolean isDocSplitted(String claimIDorDCN) throws Exception {
 		return auditdocpage.isDocSplitted(claimIDorDCN);
+	}
+
+	@Override
+	public boolean changeTimeFrame() throws Exception {
+		return audit.changeTimeFrame();
+	}
+
+	@Override
+	public boolean changeAgency(String agency) throws Exception {
+		return audit.changeAgency(agency);
 	}
 
 }

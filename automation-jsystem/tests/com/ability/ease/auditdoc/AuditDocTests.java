@@ -11,6 +11,7 @@ import com.ability.ease.auto.common.annotations.SupportTestTypes;
 import com.ability.ease.auto.dlgproviders.AttributeNameValueDialogProvider;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFilesSize;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRSubType;
+import com.ability.ease.auto.enums.tests.SelectTimeframe;
 import com.ability.ease.auto.enums.tests.TestType;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFileFomat;
 import com.ability.ease.common.BaseTest;
@@ -25,11 +26,14 @@ public class AuditDocTests extends BaseTest{
 	private String reviewContractorName;
 	private String claimIDDCN;
 	private String caseID;
-	private String agency;
 	private String expectedCMSStatusTableHeaders;
+	private String agency;
 	private int length;
-	private String timeframe,Value,agencyValue,hic,patient,daysduedate,duedate,code;
+	private String timeFrame,customDate,agencyName,HIC,patientName,thirtyDayDueDate,dueDate,code;
 	private ADRSubType adrSubmissionType;
+	private SelectTimeframe timeframe;
+	private String fromDate,toDate;
+	private String adrStatusReportColumnHeaders;
 
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
 
@@ -40,16 +44,17 @@ public class AuditDocTests extends BaseTest{
 
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "verifyEsmdDeliveryStatusReportColumns : ${agencyValue}", paramsInclude = {"timeframe,Value,agency,agencyValue,hic,patient,daysduedate,duedate,code,testType"})
-	public void verifyEsmdDeliveryStatusReportColumns() throws Exception{	
+	@TestProperties(name = "Verify ADR Status Report For : ${agency}", 
+	paramsInclude = {"agency,HIC,patientName,dueDate,thirtyDayDueDate,code,adrStatusReportColumnHeaders,testType"})
+	public void verifyADRESMDStatusReport() throws Exception{	
 
-		if(auditdoc.verifyEsmdDeliveryStatusReportColumns(timeframe,Value,agency,agencyValue,hic,patient,daysduedate,duedate,code)){
-			report.report("Expected Columns and data presented under eSMD Report", Reporter.PASS);
+		if(!auditdoc.verifyADRESMDStatusReportColumns(HIC,patientName,dueDate,thirtyDayDueDate,code,adrStatusReportColumnHeaders)){
+			report.report("Failed to validate ADR status report columns and links!!!", Reporter.FAIL);
 		}else{
-			report.report("Expected Columns and data not presented under eSMD Report", Reporter.FAIL);
+			report.report("Successfully validated ADR status report columns and links!!!",Reporter.ReportAttribute.BOLD);
 		}
 	}
-
+	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "Verify ADR Response Document Upload Accepting PDF,TIFF / TIF Formats", 
@@ -100,7 +105,7 @@ public class AuditDocTests extends BaseTest{
 	@TestProperties(name = "Verify REJECT / RESEND submissions functionality", 
 	paramsInclude = { "agency, reviewContractorName, length, caseID, adrFileFormat, adrFileSize, adrSubmissionType, testType" })
 	public void verifyREJECTRESENDSubmissionsFunctionality()throws Exception{
-		
+
 		claimIDDCN = String.valueOf(auditdoc.generateRandomInteger(length))+adrSubmissionType.toString();
 		report.report("Claim ID / DCN From Resend/Reject method" + claimIDDCN);
 		if(!auditdoc.verifyREJECTRESENDSubmissionsFunctionality(agency, reviewContractorName, claimIDDCN, caseID, adrFileFormat, adrFileSize)){
@@ -109,13 +114,12 @@ public class AuditDocTests extends BaseTest{
 			report.report("Successfully uploaded ADR response document of type " + adrFileFormat + " with size " + adrFileSize, Reporter.ReportAttribute.BOLD);
 		}
 	}
-	
+
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify Document Split Functionality", 
-	paramsInclude = { "claimIDDCN, testType" })
+	@TestProperties(name = "Verify Document Split Functionality",paramsInclude = { "claimIDDCN, testType" })
 	public void isDocSplitted()throws Exception{
-	
+
 		if(!auditdoc.isDocSplitted(claimIDDCN)){
 			report.report("Document submitted not splitted into multiple chunks", Reporter.FAIL);
 		}else{
@@ -123,6 +127,30 @@ public class AuditDocTests extends BaseTest{
 		}
 	}
 	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Change Time Frame",paramsInclude = { "testType" })
+	public void changeTimeFrame()throws Exception{
+
+		if(!auditdoc.changeTimeFrame()){
+			report.report("Failed to change time frame !!!" , Reporter.FAIL);
+		}else{
+			report.report("Successfully changed time frame !!!" , Reporter.ReportAttribute.BOLD);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Change Agency To ${agency}",paramsInclude = { "agency, testType" })
+	public void changeAgency()throws Exception{
+
+		if(!auditdoc.changeAgency(agency)){
+			report.report("Failed to change agency to -> " + agency, Reporter.FAIL);
+		}else{
+			report.report("Successfully changed to agency -> " + agency , Reporter.ReportAttribute.BOLD);
+		}
+	}
+
 	/*###
 	# Getters and Setters
 	###*/
@@ -183,15 +211,6 @@ public class AuditDocTests extends BaseTest{
 		this.caseID = caseID;
 	}
 
-	public String getAgency() {
-		return agency;
-	}
-
-	@ParameterProperties(description = "Provide agency name to select {HHA1,HHA2,SNF,HOSPICE etc.,}")
-	public void setAgency(String agency) {
-		this.agency = agency;
-	}
-
 	public String getExpectedCMSStatusTableHeaders() {
 		return expectedCMSStatusTableHeaders;
 	}
@@ -211,69 +230,12 @@ public class AuditDocTests extends BaseTest{
 		this.length = length;
 	}
 
-	public String getTimeframe() {
-		return timeframe;
-	}
-
-	@ParameterProperties(description = "Test Data:Timeframe")
-	public void setTimeframe(String timeframe) {
-		this.timeframe = timeframe;
-	}
-
-	public String getValue() {
-		return Value;
-	}
-	@ParameterProperties(description = "Test Data:All (up to 18 mos ago)")
-	public void setValue(String value) {
-		Value = value;
-	}
-
-
-	public String getAgencyValue() {
-		return agencyValue;
-	}
-	@ParameterProperties(description = "Test Data:HHA1")
-	public void setAgencyValue(String agencyValue) {
-		this.agencyValue = agencyValue;
-	}
-
-	public String getHic() {
-		return hic;
-	}
-	@ParameterProperties(description = "Test Data:000002778A")
-	public void setHic(String hic) {
-		this.hic = hic;
-	}
-
-	public String getPatient() {
-		return patient;
-	}
-	@ParameterProperties(description = "Test Data:DOE, JOHN 2778")
-	public void setPatient(String patient) {
-		this.patient = patient;
-	}
-
-	public String getDaysduedate() {
-		return daysduedate;
-	}
-	@ParameterProperties(description = "01/21/17")
-	public void setDaysduedate(String daysduedate) {
-		this.daysduedate = daysduedate;
-	}
-
-	public String getDuedate() {
-		return duedate;
-	}
-	@ParameterProperties(description = "02/05/17")
-	public void setDuedate(String duedate) {
-		this.duedate = duedate;
-	}
 
 	public String getCode() {
 		return code;
 	}
-	
-	@ParameterProperties(description = "55555")
+
+	@ParameterProperties(description = "The code associated with ADR ex., 55555")
 	public void setCode(String code) {
 		this.code = code;
 	}
@@ -286,6 +248,102 @@ public class AuditDocTests extends BaseTest{
 	public void setAdrSubmissionType(ADRSubType adrSubmissionType) {
 		this.adrSubmissionType = adrSubmissionType;
 	}
-	
+
+	public String getTimeFrame() {
+		return timeFrame;
+	}
+
+	@ParameterProperties(description = "Time Frame {Overnight,Weekly,All (up to 18 mos ago)}")
+	public void setTimeFrame(String timeFrame) {
+		this.timeFrame = timeFrame;
+	}
+
+	public String getCustomDate() {
+		return customDate;
+	}
+
+	@ParameterProperties(description = "Custom Time Frame Value : {From:7/21/2011,To:7/21/2016}")
+	public void setCustomDate(String customDate) {
+		this.customDate = customDate;
+	}
+
+	public String getAgency() {
+		return agency;
+	}
+
+	@ParameterProperties(description = "Provide Agency Name {HHA1,HHA2,HHA3,HOSPITAL,HOSPICE,SNF}")
+	public void setAgency(String agency) {
+		this.agency = agency;
+	}
+
+	public String getHIC() {
+		return HIC;
+	}
+
+	@ParameterProperties(description = "Patient HIC ID ex., 000002778A")
+	public void setHIC(String hIC) {
+		HIC = hIC;
+	}
+
+	public String getPatientName() {
+		return patientName;
+	}
+
+	@ParameterProperties(description = "Patient Name ex., DOE, JOHN")
+	public void setPatientName(String patientName) {
+		this.patientName = patientName;
+	}
+
+	public String getThirtyDayDueDate() {
+		return thirtyDayDueDate;
+	}
+
+	@ParameterProperties(description = "30 Day Due Date ex ., 01/21/17")
+	public void setThirtyDayDueDate(String thirtyDayDueDate) {
+		this.thirtyDayDueDate = thirtyDayDueDate;
+	}
+
+	public String getDueDate() {
+		return dueDate;
+	}
+
+	@ParameterProperties(description = "Due Date ex., 02/05/17")
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
+	}
+
+	public SelectTimeframe getTimeframe() {
+		return timeframe;
+	}
+
+	@ParameterProperties(description = "Select Timeframe" )
+	public void setTimeframe(SelectTimeframe timeframe) {
+		this.timeframe = timeframe;
+	}
+
+	public String getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	public String getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
+
+	public String getAdrStatusReportColumnHeaders() {
+		return adrStatusReportColumnHeaders;
+	}
+
+	@ParameterProperties(description = "Provide comma seperated column headrs to be validated { HIC,Patient Name,S/Loc etc.,}" )
+	public void setAdrStatusReportColumnHeaders(String adrStatusReportColumnHeaders) {
+		this.adrStatusReportColumnHeaders = adrStatusReportColumnHeaders;
+	}
 	
 }

@@ -428,7 +428,9 @@ public class AuditDocHelper extends AbstractPageObject{
 	public void changeTimeFrame()throws Exception{
 		moveToElement("Timeframe");
 		typeEditBox("reportCustomDateFrom", "2/23/2011");
+		report.report("Changed from date field to 2/23/2011");
 		clickButtonV2("reportTimeframeButton");
+		Thread.sleep(5000);
 	}
 
 	public void clickMyDDELink() throws Exception{

@@ -111,30 +111,26 @@ public class MiscPage extends AbstractPageObject {
 				 * e.getMessage()); if(e instanceof NoSuchWindowException){ //TO
 				 * DO } } finally{ isLoggedIn=false; }
 				 */
-			}/* else {
-				
+			} /*
+				 * else {
+				 * 
 				 * isLoggedIn = false; validLogin(sUserName, sPassword);
-				 
-				//Once logged out from the current user session, Lets switch to mainwindow
-				driver.switchTo().window(mainWindowHanlde);
-
-				try {
-						report.report("QUIT method called after logging out user "+ currentLoggedInUser +"...Closing all browser instances!!!");
-						quitAndRelaunchBrowser();
-					} 
-					catch (Exception e) {
-						report.report("Exception in launching browser: "+ e.getMessage());
-						if(e instanceof NoSuchWindowException){
-							//TO DO
-						}
-					}
-					finally{
-						isLoggedIn=false;
-				}
-			}*/
+				 * 
+				 * //Once logged out from the current user session, Lets switch
+				 * to mainwindow driver.switchTo().window(mainWindowHanlde);
+				 * 
+				 * try { report.report(
+				 * "QUIT method called after logging out user "+
+				 * currentLoggedInUser +"...Closing all browser instances!!!");
+				 * quitAndRelaunchBrowser(); } catch (Exception e) {
+				 * report.report("Exception in launching browser: "+
+				 * e.getMessage()); if(e instanceof NoSuchWindowException){ //TO
+				 * DO } } finally{ isLoggedIn=false; } }
+				 */
 			else {
-				/*isLoggedIn = false;
-				validLogin(sUserName, sPassword);*/
+				/*
+				 * isLoggedIn = false; validLogin(sUserName, sPassword);
+				 */
 				quitAndRelaunchBrowser();
 			}
 		}
@@ -200,12 +196,14 @@ public class MiscPage extends AbstractPageObject {
 				if (!verifyAlert("DDE information changed")) {
 					report.report("DDE Information Submitted was not acknowledged", Reporter.WARNING);
 				}
-					
-				/*if(!verifyAlert("DDE information changed")){
-					report.report("DDE Information Submitted was not acknowledged. Clearing the alert",ReportAttribute.BOLD);
-					driver.switchTo().alert().accept();
 
-				}*/
+				/*
+				 * if(!verifyAlert("DDE information changed")){ report.report(
+				 * "DDE Information Submitted was not acknowledged. Clearing the alert"
+				 * ,ReportAttribute.BOLD); driver.switchTo().alert().accept();
+				 * 
+				 * }
+				 */
 			}
 			return true;
 		} else {
@@ -590,10 +588,7 @@ public class MiscPage extends AbstractPageObject {
 
 	public boolean verifyAddSingleHIC(String agency, String hic, String sExpectedMessage) throws Exception {
 		navigateToPage();
-		//Thread.sleep(1000);
 		
-		clickLink(basic_LINK);
-		Thread.sleep(10000);
 		clickLink(advanced_LINK);
 		Thread.sleep(10000);
 		clickLink(addHIC_LINK);
@@ -606,31 +601,29 @@ public class MiscPage extends AbstractPageObject {
 
 		if (!verifyAlert(sExpectedMessage))
 			return false;
-		Thread.sleep(10000);
+		Thread.sleep(1000);
 		clickLinkPartialText("See a log of");
 
-	
 		WebElement timestamp = waitForElementVisibility(By.xpath(".//*[@id='scrollContent']/tr[1]/td[1]/a"));
-        if(timestamp!=null)
-              timestamp.click();
-else{
-  	      report.report("Unable to find timestamp in log table", Reporter.WARNING);
-  	     
-  return false;
-}
+		if (timestamp != null)
+			timestamp.click();
+		else {
+			report.report("Unable to find timestamp in log table", Reporter.WARNING);
 
-		Thread.sleep(10000);
-		//return (hic.equals(waitForElementVisibility(By.xpath(".//*[@id='scrollContent']/tr/td[1]")).getText()));
-		WebElement  hicfromlogtable = waitForElementVisibility(By.xpath(".//*[@id='scrollContent']/tr/td[1]")); 
-		if(hicfromlogtable!=null)
-		  return Verify.StringEquals(hic, hicfromlogtable.getText());
-
-		else
-		{
-		    report.report("Unable to find HIC from log table");
-		    return false;
+			return false;
 		}
 
+		Thread.sleep(1000);
+		// return
+		// (hic.equals(waitForElementVisibility(By.xpath(".//*[@id='scrollContent']/tr/td[1]")).getText()));
+		WebElement hicfromlogtable = waitForElementVisibility(By.xpath(".//*[@id='scrollContent']/tr/td[1]"));
+		if (hicfromlogtable != null)
+			return Verify.StringEquals(hic, hicfromlogtable.getText());
+
+		else {
+			report.report("Unable to find HIC from log table");
+			return false;
+		}
 
 	}
 
@@ -650,32 +643,33 @@ else{
 		Thread.sleep(10000);
 		clickLinkPartialText("See a log of");
 
-		/*WebElement timestamp = waitForElementVisibility(By.xpath(".//*[@id='scrollContent']/tr[1]/td[1]/a"));
-		timestamp.click();
-		Thread.sleep(10000);
-		return (hic.equals(waitForElementVisibility(By.xpath(".//*[@id='scrollContent']/tr/td[1]")).getText()));*/
+		/*
+		 * WebElement timestamp = waitForElementVisibility(By.xpath(
+		 * ".//*[@id='scrollContent']/tr[1]/td[1]/a")); timestamp.click();
+		 * Thread.sleep(10000); return
+		 * (hic.equals(waitForElementVisibility(By.xpath(
+		 * ".//*[@id='scrollContent']/tr/td[1]")).getText()));
+		 */
 		WebElement timestamp = waitForElementVisibility(By.xpath(".//*[@id='scrollContent']/tr[1]/td[1]/a"));
-        if(timestamp!=null)
-              timestamp.click();
-else{
-  	      report.report("Unable to find timestamp in log table", Reporter.WARNING);
-  	     
-  return false;
-}
+		if (timestamp != null)
+			timestamp.click();
+		else {
+			report.report("Unable to find timestamp in log table", Reporter.WARNING);
+
+			return false;
+		}
 
 		Thread.sleep(10000);
-		//return (hic.equals(waitForElementVisibility(By.xpath(".//*[@id='scrollContent']/tr/td[1]")).getText()));
-		WebElement  hicfromlogtable = waitForElementVisibility(By.xpath(".//*[@id='scrollContent']/tr/td[1]")); 
-		if(hicfromlogtable!=null)
-		  return Verify.StringEquals(hic, hicfromlogtable.getText());
+		// return
+		// (hic.equals(waitForElementVisibility(By.xpath(".//*[@id='scrollContent']/tr/td[1]")).getText()));
+		WebElement hicfromlogtable = waitForElementVisibility(By.xpath(".//*[@id='scrollContent']/tr/td[1]"));
+		if (hicfromlogtable != null)
+			return Verify.StringEquals(hic, hicfromlogtable.getText());
 
-		else
-		{
-		    report.report("Unable to find HIC from log table");
-		    return false;
+		else {
+			report.report("Unable to find HIC from log table");
+			return false;
 		}
-		
-		
 
 	}
 
@@ -713,13 +707,11 @@ else{
 		}
 
 		clickButtonV2(elementprop.getProperty("CLICK_SUBMIT_VALUE"));
-		
-		Thread.sleep(10000);
+
+		Thread.sleep(1000);
 		if (!verifyAlert(shics.length + " " + sExpectedMessage))
 
 			return false;
-
-		//Thread.sleep(3000);
 
 		WebElement seealog = waitForElementVisibility(By.partialLinkText("See a log of"));
 		seealog.click();
@@ -727,11 +719,8 @@ else{
 		Thread.sleep(10000);
 
 		WebElement timestamp = waitForElementVisibility(By.xpath(elementprop.getProperty("TIMESTAMP_XPATH")));
-		timestamp.click();
 
-		//Thread.sleep(10000);
-		// inputHICs
-		// String[] stringMics = stringMic.split("\n");
+		timestamp.click();
 
 		WebElement hicTemp = null;
 
@@ -758,6 +747,10 @@ else{
 	}
 
 	public boolean verifyAddMultpleHICs(String agency, String hics, String sExpectedMessage) throws Exception {
+		navigateToPage();
+
+		clickLink(basic_LINK);
+		
 		clickLink(advanced_LINK);
 		Thread.sleep(10000);
 		clickLink(addHIC_LINK);
@@ -788,17 +781,17 @@ else{
 			return false;
 		}
 
-		Thread.sleep(3000);
+		Thread.sleep(1000);
 
 		WebElement seealog = waitForElementVisibility(By.partialLinkText("See a log of"));
 		seealog.click();
 
-		//Thread.sleep(10000);
+		
 
 		WebElement timestamp = waitForElementVisibility(By.xpath(elementprop.getProperty("TIMESTAMP_XPATH")));
 		timestamp.click();
 
-		Thread.sleep(10000);
+		Thread.sleep(1000);
 		// inputHICs
 		// String[] stringMics = stringMic.split("\n");
 

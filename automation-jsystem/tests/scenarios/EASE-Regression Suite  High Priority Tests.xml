@@ -40,7 +40,7 @@
     </target>
     <target name="t2">
         <jsystem-ant antfile="${scenarios.base}/scenarios/HMOCatcher_Module.xml">
-            <property name="jsystem.uuid" value="19f47cb6-5938-4e83-87b6-73616f32407e"/>
+            <property name="jsystem.uuid" value="9b6a65d8-d810-4ea1-8766-6e5868359045"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>

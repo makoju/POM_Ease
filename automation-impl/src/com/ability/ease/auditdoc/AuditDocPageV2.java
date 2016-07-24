@@ -1,5 +1,6 @@
 package com.ability.ease.auditdoc;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -9,6 +10,7 @@ import com.ability.ease.auto.common.Verify;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
+import jsystem.framework.report.Reporter;
 import jsystem.framework.report.Reporter.ReportAttribute;
 
 public class AuditDocPageV2 extends AbstractPageObject{
@@ -26,7 +28,7 @@ public class AuditDocPageV2 extends AbstractPageObject{
 		WebElement reportHeaderAfter = null;
 		String reportHeaderText = null;
 		navigateToPage();
-		reportHeaderBefore = waitForElementToBeClickable(ByLocator.xpath, adrStatusReportHdrXpath, 30);
+		reportHeaderBefore = waitUntilElementVisibility(By.xpath(adrStatusReportHdrXpath));
 		if(  reportHeaderBefore != null){
 			reportHeaderText = reportHeaderBefore.getText();
 			if(waitForElementToBeClickable(ByLocator.linktext, "Timeframe", 30) != null){
@@ -37,6 +39,8 @@ public class AuditDocPageV2 extends AbstractPageObject{
 					if(reportHeaderText.contains("2011")){
 						stepResult = true;
 					}
+				}else{
+					stepResult = true;
 				}
 			}
 		}
@@ -49,6 +53,7 @@ public class AuditDocPageV2 extends AbstractPageObject{
 			moveToElement(elementprop.getProperty("AGENCY_LINK"));
 			selectByNameOrID(agenycDropDownID, agency);
 			clickButton(elementprop.getProperty("CHANGE_AGENCY_BUTTON"));
+			moveToElement(driver.findElement(By.id("reportPrint")));
 			WebElement we = waitForElementToBeClickable(ByLocator.xpath, adrStatusReportHdrXpath, 30);
 			if(we != null){
 				if( we.getText().contains(agency) ){
@@ -63,8 +68,8 @@ public class AuditDocPageV2 extends AbstractPageObject{
 	}
 
 	public boolean verifyADRESMDStatusReportColumns(String HIC,String patientName,String daysDue,
-			String thirtyDayDueDate,String code,String expectedADRStatusReportTableHeaders)throws Exception{
-		
+			String thirtyDayDueDate,String code,String expectedADRStatusReportTableHeaders,String agency)throws Exception{
+				
 		List<WebElement> lsADRStatusReportTabelColumns = helper.getReportTableHeaders(elementprop.getProperty("REPORT_TABLE_ID"));
 		lsADRStatusReportTabelColumns.remove(0);
 		if ( Verify.compareTableHeaderNames(lsADRStatusReportTabelColumns, expectedADRStatusReportTableHeaders)){
@@ -73,6 +78,25 @@ public class AuditDocPageV2 extends AbstractPageObject{
 			failCounter++;
 			report.report("ADR status report column names validation failed", ReportAttribute.BOLD);
 		}
+		
+		//verifying the links available in ADR status report table
+		if( !helper.verifyHICLink(HIC))
+			failCounter++;
+		
+		if( !helper.verifyPatientNameLink(patientName))
+			failCounter++;
+	
+		if( !helper.verifyDueDateLink(daysDue))
+			failCounter++;
+		
+		if( !helper.verifyThirteeDayDueDateLink(thirtyDayDueDate))
+			failCounter++;
+		
+		if(!helper.verifyCodeLink(code))
+			failCounter++;
+		
+		if(!helper.verifyToolTips(agency))
+			failCounter++;
 		
 		return (failCounter == 0) ? true : false;
 	}

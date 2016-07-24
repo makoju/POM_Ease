@@ -12,8 +12,8 @@ public class AuditDocSelenium2Impl implements IAuditDoc{
 
 	@Override
 	public boolean verifyADRESMDStatusReportColumns(String HIC,String patientName,String dueDate,String thirteeDayDueDate,
-			String code,String expectedADRStatusReportTableHeaders) throws Exception {
-		return audit.verifyADRESMDStatusReportColumns(HIC,patientName,dueDate,thirteeDayDueDate,code,expectedADRStatusReportTableHeaders);
+			String code,String expectedADRStatusReportTableHeaders,String agency) throws Exception {
+		return audit.verifyADRESMDStatusReportColumns(HIC,patientName,dueDate,thirteeDayDueDate,code,expectedADRStatusReportTableHeaders,agency);
 	}
 
 	@Override

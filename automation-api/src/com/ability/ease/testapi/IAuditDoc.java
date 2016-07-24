@@ -7,7 +7,7 @@ import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFilesSize;
 public interface IAuditDoc {
 	
 	public boolean verifyADRESMDStatusReportColumns(String HIC,String patientName,String dueDate,
-			String thirteeDayDueDate,String code,String expectedADRStatusReportTableHeaders) throws Exception;
+			String thirteeDayDueDate,String code,String expectedADRStatusReportTableHeaders,String agency) throws Exception;
 	
 	public boolean verifyADRDocumentUploadFileFormats(String agency,String reviewContractorName, String claimIDorDCN, 
 			String caseID, ADRFileFomat adrFileType, ADRFilesSize adrFileSize)throws Exception;

@@ -48,7 +48,7 @@ public class AuditDocTests extends BaseTest{
 	paramsInclude = {"agency,HIC,patientName,dueDate,thirtyDayDueDate,code,adrStatusReportColumnHeaders,testType"})
 	public void verifyADRESMDStatusReport() throws Exception{	
 
-		if(!auditdoc.verifyADRESMDStatusReportColumns(HIC,patientName,dueDate,thirtyDayDueDate,code,adrStatusReportColumnHeaders)){
+		if(!auditdoc.verifyADRESMDStatusReportColumns(HIC,patientName,dueDate,thirtyDayDueDate,code,adrStatusReportColumnHeaders,agency)){
 			report.report("Failed to validate ADR status report columns and links!!!", Reporter.FAIL);
 		}else{
 			report.report("Successfully validated ADR status report columns and links!!!",Reporter.ReportAttribute.BOLD);

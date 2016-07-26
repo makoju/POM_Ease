@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Types;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jsystem.framework.report.Reporter;
 import jsystem.framework.report.Reporter.ReportAttribute;
 
 import org.openqa.selenium.Alert;
@@ -24,6 +26,7 @@ import org.openqa.selenium.WebElement;
 
 import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.TestCommonResource;
+import com.ability.ease.auto.common.Verify;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFileFomat;
 import com.ability.ease.claims.ClaimsHelper;
@@ -34,10 +37,46 @@ public class AuditDocHelper extends AbstractPageObject{
 
 	ReportsHelper reportHelper = new ReportsHelper();
 	ClaimsHelper claimHelper = new ClaimsHelper();
+	boolean stepResult = false;
 
 	int failCounter = 0;
 	WebElement uploadIOCN=null;
 	int passCounter = 0;
+
+	//Expected column header help text for HHA
+	String[] expectedheaders_HHA = { "Upload ADR Documents",
+			"The Patient HIC number.",
+			"The name of the patient.",
+			"The claim Status and Location.",
+			"The date the patient was originally admitted.",
+			"Start of Episode date.",
+			"The reimbursement amount posted by Medicare on the claim.",
+			"The total episode value.",
+			"The number of days left to respond to the ADR.",
+			"The date an action is required by the FI in order to resolve the ADR.",
+			"Ensure that ADR documentation is mailed by this date to avoid unnecessary auto-denying of your claim.",
+			"The code associated with the ADR.",
+			"Total Amount Billed for Claim",
+			"The last time the claim was updated in Ease from DDE.",
+	"ADR Response Document Submission status."};
+	//Expected column header help text for Generic
+	String[] expectedheaders_Generic = { "Upload ADR Documents",
+			"The Patient HIC number.",
+			"The name of the patient.",
+			"The claim Status and Location.",
+			"The date the patient was originally admitted.",
+			"The claim start date.",
+			"The claim through date.",
+			"The reimbursement amount posted by Medicare on the claim.",
+			"The number of days left to respond to the ADR.",
+			"The date an action is required by the FI in order to resolve the ADR.",
+			"Ensure that ADR documentation is mailed by this date to avoid unnecessary auto-denying of your claim.",
+			"The code associated with the ADR.",
+			"Total Amount Billed for Claim",
+			"The last time the claim was updated in Ease from DDE.",
+	"ADR Response Document Submission status."};
+
+
 
 	public void clickTimeFrame(String location,String value)throws Exception{ 
 		moveToElement(location);
@@ -106,8 +145,11 @@ public class AuditDocHelper extends AbstractPageObject{
 	}
 
 	public void navigateBack() throws Exception	{
-		waitForElementToBeClickable(ByLocator.id, "backNav", 10);
-		driver.findElement(By.id("backNav")).click();
+		WebElement we = waitForElementToBeClickable(ByLocator.id, "backNav", 10);
+		if ( we != null){
+			we.click();
+			waitForElementToBeClickable(ByLocator.xpath,elementprop.getProperty("ADR_STATUS_REPORT_HDR_XPATH"),30);
+		}
 	}
 
 	public void navigateForward() throws Exception{
@@ -116,7 +158,8 @@ public class AuditDocHelper extends AbstractPageObject{
 		Thread.sleep(5000);
 	}
 
-	/**Use this method to click on esMD Link
+	/**
+	 * Use this method to click on esMD Link
 	 * Updated below code from EASE 1.5 to work accordingly on EASE 1.6 code
 	 * nageswar.bodduri
 	 */
@@ -427,7 +470,9 @@ public class AuditDocHelper extends AbstractPageObject{
 	public void changeTimeFrame()throws Exception{
 		moveToElement("Timeframe");
 		typeEditBox("reportCustomDateFrom", "2/23/2011");
+		report.report("Changed from date field to 2/23/2011");
 		clickButtonV2("reportTimeframeButton");
+		Thread.sleep(5000);
 	}
 
 	public void clickMyDDELink() throws Exception{
@@ -505,6 +550,78 @@ public class AuditDocHelper extends AbstractPageObject{
 		return recordCountFromADRReport;
 	}
 
+	public boolean verifyHICLink(String HIC)throws Exception{
+
+		String actualHIC = null;
+
+		clickLink(HIC);
+		if ( waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty("PATIENT_INFO_TD_HEADR_XPATH"), 60) != null){
+			actualHIC = driver.findElement(By.xpath(elementprop.getProperty("HIC_TEXT_XPATH"))).getText();
+			if( actualHIC.equalsIgnoreCase(HIC)){
+				stepResult = true;
+				report.report("Successfully navigated to patient info page from HIC link!!!");
+			}
+		}
+		navigateBack();
+		return stepResult;
+	}
+
+	public boolean verifyPatientNameLink(String patientName)throws Exception{
+
+		clickLink(patientName);
+		WebElement we = waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty("PATIENT_MIDDLE_NAME_XPATH"), 30);
+
+		if( we!=null){
+			if(patientName.contains(we.getText())){
+				stepResult = true;
+				report.report("Navigated to patient information page successfully");
+			}
+		}
+		navigateBack();
+		return stepResult;
+	}
+
+	public boolean verifyDueDateLink(String dueDate)throws Exception{
+
+
+		clickLink(dueDate);
+		WebElement we = waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty("ADR_INFO_PAGE_HDR_XPATH"), 30);
+		if( we != null){
+			report.report("Navigated to ADR INFORMATION page");
+			stepResult = true;
+		}
+		navigateBack();
+		return stepResult;
+	}
+
+	public boolean verifyThirteeDayDueDateLink(String thirteeDayDueDate)throws Exception{
+		return verifyDueDateLink(thirteeDayDueDate);
+	}
+
+	public boolean verifyCodeLink(String code)throws Exception{
+		return verifyDueDateLink(code);
+	}
+
+	public boolean verifyToolTips(String agency)throws Exception{
+
+		String tableHeadersXpath = elementprop.getProperty("TABLE_HEADERS_XPATH");
+		boolean result = false;
+		
+		if(agency.contains("HHA")) {
+			String[] actualheadertooltips = reportHelper.getTableHeaderToolTips(tableHeadersXpath);
+			if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders_HHA,true)){
+				result = true;
+				report.report("Tool tips of ADR status report table columns have been verified for HHA provider !!!");
+			}
+		}else{
+			String[] actualheadertooltips = reportHelper.getTableHeaderToolTips(tableHeadersXpath);
+			if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders_Generic,true)){
+				result = true;
+				report.report("Tool tips of ADR status report table columns have been verified for Generic provider !!!");
+			}
+		}
+		return result;
+	}
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub

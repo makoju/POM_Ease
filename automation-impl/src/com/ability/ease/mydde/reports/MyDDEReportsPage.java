@@ -61,10 +61,9 @@ public class MyDDEReportsPage extends AbstractPageObject {
 		String reportText = getElementText(By.xpath("//div[@id='reportarea']//td[contains(text(),'SUMMARY REPORT FROM')]"));
 
 		report.report("Comparing SUMMARY REPORT header value Actual:  "+ reportText);
-		if (Verify.StringEquals(reportText, "SUMMARY REPORT FROM "+ fromDate + " TO " + toDate + ", FOR AGENCY "+ agency))
+		if (!Verify.StringEquals(reportText, "SUMMARY REPORT FROM "+ fromDate + " TO " + toDate + ", FOR AGENCY "+ agency))
 			failurecount++;
-		else if (!Verify.StringMatches(reportText,"SUMMARY REPORT FROM * TO *, FOR AGENCY "+ agency))
-			failurecount++;
+
 		//Summary report
 		if(Verify.verifyTableColumnNames("datatable",expOvernightColumns)){
 			if(!isTextPresent("EASE found no items for this report")){

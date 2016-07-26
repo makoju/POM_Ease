@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -1205,8 +1204,9 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 
 	public String[] selectGetOptions(String selectNameOrID) {
 		WebElement we = waitForElementVisibility(By.xpath("//select[contains(@name,'" + selectNameOrID + "') or " + 
-				"contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "')] | " + 
-				"//span[@id='"+ selectNameOrID +"']/select | " + "//td[span[contains(@title,"+"'"+ selectNameOrID +"'"+")]]/following-sibling::td/select | " + "//td[contains(text(),"+"'"+ selectNameOrID +"'"+")]/select"));
+				"contains(@id,'"+ selectNameOrID + "') or " + "contains(@title,'" + selectNameOrID + "')] | " + "//select[@id='" + selectNameOrID + "'] | " +
+				"//span[@id='"+ selectNameOrID +"']/select | " + "//td[span[contains(@title,"+"'"+ selectNameOrID +"'"+")]]/following-sibling::td/select | " 
+				+ "//td[contains(text(),"+"'"+ selectNameOrID +"'"+")]/select"));
 
 		WebDriverHelper.highlightElement(driver, we);
 		int i = 0;
@@ -1526,11 +1526,12 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		String xpath = "//input[@name='" + editBoxName + "' or " +
 				"@title='" + editBoxName + "' or " +
 				"@id='"+ editBoxName + "'] | //textarea[@name='" + editBoxName + "' or @id='"+ editBoxName + "']";
-
+		
 		waitForElementVisibility(By.xpath(xpath));
 
 		return driver.findElement(By.xpath(xpath)).getText().trim(); 
 	}
+	
 	/**
 	 * Use this method to get the current state of a check box
 	 * @param checkboxName
@@ -1708,10 +1709,6 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	public boolean verifyAlert(String sExpected){
 
 		String sActual=null;
-		if( sExpected==null || sExpected.isEmpty()){
-			report.report("Expected Alert text should not be null", Reporter.WARNING);
-			return false;
-		}
 		try{
 			//Wait 10 seconds till alert is present
 			report.report("Inside verify alert method....");
@@ -1726,6 +1723,11 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			if( sActual.trim().equalsIgnoreCase(sExpected.trim())){
 				alert.accept();
 				return true;
+			}
+			else{
+				report.report("Expected Alert not found. Hence, Closing the actual alert");
+				alert.dismiss();
+				return false;
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -1811,11 +1813,6 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 
 	public String getElementText(By by){
 		WebElement element = waitForElementVisibility(by);
-		if(element==null){
-			report.report("Unable to find an element: "+by.toString(), Reporter.WARNING);
-			return "";
-		}
-		
 		return getElementText(element);
 	}
 
@@ -1884,11 +1881,11 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 * Fluent wait
 	 */
 
-	public WebElement fluentWaitForElement(final By by){
+	public WebElement waitUntilElementVisibility(final By by){
 
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-				.withTimeout(30, TimeUnit.SECONDS)
-				.pollingEvery(5, TimeUnit.SECONDS)
+				.withTimeout(60, TimeUnit.SECONDS)
+				.pollingEvery(10, TimeUnit.SECONDS)
 				.ignoring(NoSuchElementException.class);
 
 		WebElement we= wait.until(new Function<WebDriver, WebElement>() {
@@ -2117,6 +2114,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	 * 
 	 * @return the driver that initialized this object
 	 */
+	@Override
 	public WebDriver getDriver() {
 		return driver;
 	}

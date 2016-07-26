@@ -11,12 +11,12 @@
             <mySQLDBPort>3306</mySQLDBPort>
             <mySQLDBUserName>easeweb</mySQLDBUserName>
             <mySQLDBPassword>web123</mySQLDBPassword>
-	    <easeGridServer1>10.164.2.171</easeGridServer1>
+	    <easeGridServer1>10.164.2.235</easeGridServer1>
             <userName>empadmin</userName>
             <password>Totally#1</password>
-            <easebuildid>1.6.0.11</easebuildid>
-	    <easebuildName>EaseWeb-emp7-1.6.0-11.x86_64.rpm</easebuildName>
-	    <easebuildDate>27-04-2016</easebuildDate>
+            <easebuildid>1.6.1.22</easebuildid>
+	    <easebuildName>EaseWeb-emp7-1.6.1-22.x86_64.rpm</easebuildName>
+	    <easebuildDate>15-07-2016</easebuildDate>
         </workingEnvironment>
         <webdriver>
             <class>com.ability.ease.auto.systemobjects.WebDriverSystemObject</class>

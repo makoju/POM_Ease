@@ -37,7 +37,7 @@ public class MyAccountTests extends BaseTest {
 	private String verifypassword;
 	private String description;
 	private String starttime, endtime,jobtype,customerid;
-	
+
 
 	@Before
 	public void setUpTests() throws Exception{
@@ -102,7 +102,7 @@ public class MyAccountTests extends BaseTest {
 		}
 
 	}
-	
+
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "Insert record into JobSchedule Table", paramsInclude = { "agency,jobtype,customerid,testType" })
@@ -110,9 +110,9 @@ public class MyAccountTests extends BaseTest {
 	{
 		String currentime = new String(""+System.currentTimeMillis());
 		String jobid = currentime.substring(currentime.length()-5, currentime.length());
-	
+
 		globalParamMap.put("jobid", jobid);
-		
+
 		if(myaccount.insertRecordintoJobSchedule(agency,jobtype,jobid,customerid)){		
 			report.report("Succesfully Inserted Record into Job Schedule Table !!", Reporter.PASS);
 		}else{
@@ -128,9 +128,16 @@ public class MyAccountTests extends BaseTest {
 	{
 		String jobid = globalParamMap.get("jobid");
 		if(myaccount.verifyJobScheduleCurrentAction(agency,jobtype,jobid,customerid)){
-			report.report("Succesfully verified Job Schedule Current Action as 'Initializing connection' !!", Reporter.PASS);
-		}else{
-			report.report("Failed to Verify Job Schedule Current Action as 'Initializing connection' ", Reporter.FAIL);
+			if(jobtype.equalsIgnoreCase("11"))
+				report.report("Succesfully verified that Eligibility Job was executed and found in joblog table!!", Reporter.PASS);
+			else
+				report.report("Succesfully verified Claim/EFT Job Schedule Current Action as 'Initializing connection' !!", Reporter.PASS);
+		}
+		else{
+			if(jobtype.equalsIgnoreCase("11"))
+				report.report("Failed to verify that Eligibility Job was executed and found in joblog table", Reporter.FAIL);
+			else
+				report.report("Failed to Verify Claim/EFT Job Schedule Current Action as 'Initializing connection' ", Reporter.FAIL);
 		}
 	}
 
@@ -243,7 +250,7 @@ public class MyAccountTests extends BaseTest {
 	}
 
 
-/*	@Test
+	/*	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "Verify Custom ScheduleDelete", paramsInclude = { "agency,testType" })
 	public void verifyCustomScheduleDeleteTwoRows() throws Exception 
@@ -255,7 +262,7 @@ public class MyAccountTests extends BaseTest {
 		}
 
 	}*/
-	
+
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "Verify Custom Schedule Delete last two rows", paramsInclude = { " agency,testType" })
@@ -307,9 +314,9 @@ public class MyAccountTests extends BaseTest {
 		}else {
 			report.report(" updated user password", Reporter.FAIL);
 		}
-		
+
 	}
-		
+
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 
@@ -336,7 +343,7 @@ public class MyAccountTests extends BaseTest {
 			report.report("Failed to Change user password", Reporter.FAIL);
 		}
 	}
-	
+
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "Configure blackout time for a group", paramsInclude = { "testType,groupname, starttime,endtime,expectedalertmessage" })
@@ -350,7 +357,7 @@ public class MyAccountTests extends BaseTest {
 			report.report("Failed to Configure Blackout time for group", Reporter.FAIL);
 		}
 	}
-	
+
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "insert Schedulers To Agency", paramsInclude = { "testType,agency" })
@@ -362,7 +369,7 @@ public class MyAccountTests extends BaseTest {
 			report.report("Failed to Insert Schedulers for the agency", Reporter.FAIL);
 		}
 	}
-	
+
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "VerifyBlackoutTimeHelpTextforAgency", paramsInclude = { "testType,agency, starttime,endtime" })
@@ -374,7 +381,7 @@ public class MyAccountTests extends BaseTest {
 			report.report("Failed to verify Blackout time helptext in change and custom schedule page", Reporter.FAIL);
 		}
 	}
-	
+
 	/*##
 	# Getters and Setters
 	##*/
@@ -574,7 +581,7 @@ public class MyAccountTests extends BaseTest {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public String getCredential() {
 		return credential;
 	}
@@ -582,7 +589,7 @@ public class MyAccountTests extends BaseTest {
 	public void setCredential(String credential) {
 		this.credential = credential;
 	}
-	
+
 	public String getExpectedalertmessage() {
 		return expectedalertmessage;
 	}

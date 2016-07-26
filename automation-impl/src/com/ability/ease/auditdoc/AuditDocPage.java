@@ -28,148 +28,6 @@ public class AuditDocPage extends AbstractPageObject{
 	String tableheadersxpathHHA = "//table[@id='datatable']//tr[@class='tableheaderblue']/td";
 	ReportsHelper reportshelper = new ReportsHelper();
 
-	//Expected column header help text for HHA
-	String[] expectedheaders_HHA = { "Upload ADR Documents",
-			"The Patient HIC number.",
-			"The name of the patient.",
-			"The claim Status and Location.",
-			"The date the patient was originally admitted.",
-			"Start of Episode date.",
-			"The reimbursement amount posted by Medicare on the claim.",
-			"The total episode value.",
-			"The number of days left to respond to the ADR.",
-			"The date an action is required by the FI in order to resolve the ADR.",
-			"Ensure that ADR documentation is mailed by this date to avoid unnecessary auto-denying of your claim.",
-			"The code associated with the ADR.",
-			"Total Amount Billed for Claim",
-			"The last time the claim was updated in Ease from DDE.",
-	"ADR Response Document Submission status."};
-	//Expected column header help text for Generic
-	String[] expectedheaders_Generic = { "Upload ADR Documents",
-			"The Patient HIC number.",
-			"The name of the patient.",
-			"The claim Status and Location.",
-			"The date the patient was originally admitted.",
-			"The claim start date.",
-			"The claim through date.",
-			"The reimbursement amount posted by Medicare on the claim.",
-			"The number of days left to respond to the ADR.",
-			"The date an action is required by the FI in order to resolve the ADR.",
-			"Ensure that ADR documentation is mailed by this date to avoid unnecessary auto-denying of your claim.",
-			"The code associated with the ADR.",
-			"Total Amount Billed for Claim",
-			"The last time the claim was updated in Ease from DDE.",
-	"ADR Response Document Submission status."};
-
-	/**
-	 * 
-	 * @param Timeframe
-	 * @param Value
-	 * @param agency
-	 * @param agencyValue
-	 * @param hic
-	 * @param patient
-	 * @param daysduedate
-	 * @param duedate
-	 * @param code
-	 * @return
-	 * @throws Exception
-	 */
-	public boolean verifyEsmdDeliveryStatusReportColumns(String Timeframe, String Value, String agency, String agencyValue,String hic,String patient,String daysduedate,String duedate,String code) throws Exception {
-		/*helper.clickAgency(agency, agencyValue);
-		helper.clickTimeFrame(Timeframe,Value);
-		Thread.sleep(8000);
-		WebElement esMD = waitForElementToBeClickable(ByLocator.xpath, "//a[text()='esMD Delivery & Status']", 30);
-		if(esMD != null){
-			clickLink("esMD Delivery & Status");	
-		}*/
-
-		helper.navigateToESMDStatusPage(agencyValue);
-		waitForElementToBeClickable(ByLocator.xpath,sXpathofEsmdReport, 30);
-
-		String icon=".//*[@id='scrollContent']/tr/td[1]//img";
-		String sloc=".//*[contains(text(),'S/Loc')]";
-		String  cmsStatus=".//*[contains(text(),'CMS')]";
-
-		boolean isicon=helper.verifyColumn(icon);
-		boolean isSLoc=helper.verifyColumn(sloc);
-		boolean isCMSStatus=helper.verifyColumn(cmsStatus);
-		if(isCMSStatus==true & isicon==true & isSLoc==true){
-			report.report("Expected Columns and data presented under eSMD Report", Reporter.ReportAttribute.BOLD);
-		}else{
-			report.report("Expected Columns and data not presented under eSMD Report", Reporter.FAIL);
-			failCounter++;
-		}
-		//Click HIC under esMD Report
-		clickLink(hic);
-		Thread.sleep(8000);
-		if(helper.isHIcExist(hic)){
-			helper.navigateBack();
-			report.report("HIC ID presented on the patient information page", Reporter.ReportAttribute.BOLD);
-		}else{
-			report.report("HIC ID not presented on the patient information page", Reporter.FAIL);
-			failCounter++;
-		}
-
-		//Click Patient Link under esMD Report
-		clickLink(patient);
-		Thread.sleep(8000);
-		if(helper.isPatientExist(patient)){
-			helper.navigateBack();
-			report.report("Patient Name presented on the patient information page", Reporter.ReportAttribute.BOLD);
-		}else{
-			report.report("Patient Name is not presented on the patient information page", Reporter.FAIL);
-			failCounter++;
-		}
-		//Click 30-days due date link
-		clickLink(daysduedate);
-		if(helper.isADRExist(daysduedate)){
-			helper.navigateBack();
-			report.report("ADR Page is displayed", Reporter.ReportAttribute.BOLD);
-		}else{
-			report.report("ADR Page isnot displayed", Reporter.FAIL);
-			failCounter++;
-		}
-		//Click due date under the esMD report	
-		clickLink(duedate);
-		if(helper.isADRExist(duedate)){
-			helper.navigateBack();
-			report.report("ADR Page is displayed", Reporter.ReportAttribute.BOLD);
-		}else{
-			report.report("ADR Page isnot displayed", Reporter.FAIL);
-			failCounter++;
-		}
-		//Click code link under esMD Report
-		clickLink(code);
-		if(helper.isADRExist(code)){
-			helper.navigateBack();
-			report.report("ADR Page is displayed", Reporter.ReportAttribute.BOLD);
-		}else{
-			report.report("ADR Page isnot displayed", Reporter.FAIL);
-			failCounter++;
-		}
-		//Comparing 
-		if(agencyValue.contains("HHA"))
-		{
-			String[] actualheadertooltips = reportshelper.getTableHeaderToolTips(tableheadersxpathHHA);
-			if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders_HHA,true)){
-				failCounter++;
-				report.report("Total number of failures is: " + failCounter,ReportAttribute.BOLD);
-			}
-		}
-		else
-		{
-			String[] actualheadertooltips = reportshelper.getTableHeaderToolTips(tableheadersxpathHHA);
-			if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders_Generic,true)){
-				failCounter++;
-				report.report("Total number of failures is: " + failCounter,ReportAttribute.BOLD);
-			}
-		}
-		return (failCounter == 0) ? true : false;
-
-	}
-
-
 	/**
 	 * Use this method to upload a PDF / TIFF document in AuditDoc 
 	 * @return true or false
@@ -179,7 +37,7 @@ public class AuditDocPage extends AbstractPageObject{
 			String caseID,ADRFileFomat adrFileType, ADRFilesSize adrFileSize)throws Exception{
 
 		String sExpectedAlertMessageBeforeADRSubmission = "Proceed with ADR Document Submission to Review Contractor : "+ reviewContractorName +"?";
-		String sExpectedAlertMessageAfterSuccessfulADRSubmission = "Successfully processed ADR response documents Submission";
+		String sExpectedAlertMessageAfterSuccessfulADRSubmission = "Successfully processed ADR response documents Submission.";
 		String adrPageXpath = "//td[contains(text(),'ADR INFORMATION')]";
 
 
@@ -257,12 +115,6 @@ public class AuditDocPage extends AbstractPageObject{
 	public boolean verifyCMSStatusScreenAfterADRSubmission(String expectedCMSStatusTableHeaders,String reviewContractorName, String claimIDorDCN, 
 			String caseID, ADRFileFomat adrFileType, ADRFilesSize adrFileSize)throws Exception{
 
-		//remove below if condition after testing this building block
-		/*helper.navigateToESMDStatusPage("HHA1");
-		if( isElementPresent(By.xpath("//a[contains(text(),'Sent to CMS')]"))){
-			clickLink("Sent to CMS");
-			Thread.sleep(5000);
-		}*/
 		//Before validating CMS screen details or ddez.cmsstatusupdates and ddez.adrdocsubmissioninfo wait for three minutes to get the mock time reponses from Audti doc server
 		String fileSize = adrFileSize.toString();
 		char relationalOperator = fileSize.charAt(0);
@@ -270,8 +122,8 @@ public class AuditDocPage extends AbstractPageObject{
 		List<String> lsADRFileNames = helper.getADRFileNamesFromFilePaths(lsADRFilePaths);
 
 		String xpathToADRRecord = "//td[contains(text(),'"+ claimIDorDCN +"')]";
-		String receivedByCMSESTXpath = "//td[contains(text(),'" + claimIDorDCN + "')]/following-sibling::td[3]";
-		String receivedByReviewerESTXpath = "//td[contains(text(),'" + claimIDorDCN + "')]/following-sibling::td[4]";
+		String receivedByCMSESTXpath = "//td[contains(text(),'" + claimIDorDCN + "')]/following-sibling::td[4]";
+		String receivedByReviewerESTXpath = "//td[contains(text(),'" + claimIDorDCN + "')]/following-sibling::td[5]";
 		String reviewerAckTimeEST = null,  CMSAckTimeInEST = null;
 		String CMSAckTimeInCST = null, reviewerAckTimeCST = null;
 		long timeDiffInHoursOfCMSAckTime = 0L, timeDiffInHoursOfReviewerAckTime = 0L; 
@@ -280,7 +132,7 @@ public class AuditDocPage extends AbstractPageObject{
 
 		if( waitForElementToBeClickable(ByLocator.xpath, xpathToADRRecord, 30) != null){
 			report.report("ADR Submission Record present in CMS status details table");
-			report.report("Waiting for ~ 4 minutes to get the mock reposne from Audit Doc server...");
+			report.report("Waiting for ~ 4 minutes to get the mock reponse from AuditDoc server...");
 			Thread.sleep(240000);
 			helper.navigateBack();
 			waitForElementToBeClickable(ByLocator.id, "forwardNav", 10);

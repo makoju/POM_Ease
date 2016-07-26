@@ -1,19 +1,15 @@
 package com.ability.ease.claims;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import jsystem.framework.report.Reporter;
 import jsystem.framework.report.Reporter.ReportAttribute;
 
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.internal.WebElementToJsonConverter;
-
 import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.TestCommonResource;
 import com.ability.ease.auto.common.UB04FormXMLParser;
@@ -22,7 +18,6 @@ import com.ability.ease.auto.common.Verify;
 import com.ability.ease.auto.dataStructure.common.AttibuteXMLParser.UIAttributeXMLParser;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
-import com.ability.ease.mydde.reports.MyDDEReportsPage;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 public class ClaimsPage extends AbstractPageObject{
@@ -62,7 +57,7 @@ public class ClaimsPage extends AbstractPageObject{
 		sAgencyName = sAgencyName.substring(sAgencyName.lastIndexOf(" ") + 1);
 
 		//Get current time from ease Database
-		String startTime = helper.getCurrentTimeFromEaseDB();
+		String startTime = ClaimsHelper.getCurrentTimeFromEaseDB();
 		//filling all screen attribute values in UB04 form
 		uiactions.fillScreenAttributes(lsAttributes);
 		//validation 1 :: verify field locator 1 values
@@ -127,7 +122,7 @@ public class ClaimsPage extends AbstractPageObject{
 
 		//get current time from ease DB
 		Thread.sleep(5000);
-		String endTime = helper.getCurrentTimeFromEaseDB();
+		String endTime = ClaimsHelper.getCurrentTimeFromEaseDB();
 		//validation 6 :: verify XML file
 		String sRequestDetails[] = helper.getUB04XMLFromDatabase(startTime, endTime);
 		sClaimRequestID = sRequestDetails[0];
@@ -178,7 +173,7 @@ public class ClaimsPage extends AbstractPageObject{
 		helper.clickMYDDELink();
 
 		//Get current time from ease Database
-		String startTime = helper.getCurrentTimeFromEaseDB();
+		String startTime = ClaimsHelper.getCurrentTimeFromEaseDB();
 		//filling screen attribute values
 		uiactions.fillScreenAttributes(lsAttributes);
 		driver.findElement(By.xpath("//li[contains(text(),'0001')]")).click();
@@ -192,7 +187,7 @@ public class ClaimsPage extends AbstractPageObject{
 			prevTotalCoveredCharges = totalsBeforeDelete[0];
 			prevTotalNonCoveredCharges = totalsBeforeDelete[1];
 		}else{
-			report.report("Fail to get total charges in UB04 form from UI, before removing claim entry", report.WARNING);
+			report.report("Fail to get total charges in UB04 form from UI, before removing claim entry", Reporter.WARNING);
 			failCounter++;
 		}
 
@@ -293,7 +288,7 @@ public class ClaimsPage extends AbstractPageObject{
 		}
 
 
-		String endTime = helper.getCurrentTimeFromEaseDB();
+		String endTime = ClaimsHelper.getCurrentTimeFromEaseDB();
 		//waiting to record to be pushed unto the database
 		Thread.sleep(5000);
 		//get the xml file from database
@@ -572,7 +567,7 @@ public class ClaimsPage extends AbstractPageObject{
 		Thread.sleep(5000);
 		waitForElementToBeClickable(ByLocator.xpath, sXpath, 60);
 		driver.findElement(By.xpath("//li[contains(text(),'0001')]")).click();
-		String startTime = helper.getCurrentTimeFromEaseDB();
+		String startTime = ClaimsHelper.getCurrentTimeFromEaseDB();
 
 		//Before deleting the claim line entry get totals
 		float[] totalsBeforeDelete = helper.getTotalsFromUB04Form();
@@ -583,7 +578,7 @@ public class ClaimsPage extends AbstractPageObject{
 			prevTotalCoveredCharges = totalsBeforeDelete[0];
 			prevTotalNonCoveredCharges = totalsBeforeDelete[1];
 		}else{
-			report.report("Fail to get total charges in UB04 form from UI, before removing claim entry", report.WARNING);
+			report.report("Fail to get total charges in UB04 form from UI, before removing claim entry", Reporter.WARNING);
 			failCounter++;
 		}
 
@@ -677,7 +672,7 @@ public class ClaimsPage extends AbstractPageObject{
 				failCounter++;
 			}
 		}
-		String endTime = helper.getCurrentTimeFromEaseDB();
+		String endTime = ClaimsHelper.getCurrentTimeFromEaseDB();
 		//waiting to record to be pushed unto the database
 		Thread.sleep(5000);
 		//get the xml file from database

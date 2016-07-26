@@ -37,7 +37,7 @@ public class HmoTests extends BaseTest {
 	public String ganerateRandom9DigitNumberfollowedByChar() {
 		Random generator = new Random();
 		StringBuilder stringBuilder = new StringBuilder();
-		long lnum = Math.round(Math.random() * 100000000);
+		long lnum = Math.round(Math.random() * 1000000000);
 		char cchar = (char) (generator.nextInt(26) + 'a');
 		hic=String.valueOf(lnum)+String.valueOf(cchar);
 		return hic;
@@ -47,6 +47,7 @@ public class HmoTests extends BaseTest {
 	@Before
 	public void setupTests() throws Exception {
 		hmo = (IHMO) context.getBean("hmo");
+		
 	}
 
 	@Test
@@ -105,9 +106,8 @@ public class HmoTests extends BaseTest {
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
 	@TestProperties(name = "Remove Patient from HMO Catcher", paramsInclude = { "hic,testType" })
 	public void trashHMOPatient() throws Exception {
-		hic = ganerateRandom9DigitNumberfollowedByChar();
 		if (hmo.trashHMOPatient(hic)) {
-			report.report("Patient is removed from HMO Catcher",
+			report.report("Patient is not removed from HMO Catcher",
 					Reporter.ReportAttribute.BOLD);
 		} else {
 			report.report("Patient is removed from HMO Catcher", Reporter.FAIL);
@@ -118,8 +118,8 @@ public class HmoTests extends BaseTest {
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
 	@TestProperties(name = "Add Existing Patient to HMO from Patient info Page", paramsInclude = { "hic,testType" })
 	public void addDuplicateToHMOFromPatientInfo() throws Exception {
+		
 		if (hmo.addDuplicatePatientToHMOFromPatientInfo(hic)) {
-			hic = ganerateRandom9DigitNumberfollowedByChar();
 			report.report(
 					"patient is already being tracked by HMO,hence not added",
 					Reporter.ReportAttribute.BOLD);

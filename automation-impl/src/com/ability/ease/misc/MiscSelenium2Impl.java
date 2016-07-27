@@ -60,13 +60,13 @@ public class MiscSelenium2Impl implements IMiscellaneous{
 		MiscPage misc = new MiscPage();
 		return misc.verifyLeftMenuInMyAccountTab(subMenuItem, sExpectedOutput);
 	}
-	
+
 	@Override
 	public boolean verifyAlertOptions(Map<String, String> mapAttrVal,String userName)throws Exception {
 		MiscPage misc = new MiscPage();
 		return misc.verifyAlertOptions(mapAttrVal,userName);
 	}
-	
+
 	@Override
 	public boolean verifyAddHICs(Map<String, String> mapAttrVal)throws Exception {
 		MiscPage misc = new MiscPage();
@@ -74,26 +74,26 @@ public class MiscSelenium2Impl implements IMiscellaneous{
 	}
 
 	@Override
-	public boolean verifyAddSingleHIC(String agency,String hicID,String sExpectedmessage) throws Exception {
+	public boolean verifyAddSingleHICUnderAdvancedView(String agency,String HIC,String sExpectedMessage) throws Exception {
 		MiscPage misc = new MiscPage();
-		return misc.verifyAddSingleHIC(agency, hicID, sExpectedmessage);
+		return misc.verifyAddSingleHICUnderAdvancedView(agency, HIC, sExpectedMessage);
 	}
 
 	@Override
-	public boolean verifyAddMultipleHICs(String agency, String hicID, String sExpectedmessage) throws Exception {
+	public boolean verifyAddMultipleHICsUnderAdvancedView(String agency, String hicID, String sExpectedmessage) throws Exception {
 		MiscPage misc = new MiscPage();
-		return misc.verifyAddMultpleHICs(agency, hicID, sExpectedmessage);
+		return misc.verifyAddMultipleHICsUnderAdvancedView(agency, hicID, sExpectedmessage);
 	}
 
 	@Override
-	public boolean verifyAddMultipleHICs_Basicview(String agency, String hicID, String sExpectedmessage) throws Exception{
-	MiscPage misc = new MiscPage();
-	return misc.verifyAddMultpleHICs_BasicView(agency, hicID, sExpectedmessage);
+	public boolean verifyAddMultipleHICsUnderBasicView(String agency, String HICs, String sExpectedMessage) throws Exception{
+		MiscPage misc = new MiscPage();
+		return misc.verifyAddMultipleHICsUnderBasicView(agency, HICs, sExpectedMessage);
 	}
 
 	@Override
-	public boolean verifyAddSingleHIC_BasicView(String agency, String hicID, String sExpectedmessage) throws Exception {
+	public boolean verifyAddSingleHICUnderBasicView(String agency, String HIC, String sExpectedMessage) throws Exception {
 		MiscPage misc = new MiscPage();
-		return misc.verifyAddSingleHIC_BasicView(agency, hicID, sExpectedmessage);
+		return misc.verifyAddSingleHICUnderBasicView(agency, HIC, sExpectedMessage);
 	}
 }

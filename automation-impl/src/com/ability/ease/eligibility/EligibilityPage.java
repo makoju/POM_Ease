@@ -98,7 +98,7 @@ public class EligibilityPage extends AbstractPageObject{
 	public boolean verifyEligibilityStatus(String firstname, String lastname, String status) throws Exception {
 		navigateToPage();
 		//validation
-		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase("")|| firstname.isEmpty() || firstname.equalsIgnoreCase("NULL"))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 
 		if(status.equalsIgnoreCase("pending")){
 			if(!verifyEligibilityRequestStatusPending(firstlastname.toUpperCase()))
@@ -117,7 +117,7 @@ public class EligibilityPage extends AbstractPageObject{
 	}
 
 	public boolean navigatetoClaimDetails(String firstname, String lastname, String hic) throws Exception{
-		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase("")|| firstname.isEmpty() || firstname.equalsIgnoreCase("NULL"))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 		navigateToPage();
 		//To Do - we've to get the first record from the table not any record matches with the given name
 		if(!navigatetoclaimdetails(firstlastname))
@@ -164,7 +164,7 @@ public class EligibilityPage extends AbstractPageObject{
 
 	public boolean verifyHETSActivitiesCompletedStatusReport(String hic,String agency, String firstname, String lastname) throws Exception {
 		int failurecount=0;
-		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (lastname +", "+firstname).toUpperCase();
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase("") || firstname.isEmpty() || firstname.equalsIgnoreCase("NULL"))? lastname.toUpperCase(): (lastname +", "+firstname).toUpperCase();
 
 		navigateToPage();
 
@@ -222,7 +222,7 @@ public class EligibilityPage extends AbstractPageObject{
 	public boolean verifyNavigationToUB04FromPatientInfoScreen(String hic,String agency, String firstname, String lastname) throws Exception {
 		int failurecount=0;
 		navigateToPage();
-		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase("")|| firstname.isEmpty() || firstname.equalsIgnoreCase("NULL"))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 
 		if(!navigatetoPatientInfoScreen(firstlastname, hic))
 			return false;
@@ -241,7 +241,7 @@ public class EligibilityPage extends AbstractPageObject{
 		int failurecount=0;
 		navigateToPage();
 
-		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase("")|| firstname.isEmpty() || firstname.equalsIgnoreCase("NULL"))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 		if(!navigatetoPatientInfoScreen(firstlastname, hic))
 			return false;
 
@@ -430,7 +430,7 @@ public class EligibilityPage extends AbstractPageObject{
 
 	public boolean verifyOptionsUnderPatientInformationScreen(String hic, String firstname, String lastname) throws Exception {
 		int failurecount=0;
-		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase("")|| firstname.isEmpty() || firstname.equalsIgnoreCase("NULL"))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 
 		if(!navigatetoPatientInfoScreen(firstlastname, hic))
 			return false;
@@ -1084,7 +1084,7 @@ public class EligibilityPage extends AbstractPageObject{
 	public boolean validateResponsePageAndRawFile(String firstname, String lastname) throws Exception {
 		navigateToPage();
 
-		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase(""))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
+		String firstlastname = (firstname==null || firstname.trim().equalsIgnoreCase("")|| firstname.isEmpty() || firstname.equalsIgnoreCase("NULL"))? lastname.toUpperCase(): (firstlastname = lastname +", "+firstname).toUpperCase();
 		navigatetoEligibilityReport(firstlastname);
 		//TODO - Need to validate raw271 page content with response page content
 

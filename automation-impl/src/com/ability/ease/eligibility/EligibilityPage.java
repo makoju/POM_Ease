@@ -402,6 +402,13 @@ public class EligibilityPage extends AbstractPageObject{
 
 	public int getActivityCount(String status) {
 		int count=0;
+		//waiting for 1 minute for the activity table to get refresh and update with latest count
+		try {
+			Thread.sleep(60000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(status.equalsIgnoreCase("pending"))
 			count = getActivitycount("tdPendingActivity");
 

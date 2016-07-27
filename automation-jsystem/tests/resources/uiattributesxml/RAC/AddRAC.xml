@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<UIAttributes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="UIAttributes.xsd">
+	<!-- RAC Submision Link -->
+	<UIAttribute>
+		<locator>RAC Submission</locator>
+		<style>Link</style>
+		<displayName>RAC Submission</displayName>
+		<description>Link to navigate RAC Submission Page</description>
+	</UIAttribute>
+
+	<!-- Patient HIC Text Field -->
+	<UIAttribute>
+		<locator>HICParam</locator>
+		<style>Text</style>
+		<displayName>Patient HIC</displayName>
+		<description>Text field to enter the Patient HIC</description>
+	</UIAttribute>
+
+	<!-- DCN Text Field -->
+	<UIAttribute>
+		<locator>CMSClaimIDParam</locator>
+		<style>Text</style>
+		<displayName>DCN</displayName>
+		<description>Text field to enter the DCN</description>
+	</UIAttribute>
+
+	<!-- Patient Ctrl No Text Field -->
+	<UIAttribute>
+		<locator>PCNParam</locator>
+		<style>Text</style>
+		<displayName>Patient Ctrl No</displayName>
+		<description>Text field to enter the Patient Ctrl Number</description>
+	</UIAttribute>
+
+	<!-- Start Date - Date Picker -->
+	<UIAttribute>
+		<locator>StartDOSParam</locator>
+		<style>Text</style>
+		<displayName>Start Date</displayName>
+		<description>Text field to select Start Date</description>
+	</UIAttribute>
+
+	<!-- Through Date - Date Picker -->
+	<UIAttribute>
+		<locator>EndDOSParam</locator>
+		<style>Text</style>
+		<displayName>Through Date</displayName>
+		<description>Text field to select Through Date</description>
+	</UIAttribute>
+
+	<!--Letter Reference Id Text Field -->
+	<UIAttribute>
+		<locator>RefIdParam</locator>
+		<style>Text</style>
+		<displayName>Letter Reference Id</displayName>
+		<description>Text field to Enter Letter Reference Id</description>
+	</UIAttribute>
+
+	<!--Letter Date - Date Picker -->
+	<UIAttribute>
+		<locator>LetterDateParam</locator>
+		<style>Text</style>
+		<displayName>Letter Date</displayName>
+		<description>Text field to Select Due Date</description>
+	</UIAttribute>
+
+	<!--Notes Text Field -->
+	<UIAttribute>
+		<locator>NotesParam</locator>
+		<style>Text</style>
+		<displayName>Notes</displayName>
+		<description>Text field to RAC Notes</description>
+	</UIAttribute>
+
+	<!--Submit button -->
+	<UIAttribute>
+		<locator>btSubmit</locator>
+		<style>Button</style>
+		<displayName>Submit</displayName>
+		<description>Button to Submit RAC</description>
+	</UIAttribute>
+
+
+
+
+</UIAttributes>	

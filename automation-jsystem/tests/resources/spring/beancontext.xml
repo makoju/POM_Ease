@@ -21,5 +21,6 @@
 	<bean id="myaccount" class="com.ability.ease.myaccount.MyAccountSelenium2Impl"/>
 	<bean id="common" class="com.ability.ease.auto.common.CommonSelenium2Impl"/>
 	<bean id="appeal" class="com.ability.ease.appealmanagement.AppealSelenium2Impl"/>
+	<bean id="RACSubmission" class="com.ability.ease.RAC.RACSelenium2Impl"/>
 	
 </beans>

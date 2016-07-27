@@ -25,6 +25,7 @@
         <antcallback target="t7"/>
         <antcallback target="t8"/>
         <antcallback target="t9"/>
+        <antcallback target="t10"/>
     </target>
     <target name="t0">
         <jsystem showoutput="true">
@@ -44,7 +45,7 @@
     </target>
     <target name="t2">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="1e62531e-3294-4000-8b72-405e47bea36f"/>
+            <sysproperty key="jsystem.uuid" value="42f68374-14a0-44a9-a677-a80e23b7add8"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.myaccount.MyAccountTests.configureBlackoutTime"/>
@@ -52,7 +53,7 @@
     </target>
     <target name="t3">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="21754730-f992-4c7e-b151-78adc663d3d9"/>
+            <sysproperty key="jsystem.uuid" value="4a17f774-d9fc-416e-8134-27bf8ca92db3"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.myaccount.MyAccountTests.submitCustomSchedule"/>
@@ -60,7 +61,7 @@
     </target>
     <target name="t4">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="1237705a-d45b-4d9a-97c2-cb72971d9fcc"/>
+            <sysproperty key="jsystem.uuid" value="bf95f04d-b2de-410c-9d62-f81cc0af20e5"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.myaccount.MyAccountTests.verifyChangeSchedule"/>
@@ -68,15 +69,15 @@
     </target>
     <target name="t5">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="36b60383-f2e1-4034-b263-1e5a56292b00"/>
+            <sysproperty key="jsystem.uuid" value="839b1269-5877-4f95-9e17-8c562cf9cc4d"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-            <test name="com.ability.ease.myaccount.MyAccountTests.insertRecordintoJobSchedule"/>
+            <test name="com.ability.ease.eligibility.EligibilityTests.insertEligibilityCheckWithCompletedStatus"/>
         </jsystem>
     </target>
     <target name="t6">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="45e59568-1c80-4786-9435-5d0cbdc504ac"/>
+            <sysproperty key="jsystem.uuid" value="5ce828e4-6388-480b-bb7c-cca013e165ac"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.myaccount.MyAccountTests.insertRecordintoJobSchedule"/>
@@ -84,23 +85,31 @@
     </target>
     <target name="t7">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="a0dc2b0c-6a35-48c1-8c1a-73cb5d6d2126"/>
-            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-            <test name="com.ability.ease.common.CommonTests.stopStartEaseServer"/>
-        </jsystem>
-    </target>
-    <target name="t8">
-        <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="acd4a620-6839-4ad7-ac8b-840050ccc749"/>
+            <sysproperty key="jsystem.uuid" value="11995dd8-f6fa-4af4-8ea6-c2b20fba82c6"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.myaccount.MyAccountTests.verifyJobScheduleCurrentAction"/>
         </jsystem>
     </target>
+    <target name="t8">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="74fa364b-0a03-4014-82f7-084dddc636aa"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.myaccount.MyAccountTests.insertRecordintoJobSchedule"/>
+        </jsystem>
+    </target>
     <target name="t9">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="3cb9a94f-5ef5-422f-967b-51333841c00a"/>
+            <sysproperty key="jsystem.uuid" value="b92793c9-cff5-49ed-81e9-a065b4b2f5e9"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.common.CommonTests.stopStartEaseServer"/>
+        </jsystem>
+    </target>
+    <target name="t10">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="11ac1e53-31f5-4364-98de-04a8b8f62421"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.myaccount.MyAccountTests.verifyJobScheduleCurrentAction"/>

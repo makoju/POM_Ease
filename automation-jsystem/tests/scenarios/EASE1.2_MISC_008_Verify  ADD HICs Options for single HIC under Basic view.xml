@@ -17,7 +17,6 @@
     <target name="execute scenario">
         <antcallback target="t0"/>
         <antcallback target="t1"/>
-        <antcallback target="t2"/>
     </target>
     <target name="t0">
         <jsystem showoutput="true">
@@ -29,18 +28,10 @@
     </target>
     <target name="t1">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="39e23bdf-920a-4fb2-b86b-d218268a612b"/>
+            <sysproperty key="jsystem.uuid" value="0d0a2326-d4c5-4120-b0c0-62447e8ef410"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-            <test name="com.ability.ease.misc.MiscTests.verifySingleAddHIC_BasicView"/>
-        </jsystem>
-    </target>
-    <target name="t2">
-        <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="c58c16eb-ef1e-4e35-a97e-5d41ffad14b1"/>
-            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-            <test name="com.ability.ease.misc.MiscTests.verifySingeAddHIC_BasicView"/>
+            <test name="com.ability.ease.misc.MiscTests.verifyAddSingleHICUnderBasicView"/>
         </jsystem>
     </target>
 </project>

@@ -24,8 +24,26 @@
         <antcallback target="t6"/>
         <antcallback target="t7"/>
         <antcallback target="t8"/>
+        <antcallback target="t9"/>
+        <antcallback target="t10"/>
     </target>
     <target name="t0">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="473daa50-3916-4d0f-80f7-64a5f4319c64"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.myaccount.MyAccountTests.verifysetUpAlerts"/>
+        </jsystem>
+    </target>
+    <target name="t1">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="97d7919d-5792-4b0f-8017-c72d5708c176"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.misc.MiscTests.verifyAlertOptions"/>
+        </jsystem>
+    </target>
+    <target name="t2">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="385c4456-d4ab-49f8-bd4f-8954ede97bb3"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -33,19 +51,15 @@
             <test name="com.ability.ease.misc.MiscTests.loginToEase"/>
         </jsystem>
     </target>
-    <target name="t1">
+    <target name="t3">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="8532af16-b35b-4773-9a67-58b49704b19f"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.mydde.MyDDETests.verifySaveProfileOption"/>
-            <sysproperty key="jsystem.uuid" value="0464ff00-26c1-4348-aaec-5ce758c4830c"/>
-            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-            <test name="com.ability.ease.mydde.MyDDEReportsTests.verifyChangesReportSortHeaderHelp"/>
         </jsystem>
     </target>
-    <target name="t2">
+    <target name="t4">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="b6cf38d3-4772-44b0-84af-7cc7da6bdac1"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -53,7 +67,7 @@
             <test name="com.ability.ease.claims.ClaimsTests.verifyAddRemoveClaimLines"/>
         </jsystem>
     </target>
-    <target name="t3">
+    <target name="t5">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="6f114f38-6bd6-4927-ac13-70b8434c5dcd"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -61,7 +75,7 @@
             <test name="com.ability.ease.mydde.MyDDEReportsTests.verifyPaymentSummaryReportExportPDFExcel"/>
         </jsystem>
     </target>
-    <target name="t4">
+    <target name="t6">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="57a5a169-edac-488f-b38c-0b3e6dbfa987"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -69,7 +83,7 @@
             <test name="com.ability.ease.mydde.MyDDEReportsTests.verifyHighLevelPaymentSummaryReportExportPDFExcel"/>
         </jsystem>
     </target>
-    <target name="t5">
+    <target name="t7">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="faf1a327-f504-4988-9c0f-0338f20f2982"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -77,7 +91,7 @@
             <test name="com.ability.ease.mydde.MyDDEReportsTests.verifyHospicePatientsExportPDFExcel"/>
         </jsystem>
     </target>
-    <target name="t6">
+    <target name="t8">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="62b7a56e-6fff-46b3-8b63-4584335ee2f1"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -85,7 +99,7 @@
             <test name="com.ability.ease.mydde.MyDDEReportsTests.verifyHMOPatientsExportPDFExcel"/>
         </jsystem>
     </target>
-    <target name="t7">
+    <target name="t9">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="34a26d49-24a0-473a-b0ca-54514f29cc2e"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
@@ -93,7 +107,7 @@
             <test name="com.ability.ease.auditdoc.AuditDocTests.verifyADRDocumentUploadFileFormats"/>
         </jsystem>
     </target>
-    <target name="t8">
+    <target name="t10">
         <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="36d1c32f-af21-485d-9672-b152c6bc0d86"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>

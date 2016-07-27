@@ -33,17 +33,17 @@ public class MiscTests extends BaseTest{
 	private MyAccountSubMenu subMenuItems;
 	private String sExpectedOutput;
 	private UserActionType userAction;
-	
-	private String mAgency;
-	private String mHicID;
-	private String expectedalertmessage;
-	
 
-	
-	
+	private String agency;
+	private String HIC;
+	private String expectedAlertMessage;
+
+
+
+
 	private AttributePair[] attrpair;
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
-	
+
 	@Before
 	public void setupTests()throws Exception{
 		misc = (IMiscellaneous)context.getBean("misc");
@@ -55,11 +55,11 @@ public class MiscTests extends BaseTest{
 	public void loginToEase()throws Exception{
 		switch (testType) {
 		case Selenium2:
-			
+
 			break;
 		case RESTful:
-			
-			
+
+
 			break;
 
 		default:
@@ -127,7 +127,7 @@ public class MiscTests extends BaseTest{
 			report.report("Failed to verify forward and backward links!!!", Reporter.FAIL);
 		}
 	}
-	
+
 	/*
 	 * Implemented using XML approach 
 	 * @param - AttributeNameValueDialogProvider :: to provide a dialog provider with parsed attributes from xml
@@ -144,7 +144,7 @@ public class MiscTests extends BaseTest{
 			report.report("Failed to verify data in personal inforamtion tab", Reporter.FAIL);
 		}
 	}
-	
+
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "Verify Left Menu Items in My Account Tab", paramsInclude = { "testType, subMenuItems, sExpectedOutput"})
@@ -171,7 +171,7 @@ public class MiscTests extends BaseTest{
 			report.report("Failed to verify setting up alert options!", Reporter.FAIL);
 		}
 	}
-	
+
 	/*
 	 * Implemented using XML approach 
 	 * @param - AttributeNameValueDialogProvider :: to provide a dialog provider with parsed attributes from xml
@@ -187,94 +187,97 @@ public class MiscTests extends BaseTest{
 			report.report("Failed to add HIC under basic view", Reporter.FAIL);
 		}
 	}
-	
+
 	public void handleUIEvent(HashMap<String, Parameter> map, String methodName)throws Exception{
 		super.handleUIEvent(map, methodName);
-		if(methodName.equalsIgnoreCase("verifyPersonalInfo")){
+		if(methodName.equalsIgnoreCase("verifyPersonalInfo") || methodName.equalsIgnoreCase("verifyAlertOptions")){
 			UIAttributesXMLFileName.setUIAttributesxmlfileName(TestCommonResource.getTestResoucresDirPath()+"uiattributesxml\\Misc\\Misc.xml");
 		}
 	}
-	
+
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "verifySingleAddHIC_Advanced", paramsInclude = { "testType,mAgency, mHicID,expectedalertmessage" })
-	public void verifySingleAddHIC()throws Exception{
+	@TestProperties(name = "Verify Add Single HIC Under Advanced View", paramsInclude = { "agency,HIC,expectedAlertMessage,testType" })
+	public void verifyAddSingleHICUnderAdvancedView()throws Exception{
 
-		if(misc.verifyAddSingleHIC(mAgency,mHicID, expectedalertmessage)){
+		if(misc.verifyAddSingleHICUnderAdvancedView(agency,HIC,expectedAlertMessage)){
 			report.report("Succesfully added hic!!", Reporter.PASS);
 		}else {
 			report.report("Failed to add hic", Reporter.FAIL);
 		}
 	}
-	
+
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "verifySingleAddHIC_BasicView", paramsInclude = { "testType,mAgency, mHicID,expectedalertmessage" })
-	public void verifySingleAddHIC_BasicView()throws Exception{
+	@TestProperties(name = "Verify Add Single HIC Under Basic View", paramsInclude = { "agency,HIC,expectedAlertMessage,testType" })
+	public void verifyAddSingleHICUnderBasicView()throws Exception{
 
-		if(misc.verifyAddSingleHIC_BasicView(mAgency,mHicID, expectedalertmessage)){
+		if(misc.verifyAddSingleHICUnderBasicView(agency,HIC, expectedAlertMessage)){
 			report.report("Succesfully added hic!!", Reporter.PASS);
 		}else {
 			report.report("Failed to add hic", Reporter.FAIL);
 		}
 	}
-	
+
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "verifyMULTIPLEAddHICS_BasicView", paramsInclude = { "testType,mAgency, mHicID,expectedalertmessage" })
-	public void verifyMultipleAddHICs_BasicView()throws Exception{
+	@TestProperties(name = "Verify Add Multiple HICs Under Basic View", paramsInclude = { "agency,HIC,expectedAlertMessage,testType" })
+	public void verifyAddMultipleHICsUnderBasicView()throws Exception{
 
-		if(misc.verifyAddMultipleHICs_Basicview(mAgency,mHicID, expectedalertmessage)){
+		if(misc.verifyAddMultipleHICsUnderBasicView(agency,HIC,expectedAlertMessage)){
 			report.report("Succesfully added hicS!!", Reporter.PASS);
 		}else {
 			report.report("Failed to add hicS", Reporter.FAIL);
 		}
 	}
-	
-	
+
+
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "verifyMULTIPLEAddHICS_Advanced", paramsInclude = { "testType,mAgency, mHicID,expectedalertmessage" })
-	public void verifyMultipleAddHICs()throws Exception{
+	@TestProperties(name = "Verify  ADD Multiple HICs Under Advance View", paramsInclude = { "agency,HIC,expectedAlertMessage,testType" })
+	public void verifyAddMultipleHICsUnderAdvancedView()throws Exception{
 
-		if(misc.verifyAddMultipleHICs(mAgency,mHicID, expectedalertmessage)){
+		if(misc.verifyAddMultipleHICsUnderAdvancedView(agency,HIC, expectedAlertMessage)){
 			report.report("Succesfully added hicS!!", Reporter.PASS);
 		}else {
 			report.report("Failed to add hicS", Reporter.FAIL);
 		}
 	}
-	
-	
+
+
 	/*####
 	##Getters and Setters methods
 	######*/
 
-	public String getmAgency() {
-		return mAgency;
-	}
-
-	public void setmAgency(String mAgency) {
-		this.mAgency = mAgency;
-	}
-
-	public String getmHicID() {
-		return mHicID;
-	}
-
-	public void setmHicID(String mHicID) {
-		this.mHicID = mHicID;
-	}
-
-	public String getExpectedalertmessage() {
-		return expectedalertmessage;
-	}
-
-	public void setExpectedalertmessage(String expectedalertmessage) {
-		this.expectedalertmessage = expectedalertmessage;
-	}
-
 	public String getUserName() {
 		return userName;
+	}
+
+	public String getAgency() {
+		return agency;
+	}
+
+	@ParameterProperties(description = "Provide agency value to select ex., HHA1,HHA2 etc")
+	public void setAgency(String agency) {
+		this.agency = agency;
+	}
+
+	public String getHIC() {
+		return HIC;
+	}
+
+	@ParameterProperties(description = "Provide sigle or multiple HICs to be added to add HIC")
+	public void setHIC(String hIC) {
+		HIC = hIC;
+	}
+
+	public String getExpectedAlertMessage() {
+		return expectedAlertMessage;
+	}
+
+	@ParameterProperties(description = "Provide expected alert message")
+	public void setExpectedAlertMessage(String expectedAlertMessage) {
+		this.expectedAlertMessage = expectedAlertMessage;
 	}
 
 	public void setUserName(String userName) {
@@ -335,6 +338,6 @@ public class MiscTests extends BaseTest{
 	public void setUserAction(UserActionType userAction) {
 		this.userAction = userAction;
 	}
-	
-	
+
+
 }

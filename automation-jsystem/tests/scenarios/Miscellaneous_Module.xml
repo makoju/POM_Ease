@@ -26,7 +26,6 @@
         <antcallback target="t7"/>
         <antcallback target="t8"/>
         <antcallback target="t9"/>
-        <antcallback target="t10"/>
     </target>
     <target name="t0">
         <jsystem-ant antfile="${scenarios.base}/scenarios/EASE 1.2_MISC_001_Verify Invalid Login.xml">
@@ -71,36 +70,29 @@
         </jsystem-ant>
     </target>
     <target name="t6">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE 1.2_MISC_008_Verify left menu items under My Account Page.xml">
-            <property name="jsystem.uuid" value="cf1598f2-d908-42da-a284-1011ad5ee7b4"/>
+        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE1.2_MISC_008_Verify  ADD HICs Options for single HIC under Basic view.xml">
+            <property name="jsystem.uuid" value="260a9167-dc97-4289-8d61-5157b978c3cb"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>
     </target>
     <target name="t7">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE1.2_MISC_008_Verify  ADD HICs Options for single HIC under Basic view.xml">
-            <property name="jsystem.uuid" value="84b3d5f7-8acb-44d7-b8d7-1e0e6ce89546"/>
+        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_MISC_009_Verify  ADD multiple HICs under Basic View.xml">
+            <property name="jsystem.uuid" value="632ca161-bc16-4173-ad0d-e731163d2a2b"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>
     </target>
     <target name="t8">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_MISC_009_Verify  ADD multiple HICs under Basic View.xml">
-            <property name="jsystem.uuid" value="c8184c5d-123d-4903-aefb-94a34d011667"/>
+        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_MISC_010_Verify  ADD HICs Options for single HIC under Advanced view.xml">
+            <property name="jsystem.uuid" value="657686a5-ad93-4d10-86e9-7d1de4d0b2dd"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>
     </target>
     <target name="t9">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE1.2_010_Verify  ADD HICs Options for single HIC under Advanced view.xml">
-            <property name="jsystem.uuid" value="07544f8a-e203-4a00-af8d-a668063cdfa3"/>
-            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-        </jsystem-ant>
-    </target>
-    <target name="t10">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE1.2_011_Verify  ADD multiple HICs under Advance View.xml">
-            <property name="jsystem.uuid" value="731b8c14-60fd-4234-b149-94c8307bb94b"/>
+        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_MISC_011_Verify  ADD multiple HICs under Advance View.xml">
+            <property name="jsystem.uuid" value="8f7eed0f-ffc3-44a2-a632-85a19f4b59d6"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>

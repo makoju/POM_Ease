@@ -112,21 +112,21 @@ public class MiscPage extends AbstractPageObject {
 				 * DO } } finally{ isLoggedIn=false; }
 				 */
 			} /*
-				 * else {
-				 * 
-				 * isLoggedIn = false; validLogin(sUserName, sPassword);
-				 * 
-				 * //Once logged out from the current user session, Lets switch
-				 * to mainwindow driver.switchTo().window(mainWindowHanlde);
-				 * 
-				 * try { report.report(
-				 * "QUIT method called after logging out user "+
-				 * currentLoggedInUser +"...Closing all browser instances!!!");
-				 * quitAndRelaunchBrowser(); } catch (Exception e) {
-				 * report.report("Exception in launching browser: "+
-				 * e.getMessage()); if(e instanceof NoSuchWindowException){ //TO
-				 * DO } } finally{ isLoggedIn=false; } }
-				 */
+			 * else {
+			 * 
+			 * isLoggedIn = false; validLogin(sUserName, sPassword);
+			 * 
+			 * //Once logged out from the current user session, Lets switch
+			 * to mainwindow driver.switchTo().window(mainWindowHanlde);
+			 * 
+			 * try { report.report(
+			 * "QUIT method called after logging out user "+
+			 * currentLoggedInUser +"...Closing all browser instances!!!");
+			 * quitAndRelaunchBrowser(); } catch (Exception e) {
+			 * report.report("Exception in launching browser: "+
+			 * e.getMessage()); if(e instanceof NoSuchWindowException){ //TO
+			 * DO } } finally{ isLoggedIn=false; } }
+			 */
 			else {
 				/*
 				 * isLoggedIn = false; validLogin(sUserName, sPassword);
@@ -139,10 +139,10 @@ public class MiscPage extends AbstractPageObject {
 			do {
 				try {
 					mainWindowHanlde = returnMainWindowHandle(); // save the
-																	// current
-																	// window
-																	// for later
-																	// use
+					// current
+					// window
+					// for later
+					// use
 					Thread.sleep(6000);
 					driver.switchTo().frame(0);
 					report.report("Login to Ease as:" + sUserName);
@@ -176,8 +176,8 @@ public class MiscPage extends AbstractPageObject {
 				if (!isLoggedIn) {
 					report.report("Retrying Login....Attempt#" + countTry);
 					driver.switchTo().defaultContent(); // if login failed come
-														// out of frame(0) to
-														// mainwindow
+					// out of frame(0) to
+					// mainwindow
 				}
 			} while (countTry < 3 && !isLoggedIn);
 		}
@@ -586,15 +586,15 @@ public class MiscPage extends AbstractPageObject {
 		// driver.manage().window().maximize();
 	}
 
-	public boolean verifyAddSingleHIC(String agency, String hic, String sExpectedMessage) throws Exception {
+	public boolean verifyAddSingleHICUnderAdvancedView(String agency, String HIC, String sExpectedMessage) throws Exception {
 		navigateToPage();
-		
+
 		clickLink(advanced_LINK);
 		Thread.sleep(10000);
 		clickLink(addHIC_LINK);
-		selectByNameOrID(agencyDROPDOWN_ID, "HHA1");
+		selectByNameOrID(agencyDROPDOWN_ID, agency);
 		WebElement enterHIC = waitForElementVisibility(By.id(elementprop.getProperty("INPUT_SINGLE_HIC_ID")));
-		typeEditBoxByWebElement(enterHIC, hic);
+		typeEditBoxByWebElement(enterHIC, HIC);
 
 		((JavascriptExecutor) driver).executeScript("addSingleHIC();");
 		clickButtonV2(elementprop.getProperty("CLICK_SUBMIT_VALUE"));
@@ -618,7 +618,7 @@ public class MiscPage extends AbstractPageObject {
 		// (hic.equals(waitForElementVisibility(By.xpath(".//*[@id='scrollContent']/tr/td[1]")).getText()));
 		WebElement hicfromlogtable = waitForElementVisibility(By.xpath(".//*[@id='scrollContent']/tr/td[1]"));
 		if (hicfromlogtable != null)
-			return Verify.StringEquals(hic, hicfromlogtable.getText());
+			return Verify.StringEquals(HIC, hicfromlogtable.getText());
 
 		else {
 			report.report("Unable to find HIC from log table");
@@ -627,13 +627,13 @@ public class MiscPage extends AbstractPageObject {
 
 	}
 
-	public boolean verifyAddSingleHIC_BasicView(String agency, String hic, String sExpectedMessage) throws Exception {
+	public boolean verifyAddSingleHICUnderBasicView(String agency, String HIC, String sExpectedMessage) throws Exception {
 
 		navigateToPage();
 		clickLink(addHIC_LINK);
-		selectByNameOrID(agencyDROPDOWN_ID, "HHA");
+		selectByNameOrID(agencyDROPDOWN_ID, agency);
 		WebElement enterHIC = waitForElementVisibility(By.id(elementprop.getProperty("INPUT_SINGLE_HIC_ID")));
-		typeEditBoxByWebElement(enterHIC, hic);
+		typeEditBoxByWebElement(enterHIC, HIC);
 
 		((JavascriptExecutor) driver).executeScript("addSingleHIC();");
 		clickButtonV2(elementprop.getProperty("CLICK_SUBMIT_VALUE"));
@@ -643,28 +643,18 @@ public class MiscPage extends AbstractPageObject {
 		Thread.sleep(10000);
 		clickLinkPartialText("See a log of");
 
-		/*
-		 * WebElement timestamp = waitForElementVisibility(By.xpath(
-		 * ".//*[@id='scrollContent']/tr[1]/td[1]/a")); timestamp.click();
-		 * Thread.sleep(10000); return
-		 * (hic.equals(waitForElementVisibility(By.xpath(
-		 * ".//*[@id='scrollContent']/tr/td[1]")).getText()));
-		 */
 		WebElement timestamp = waitForElementVisibility(By.xpath(".//*[@id='scrollContent']/tr[1]/td[1]/a"));
 		if (timestamp != null)
 			timestamp.click();
 		else {
 			report.report("Unable to find timestamp in log table", Reporter.WARNING);
-
 			return false;
 		}
 
 		Thread.sleep(10000);
-		// return
-		// (hic.equals(waitForElementVisibility(By.xpath(".//*[@id='scrollContent']/tr/td[1]")).getText()));
 		WebElement hicfromlogtable = waitForElementVisibility(By.xpath(".//*[@id='scrollContent']/tr/td[1]"));
 		if (hicfromlogtable != null)
-			return Verify.StringEquals(hic, hicfromlogtable.getText());
+			return Verify.StringEquals(HIC, hicfromlogtable.getText());
 
 		else {
 			report.report("Unable to find HIC from log table");
@@ -675,33 +665,24 @@ public class MiscPage extends AbstractPageObject {
 
 	// verifyAddMultpleHICs_BasicView
 
-	public boolean verifyAddMultpleHICs_BasicView(String agency, String hics, String sExpectedMessage)
+	public boolean verifyAddMultipleHICsUnderBasicView(String agency, String HICs, String sExpectedMessage)
 			throws Exception {
+
 		navigateToPage();
-
 		clickLink(addHIC_LINK);
+		selectByNameOrID(agencyDROPDOWN_ID, agency);
+		//String stringMic = HICs;
+		String[] sHICs = {};
 
-		selectByNameOrID(agencyDROPDOWN_ID, "HHA");
-
-		String stringMic = hics;
-		String[] shics = {};
-
-		if (stringMic.contains(";")) {
-			shics = stringMic.split(";");
+		if (HICs.contains(";")) {
+			sHICs = HICs.split(";");
 			WebElement multihicstextarea = waitForElementVisibility(By.id("MultiHICs"), 60);
 			multihicstextarea.clear();
 
-			for (String hic : shics) {
+			for (String hic : sHICs) {
 				multihicstextarea.sendKeys(hic);
 				multihicstextarea.sendKeys(Keys.ENTER);
 			}
-			// stringMic = stringMic.replaceAll(";", "\n");
-			// WebElement enterMul_HIC =
-			// waitForElementVisibility(By.id(elementprop.getProperty("INPUT_MULTIHICS_ID")));
-			// report.report("Hics after adding new line: "+stringMic);
-			// typeEditBox(elementprop.getProperty("INPUT_MULTIHICS_ID"),
-			// stringMic);
-
 			((JavascriptExecutor) driver).executeScript("addMultipleHICs();");
 
 		}
@@ -709,8 +690,7 @@ public class MiscPage extends AbstractPageObject {
 		clickButtonV2(elementprop.getProperty("CLICK_SUBMIT_VALUE"));
 
 		Thread.sleep(1000);
-		if (!verifyAlert(shics.length + " " + sExpectedMessage))
-
+		if (!verifyAlert(sHICs.length + " " + sExpectedMessage))
 			return false;
 
 		WebElement seealog = waitForElementVisibility(By.partialLinkText("See a log of"));
@@ -726,94 +706,80 @@ public class MiscPage extends AbstractPageObject {
 
 		int failurecount = 0;
 
-		for (int i = 0; i < shics.length; i++) {
+		for (int i = 0; i < sHICs.length; i++) {
 
-			System.out.println("Entered into hics iteration" + shics[i]);
+			System.out.println("Entered into hics iteration" + sHICs[i]);
 			hicTemp = waitForElementVisibility(
-					By.xpath("//*[@id='scrollContent']/tr/td[1][contains(text(),'" + shics[i] + "')]"));
+					By.xpath("//*[@id='scrollContent']/tr/td[1][contains(text(),'" + sHICs[i] + "')]"));
 
 			if (hicTemp == null) {
-				report.report("Expected HIC " + shics[i] + "  not found in Added HICs log table");
+				report.report("Expected HIC " + sHICs[i] + "  not found in Added HICs log table");
 				failurecount++;
 				continue;
 			}
 
 			else
-				report.report("Expected HIC " + shics[i] + " found in Added HICs log table");
+				report.report("Expected HIC " + sHICs[i] + " found in Added HICs log table");
 
 		}
 
 		return failurecount == 0 ? true : false;
 	}
 
-	public boolean verifyAddMultpleHICs(String agency, String hics, String sExpectedMessage) throws Exception {
+	public boolean verifyAddMultipleHICsUnderAdvancedView(String agency, String HICs, String sExpectedMessage) 
+			throws Exception {
 		navigateToPage();
-
 		clickLink(basic_LINK);
-		
 		clickLink(advanced_LINK);
 		Thread.sleep(10000);
 		clickLink(addHIC_LINK);
-
 		selectByNameOrID(agencyDROPDOWN_ID, agency);
+		//String stringMic = hics;
+		String[] sHICsArray = {};
 
-		String stringMic = hics;
-		String[] shics = {};
-
-		if (stringMic.contains(";")) {
-			shics = stringMic.split(";");
+		if (HICs.contains(";")) {
+			sHICsArray = HICs.split(";");
 			WebElement multihicstextarea = waitForElementVisibility(By.id("MultiHICs"), 60);
 			multihicstextarea.clear();
 
-			for (String hic : shics) {
+			for (String hic : sHICsArray) {
 				multihicstextarea.sendKeys(hic);
 				multihicstextarea.sendKeys(Keys.ENTER);
 			}
-
 			((JavascriptExecutor) driver).executeScript("addMultipleHICs();");
-
 		}
 
 		clickButtonV2(elementprop.getProperty("CLICK_SUBMIT_VALUE"));
 
-		if (!verifyAlert(shics.length + " " + sExpectedMessage)) {
+		if (!verifyAlert(sHICsArray.length + " " + sExpectedMessage)) {
 			report.report("Expected Alert was not found", Reporter.WARNING);
 			return false;
 		}
-
 		Thread.sleep(1000);
 
 		WebElement seealog = waitForElementVisibility(By.partialLinkText("See a log of"));
 		seealog.click();
 
-		
-
 		WebElement timestamp = waitForElementVisibility(By.xpath(elementprop.getProperty("TIMESTAMP_XPATH")));
 		timestamp.click();
-
 		Thread.sleep(1000);
 		// inputHICs
 		// String[] stringMics = stringMic.split("\n");
 
 		WebElement hicTemp = null;
-
 		int failurecount = 0;
 
-		for (int i = 0; i < shics.length; i++) {
-
-			System.out.println("Entered into hics iteration" + shics[i]);
+		for (int i = 0; i < sHICsArray.length; i++) {
+			System.out.println("Entered into hics iteration" + sHICsArray[i]);
 			hicTemp = waitForElementVisibility(
-					By.xpath("//*[@id='scrollContent']/tr/td[1][contains(text(),'" + shics[i] + "')]"));
-
+					By.xpath("//*[@id='scrollContent']/tr/td[1][contains(text(),'" + sHICsArray[i] + "')]"));
 			if (hicTemp == null) {
-				report.report("Expected HIC " + shics[i] + "  not found in Added HICs log table");
+				report.report("Expected HIC " + sHICsArray[i] + "  not found in Added HICs log table");
 				failurecount++;
 				continue;
 			}
-
 			else
-				report.report("Expected HIC " + shics[i] + " found in Added HICs log table");
-
+				report.report("Expected HIC " + sHICsArray[i] + " found in Added HICs log table");
 		}
 
 		return failurecount == 0 ? true : false;

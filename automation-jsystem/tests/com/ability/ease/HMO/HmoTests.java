@@ -107,10 +107,10 @@ public class HmoTests extends BaseTest {
 	@TestProperties(name = "Remove Patient from HMO Catcher", paramsInclude = { "hic,testType" })
 	public void trashHMOPatient() throws Exception {
 		if (hmo.trashHMOPatient(hic)) {
-			report.report("Patient is not removed from HMO Catcher",
+			report.report("Patient is removed from HMO Catcher",
 					Reporter.ReportAttribute.BOLD);
 		} else {
-			report.report("Patient is removed from HMO Catcher", Reporter.FAIL);
+			report.report("Patient is not  removed from HMO Catcher", Reporter.FAIL);
 		}
 	}
 

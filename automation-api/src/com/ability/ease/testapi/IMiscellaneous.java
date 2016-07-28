@@ -57,8 +57,11 @@ public interface IMiscellaneous {
 	 */
 	abstract public boolean verifyAddHICs(Map<String, String> mapAttrVal)throws Exception;
 	
-	abstract public boolean verifyAddSingleHIC(String agency,String hicID,String sExpectedmessage) throws Exception;
-	abstract public boolean verifyAddMultipleHICs(String agency,String hicID,String sExpectedmessage) throws Exception;
-	abstract public boolean verifyAddMultipleHICs_Basicview(String agency,String hicID,String sExpectedmessage) throws Exception;
-	abstract public boolean verifyAddSingleHIC_BasicView(String agency,String hicID,String sExpectedmessage) throws Exception;
+	abstract public boolean verifyAddSingleHICUnderAdvancedView(String agency,String HIC,String sExpectedMessage) throws Exception;
+	
+	abstract public boolean verifyAddMultipleHICsUnderAdvancedView(String agency,String HICs,String sExpectedMessage) throws Exception;
+	
+	abstract public boolean verifyAddMultipleHICsUnderBasicView(String agency,String HICs,String sExpectedmessage) throws Exception;
+	
+	abstract public boolean verifyAddSingleHICUnderBasicView(String agency,String HIC,String sExpectedMessage) throws Exception;
 }

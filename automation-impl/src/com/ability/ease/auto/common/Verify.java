@@ -88,30 +88,6 @@ public class Verify extends AbstractPageObject{
 		return matched;
 	}
 
-	/*	public static String getTableData(String tableidentifier, int row, int column){
-		String text="";
-		WebElement we = getTable(tableidentifier);
-		String columnxpath="//table[@id='"+tableidentifier+"']//tbody/tr["+row+"]"+"/td["+column+"] | //span[text()='"+tableidentifier+"']/following-sibling::table//tbody/tr["+row+"]"+"/td["+column+"]";
-
-		boolean bFlag = false;
-		if(we != null){
-			while( !bFlag ) {
-				WebElement datacolumn = waitForElement(By.xpath("tbody/tr["+row+"]"+"/td["+column+"]"));
-				WebElement dataelement = driver.findElement(By.xpath(columnxpath));
-				text = dataelement.getAttribute("innerText");
-				if(text.isEmpty()){
-					row++;
-				}else{
-					bFlag = true;
-					break;
-				}
-			}
-		}
-		else
-			report.report("No Table found with the given identifier"+tableidentifier);
-		return text;
-	}*/
-
 	public static String getTableData(String tableidentifier, int row, int column){
 		String text=null;
 		WebElement we = getTable(tableidentifier);
@@ -257,6 +233,7 @@ public class Verify extends AbstractPageObject{
 		try {
 			webElement = wait.until(ExpectedConditions.visibilityOfElementLocated(by));
 		} catch (org.openqa.selenium.TimeoutException ex) {
+			report.report("Waited for 30 secs for the element to visible but not found. So, giving up: "+by.toString());
 			// ignore exception, return null instead
 		}
 		return webElement;

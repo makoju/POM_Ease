@@ -1,6 +1,7 @@
 package com.ability.ease.HMO;
 
 import java.sql.ResultSet;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -75,13 +76,13 @@ public class HmoPage extends AbstractPageObject {
 	public boolean extendHMO(String sHIC) throws Exception {
 		boolean isExtended = false;
 		int idays;
+		String xpathToCheckBox = MessageFormat.format(elementprop.getProperty("HMOCATCHER_RECORD_SEL_CHECKBOX_XPATH"),
+				"'" + sHIC + "'");
+		String xpathDaysLeft = MessageFormat.format(elementprop.getProperty("DAYLEFT_XPATH"), "'" + sHIC + "'");
 		hhp.updateTerminationTime(sHIC);
 		hhp.navigateToHMOCatcherExtendPage();
-		idays = Integer.parseInt(driver
-				.findElement(By.xpath(".//*[contains(text()," + "'" + sHIC + "'" + ")]/../following-sibling::td[4]"))
-				.getText()) + 75;
-		driver.findElement(By.xpath(".//*[contains(text()," + "'" + sHIC + "'" + ")]/../preceding-sibling::td/input"))
-				.click();
+		idays = Integer.parseInt(driver.findElement(By.xpath(xpathDaysLeft)).getText()) + 75;
+		driver.findElement(By.xpath(xpathToCheckBox)).click();
 		clickLink("Extend");
 		isExtended = verifyAlert("Patient(s) successfully changed on HMO Advantage Catcher!");
 		if (idays > 75 && isExtended) {
@@ -97,11 +98,14 @@ public class HmoPage extends AbstractPageObject {
 	public boolean addtoHMOFromPatientInfo(String sHIC) throws Exception {
 		MySQLDBUtil.insertEligibilityCheckSP(1453, "09/09/2009", "Fname", sHIC, "Lname", "M");
 		hhp.navigateToPatientInfoPage(sHIC);
-		driver.findElement(By.xpath("//table[@id='datatable']//*[contains(text(),'" + sHIC
-				+ "')]/../following-sibling::td//a[text()='Report']")).click();
-		clickLink("Add patient to my HMO Move Catcher list.");
+		String datatable = "datatable";
+		String report = "Repoort";
+		String xpathReportLinkCompletedActivityLog = MessageFormat
+				.format(elementprop.getProperty("COMPLETED_ACTIVITY_LOG_REPORT_HIC_XPATH"), "'" + sHIC + "'");
+		driver.findElement(By.xpath(xpathReportLinkCompletedActivityLog)).click();
+		clickLink(elementprop.getProperty("ADD_PATIENT_HMO_CATCHER_LIST_PATIENTINFO_LINK"));
 		alertverify = verifyAlert("Patient was successfully added to HMO Advantage Move Catcher!");
-		safeJavaScriptClick("HMO/Adv Catcher Patients");
+		safeJavaScriptClick(elementprop.getProperty("HMO_CATCHER_PATIENT_LINK"));
 		int ipatientdays = hhp.getExtendedDaysFromDB(sHIC);
 		if (alertverify && ipatientdays == 75) {
 			return true;
@@ -116,11 +120,12 @@ public class HmoPage extends AbstractPageObject {
 	 */
 	public boolean addDuplicatePatientToHMOFromPatientInfo(String sHIC) throws Exception {
 		hhp.InsertRecordIntoHMOCatcher(sHIC);
+		String xpathReportLinkCompletedActivityLog = MessageFormat
+				.format(elementprop.getProperty("COMPLETED_ACTIVITY_LOG_REPORT_HIC_XPATH"), "'" + sHIC + "'");
 		MySQLDBUtil.insertEligibilityCheckSP(1453, "09/09/2009", "Fname", sHIC, "Lname", "M");
 		hhp.navigateToPatientInfoPage(sHIC);
-		driver.findElement(By.xpath("//table[@id='datatable']//*[contains(text(),'" + sHIC
-				+ "')]/../following-sibling::td//a[text()='Report']")).click();
-		clickLink("Add patient to my HMO Move Catcher list.");
+		driver.findElement(By.xpath(xpathReportLinkCompletedActivityLog)).click();
+		clickLink(elementprop.getProperty("ADD_PATIENT_HMO_CATCHER_LIST_PATIENTINFO_LINK"));
 		return verifyAlert(
 				"Your request to add this patient to the HMO Advantage Move Catcher was not accepted because this patient is already being tracked by HMO Advantage Move Catcher!");
 
@@ -132,18 +137,16 @@ public class HmoPage extends AbstractPageObject {
 	public boolean trashHMOPatient(String sHIC) throws Exception {
 
 		boolean result = false;
-//		String sXpathToHIC = "//a[contains(text('" + sHIC + "')]";
-//		boolean isRecordPresent = true;
+		String xpathToCheckBox = MessageFormat.format(elementprop.getProperty("HMOCATCHER_RECORD_SEL_CHECKBOX_XPATH"),
+				"'" + sHIC + "'");
 
 		hhp.navigateToHMOCatcherExtendPage();
 		if (isTextExistInTable(sHIC, 5)) {
-			driver.findElement(By.xpath(".//*[contains(text(),'" + sHIC + "')]/../preceding-sibling::td/input"))
-					.click();
+			driver.findElement(By.xpath(xpathToCheckBox)).click();
 			clickLinkV2("reportDelete");
 			alertverify = verifyAlert("Patient(s) successfully changed on HMO Advantage Catcher!");
-//			waitForElementToBeClickable(ByLocator.xpath, "sXpathToHIC", 60);
 			Thread.sleep(5000);
-			if (alertverify && !isTextPresent(sHIC)) {
+			if (alertverify && !isTextExistInTable(sHIC, 60)) {
 				result = true;
 			} else {
 				result = false;
@@ -151,46 +154,28 @@ public class HmoPage extends AbstractPageObject {
 		}
 		return result;
 	}
-			
-/*//			try {
-//				WebElement hic = driver.findElement(By.xpath(sXpathToHIC));
-//				if (hic == null) {
-//					isRecordPresent = false;
-//				}
-//			} catch (Exception e) {
-//				report.report("Exception occured whle looking for HIC record in HMO Catcher table!!!");
-//			}
-//
-//			if (alertverify && !isRecordPresent) {
-//				result = true;
-//			} else {
-//				result = false;
-//			}
-//		}
-*/
-/*		return result;
-	}*/
 
 	/*
 	 * Acknowledge Patient from HMO Catcher
 	 */
 	public boolean acknowledgeHMO(String sHIC) throws Exception {
 		safeJavaScriptClick("ELIG.");
+		String xpathToAcknowledgeHmo = MessageFormat.format(elementprop.getProperty("ACKNOWLEDGE_HMO_CATHER_XPATH"),
+				"'" + sHIC + "'");
 		hhp.updateLastChangedInHMO(sHIC);
-		if ((driver.findElement(By.linkText("HMO/Adv. Catcher Report")) != null)) {
-			waitForElementToBeClickable(ByLocator.linktext, "HMO/Adv. Catcher Report", 10);
-			safeJavaScriptClick("HMO/Adv. Catcher Report");
-			driver.findElement(By.xpath(".//*[contains(text(),'" + sHIC + "')]/../preceding-sibling::td")).click();
+		if ((driver.findElement(By.linkText(elementprop.getProperty("HMO_CATCHER_REPOERT_LINK"))) != null)) {
+			waitForElementToBeClickable(ByLocator.linktext, elementprop.getProperty("HMO_CATCHER_REPOERT_LINK"), 10);
+			safeJavaScriptClick(elementprop.getProperty("HMO_CATCHER_REPOERT_LINK"));
+			driver.findElement(By.xpath(xpathToAcknowledgeHmo)).click();
 		}
 
 		Thread.sleep(5000);
-		 if (!isTextExistInTable(sHIC, 60)) { 
-			 return true;
-			 } else
-			 {
-				 return false;
-			 }
-		 
+		if (!isTextExistInTable(sHIC, 60)) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	public boolean AdvanceSearchFromHMO(String sHIC) throws Exception {

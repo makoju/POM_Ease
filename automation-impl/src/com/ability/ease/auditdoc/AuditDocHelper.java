@@ -28,6 +28,7 @@ import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.TestCommonResource;
 import com.ability.ease.auto.common.Verify;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
+import com.ability.ease.auto.enums.portal.selenium.ESMDSubmissionType;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFileFomat;
 import com.ability.ease.claims.ClaimsHelper;
 import com.ability.ease.mydde.reports.ReportsHelper;
@@ -293,6 +294,7 @@ public class AuditDocHelper extends AbstractPageObject{
 		int failCounter = 0 ;
 		String xpathAfterFileUpload = null; 
 
+		report.report("Validating filenames which are ready to uploaded");
 		for(String sFileName: lsFileNames){
 			xpathAfterFileUpload = "//span[contains(text(),'" + sFileName + "')]";
 			Thread.sleep(5000);
@@ -606,7 +608,7 @@ public class AuditDocHelper extends AbstractPageObject{
 
 		String tableHeadersXpath = elementprop.getProperty("TABLE_HEADERS_XPATH");
 		boolean result = false;
-		
+
 		if(agency.contains("HHA")) {
 			String[] actualheadertooltips = reportHelper.getTableHeaderToolTips(tableHeadersXpath);
 			if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders_HHA,true)){
@@ -622,6 +624,91 @@ public class AuditDocHelper extends AbstractPageObject{
 		}
 		return result;
 	}
+
+	/**
+	 * Use this method to click on esMD Link and navigate to ADR, RAC,Appeal Submission Page
+	 * Updated below code from EASE 1.5 to work accordingly on EASE 1.6 code
+	 * nageswar.bodduri
+	 */
+	public boolean navigateToESMDStatusPage(ESMDSubmissionType esMDType) throws Exception{
+
+		boolean stepResult = false;
+		String adrReportHeaderXpath = MessageFormat.format(elementprop.getProperty("ESMD_REPORT_HDR_XPATH"), esMDType.toString());
+
+		WebElement esMD = waitForElementToBeClickable(ByLocator.linktext, "esMD", 60);
+		if ( esMD != null) {
+			safeJavaScriptClick(esMD);
+			WebElement adrLink = waitForElementToBeClickable(ByLocator.linktext, esMDType.toString()+" Submission", 60);
+			if ( adrLink != null ){
+				safeJavaScriptClick(adrLink);
+				WebElement reportHeader = waitForElementToBeClickable(ByLocator.xpath, adrReportHeaderXpath, 60);
+				if( reportHeader != null ){
+					stepResult = true;
+				}else{
+					report.report("Failed to navigate to " + esMDType.toString() + " submission page");
+				}
+			}
+		}
+		return stepResult;
+	}
+
+	public String setESMDHeaderXPATH(ESMDSubmissionType esMDSubType)throws Exception{
+
+		String esMDType = esMDSubType.toString();
+		String esMDXpath = null;
+
+		if( esMDType.equalsIgnoreCase("ADR")){
+			esMDXpath = MessageFormat.format(elementprop.getProperty("ESMD_STATUS_REPORT_HDR_XPATH"), "'" + "ADR ESMD STATUS REPORT" + "'");
+		}else if(esMDType.equalsIgnoreCase("RAC")){
+			esMDXpath = MessageFormat.format(elementprop.getProperty("ESMD_STATUS_REPORT_HDR_XPATH"), "'" + "RAC CLAIMS ESMD STATUS REPORT" + "'");
+		}else{
+			esMDXpath = MessageFormat.format(elementprop.getProperty("ESMD_STATUS_REPORT_HDR_XPATH"), "'" + "APPEAL CLAIMS ESMD STATUS REPORT" + "'");
+		}
+		return esMDXpath;
+	}
+
+	public String setESMDDocUploadIconXPATH(ESMDSubmissionType esMDSubType, String HIC)throws Exception{
+
+		String esMDType = esMDSubType.toString();
+		String uploadIconXpath = null;
+
+		if( esMDType.equalsIgnoreCase("ADR") || esMDType.equalsIgnoreCase("APPEAL")){
+			uploadIconXpath = MessageFormat.format(elementprop.getProperty("ESMD_DOC_UPLOAD_ICON"), "'" + HIC + "'");
+		}else{
+			uploadIconXpath = MessageFormat.format(elementprop.getProperty("RAC_DOC_UPLOAD_ICON"), "'" + HIC + "'");
+		}
+		return uploadIconXpath;
+	}
+	
+	
+	public String setReviewContractorAlertMgs(ESMDSubmissionType esMDSubType, String reviewContractorName)throws Exception{
+		String esMDType = esMDSubType.toString();
+		String reviewContractorAlertMsg = null;
+
+		if( esMDType.equalsIgnoreCase("ADR")){
+			reviewContractorAlertMsg = MessageFormat.format(elementprop.getProperty("REVIEW_CONTRACOTR_ALERT_MSG"), "ADR Document" , reviewContractorName);
+		}else if(esMDType.equalsIgnoreCase("APPEAL")){
+			reviewContractorAlertMsg = MessageFormat.format(elementprop.getProperty("REVIEW_CONTRACOTR_ALERT_MSG"), "Appeal" , reviewContractorName);
+		}else{
+			reviewContractorAlertMsg = MessageFormat.format(elementprop.getProperty("REVIEW_CONTRACOTR_ALERT_MSG"), "RAC Audit" , reviewContractorName);
+		}
+		return reviewContractorAlertMsg;
+
+	}
+	
+	public String setCMSStausTableHeaderXpath(ESMDSubmissionType esmdSubmissionType)throws Exception{
+		
+		String esMDType = esmdSubmissionType.toString();
+		String CMSStatusTableHeaderXPATH = null;
+
+		if( esMDType.equalsIgnoreCase("ADR")){
+			CMSStatusTableHeaderXPATH = elementprop.getProperty("ADR_CMS_STATUS_HEADER_XPATH");
+		}else{
+			CMSStatusTableHeaderXPATH = MessageFormat.format(elementprop.getProperty("ESMD_CMS_STATUS_HEADER_XPATH"), esMDType +" esMD Delivery Response Report");
+		}
+		return CMSStatusTableHeaderXPATH;
+	}
+
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub

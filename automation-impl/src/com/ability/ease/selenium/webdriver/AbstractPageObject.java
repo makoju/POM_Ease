@@ -2023,7 +2023,12 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		int count = 0;
 		WebElement we = null;
 		do{
-			we = driver.findElement(By.xpath(xpath));
+			try{
+				we = driver.findElement(By.xpath(xpath));
+			}catch(NoSuchElementException e){
+				count++;
+				continue;
+			}
 			count++;
 			if(we != null){
 				break;

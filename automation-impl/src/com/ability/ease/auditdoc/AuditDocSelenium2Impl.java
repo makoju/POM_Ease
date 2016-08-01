@@ -1,6 +1,9 @@
 package com.ability.ease.auditdoc;
 
 
+import java.util.List;
+
+import com.ability.ease.auto.enums.portal.selenium.ESMDSubmissionType;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFileFomat;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFilesSize;
 import com.ability.ease.testapi.IAuditDoc;
@@ -50,13 +53,39 @@ public class AuditDocSelenium2Impl implements IAuditDoc{
 	}
 
 	@Override
-	public boolean changeTimeFrame() throws Exception {
-		return audit.changeTimeFrame();
+	public boolean changeTimeFrame(ESMDSubmissionType esMDSubType) throws Exception {
+		return audit.changeTimeFrame(esMDSubType);
 	}
 
 	@Override
-	public boolean changeAgency(String agency) throws Exception {
-		return audit.changeAgency(agency);
+	public boolean changeAgency(ESMDSubmissionType esMDSubType,String agency) throws Exception {
+		return audit.changeAgency(esMDSubType,agency);
 	}
 
+	@Override
+	public boolean selectFilesToUpload(ESMDSubmissionType esMDSubmissionType, ADRFileFomat fileType, 
+			ADRFilesSize fileSize,String reviewContractorName)throws Exception {
+		return audit.selectFilesToUpload(esMDSubmissionType,fileType, fileSize,reviewContractorName);
+	}
+
+	@Override
+	public boolean fillDocumentUploadScreenValues(ESMDSubmissionType esMDSubmissionType,String reviewContractorName, 
+			String claimIDorDCN, String caseID) throws Exception {
+		return audit.fillDocumentUploadScreenValues(esMDSubmissionType, reviewContractorName, claimIDorDCN, caseID);
+	}
+
+	@Override
+	public boolean navigateToESMDPage(ESMDSubmissionType esMDSubmissionType) throws Exception {
+		return audit.navigateToESMDPage(esMDSubmissionType);
+	}
+
+	@Override
+	public boolean selectClaimRecordToUploadDocuments(ESMDSubmissionType esMDSubmissionType,String HIC) throws Exception {
+		return audit.selectClaimRecordToUploadDocuments(esMDSubmissionType,HIC);
+	}
+
+	@Override
+	public boolean clickCMSLink(ESMDSubmissionType esMDSubType) throws Exception {
+		return audit.clickCMSLink(esMDSubType);
+	}
 }

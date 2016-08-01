@@ -21,18 +21,19 @@ public class HMOHelper extends AbstractPageObject {
 	 */
 	public void fillHmo(String sAgency, String sHIC, String sLastName, String sFirstName, String sDob, String sSex)
 			throws Exception {
-//		String xpathToEligCheckPage = "//td[contains(text(),'ELIGIBILITY CHECK')]";
-		waitForElementToBeClickable(ByLocator.linktext, elementprop.getProperty("ELIG_LINK"), 20);
+		waitForElementToBeClickable(ByLocator.linktext, elementprop.getProperty("ELIG_LINK"), 30);
 		safeJavaScriptClick(elementprop.getProperty("ELIG_LINK"));
-		if (waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty("ELIG_CHECK_HEADER_MESSAGE"), 30) != null) {
-			clickLinkV2(elementprop.getProperty("HMO_CATCHER_REPORT_LINK"));
-			if (waitForElementToBeClickable(ByLocator.id, elementprop.getProperty("HMO_CATCHER_AGENCY_DROPDOWN_ID"), 30) != null) {
+		if (waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty("ELIG_CHECK_HEADER_MESSAGE"),
+				40) != null) {
+			clickLinkV2(elementprop.getProperty("HMO_CATCHER_ADD_LINK"));
+			if (waitForElementToBeClickable(ByLocator.id, elementprop.getProperty("HMO_CATCHER_AGENCY_DROPDOWN_ID"),
+					40) != null) {
 				selectByNameOrID(elementprop.getProperty("HMO_CATCHER_AGENCY_DROPDOWN_ID"), sAgency);
 				typeEditBox(elementprop.getProperty("HIC_TEXTBOX_ID"), sHIC);
 				typeEditBox(elementprop.getProperty("LASTNAME_TEXTBOX_ID"), sLastName);
 				typeEditBox(elementprop.getProperty("FIRSTNAME_TEXTBOX_ID"), sFirstName);
-				typeEditBox(elementprop.getProperty("dob"), sDob);
-				selectByNameOrID(elementprop.getProperty("sex"), sSex);
+				typeEditBox(elementprop.getProperty("DOB_TEXTBOX_ID"), sDob);
+				selectByNameOrID(elementprop.getProperty("SEX_DROPDOWN_ID"), sSex);
 				clickButtonV2("submit");
 			} else {
 				report.report("Fail : Failed to locate Provider ID dropdwon in Eligibility page!!!");
@@ -74,26 +75,27 @@ public class HMOHelper extends AbstractPageObject {
 	 * Navigate to Patient info from Eligibility-report link
 	 */
 	public void navigateToPatientInfoPage(String sHIC) throws Exception {
-		String xpathToGreenBoxAQB = "//td[@id='tdGoodActivity']";
-		WebElement greenBox = waitForElementToBeClickable(ByLocator.xpath, xpathToGreenBoxAQB, 20);
+		WebElement greenBox = waitForElementToBeClickable(ByLocator.xpath,
+				elementprop.getProperty("ELIG_GREEN_ACTIVITYBOX_XPATH"), 20);
 		greenBox.click();
 	}
 
 	/*
 	 * Navigate to HMO/Adv Catcher Patients
-	*/
-	public void navigateToHMOCatcherExtendPage() throws Exception	{
+	 */
+	public void navigateToHMOCatcherExtendPage() throws Exception {
 
-		if ((waitForElementToBeClickable(ByLocator.linktext,"ELIG.",20)) != null){
-			safeJavaScriptClick("ELIG.");
+		if ((waitForElementToBeClickable(ByLocator.linktext, elementprop.getProperty("ELIG_LINK"), 20)) != null) {
+			safeJavaScriptClick(elementprop.getProperty("ELIG_LINK"));
 			report.report("Clicked ELIG. link");
-			if(waitForElementToBeClickable(ByLocator.linktext,"HMO/Adv Catcher Patients",60) != null){
-				safeJavaScriptClick("HMO/Adv Catcher Patients");
+			if (waitForElementToBeClickable(ByLocator.linktext, elementprop.getProperty("HMO_CATCHER_PATIENT_LINK"),
+					60) != null) {
+				safeJavaScriptClick(elementprop.getProperty("HMO_CATCHER_PATIENT_LINK"));
 				report.report("Clicked HMO/Adv Catcher Patients Tab...");
-			}else{
+			} else {
 				report.report("Failed to navigate to HMO/Adv Catcher Patients Tab");
 			}
-		}else{
+		} else {
 			report.report("Failed to navigate to ELIG. page");
 		}
 	}

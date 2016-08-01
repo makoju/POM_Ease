@@ -222,7 +222,8 @@ public class EligibilityTests extends BaseTest{
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
 	@TestProperties(name = "Get the count of ${status} Activites", paramsInclude = { "status,testType" })
 	public void getActivityCount() throws Exception {
-		report.report("Inside getActivityCount test method");
+		report.report("Inside getActivityCount test method waiting for 1 minute for the activity table to get refresh");
+		Thread.sleep(60000); //waiting for 1 minute for the activitycount table gets refreshed 
 		globalParamMap.put(status+"activitycount", Integer.toString(elig.getActivityCount(status)));
 	}
 	

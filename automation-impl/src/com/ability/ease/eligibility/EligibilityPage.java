@@ -402,13 +402,7 @@ public class EligibilityPage extends AbstractPageObject{
 
 	public int getActivityCount(String status) {
 		int count=0;
-		//waiting for 1 minute for the activity table to get refresh and update with latest count
-		try {
-			Thread.sleep(60000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		if(status.equalsIgnoreCase("pending"))
 			count = getActivitycount("tdPendingActivity");
 
@@ -745,18 +739,24 @@ public class EligibilityPage extends AbstractPageObject{
 	}
 
 	public boolean searchactivitylogByHIC(String status, String hic) throws Exception {
+		String activitytableid="";
 		navigateToPage();
 		if(status.equalsIgnoreCase("completed"))
-			clickButton("tdGoodActivity");
+			activitytableid = "tdGoodActivity";
 		else if(status.equalsIgnoreCase("failed"))
-			clickButton("tdFailedActivity");
+			activitytableid = "tdFailedActivity";
 		else if(status.equalsIgnoreCase("pending"))
-			clickButton("tdPendingActivity");
+			activitytableid = "tdPendingActivity";
 
 		else{
 			report.report("Wrong Status option supplied", Reporter.WARNING);
 			return false;
 		}
+		
+		WebElement tdActivity = waitForElementVisibility(By.id(activitytableid));
+		if(tdActivity!=null)
+			tdActivity.click();
+		
 		//move to search icon and enter HIC
 		WebElement element = waitForElementVisibility(By.id("reportHICSearch"));
 		if(element==null){
@@ -786,7 +786,11 @@ public class EligibilityPage extends AbstractPageObject{
 	 */
 	public boolean verifyActivityLogSearchOnlynotacknowledged() throws Exception {
 		navigateToPage();
-		clickButton("tdGoodActivity");
+		
+		WebElement tdGoodActivity = waitForElementVisibility(By.id("tdGoodActivity"));
+		if(tdGoodActivity!=null)
+			tdGoodActivity.click();
+		
 		if(!isChecked("non_ack"))
 			checkChkBox("non_ack");
 
@@ -841,7 +845,11 @@ public class EligibilityPage extends AbstractPageObject{
 
 	public boolean verifyNavigationToHomeScreenFromCompletedActivityLogScreen() throws Exception {
 		navigateToPage();
-		clickButton("tdGoodActivity");
+		
+		WebElement tdGoodActivity = waitForElementVisibility(By.id("tdGoodActivity"));
+		if(tdGoodActivity!=null)
+			tdGoodActivity.click();
+		
 		WebElement we = waitForElementVisibility(By.className("headerblue"));
 		if(we!=null && we.getText().equalsIgnoreCase("COMPLETED ACTIVITY LOG"))
 		{
@@ -868,7 +876,9 @@ public class EligibilityPage extends AbstractPageObject{
 
 	public boolean verifyPDFExportInCompletedActivityLogScreen() throws Exception{
 		navigateToPage();
-		clickButton("tdGoodActivity");
+		WebElement tdGoodActivity = waitForElementVisibility(By.id("tdGoodActivity"));
+		if(tdGoodActivity!=null)
+			tdGoodActivity.click();
 		WebElement we = waitForElementVisibility(By.className("headerblue"));
 		if(we!=null && we.getText().equalsIgnoreCase("COMPLETED ACTIVITY LOG"))
 		{
@@ -895,7 +905,9 @@ public class EligibilityPage extends AbstractPageObject{
 
 	public boolean verifyPrintOptionInCompletedActivityLogScreen() throws Exception {
 		navigateToPage();
-		clickButton("tdGoodActivity");
+		WebElement tdGoodActivity = waitForElementVisibility(By.id("tdGoodActivity"));
+		if(tdGoodActivity!=null)
+			tdGoodActivity.click();
 		WebElement we = waitForElementVisibility(By.className("headerblue"));
 		if(we!=null && we.getText().equalsIgnoreCase("COMPLETED ACTIVITY LOG"))
 		{
@@ -923,7 +935,11 @@ public class EligibilityPage extends AbstractPageObject{
 		int failurecount=0;
 
 		navigateToPage();
-		clickButton("tdGoodActivity");
+		
+		WebElement tdGoodActivity = waitForElementVisibility(By.id("tdGoodActivity"));
+		if(tdGoodActivity!=null)
+			tdGoodActivity.click();
+		
 		WebElement we = waitForElementVisibility(By.className("headerblue"));
 		if(we!=null && we.getText().equalsIgnoreCase("COMPLETED ACTIVITY LOG"))
 		{
@@ -971,7 +987,11 @@ public class EligibilityPage extends AbstractPageObject{
 
 	public boolean VerifyNavigationOfAdvanceSearchFromLiveSearch() throws Exception {
 		navigateToPage();
-		clickButton("tdGoodActivity");
+		
+		WebElement tdGoodActivity = waitForElementVisibility(By.id("tdGoodActivity"));
+		if(tdGoodActivity!=null)
+			tdGoodActivity.click();
+		
 		WebElement we = waitForElementVisibility(By.className("headerblue"));
 		if(we!=null && we.getText().equalsIgnoreCase("COMPLETED ACTIVITY LOG"))
 		{

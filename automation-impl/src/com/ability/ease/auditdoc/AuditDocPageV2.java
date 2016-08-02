@@ -36,11 +36,11 @@ public class AuditDocPageV2 extends AbstractPageObject{
 		String reportHeaderText = null;
 		String esMDStatusReportHdrXpath=helper.setESMDHeaderXPATH(esMDSubType);
 
-		//navigateToPage();
+		helper.navigateToESMDStatusPage(esMDSubType);
 		reportHeaderBefore = waitUntilElementVisibility(By.xpath(esMDStatusReportHdrXpath));
 		if(  reportHeaderBefore != null){
 			reportHeaderText = reportHeaderBefore.getText();
-			if(waitForElementToBeClickable(ByLocator.linktext, "Timeframe", 30) != null){
+			if(waitForElementToBeClickable(ByLocator.linktext, "Timeframe", 60) != null){
 				if(!reportHeaderText.contains("2011")){
 					helper.changeTimeFrame();
 					reportHeaderAfter = driver.findElement(By.xpath(esMDStatusReportHdrXpath));

@@ -4,6 +4,8 @@ import jsystem.framework.ParameterProperties;
 import jsystem.framework.TestProperties;
 import jsystem.framework.report.Reporter;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,6 +15,7 @@ import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFilesSize;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRSubType;
 import com.ability.ease.auto.enums.tests.SelectTimeframe;
 import com.ability.ease.auto.enums.tests.TestType;
+import com.ability.ease.auto.enums.portal.selenium.ESMDSubmissionType;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFileFomat;
 import com.ability.ease.common.BaseTest;
 import com.ability.ease.testapi.IAuditDoc;
@@ -34,6 +37,9 @@ public class AuditDocTests extends BaseTest{
 	private SelectTimeframe timeframe;
 	private String fromDate,toDate;
 	private String adrStatusReportColumnHeaders;
+	private ESMDSubmissionType esMDType;
+
+	public List<String> lsFilePaths;
 
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
 
@@ -54,7 +60,7 @@ public class AuditDocTests extends BaseTest{
 			report.report("Successfully validated ADR status report columns and links!!!",Reporter.ReportAttribute.BOLD);
 		}
 	}
-	
+
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
 	@TestProperties(name = "Verify ADR Response Document Upload Accepting PDF,TIFF / TIF Formats", 
@@ -126,31 +132,109 @@ public class AuditDocTests extends BaseTest{
 			report.report("Documet submitted is splitted successfully" , Reporter.ReportAttribute.BOLD);
 		}
 	}
-	
+
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Change Time Frame",paramsInclude = { "testType" })
+	@TestProperties(name = "Change Time Frame",paramsInclude = { "esMDType, testType" })
 	public void changeTimeFrame()throws Exception{
 
-		if(!auditdoc.changeTimeFrame()){
+		if(!auditdoc.changeTimeFrame(esMDType)){
 			report.report("Failed to change time frame !!!" , Reporter.FAIL);
 		}else{
 			report.report("Successfully changed time frame !!!" , Reporter.ReportAttribute.BOLD);
 		}
 	}
-	
+
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Change Agency To ${agency}",paramsInclude = { "agency, testType" })
+	@TestProperties(name = "Change Agency To ${agency}",paramsInclude = { "esMDType, agency, testType" })
 	public void changeAgency()throws Exception{
 
-		if(!auditdoc.changeAgency(agency)){
+		if(!auditdoc.changeAgency(esMDType,agency)){
 			report.report("Failed to change agency to -> " + agency, Reporter.FAIL);
 		}else{
 			report.report("Successfully changed to agency -> " + agency , Reporter.ReportAttribute.BOLD);
 		}
 	}
 
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Select Files To Upload For ${esMDType} Submission",
+	paramsInclude = { "esMDType, adrFileFormat, adrFileSize,reviewContractorName,testType" })
+	public void selectFilesToUpload()throws Exception{
+
+		report.report("Inside select files to upload method");
+		keepAsGloablParameter("adrFileFormat", adrFileFormat.toString());
+		keepAsGloablParameter("adrFileSize", adrFileSize.toString());
+
+		if(!auditdoc.selectFilesToUpload(esMDType, adrFileFormat, adrFileSize,reviewContractorName)){
+			report.report("Failed to upload files for " + esMDType + " submission !!!", Reporter.FAIL);
+		}else{
+			report.report("Successfully uploaded files for " + esMDType + " submission !!!!!!" , Reporter.ReportAttribute.BOLD);
+		}
+	}
+
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Navigate To ${esMDType} Submission Page",paramsInclude = { "esMDType,testType" })
+	public void navigateToESMDPage()throws Exception{
+
+		report.report("Inside navigate to esMD page method");
+		if(!auditdoc.navigateToESMDPage(esMDType)){
+			report.report("Navigation to " +  esMDType + " submission page has failed !!! " , Reporter.FAIL);
+		}else{
+			report.report("Navigation to " + esMDType + " submission page is successfull !!!", Reporter.ReportAttribute.BOLD);
+		}
+	}
+
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Fill ${esMDType} Submission Document Uploading Screen Values",
+	paramsInclude = { "esMDType,reviewContractorName, length, caseID, testType" })
+	public void fillDocumentUploadScreenValues()throws Exception{
+
+		report.report("Inside fill document upload screen values method");
+		claimIDDCN = String.valueOf(auditdoc.generateRandomInteger(length));
+		keepAsGloablParameter("reviewContractorName", reviewContractorName);
+		keepAsGloablParameter("claimIDDCN", claimIDDCN);
+		keepAsGloablParameter("caseID", caseID);
+
+		if(!auditdoc.fillDocumentUploadScreenValues(esMDType,reviewContractorName, claimIDDCN, caseID)){
+			report.report("Filling values in response document upload screen page has failed !!! " , Reporter.FAIL);
+		}else{
+			report.report("Filling valus in response document upload screen is successful !!!", Reporter.ReportAttribute.BOLD);
+		}
+	}
+
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Select Claim Record For Document Uploading For ${esMDType} Submission",
+	paramsInclude = { "esMDType,HIC,testType" })
+	public void selectClaimRecordToUploadDocuments()throws Exception{
+
+		report.report("Inside select claim record upload documents method");
+
+		if(!auditdoc.selectClaimRecordToUploadDocuments(esMDType, HIC)){
+			report.report("Failed to select claim record for document upload !!! " , Reporter.FAIL);
+		}else{
+			report.report("Claim record with " +  HIC + " is selected for document submission !!!", Reporter.ReportAttribute.BOLD);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Click CMS Link For ${esMDType} Submission",paramsInclude = { "esMDType,testType" })
+	public void clickCMSLink()throws Exception{
+
+		report.report("Inside click CMS link method");
+
+		if(!auditdoc.clickCMSLink(esMDType)){
+			report.report("Failed to click CMS link !!! " , Reporter.FAIL);
+		}else{
+			report.report("Succefully clicked CMS link !!!", Reporter.ReportAttribute.BOLD);
+		}
+	}
+	
 	/*###
 	# Getters and Setters
 	###*/
@@ -345,5 +429,16 @@ public class AuditDocTests extends BaseTest{
 	public void setAdrStatusReportColumnHeaders(String adrStatusReportColumnHeaders) {
 		this.adrStatusReportColumnHeaders = adrStatusReportColumnHeaders;
 	}
-	
+
+	public ESMDSubmissionType getEsMDType() {
+		return esMDType;
+	}
+
+
+	@ParameterProperties(description = "Select esMD Subbmission Type" )
+	public void setEsMDType(ESMDSubmissionType esMDType) {
+		this.esMDType = esMDType;
+	}
+
+
 }

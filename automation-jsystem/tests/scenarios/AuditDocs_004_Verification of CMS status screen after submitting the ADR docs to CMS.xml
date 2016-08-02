@@ -18,6 +18,12 @@
         <antcallback target="t0"/>
         <antcallback target="t1"/>
         <antcallback target="t2"/>
+        <antcallback target="t3"/>
+        <antcallback target="t4"/>
+        <antcallback target="t5"/>
+        <antcallback target="t6"/>
+        <antcallback target="t7"/>
+        <antcallback target="t8"/>
     </target>
     <target name="t0">
         <jsystem showoutput="true">
@@ -29,15 +35,63 @@
     </target>
     <target name="t1">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="4c0af161-98b5-478f-b287-62f2e7026a29"/>
+            <sysproperty key="jsystem.uuid" value="404420ac-6781-429c-892c-6eb3629007cb"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-            <test name="com.ability.ease.auditdoc.AuditDocTests.verifyADRDocumentUploadFileFormats"/>
+            <test name="com.ability.ease.auditdoc.AuditDocTests.navigateToESMDPage"/>
         </jsystem>
     </target>
     <target name="t2">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="1b05af2c-f24f-4335-98bb-f6dfd7d14d5c"/>
+            <sysproperty key="jsystem.uuid" value="2992e72e-96ee-42f3-a499-2d86ef0e5ac2"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.auditdoc.AuditDocTests.changeAgency"/>
+        </jsystem>
+    </target>
+    <target name="t3">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="4f4d8ee0-d79f-430d-9d77-fd32ab0c5024"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.auditdoc.AuditDocTests.changeTimeFrame"/>
+        </jsystem>
+    </target>
+    <target name="t4">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="885a070e-2988-444b-9186-31e469456d85"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.auditdoc.AuditDocTests.selectClaimRecordToUploadDocuments"/>
+        </jsystem>
+    </target>
+    <target name="t5">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="7f8c7091-acca-4d93-975e-0ba40b5db15c"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.auditdoc.AuditDocTests.fillDocumentUploadScreenValues"/>
+        </jsystem>
+    </target>
+    <target name="t6">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="97fbcb74-3e82-4cac-9585-70c738e3678f"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.auditdoc.AuditDocTests.selectFilesToUpload"/>
+        </jsystem>
+    </target>
+    <target name="t7">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="809a82f1-d3ec-4c92-b3dd-76da4eb4ada4"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.auditdoc.AuditDocTests.clickCMSLink"/>
+        </jsystem>
+    </target>
+    <target name="t8">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="a65c3e49-1fe6-40d0-84c2-355560f61919"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.auditdoc.AuditDocTests.verifyCMSStatusScreenAfterADRSubmission"/>

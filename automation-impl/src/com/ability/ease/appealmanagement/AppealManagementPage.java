@@ -437,12 +437,17 @@ public class AppealManagementPage extends AbstractPageObject{
 
 	public boolean verifyViewTag(String tagname, String hic) throws Exception {
 		int failurecount=0;
+		String xpath;
+		if(hic!=null)
+			xpath = "//table[@id='datatable']/tbody//td[a[text()='"+hic+"']]/preceding-sibling::td//a[contains(text(),'View Tags')]";
+		else
+			xpath = "//table[@id='datatable']/tbody//td//a[contains(text(),'View Tags')]";
 		if(waitForElementVisibility(By.xpath("//table[@id='datatable']"), 2)==null){
 			navigateToPage();
 			navigateToTStatusReport();
 		}
 
-		WebElement viewtagslink = waitForElementVisibility(By.xpath("//table[@id='datatable']/tbody//td[a[text()='"+hic+"']]/preceding-sibling::td//a[contains(text(),'View Tags')]"), 30);
+		WebElement viewtagslink = waitForElementVisibility(By.xpath(xpath), 30);
 
 			if(viewtagslink!=null){
 				viewtagslink.click();
@@ -611,6 +616,44 @@ public class AppealManagementPage extends AbstractPageObject{
 		}
 		return true;
 	}
+	
+	public boolean verifySearchCriteriawithclaimtagInAdvanceSearchPage(String claimtag) throws Exception {
+		navigateToPage();
+		navigateToTStatusReport(claimtag);
+		return verifyViewTag(claimtag);
+	}
+	
+	public boolean verifyViewTag(String tagname) throws Exception{
+		String xpath = "//table[@id='datatable']/tbody//td//a[contains(text(),'View Tags')]";
+		
+		WebElement viewtagslink = waitForElementVisibility(By.xpath(xpath), 30);
+
+			if(viewtagslink!=null){
+				viewtagslink.click();
+				Thread.sleep(5000);
+				WebElement claimstagheader = waitForElementVisibility(By.cssSelector(".headergreen"));
+				if(claimstagheader!=null)
+				{
+					//VerifyClaims Tag
+					String actualclaimtagname = getElementText(By.xpath("//div[@class='tag']/label[text()='"+tagname.toLowerCase()+"']"));
+					if(!Verify.StringEquals(tagname, actualclaimtagname)){
+						report.report("Actual and Expected Claim tags are not equal:", Reporter.WARNING);
+						return false;
+					}
+				}
+				else
+				{
+					report.report("Unable to navigate to view tag page:", Reporter.WARNING);
+					return false;
+				}
+			}
+			else
+			{
+				report.report("View Tag link is not found in the datatable:", Reporter.WARNING);
+				return false;
+			}
+			return true;
+	}
 
 	/*	public void verifyFieldsInModelDialogAndAddFirstAvailableTag(int firstaddtagrownumber) {
 
@@ -641,6 +684,16 @@ public class AppealManagementPage extends AbstractPageObject{
 		/*		WebElement searchbutton = waitForElementVisibility(By.xpath("//input[@value='Search']"));
 		if(searchbutton!=null)
 			moveToElement(searchbutton);*/
+		clickButtonV2(elementprop.getProperty("AS_SEARCH_BUTTON_TYPE"));
+		waitForTextVisibility(ByLocator.xpath, elementprop.getProperty("ADVANCED_SEARCH_RESULTS_PAGE_HEADER"), "SEARCH RESULTS");
+	}
+	
+	void navigateToTStatusReport(String claimtag) throws Exception{
+		WebElement reporthicsearch = waitForElementVisibility(By.id(elementprop.getProperty("REPORT_HIC_SEARCH")));
+		moveToElement(reporthicsearch);
+		clickLink("Advanced Search");
+		selectByNameOrID("SelectedProfileName", "T Status Report");
+		selectByNameOrID("UserClaimAppealTag", claimtag);
 		clickButtonV2(elementprop.getProperty("AS_SEARCH_BUTTON_TYPE"));
 		waitForTextVisibility(ByLocator.xpath, elementprop.getProperty("ADVANCED_SEARCH_RESULTS_PAGE_HEADER"), "SEARCH RESULTS");
 	}

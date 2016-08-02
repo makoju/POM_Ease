@@ -75,6 +75,11 @@ public class AppealSelenium2Impl implements IAppealManagement {
 		return appeal.sendDocumentToCMS(hic,claimIDorDCN,caseID,reviewContractorName);
 	}
 
+	@Override
+	public boolean verifySearchCriteriawithclaimtagInAdvanceSearchPage(String claimtag) throws Exception {
+		return appeal.verifySearchCriteriawithclaimtagInAdvanceSearchPage(claimtag);
+	}
+
 	
 
 }

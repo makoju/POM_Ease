@@ -43,18 +43,18 @@
     </target>
     <target name="t2">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="2992e72e-96ee-42f3-a499-2d86ef0e5ac2"/>
-            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
-            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-            <test name="com.ability.ease.auditdoc.AuditDocTests.changeAgency"/>
-        </jsystem>
-    </target>
-    <target name="t3">
-        <jsystem showoutput="true">
             <sysproperty key="jsystem.uuid" value="4f4d8ee0-d79f-430d-9d77-fd32ab0c5024"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.auditdoc.AuditDocTests.changeTimeFrame"/>
+        </jsystem>
+    </target>
+    <target name="t3">
+        <jsystem showoutput="true">
+            <sysproperty key="jsystem.uuid" value="2992e72e-96ee-42f3-a499-2d86ef0e5ac2"/>
+            <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+            <test name="com.ability.ease.auditdoc.AuditDocTests.changeAgency"/>
         </jsystem>
     </target>
     <target name="t4">

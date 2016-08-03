@@ -436,7 +436,7 @@ public class AuditDocHelper extends AbstractPageObject{
 		WebElement we = null;
 		boolean isElementPresent = false;
 		int count = 0;
-		while( !isElementPresent && count++ <= 5 ){
+		while( !isElementPresent && count++ <= 10 ){
 			try{
 				we = driver.findElement(By.xpath(sXpath));
 				String rcvdByCMSTime = we.getText();
@@ -448,12 +448,12 @@ public class AuditDocHelper extends AbstractPageObject{
 				}
 				if( rcvdByCMSTime.isEmpty() ){
 					navigateBack();
-					Thread.sleep(10000);
+					Thread.sleep(30000);
 					navigateForward();
 				}
 				//driver.findElement(By.xpath(sXpathRefresh)).click();
 			}catch(NoSuchElementException nsee){
-				Thread.sleep(10000);
+				Thread.sleep(30000);
 			}catch(Exception e){
 				try{
 					Alert alert = driver.switchTo().alert();
@@ -524,7 +524,9 @@ public class AuditDocHelper extends AbstractPageObject{
 			safeJavaScriptClick("MY DDE");
 			if( waitForElementToBeClickable(ByLocator.linktext, "Advanced", 30) != null){
 				safeJavaScriptClick("Advanced");
-				if( waitForElementToBeClickable(ByLocator.linktext, "ADR", 15) != null){
+				WebElement adrLink = waitForElementToBeClickable(ByLocator.linktext, "ADR", 15);
+				if( adrLink != null){
+					adrLink.click();
 					if(waitForElementToBeClickable(ByLocator.xpath, ADRPageXpath, 60) != null){
 						lsADRRecords = driver.findElements(By.xpath(sADRDataTableXpath));
 						recordCountFromADRReport = lsADRRecords.size();

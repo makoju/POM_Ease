@@ -93,11 +93,11 @@ public class Verify extends AbstractPageObject{
 		WebElement we = getTable(tableidentifier);
 
 		if(we != null){
-			WebElement dataelement = waitForElement(By.xpath("//tbody/tr["+row+"]"+"/td["+column+"]"));
+			WebElement dataelement = waitForElement(By.xpath("//table[@id='"+tableidentifier+"']/tbody/tr["+row+"]"+"/td["+column+"]"));
 			if(dataelement!=null)
 				text = dataelement.getText();
 			else
-				report.report("Specified Element not found by xpath: //tbody/tr["+row+"]"+"/td["+column+"]");
+				report.report("Specified Element not found by xpath: //table[@id='"+tableidentifier+"']/tbody/tr["+row+"]"+"/td["+column+"]");
 		}
 		else
 			report.report("No Table found with the given identifier"+tableidentifier);

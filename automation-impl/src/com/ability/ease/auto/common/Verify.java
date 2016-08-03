@@ -87,17 +87,17 @@ public class Verify extends AbstractPageObject{
 
 		return matched;
 	}
-	
+
 	public static String getTableData(String tableidentifier, int row, int column){
 		String text=null;
 		WebElement we = getTable(tableidentifier);
 
 		if(we != null){
-			WebElement dataelement = waitForElement(By.xpath("//tbody/tr["+row+"]"+"/td["+column+"]"));
+			WebElement dataelement = waitForElement(By.xpath("//table[@id='"+tableidentifier+"']/tbody/tr["+row+"]"+"/td["+column+"]"));
 			if(dataelement!=null)
 				text = dataelement.getText();
 			else
-				report.report("Specified Element not found by xpath: //tbody/tr["+row+"]"+"/td["+column+"]");
+				report.report("Specified Element not found by xpath: //table[@id='"+tableidentifier+"']/tbody/tr["+row+"]"+"/td["+column+"]");
 		}
 		else
 			report.report("No Table found with the given identifier"+tableidentifier);
@@ -319,11 +319,11 @@ public class Verify extends AbstractPageObject{
 		if(allColumns == null){
 			return false;
 		}
-//		String[] actualColNames = new String[allColumns.size()];
+		//		String[] actualColNames = new String[allColumns.size()];
 		ArrayList<String> actualColNames = new ArrayList<String>();
 		for(WebElement column : allColumns){
 			if(!column.getText().equals("")){
-//				actualColNames[i++] = column.getText();
+				//				actualColNames[i++] = column.getText();
 				actualColNames.add(column.getText());
 			}
 		}

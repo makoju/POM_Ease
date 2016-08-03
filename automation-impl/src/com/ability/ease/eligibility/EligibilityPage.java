@@ -144,7 +144,7 @@ public class EligibilityPage extends AbstractPageObject{
 		int goodactivitycountprev = getActivitycount("tdGoodActivity");
 
 		moveToElement(tblcompletedactivity);
-		WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstnamesuffix+"')]/../td[1]/a"));
+		WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//tr[1]/td[1]/a"));
 		if(we!=null){
 			we.click();
 		}
@@ -264,7 +264,15 @@ public class EligibilityPage extends AbstractPageObject{
 		navigateToPage();
 		if(!navigatetoPatientInfoScreen(hic))
 			return false;
-		clickLink("reporthome");
+		//clickLink("reporthome");
+		WebElement homelink = waitForElementVisibility(By.id("reportHome"));
+		if(homelink!=null)
+			homelink.click();
+		else
+		{
+			report.report("Home Icon link not found in Patient Information screen", Reporter.WARNING);
+			return false;
+		}
 
 		Thread.sleep(5000);
 
@@ -544,7 +552,8 @@ public class EligibilityPage extends AbstractPageObject{
 	private boolean navigatetoclaimdetails(String firstlastname) {
 		WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
 		moveToElement(tblcompletedactivity);
-		WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstlastname+"')]/following-sibling::td/a[text()='Details']"));
+		//WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstlastname+"')]/following-sibling::td/a[text()='Details']"));
+		WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//tr[1]/td/a[text()='Details']"));
 		if(we!=null){
 			we.click();
 		}
@@ -560,7 +569,8 @@ public class EligibilityPage extends AbstractPageObject{
 		WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
 		if(tblcompletedactivity!=null){
 			moveToElement(tblcompletedactivity);
-			WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstlastname+"')]/following-sibling::td/a[text()='Report']"));
+			//WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstlastname+"')]/following-sibling::td/a[text()='Report']"));
+			WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//tr[1]/td/a[text()='Report']"));
 			if(we!=null){
 				we.click();
 			}
@@ -587,7 +597,8 @@ public class EligibilityPage extends AbstractPageObject{
 
 		WebElement tblcompletedactivity = waitForElementVisibility(By.id("tdGoodActivity"));
 		moveToElement(tblcompletedactivity);
-		WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstnamesuffix+"')]/preceding-sibling::td/a[text()='"+hic+"']"));
+		//WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//td[contains(text(),'"+firstnamesuffix+"')]/preceding-sibling::td/a[text()='"+hic+"']"));
+		WebElement we = waitForElementVisibility(By.xpath("//table[@id='goodActivity']//tr[1]/td/a[text()='"+hic+"']"));
 		if(we!=null){
 			we.click();
 		}
@@ -853,7 +864,16 @@ public class EligibilityPage extends AbstractPageObject{
 		WebElement we = waitForElementVisibility(By.className("headerblue"));
 		if(we!=null && we.getText().equalsIgnoreCase("COMPLETED ACTIVITY LOG"))
 		{
-			clickLink("reportHome");
+			//clickLink("reportHome");
+			WebElement homelink = waitForElementVisibility(By.id("reportHome"));
+			if(homelink!=null)
+				homelink.click();
+			else
+			{
+				report.report("Home Icon link not found in Patient Information screen", Reporter.WARNING);
+				return false;
+			}
+
 			Thread.sleep(5000);
 
 			if(isTextPresent("OVERNIGHT SUMMARY REPORT"))
@@ -943,7 +963,16 @@ public class EligibilityPage extends AbstractPageObject{
 		WebElement we = waitForElementVisibility(By.className("headerblue"));
 		if(we!=null && we.getText().equalsIgnoreCase("COMPLETED ACTIVITY LOG"))
 		{
-			clickLink("reportDelete");
+			//clickLink("reportDelete");
+			WebElement deleteIconlink = waitForElementVisibility(By.id("reportDelete"));
+			if(deleteIconlink!=null)
+				deleteIconlink.click();
+			else
+			{
+				report.report("delete Icon link not found in Completed activity Log screen", Reporter.WARNING);
+				return false;
+			}
+
 			if(!verifyAlert("You must first check the checkboxes next to the specific items you want to select before you can proceed with this function.")){
 				report.report("Expected alert not present", Reporter.WARNING);
 				failurecount++;
@@ -957,7 +986,15 @@ public class EligibilityPage extends AbstractPageObject{
 				if(checkbox!=null)
 				{
 					checkbox.click();
-					clickLink("reportDelete");
+					//clickLink("reportDelete");
+					WebElement deleteIconlink1 = waitForElementVisibility(By.id("reportDelete"));
+					if(deleteIconlink1!=null)
+						deleteIconlink1.click();
+					else
+					{
+						report.report("delete Icon link not found in Completed activity Log screen", Reporter.WARNING);
+						return false;
+					}
 					if(!verifyAlert(sExpectedAlertmessage)){
 						report.report("Expected alert not present", Reporter.WARNING);
 						failurecount++;

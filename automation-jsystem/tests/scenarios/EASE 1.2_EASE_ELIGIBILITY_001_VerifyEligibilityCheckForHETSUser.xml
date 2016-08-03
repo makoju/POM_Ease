@@ -43,15 +43,15 @@
     </target>
     <target name="t2">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="5dd7e656-4137-4fd3-910e-a687a7ac8306"/>
+            <sysproperty key="jsystem.uuid" value="dd434ad0-1f63-4e4c-b321-6763d574875a"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-            <test name="com.ability.ease.eligibility.EligibilityTests.submitEligibilityCheck"/>
+            <test name="com.ability.ease.eligibility.EligibilityTests.getActivityCount"/>
         </jsystem>
     </target>
     <target name="t3">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="dd434ad0-1f63-4e4c-b321-6763d574875a"/>
+            <sysproperty key="jsystem.uuid" value="43ca853a-991a-4e7b-a0d0-09ee356f41fe"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
             <test name="com.ability.ease.eligibility.EligibilityTests.getActivityCount"/>
@@ -59,10 +59,10 @@
     </target>
     <target name="t4">
         <jsystem showoutput="true">
-            <sysproperty key="jsystem.uuid" value="43ca853a-991a-4e7b-a0d0-09ee356f41fe"/>
+            <sysproperty key="jsystem.uuid" value="5dd7e656-4137-4fd3-910e-a687a7ac8306"/>
             <sysproperty key="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <sysproperty key="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
-            <test name="com.ability.ease.eligibility.EligibilityTests.getActivityCount"/>
+            <test name="com.ability.ease.eligibility.EligibilityTests.submitEligibilityCheck"/>
         </jsystem>
     </target>
     <target name="t5">

@@ -156,7 +156,7 @@ public class AppealManagementTests extends BaseTest{
 	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "Verify View Tag", paramsInclude = { "testType,hic, tagname" })
+	@TestProperties(name = "Verify View Tag", paramsInclude = { "testType,hic,tagname" })
 	public void verifyViewTag()throws Exception{
 		if(appeal.verifyViewTag(tagname,hic)){
 			report.report("Successfully Viewed the added tag", Reporter.ReportAttribute.BOLD);
@@ -183,6 +183,17 @@ public class AppealManagementTests extends BaseTest{
 			report.report("Successfully deleted the added tag", Reporter.ReportAttribute.BOLD);
 		}else{
 			report.report("Failed to delete added tag", Reporter.FAIL);
+		}
+	}
+	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "VerifyClaimtagSearchinAdvanceSearchPage", paramsInclude = { "testType,tagname" })
+	public void verifySearchCriteriawithclaimtagInAdvanceSearchPage()throws Exception{
+		if(appeal.verifySearchCriteriawithclaimtagInAdvanceSearchPage(tagname)){
+			report.report("Successfully verified SearchCriteria with claimtag In Advance Search", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to verify SearchCriteria with claimtag In Advance Search", Reporter.FAIL);
 		}
 	}
 	

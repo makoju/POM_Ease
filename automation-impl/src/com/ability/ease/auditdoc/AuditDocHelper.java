@@ -149,7 +149,7 @@ public class AuditDocHelper extends AbstractPageObject{
 		WebElement we = waitForElementToBeClickable(ByLocator.id, "backNav", 10);
 		if ( we != null){
 			we.click();
-			waitForElementToBeClickable(ByLocator.xpath,elementprop.getProperty("ADR_STATUS_REPORT_HDR_XPATH"),30);
+			waitForElementToBeClickable(ByLocator.xpath,elementprop.getProperty("ADR_STATUS_REPORT_HDR_XPATH"),60);
 		}
 	}
 
@@ -534,7 +534,7 @@ public class AuditDocHelper extends AbstractPageObject{
 			}
 		}
 		return recordCountFromADRReport;
-	}
+	}	
 
 	public int getRecountFromESMDADRSubmission(String sAgency)throws Exception{
 
@@ -611,13 +611,13 @@ public class AuditDocHelper extends AbstractPageObject{
 
 		if(agency.contains("HHA")) {
 			String[] actualheadertooltips = reportHelper.getTableHeaderToolTips(tableHeadersXpath);
-			if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders_HHA,true)){
+			if (Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders_HHA,true)){
 				result = true;
 				report.report("Tool tips of ADR status report table columns have been verified for HHA provider !!!");
 			}
 		}else{
 			String[] actualheadertooltips = reportHelper.getTableHeaderToolTips(tableHeadersXpath);
-			if (!Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders_Generic,true)){
+			if (Verify.verifyArrayofStrings(actualheadertooltips, expectedheaders_Generic,true)){
 				result = true;
 				report.report("Tool tips of ADR status report table columns have been verified for Generic provider !!!");
 			}
@@ -636,16 +636,28 @@ public class AuditDocHelper extends AbstractPageObject{
 		String adrReportHeaderXpath = MessageFormat.format(elementprop.getProperty("ESMD_REPORT_HDR_XPATH"), esMDType.toString());
 
 		WebElement esMD = waitForElementToBeClickable(ByLocator.linktext, "esMD", 60);
+		String classAttr = esMD.getAttribute("class");
 		if ( esMD != null) {
-			safeJavaScriptClick(esMD);
-			WebElement adrLink = waitForElementToBeClickable(ByLocator.linktext, esMDType.toString()+" Submission", 60);
-			if ( adrLink != null ){
-				safeJavaScriptClick(adrLink);
-				WebElement reportHeader = waitForElementToBeClickable(ByLocator.xpath, adrReportHeaderXpath, 60);
-				if( reportHeader != null ){
-					stepResult = true;
-				}else{
-					report.report("Failed to navigate to " + esMDType.toString() + " submission page");
+			if( classAttr.equalsIgnoreCase("topNavAnchor topNavAnchorSelected")){
+				WebElement adrLink = waitForElementToBeClickable(ByLocator.linktext, esMDType.toString()+" Submission", 60);
+				if ( adrLink != null ){
+					safeJavaScriptClick(adrLink);
+					WebElement reportHeader = waitForElementToBeClickable(ByLocator.xpath, adrReportHeaderXpath, 60);
+					if( reportHeader != null ){
+						stepResult = true;
+					}
+				}
+			}else{
+				safeJavaScriptClick(esMD);
+				WebElement adrLink = waitForElementToBeClickable(ByLocator.linktext, esMDType.toString()+" Submission", 60);
+				if ( adrLink != null ){
+					safeJavaScriptClick(adrLink);
+					WebElement reportHeader = waitForElementToBeClickable(ByLocator.xpath, adrReportHeaderXpath, 60);
+					if( reportHeader != null ){
+						stepResult = true;
+					}else{
+						report.report("Failed to navigate to " + esMDType.toString() + " submission page");
+					}
 				}
 			}
 		}
@@ -679,8 +691,8 @@ public class AuditDocHelper extends AbstractPageObject{
 		}
 		return uploadIconXpath;
 	}
-	
-	
+
+
 	public String setReviewContractorAlertMgs(ESMDSubmissionType esMDSubType, String reviewContractorName)throws Exception{
 		String esMDType = esMDSubType.toString();
 		String reviewContractorAlertMsg = null;
@@ -695,9 +707,9 @@ public class AuditDocHelper extends AbstractPageObject{
 		return reviewContractorAlertMsg;
 
 	}
-	
+
 	public String setCMSStausTableHeaderXpath(ESMDSubmissionType esmdSubmissionType)throws Exception{
-		
+
 		String esMDType = esmdSubmissionType.toString();
 		String CMSStatusTableHeaderXPATH = null;
 

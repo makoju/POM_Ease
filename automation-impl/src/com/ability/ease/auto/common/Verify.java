@@ -87,7 +87,7 @@ public class Verify extends AbstractPageObject{
 
 		return matched;
 	}
-	
+
 	public static String getTableData(String tableidentifier, int row, int column){
 		String text=null;
 		WebElement we = getTable(tableidentifier);
@@ -319,11 +319,11 @@ public class Verify extends AbstractPageObject{
 		if(allColumns == null){
 			return false;
 		}
-//		String[] actualColNames = new String[allColumns.size()];
+		//		String[] actualColNames = new String[allColumns.size()];
 		ArrayList<String> actualColNames = new ArrayList<String>();
 		for(WebElement column : allColumns){
 			if(!column.getText().equals("")){
-//				actualColNames[i++] = column.getText();
+				//				actualColNames[i++] = column.getText();
 				actualColNames.add(column.getText());
 			}
 		}

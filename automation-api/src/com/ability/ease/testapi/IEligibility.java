@@ -6,7 +6,7 @@ public interface IEligibility {
 
 	abstract public boolean submitEligibilityCheck(Map<String, String> mapAttrVal)throws Exception;
 	abstract public boolean insertEligibilityCheckWithCompletedStatus(Map<String, String> mapAttrVal) throws Exception;
-	abstract public boolean verifyEligibilityStatus(String firstname, String lastname, String status) throws Exception;
+	abstract public boolean verifyEligibilityStatus(String hic, String status) throws Exception;
 	abstract public boolean navigatetoClaimDetails(String firstname, String lastname, String hic)throws Exception;
 	abstract public boolean acknoweldgeEligibility(String firstname, String lastname) throws Exception;
 	abstract public int getActivityCount(String status) throws Exception;

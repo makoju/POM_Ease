@@ -22,15 +22,15 @@
         <antcallback target="t4"/>
     </target>
     <target name="t0">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/Claims_Medium_Module.xml">
-            <property name="jsystem.uuid" value="a721691a-ba49-4e24-a23a-1b6fffd4fa1e"/>
+        <jsystem-ant antfile="${scenarios.base}/scenarios/HMOCatcher_Medium_Module.xml">
+            <property name="jsystem.uuid" value="576a899e-6a0c-4e7f-b4fe-892b53346c6c"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>
     </target>
     <target name="t1">
-        <jsystem-ant antfile="${scenarios.base}/scenarios/HMO_Medium_Module.xml">
-            <property name="jsystem.uuid" value="6ba56b65-85b0-45c5-8264-03a6e7ad87b6"/>
+        <jsystem-ant antfile="${scenarios.base}/scenarios/Claims_Medium_Module.xml">
+            <property name="jsystem.uuid" value="a721691a-ba49-4e24-a23a-1b6fffd4fa1e"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>

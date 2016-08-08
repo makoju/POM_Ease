@@ -901,9 +901,8 @@ public class EligibilityPage extends AbstractPageObject{
 				return false;
 			}
 
-			Thread.sleep(5000);
-
-			if(isTextPresent("OVERNIGHT SUMMARY REPORT"))
+			waitForElementVisibility(By.id("reportTimeframe"));
+			if(isTextPresent("OVERNIGHT") && isTextPresent("SUMMARY REPORT FOR"))
 			{
 				report.report("Successfully navigated to home page", ReportAttribute.BOLD);
 				return true;
@@ -1028,6 +1027,19 @@ public class EligibilityPage extends AbstractPageObject{
 					}
 					else
 					{
+						Thread.sleep(2000);
+						if(isAlertPresent()){
+							Alert alert = driver.switchTo().alert();
+							report.report("Found an unexpected alert. Closing it. "+alert.getText());
+							if(alert.getText().contains("Could not cancel requests. Make sure the selected requests have not completed")){
+								report.report("Its a Customer Escalation. See this link for more information",Reporter.FAIL);
+								report.report("http://msptfsapp01.abilitynetwork.com:8080/tfs/AbilityDevelopmentProjectsCollection/EASE/_workitems#_a=edit&id=25976&triage=true ", Reporter.FAIL);
+								alert.dismiss();
+								return false;
+							}
+
+							alert.dismiss();
+						}
 						//check the size of the table it should be reduced by one
 						int newsize = findElements(By.xpath("//table[@id='datatable']/tbody/tr")).size();
 						Assert.assertTrue(newsize == prevtablesize-1);

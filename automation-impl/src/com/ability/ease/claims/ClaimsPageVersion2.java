@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 
 import com.ability.ease.auto.common.TestCommonResource;
@@ -15,7 +16,10 @@ import com.ability.ease.auto.common.Verify;
 import com.ability.ease.auto.dataStructure.common.AttibuteXMLParser.UIAttributeXMLParser;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
+import com.ability.ease.auto.enums.tests.NewUB04;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
+
+import jsystem.framework.report.Reporter.ReportAttribute;
 
 public class ClaimsPageVersion2 extends AbstractPageObject {
 
@@ -89,7 +93,7 @@ public class ClaimsPageVersion2 extends AbstractPageObject {
 
 		//navigate to MY DDE page
 		navigateToPage();
-		WebElement searchIcon = waitForElementToBeClickable(ByLocator.id, reportHICSearch, 60);
+		WebElement searchIcon = waitForElementToBeClickable(ByLocator.id, reportHICSearch, 20);
 		//WebElement searchIcon = waitUntilElementVisibility(By.id(elementprop.getProperty("REPORT_HIC_SEARCH_ICON")));
 		moveToElement(searchIcon);
 		WebElement advancesearchlink = waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty("ADV_SEARCH_XPATH"), 60);
@@ -407,7 +411,7 @@ public class ClaimsPageVersion2 extends AbstractPageObject {
 			}
 		}
 
-		
+
 		return stepResult;
 	}
 
@@ -421,10 +425,10 @@ public class ClaimsPageVersion2 extends AbstractPageObject {
 
 		String startTime = ClaimsHelper.getCurrentTimeFromEaseDB();
 		fillscreen.fillScreenAttributes(lsAttributes);
-		clickLinkV2("claimSubmit");
+		clickLinkV2("Submit");
 
 		if (helper.handleSubmitWarningAlert(lsAttributes) ){
-			
+
 			Thread.sleep(3000);
 			String endTime = ClaimsHelper.getCurrentTimeFromEaseDB();
 			sRequestDetails = helper.getUB04XMLFromDatabase(startTime, endTime);
@@ -504,7 +508,48 @@ public class ClaimsPageVersion2 extends AbstractPageObject {
 		return ClaimsHelper.getCurrentTimeFromEaseDB();
 	}
 
+	public boolean openNewClaimFormFromExistingClaim(NewUB04 relatedORUnRelated)throws Exception{
+		boolean stepResult = false;
+		String relORUnRelClaim = relatedORUnRelated.toString();
 
+		WebElement ub04 = waitForElementToBeClickable(ByLocator.id, elementprop.getProperty("NEW_UB04_ID"), 60);
+
+		if( ub04 != null ){
+			driver.findElement(By.name(elementprop.getProperty("CLAIM_FORM_CLOSE_NAME"))).click();
+			verifyAlert("Are you sure you want to discard this claim?");
+			moveToElement(ub04);
+			clickLink(relORUnRelClaim);
+			moveToElement(driver.findElement(By.id(elementprop.getProperty("CLAIM_SAVE_ID"))));
+			if( waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty("NEW_REL_UNREL_CLAIM_XPATH"), 30) != null){
+				report.report("New " + relORUnRelClaim + " has been opened successfully !!!" );
+				WebElement tob = waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty("TOB_XPATH"), 10);
+				if( tob != null){
+					if( relatedORUnRelated.toString().equalsIgnoreCase("Related")){
+						tob.sendKeys("145");
+					}else{
+						tob.sendKeys("145");
+						driver.findElement(By.name("ub6a")).sendKeys("10082016");
+					}
+					
+					clickLinkV2("Submit");
+					//clickButtonV2("yesConfirmEditClaimButton");
+					safeJavaScriptClick(waitForElementToBeClickable(ByLocator.id, "yesConfirmEditClaimButton", 30));
+					waitForAlert(driver);
+					if( verifyAlert("Changes scheduled!")){
+						stepResult = true;
+						report.report("Claim request has been submitted successfully", ReportAttribute.BOLD);
+					}else{
+						report.report("Failed to submit related claim!!!");
+					}
+				}
+
+			}else{
+				report.report("Failed to open new " + relORUnRelClaim + " from existing claim !!!");
+			}
+		}
+
+		return stepResult;
+	}
 	@Override
 	public void assertInPage() {
 		// TODO Auto-generated method stub
@@ -513,17 +558,17 @@ public class ClaimsPageVersion2 extends AbstractPageObject {
 	@Override
 	public void navigateToPage() throws Exception {
 		try{
-			WebElement myddelink = waitForElementToBeClickable(ByLocator.linktext, myDDELink, 80);
-			//WebElement myddelink = waitUntilElementVisibility(By.linkText(myDDELink));
+			WebElement myddelink = waitForElementToBeClickable(ByLocator.linktext, myDDELink, 120);
 			String classAttr = myddelink.getAttribute("class");
 			if ( myddelink != null) {
 				if( classAttr.equalsIgnoreCase("topNavAnchor topNavAnchorSelected") && 
-						waitForElementToBeClickable(ByLocator.id, ub04Link, 30) == null){
+						waitForElementToBeClickable(ByLocator.id, ub04Link, 60) == null){
 					safeJavaScriptClick(myDDELink);
+					waitForElementVisibility(By.id(ub04Link),70);
 					report.report("Clicked on MY DDE link");
 				}else{
 					safeJavaScriptClick(myddelink);
-					waitForElementToBeClickable(ByLocator.id, ub04Link, 30);
+					waitForElementToBeClickable(ByLocator.id, ub04Link, 70);
 				}
 			}
 		}catch(Exception e){

@@ -2,6 +2,8 @@ package com.ability.ease.testapi;
 
 import java.util.Map;
 
+import com.ability.ease.auto.enums.tests.NewUB04;
+
 public interface IClaims {
 
 	public boolean verifyUB04FormFeatures(Map<String, String> mapAttrVal)throws Exception;
@@ -65,5 +67,7 @@ public interface IClaims {
 			String patientControlNumber)throws Exception;
 	
 	public boolean comeBackToHomePage()throws Exception;
+	
+	public boolean openNewClaimFormFromExistingClaim(NewUB04 relatedORUnRelated)throws Exception;
 	
 }

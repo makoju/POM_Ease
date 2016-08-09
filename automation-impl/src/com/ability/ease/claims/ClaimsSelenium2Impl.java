@@ -2,6 +2,7 @@ package com.ability.ease.claims;
 
 import java.util.Map;
 
+import com.ability.ease.auto.enums.tests.NewUB04;
 import com.ability.ease.testapi.IClaims;
 
 public class ClaimsSelenium2Impl implements IClaims{
@@ -161,5 +162,10 @@ public class ClaimsSelenium2Impl implements IClaims{
 	@Override
 	public boolean comeBackToHomePage() throws Exception {
 		return claimsv2.comeBackToHomePage();
+	}
+
+	@Override
+	public boolean openNewClaimFormFromExistingClaim(NewUB04 relatedORUnRelated) throws Exception {
+		return claimsv2.openNewClaimFormFromExistingClaim(relatedORUnRelated);
 	}
 }

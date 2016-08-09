@@ -87,10 +87,10 @@ public class EligibilityTests extends BaseTest{
 	 */
 	@Test(timeout = TEST_TIMEOUT)
 	@SupportTestTypes(testTypes = { TestType.Selenium2 })
-	@TestProperties(name = "Verify Eligibility ${description}", paramsInclude = { "description,firstname,lastname,status, testType" })
+	@TestProperties(name = "Verify Eligibility ${description}", paramsInclude = { "description,hic,status, testType" })
 	public void verifyEligibilityStatus() throws Exception {
 		report.report("Inside verifyEligibility tests method");
-		if(!elig.verifyEligibilityStatus(firstname, lastname, status)) {
+		if(!elig.verifyEligibilityStatus(hic, status)) {
 			report.report("Failed to verify eligibility !!!", Reporter.FAIL);
 		} else {
 			report.report("Eligibility verified !!!", Reporter.PASS);

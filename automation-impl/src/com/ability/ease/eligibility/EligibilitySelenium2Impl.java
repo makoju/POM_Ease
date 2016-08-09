@@ -14,8 +14,8 @@ public class EligibilitySelenium2Impl implements IEligibility{
 	}
 	
 	@Override
-	public boolean verifyEligibilityStatus(String firstname, String lastname,String status) throws Exception {
-		return eligPage.verifyEligibilityStatus(firstname, lastname, status);
+	public boolean verifyEligibilityStatus(String hic,String status) throws Exception {
+		return eligPage.verifyEligibilityStatus(hic, status);
 	}
 
 	@Override

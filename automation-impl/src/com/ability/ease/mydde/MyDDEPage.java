@@ -318,7 +318,7 @@ public class MyDDEPage extends AbstractPageObject{
 		navigateToPage();
 		WebElement liveSearchIcon = waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty("MYDDE_HIC_ICON_XPATH"), 30);
 		moveToElement(liveSearchIcon);
-		clickLink(elementprop.getProperty("ADVANCED_SEARCH_LINKTEXT"));
+		clickLink(elementprop.getProperty("LIVESEARCH_ADVANCED_SEARCH_LINKTEXT").trim());
 		selectByNameOrID(elementprop.getProperty("AS_AGENCY_DROPDOWN_ID"),"All");
 		selectByNameOrID(elementprop.getProperty("AS_STATUS_DROPDOWN_ID"), "Suspense");
 		typeEditBox(elementprop.getProperty("AS_LOCATION_TEXTBOX_ID"), "B6001");

@@ -428,25 +428,27 @@ public class AuditDocHelper extends AbstractPageObject{
 		}
 	}
 
-	public boolean waitForADRResponsePageToBeVisible(String sXpath) throws InterruptedException{
+	public boolean waitForADRResponsePageToBeVisible(String CMSACKColumnXpath,String reviewerACKColumnXpath) throws InterruptedException{
 
 		//String xpathToADRSubPage = "//td[contains(text(),'ADR Response Document Submission Report')]";
 		//String sXpathRefresh = "//a[@id='refreshPage']";
 		boolean result = false;
-		WebElement we = null;
+		WebElement cms = null, reviewer = null;
 		boolean isElementPresent = false;
 		int count = 0;
 		while( !isElementPresent && count++ <= 10 ){
 			try{
-				we = driver.findElement(By.xpath(sXpath));
-				String rcvdByCMSTime = we.getText();
-				report.report("Text from Received by reviewer column is : " + rcvdByCMSTime + " in " + count + " try");
-				if( we != null && !rcvdByCMSTime.isEmpty()) {
+				cms = driver.findElement(By.xpath(CMSACKColumnXpath));
+				reviewer = driver.findElement(By.xpath(reviewerACKColumnXpath));
+				String rcvdByCMSTime = cms.getText();
+				String rcvdByReviewerTime = reviewer.getText();
+				report.report("Values from Received By CMS Column and Received By Reviewer Column are : " + rcvdByCMSTime + " " + rcvdByReviewerTime + " in " + count + " try");
+				if( (cms != null && !rcvdByCMSTime.isEmpty()) && (reviewer != null && !rcvdByReviewerTime.isEmpty())) {
 					isElementPresent = true;
 					result = true;
 					break;
 				}
-				if( rcvdByCMSTime.isEmpty() ){
+				if( rcvdByCMSTime.isEmpty() && rcvdByReviewerTime.isEmpty()){
 					navigateBack();
 					Thread.sleep(30000);
 					navigateForward();

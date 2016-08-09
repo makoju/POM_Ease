@@ -138,7 +138,7 @@ public class AuditDocPage extends AbstractPageObject{
 			waitForElementToBeClickable(ByLocator.id, "forwardNav", 10);
 			helper.navigateForward();
 
-			if( helper.waitForADRResponsePageToBeVisible(receivedByCMSESTXpath) ){
+			if( helper.waitForADRResponsePageToBeVisible(receivedByCMSESTXpath, receivedByReviewerESTXpath) ){
 
 				//validations
 				List<WebElement> lsADRSubmissionTableHeaders = helper.getReportTableHeaders("datatable");

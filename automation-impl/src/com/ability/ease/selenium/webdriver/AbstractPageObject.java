@@ -346,8 +346,12 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				result = browserInfo.substring(browserInfo.indexOf("Firefox"), browserInfo.length());
 				break;
 			case InternetExplorer:
-				String substr = browserInfo.substring(browserInfo.indexOf("MSIE"), browserInfo.length()-1);
-				result = substr.substring(0, substr.indexOf(";"));
+				String ie = browserInfo.substring(browserInfo.indexOf("MSIE"), browserInfo.length()-1);
+				result = ie.substring(0, ie.indexOf(";"));
+				break;
+			case Chrome:
+				String chrome = browserInfo.substring(browserInfo.indexOf("Chrome"), browserInfo.length()-1);
+				result = chrome.substring(0, chrome.indexOf(";"));
 				break;
 			default:
 				break;
@@ -617,11 +621,12 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}		
 		if (element!=null) {
 			WebDriverHelper.highlightElement(driver, element);
+			element.click();/*
 			if (WorkingEnvironment.getWebdriverType() == WebDriverType.INTERNET_EXPLORER_DRIVER) {
 				element.click();
 				//sendEnterOnWebElement(element);
 				return;
-			}
+			}*/
 			//element.click();
 		} else { 
 			throw new Exception ("Web element not found: " + elementLocator); 
@@ -778,7 +783,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			break;
 		}		
 		if (element!=null) {
-			
+
 			WebDriverHelper.highlightElement(driver, element);
 
 			if (WorkingEnvironment.getWebdriverType() == WebDriverType.INTERNET_EXPLORER_DRIVER) {
@@ -1063,8 +1068,8 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 				"@title='" + editBoxName + "' or " +
 				"@id='"+ editBoxName + "' or " +
 				"@type='" + editBoxName + "' ] | //textarea[@name='" + editBoxName + "' or "+" @id='"+ editBoxName + "'] | "
-						+ "//td[contains(text(),'"+ editBoxName + "')]/input[@type='text'] | "
-								+ "//table[@id = '"+ editBoxName + "']//input[@type='text'] | //input[@data-column='"+editBoxName+"']";
+				+ "//td[contains(text(),'"+ editBoxName + "')]/input[@type='text'] | "
+				+ "//table[@id = '"+ editBoxName + "']//input[@type='text'] | //input[@data-column='"+editBoxName+"']";
 		int count = 0 ;
 		waitForElementVisibility(By.xpath(xpath));
 		enterTextToField (xpath, textToType); 
@@ -1155,7 +1160,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			report.report("Unable to find an element with the xpath: "+ xpath, ReportAttribute.BOLD);
 			return;
 		}
-		
+
 		WebDriverHelper.highlightElement(driver, we);
 		setSelectedField(we, valueToSelect);
 
@@ -1242,7 +1247,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		}
 
 		WebElement element = waitForElementVisibility(By.xpath(xpath));
-			
+
 		driver.findElement(By.xpath(xpath)).click();
 	}
 	/**
@@ -1526,12 +1531,12 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		String xpath = "//input[@name='" + editBoxName + "' or " +
 				"@title='" + editBoxName + "' or " +
 				"@id='"+ editBoxName + "'] | //textarea[@name='" + editBoxName + "' or @id='"+ editBoxName + "']";
-		
+
 		waitForElementVisibility(By.xpath(xpath));
 
 		return driver.findElement(By.xpath(xpath)).getText().trim(); 
 	}
-	
+
 	/**
 	 * Use this method to get the current state of a check box
 	 * @param checkboxName
@@ -1830,7 +1835,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		try {
 			if (element.isEnabled() && element.isDisplayed()) {
 				System.out.println("Clicking on element using java script click");
-				
+
 				((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
 			} else {
 				System.out.println("Unable to click on element");

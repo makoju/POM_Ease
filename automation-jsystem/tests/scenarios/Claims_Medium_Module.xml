@@ -25,6 +25,9 @@
         <antcallback target="t7"/>
         <antcallback target="t8"/>
         <antcallback target="t9"/>
+        <antcallback target="t10"/>
+        <antcallback target="t11"/>
+        <antcallback target="t12"/>
     </target>
     <target name="t0">
         <jsystem-ant antfile="${scenarios.base}/scenarios/TS_EASE_UB04_004_Verifying the Help text fields in the UB04.xml">
@@ -92,6 +95,27 @@
     <target name="t9">
         <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_CLAIMS_022_Opening UB04 form with Patient details.xml">
             <property name="jsystem.uuid" value="9278d576-c259-4474-9614-95a711af7784"/>
+            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+        </jsystem-ant>
+    </target>
+    <target name="t10">
+        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_CLAIMS_024_Navigate to patient information page from existing claim form.xml">
+            <property name="jsystem.uuid" value="57e37e9b-a311-4bc5-8039-e3904d437cc4"/>
+            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+        </jsystem-ant>
+    </target>
+    <target name="t11">
+        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_CLAIMS_025_New claim submission using Unrelated claim from existing claim.xml">
+            <property name="jsystem.uuid" value="097e98ef-8b72-4b8e-aa9e-39b90e1ca8a3"/>
+            <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
+            <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
+        </jsystem-ant>
+    </target>
+    <target name="t12">
+        <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_CLAIMS_026_New claim submission using Related claim from existing claim.xml">
+            <property name="jsystem.uuid" value="d5d2b24b-ab6d-4d7e-8ca7-427d9b6f7b99"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>

@@ -18,6 +18,7 @@ import com.ability.ease.auto.common.test.resource.TestCommonResource;
 import com.ability.ease.auto.dlgproviders.AttributeNameValueDialogProvider;
 import com.ability.ease.auto.enums.common.UIAttributesXMLFileName;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ClaimStatusType;
+import com.ability.ease.auto.enums.tests.NewUB04;
 import com.ability.ease.auto.enums.tests.TestType;
 import com.ability.ease.common.AttributePair;
 import com.ability.ease.common.BaseTest;
@@ -40,6 +41,7 @@ public class ClaimsTests extends BaseTest{
 	private String claimLinePosition;
 	private String undoOption;
 	private String unlockOption;
+	private NewUB04 relOrUnRelClaim;
 
 	private float claimTotalChargesCovered;
 	private float claimTotalChargesNonCovered;
@@ -157,8 +159,10 @@ public class ClaimsTests extends BaseTest{
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
 		HIC = mapAttrValues.get("Insureds Unique ID Primary");
 		claimLineEntries = mapAttrValues.get("ClaimLineEntries");
-		keepAsGloablParameter("HIC", HIC);
-		keepAsGloablParameter("claimLineEntries", claimLineEntries);
+		if( HIC != null && claimLineEntries != null){
+			keepAsGloablParameter("HIC", HIC);
+			keepAsGloablParameter("claimLineEntries", claimLineEntries);
+		}
 		if(!claims.fillUB04FormValuesOnly(mapAttrValues)){
 			report.report("Fail to fill values in UB04 form !!", Reporter.FAIL);
 		}else{
@@ -227,9 +231,9 @@ public class ClaimsTests extends BaseTest{
 		Map<String,String> mapAttrValues = AttrStringstoMapConvert.convertAttrStringstoMapV2(AttributeNameValueDialogProvider);
 		keepAsGloablParameter("patientcontrolnumber", patientControlNumber);
 		if(!claims.openClaimRecordFromAdvanceSearchPage(mapAttrValues, patientControlNumber)){
-			report.report("Failed to verify edit claim line dropdown options !!!", Reporter.FAIL);
+			report.report("Failed to open claim record from advance search page !!!", Reporter.FAIL);
 		}else{
-			report.report("Successfully verified edit claim line dropdown options !!!", Reporter.ReportAttribute.BOLD);
+			report.report("Successfully opened claim record from advance search page !!!", Reporter.ReportAttribute.BOLD);
 		}
 	}
 
@@ -517,6 +521,24 @@ public class ClaimsTests extends BaseTest{
 		}
 	}
 
+
+	/**
+	 * Use this method to come back to EASE home / landing page 
+	 * @throws Exception
+	 */
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "Open New ${relOrUnRelClaim} ", paramsInclude = { "relOrUnRelClaim, testType" })
+	public void openNewClaimFormFromExistingClaim()throws Exception{
+
+		report.report("Inside openNewClaimFormFromExistingClaim method");
+		if(!claims.openNewClaimFormFromExistingClaim(relOrUnRelClaim)){
+			report.report("Failed to open new " + relOrUnRelClaim.toString() + " !!!",Reporter.FAIL);
+		}else{
+			report.report("Successfully opened new "+  relOrUnRelClaim + " !!!",Reporter.ReportAttribute.BOLD);
+		}
+	}
+
 	/**
 	 * Handle UI event method
 	 */
@@ -676,5 +698,16 @@ public class ClaimsTests extends BaseTest{
 	public void setUnlockOption(String unlockOption) {
 		this.unlockOption = unlockOption;
 	}
+
+	public NewUB04 getRelOrUnRelClaim() {
+		return relOrUnRelClaim;
+	}
+
+	@ParameterProperties(description = "Please related or unrelated from the dropdown")
+	public void setRelOrUnRelClaim(NewUB04 relOrUnRelClaim) {
+		this.relOrUnRelClaim = relOrUnRelClaim;
+	}
+
+
 
 }

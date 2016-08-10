@@ -101,21 +101,21 @@
     </target>
     <target name="t10">
         <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_CLAIMS_024_Navigate to patient information page from existing claim form.xml">
-            <property name="jsystem.uuid" value="57e37e9b-a311-4bc5-8039-e3904d437cc4"/>
+            <property name="jsystem.uuid" value="affac724-8c77-4102-910a-948f0f9cd1ff"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>
     </target>
     <target name="t11">
         <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_CLAIMS_025_New claim submission using Unrelated claim from existing claim.xml">
-            <property name="jsystem.uuid" value="097e98ef-8b72-4b8e-aa9e-39b90e1ca8a3"/>
+            <property name="jsystem.uuid" value="a5124d4a-4510-440d-b16b-01f86b931943"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>
     </target>
     <target name="t12">
         <jsystem-ant antfile="${scenarios.base}/scenarios/EASE_CLAIMS_026_New claim submission using Related claim from existing claim.xml">
-            <property name="jsystem.uuid" value="d5d2b24b-ab6d-4d7e-8ca7-427d9b6f7b99"/>
+            <property name="jsystem.uuid" value="91d94f8f-194e-4878-80d0-aac3248c341a"/>
             <property name="jsystem.parent.uuid" value="${jsystem.parent.uuid}.${jsystem.uuid}"/>
             <property name="jsystem.parent.name" value="${jsystem.parent.name}.${ant.project.name}"/>
         </jsystem-ant>

@@ -2118,6 +2118,11 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			report.report(f.getName() + " not found!!!");
 		}
 	}
+	
+	public static void handleUnhandledAlerts(){
+		Alert alert = driver.switchTo().alert();
+		report.report("Found an unexpected alert: "+alert.getText()+" Closing it. Please have a look why its coming.", Reporter.WARNING);
+	}
 
 	//#########################################   Getters & Setters ###################################################
 	/**

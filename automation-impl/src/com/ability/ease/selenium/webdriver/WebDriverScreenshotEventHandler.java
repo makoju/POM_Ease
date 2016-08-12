@@ -14,6 +14,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.events.WebDriverEventListener;
@@ -129,8 +130,11 @@ public class WebDriverScreenshotEventHandler implements WebDriverEventListener, 
 	}
 
 	public void onException(Throwable arg0, WebDriver arg1) {
-	if (! (arg0 instanceof NoSuchElementException) && 
-			! (arg0.toString().contains("Element not found in the cache"))) {
+		if(arg0 instanceof UnhandledAlertException){
+			AbstractPageObject.handleUnhandledAlerts();
+		}
+		if (! (arg0 instanceof NoSuchElementException) && 
+				! (arg0.toString().contains("Element not found in the cache"))) {
 			takeScreenshot(arg1, "OnException-screenshot");
 		}
 	}

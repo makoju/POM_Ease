@@ -2122,6 +2122,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	public static void handleUnhandledAlerts(){
 		Alert alert = driver.switchTo().alert();
 		report.report("Found an unexpected alert: "+alert.getText()+" Closing it. Please have a look why its coming.", Reporter.WARNING);
+		alert.accept();
 	}
 
 	//#########################################   Getters & Setters ###################################################

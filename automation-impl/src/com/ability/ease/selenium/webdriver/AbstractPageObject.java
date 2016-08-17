@@ -1636,7 +1636,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	}
 	public void moveByOffset(WebElement element,int xCo,int yCo){
 		Actions builder = new Actions(driver);
-		Action moveAndClick = builder.moveToElement(element, xCo, yCo).build();
+		Action moveAndClick = builder.moveToElement(element, xCo, yCo).click().build();
 		moveAndClick.perform();
 	}
 	public void moveByOffset(String sElementText,int xCo, int yCo){

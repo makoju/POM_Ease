@@ -27,6 +27,7 @@ import jsystem.framework.report.Reporter.ReportAttribute;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -38,7 +39,10 @@ import com.ability.ease.auto.common.TestCommonResource;
 import com.ability.ease.auto.common.UB04FormXMLParser;
 import com.ability.ease.auto.dataStructure.common.AttibuteXMLParser.UIAttributeXMLParser;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
+import com.ability.ease.auto.enums.portal.BrowserType;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
+import com.ability.ease.auto.enums.portal.selenium.WebDriverType;
+import com.ability.ease.auto.system.WorkingEnvironment;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 public class ClaimsHelper extends AbstractPageObject{
@@ -333,8 +337,11 @@ public class ClaimsHelper extends AbstractPageObject{
 
 	public void moveToEditIcon(String xpath)throws Exception{
 		WebElement we = driver.findElement(By.xpath(xpath));
-		moveByOffset(we,-20,0);
-
+		if( WorkingEnvironment.getWebdriverType() != WebDriverType.FIREFOX_DRIVER){
+			moveByOffset(we,-20,0);
+		}else{
+			moveByOffset(we,-22,0);
+		}
 	}
 
 	public void addClaimLine(String sClaimLine,String sLineNumber, String sPosition) throws Exception{

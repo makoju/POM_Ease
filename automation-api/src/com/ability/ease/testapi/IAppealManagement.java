@@ -15,4 +15,5 @@ public interface IAppealManagement {
 	boolean verifyDeleteTag(String tagname, String hic, String expectedalertmessage) throws Exception;
 	boolean sendDocumentToCMS(String hic, String claimIDorDCN, String caseID, String reviewContractorName) throws Exception;
 	boolean verifySearchCriteriawithclaimtagInAdvanceSearchPage(String claimtag) throws Exception;
+	boolean verifyAddTagUnderCLAIMTAGGINGINFORMATIONScreen() throws Exception;
 }

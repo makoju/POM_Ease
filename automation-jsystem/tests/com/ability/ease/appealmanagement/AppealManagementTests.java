@@ -197,6 +197,17 @@ public class AppealManagementTests extends BaseTest{
 		}
 	}
 	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "verifyAddTagUnderCLAIMTAGGINGINFORMATIONScreen", paramsInclude = { "testType" })
+	public void verifyAddTagUnderCLAIMTAGGINGINFORMATIONScreen()throws Exception{
+		if(appeal.verifyAddTagUnderCLAIMTAGGINGINFORMATIONScreen()){
+			report.report("Successfully verified AddTag functionality Under CLAIMTAGGINGINFORMATION Screen", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to verify AddTag functionality Under CLAIMTAGGINGINFORMATION Screen", Reporter.FAIL);
+		}
+	}
+	
 
 	public String getMonthsAgo() {
 		return monthsAgo;

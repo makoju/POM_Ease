@@ -468,15 +468,17 @@ public class AppealManagementPage extends AbstractPageObject{
 				SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");				
 				String expecteddate = format.format(date);
 
-				List<WebElement> lsClaimtaghistory = findElements(By.cssSelector("#claimTagHisTable  td"));
+				//List<WebElement> lsClaimtaghistory = findElements(By.cssSelector("//table[@id='claimTagHisTable']// td[text()='Level_1_Appeal']"));
+				WebElement taghistory = waitForElementVisibility(By.xpath("//table[@id='claimTagHisTable']//td[text()='"+tagname+"']"));
 				String actualtagname=null;
 				String username = null;
 				String taggedon=null;
+				List<WebElement> lsClaimtaghistory = findElements(By.xpath("//table[@id='claimTagHisTable']//td[text()='"+tagname+"']/following-sibling::td"));
 				//Get the data from the First row of claim tags history table
-				if(!lsClaimtaghistory.isEmpty()){
-					actualtagname = lsClaimtaghistory.get(0).getText().trim();
-					username = lsClaimtaghistory.get(1).getText().trim();
-					taggedon = lsClaimtaghistory.get(2).getText().trim();
+				if(taghistory!=null){
+					actualtagname = taghistory.getText().trim();
+					username = lsClaimtaghistory.get(0).getText().trim();
+					taggedon = lsClaimtaghistory.get(1).getText().trim();
 
 					if(!Verify.StringEquals(tagname.trim(), actualtagname))
 					{
@@ -494,7 +496,8 @@ public class AppealManagementPage extends AbstractPageObject{
 						failurecount++;
 					}
 
-					clickLink("View Notes");
+					//clickLink("View Notes");
+					driver.findElement(By.xpath("//a[contains(@href,'"+tagname+"') and text()='View Notes']")).click();
 					try{
 						if(waitForElementVisibility(By.xpath("//td[text()='Test']"))==null)
 						{
@@ -662,12 +665,13 @@ public class AppealManagementPage extends AbstractPageObject{
 		navigateToPage();
 		navigateToTStatusReport();
 		navigateToFirstViewTag();
-		Thread.sleep(5000);
+		Thread.sleep(10000); //its going fast in chrome browser hence set the worst case wait time of 10 secs
 		WebElement claimstagheader = waitForElementVisibility(By.cssSelector(".headergreen"));
 		if(claimstagheader==null){
 			report.report("Unable to navigate to Claim Tag information Screen", Reporter.WARNING);
 			return false;
 		}
+		
 		clickButtonV2("Add Tag");
 		Thread.sleep(5000); //wait till any alert appears
 		
@@ -679,8 +683,11 @@ public class AppealManagementPage extends AbstractPageObject{
 			Alert alert = driver.switchTo().alert();
 			report.report("Alert found was: "+alert.getText());
 			alert.accept();
-			//delete any one tag and try again
-			WebElement deletetaglink = waitForElementVisibility(By.xpath("//label[contains(text(),'level_')]/following-sibling::a"));
+			/*
+			 *apadavala
+			 *delete any one tag other than level_1_appeal tag because this tag may subject to appeal submission in which case we end up unexpected alert
+			saying "Appeal submission made for this claim. EASE Level 1 Appeal tag cannot be removed." */
+			WebElement deletetaglink = waitForElementVisibility(By.xpath("//label[contains(text(),'level_2_appeal')]/following-sibling::a"));
 			if(deletetaglink!=null){
 				deletetaglink.click();
 				if(!verifyAlert("Are you sure to remove the tag? Please confirm"))
@@ -692,7 +699,12 @@ public class AppealManagementPage extends AbstractPageObject{
 			else{
 				report.report("Unable to find any tag contains level_ In Claim Tagging Information Page", Reporter.WARNING);
 				return false;
-			}			
+			}
+			
+			Thread.sleep(6000); //apadavala: wait for 6 seconds until the delete tag action performed above will finish
+			//otherwise if we try to click on Add Tag we are experiencing an error called
+			//Trying org.openqa.selenium.WebDriverException: unknown error: Element is not clickable at point (1002, 321). 
+			//Other element would receive the click: <td align="CENTER">...</td>
 			clickButtonV2("Add Tag");
 		}
 		
@@ -724,12 +736,13 @@ public class AppealManagementPage extends AbstractPageObject{
 				String tagadded = lstags.get(0).getText();
 				lstags.get(0).click();
 			
-				typeEditBox("ClaimTagNoteTextId", "Test");
-				clickButton("Submit");
+				//Its matching two nodes with same html. Hence, Using own xpath
+				//typeEditBox("ClaimTagNoteTextId", "Test");
+				//clickButton("Submit");
+				driver.findElement(By.xpath("//div[not(contains(@style,'display: none'))]//textarea[@id='ClaimTagNoteTextId']")).sendKeys("Test");;
+				driver.findElement(By.xpath("//div[not(contains(@style,'display: none'))]//button[text()='Submit']")).click();
 				
 				return verifyViewTag(tagadded, null);
-			}
-			catch(Exception e){
 			}
 			finally{
 				report.report("Verifying whether modal dialog present. If it's visible closing it");
@@ -744,8 +757,28 @@ public class AppealManagementPage extends AbstractPageObject{
 			report.report("Add Tag Modal Dialog not found: ",Reporter.WARNING);
 			return false;
 		}
-		
-		return false;
+	}
+	
+
+	public boolean verifyCMSStatusColumnForHHAAgency(String hic, String status) throws Exception {
+		String actualstatus=null;
+		navigateToPage();
+		SimpleDateFormat todaydate = new SimpleDateFormat("MM//DD//YYYY");
+		String today = new String(todaydate.format(new Date())); 
+		setTimeFrame("FromDate(10/01/2013):ToDate("+today+")");
+		moveToElement(elementprop.getProperty("AGENCY_LIST_MENU"));
+		selectByNameOrID(elementprop.getProperty("AGENCY_HOVER_DROPDOWN_ID"), "HHA1");
+		clickButton(elementprop.getProperty("CHANGE_AGENCY_BUTTON"));
+		WebElement cmsstatuselement = waitForElementVisibility(By.xpath("//table[@id='datatable']//td[a[text()='"+hic+"']]/following-sibling::td[last()]"));
+		if(cmsstatuselement!=null){
+			actualstatus = cmsstatuselement.getText().trim();
+		}
+		else
+		{
+			report.report("CMS Status link not found corresponding to the hic: "+hic+ " in Appeal Submissions table");
+			return false;
+		}
+		return Verify.StringEquals(actualstatus, status.trim());
 	}
 
 	/*	public void verifyFieldsInModelDialogAndAddFirstAvailableTag(int firstaddtagrownumber) {
@@ -774,10 +807,13 @@ public class AppealManagementPage extends AbstractPageObject{
 		moveToElement(reporthicsearch);
 		clickLink("Advanced Search");
 		selectByNameOrID("SelectedProfileName", "T Status Report");
-		/*		WebElement searchbutton = waitForElementVisibility(By.xpath("//input[@value='Search']"));
+		WebElement searchbutton = waitForElementVisibility(By.xpath("//input[@value='Search']"));
 		if(searchbutton!=null)
-			moveToElement(searchbutton);*/
-		clickButtonV2(elementprop.getProperty("AS_SEARCH_BUTTON_TYPE"));
+			moveToElement(searchbutton);
+		//clickButton(elementprop.getProperty("AS_SEARCH_BUTTON_TYPE"));
+	/*	WebElement searchbutton = driver.findElement(By.xpath("//input[@value='Search']"));
+		safeJavaScriptClick(searchbutton);*/
+		searchbutton.click();
 		waitForTextVisibility(ByLocator.xpath, elementprop.getProperty("ADVANCED_SEARCH_RESULTS_PAGE_HEADER"), "SEARCH RESULTS");
 	}
 
@@ -851,4 +887,5 @@ public class AppealManagementPage extends AbstractPageObject{
 			}
 		}
 	}
+
 }

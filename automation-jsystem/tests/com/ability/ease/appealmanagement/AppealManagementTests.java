@@ -208,6 +208,17 @@ public class AppealManagementTests extends BaseTest{
 		}
 	}
 	
+	@Test
+	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
+	@TestProperties(name = "verifyCMSStatusColumnForHHAAgency", paramsInclude = { "testType" })
+	public void verifyCMSStatusColumnForHHAAgency(String hic, String status)throws Exception{
+		if(appeal.verifyCMSStatusColumnForHHAAgency(hic,status)){
+			report.report("Successfully verified CMSStatus Column Value in Appeal Submission for HHA Agency", Reporter.ReportAttribute.BOLD);
+		}else{
+			report.report("Failed to verify CMSStatus Column Value in Appeal Submission for HHA Agency", Reporter.FAIL);
+		}
+	}
+		
 
 	public String getMonthsAgo() {
 		return monthsAgo;

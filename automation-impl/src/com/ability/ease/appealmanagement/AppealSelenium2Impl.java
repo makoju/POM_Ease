@@ -86,6 +86,8 @@ public class AppealSelenium2Impl implements IAppealManagement {
 		return appeal.verifyAddTagUnderCLAIMTAGGINGINFORMATIONScreen();
 	}
 
-	
-
+	@Override
+	public boolean verifyCMSStatusColumnForHHAAgency(String hic, String status) throws Exception {
+		return appeal.verifyCMSStatusColumnForHHAAgency(hic, status);
+	}
 }

@@ -30,6 +30,7 @@ public class AppealManagementTests extends BaseTest{
 	private AttributeNameValueDialogProvider[] AttributeNameValueDialogProvider;
 	private String tagname;
 	private String expectedalertmessage;
+	private String cmsstatus;
 
 	@Before
 	public void setupTests()throws Exception{
@@ -210,9 +211,9 @@ public class AppealManagementTests extends BaseTest{
 	
 	@Test
 	@SupportTestTypes(testTypes = { TestType.Selenium2 } )
-	@TestProperties(name = "verifyCMSStatusColumnForHHAAgency", paramsInclude = { "testType" })
-	public void verifyCMSStatusColumnForHHAAgency(String hic, String status)throws Exception{
-		if(appeal.verifyCMSStatusColumnForHHAAgency(hic,status)){
+	@TestProperties(name = "verifyCMSStatusColumnForHHAAgency", paramsInclude = { "testType,hic,cmsstatus" })
+	public void verifyCMSStatusColumnForHHAAgency()throws Exception{
+		if(appeal.verifyCMSStatusColumnForHHAAgency(hic,cmsstatus)){
 			report.report("Successfully verified CMSStatus Column Value in Appeal Submission for HHA Agency", Reporter.ReportAttribute.BOLD);
 		}else{
 			report.report("Failed to verify CMSStatus Column Value in Appeal Submission for HHA Agency", Reporter.FAIL);
@@ -306,6 +307,14 @@ public class AppealManagementTests extends BaseTest{
 
 	public void setReviewContractorName(String reviewContractorName) {
 		this.reviewContractorName = reviewContractorName;
+	}
+
+	public String getCmsstatus() {
+		return cmsstatus;
+	}
+
+	public void setCmsstatus(String cmsstatus) {
+		this.cmsstatus = cmsstatus;
 	}
 
 	@ParameterProperties(description = "Provide the UI Screen Attributes to be set as a AttributeName,AttributeValue Pair")

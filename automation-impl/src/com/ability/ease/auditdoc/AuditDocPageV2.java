@@ -27,7 +27,7 @@ public class AuditDocPageV2 extends AbstractPageObject{
 	String esMDLink = elementprop.getProperty("ESMD_LINK");
 
 
-	String agenycDropDownID = elementprop.getProperty("ESMD_AGENCY_DROPDOWN_ID");
+	String agencyMenuID = elementprop.getProperty("AGENCY_MENU_ID");
 
 	public boolean changeTimeFrame(ESMDSubmissionType esMDSubType)throws Exception{
 
@@ -37,7 +37,8 @@ public class AuditDocPageV2 extends AbstractPageObject{
 		String esMDStatusReportHdrXpath=helper.setESMDHeaderXPATH(esMDSubType);
 
 		helper.navigateToESMDStatusPage(esMDSubType);
-		reportHeaderBefore = waitUntilElementVisibility(By.xpath(esMDStatusReportHdrXpath));
+		reportHeaderBefore = waitForElementToBeClickable(ByLocator.xpath, esMDStatusReportHdrXpath, 80);
+		//reportHeaderBefore = waitUntilElementVisibility(By.xpath(esMDStatusReportHdrXpath));
 		if(  reportHeaderBefore != null){
 			reportHeaderText = reportHeaderBefore.getText();
 			if(waitForElementToBeClickable(ByLocator.linktext, "Timeframe", 60) != null){
@@ -60,9 +61,9 @@ public class AuditDocPageV2 extends AbstractPageObject{
 
 		String esMDStatusReportHdrXpath=helper.setESMDHeaderXPATH(esMDSubType);
 
-		if(waitForElementToBeClickable(ByLocator.id, agenycDropDownID, 10) != null){
+		if(waitForElementToBeClickable(ByLocator.id, agencyMenuID, 60) != null){
 			moveToElement(elementprop.getProperty("AGENCY_LINK"));
-			selectByNameOrID(agenycDropDownID, agency);
+			selectByNameOrID(elementprop.getProperty("ESMD_AGENCY_DROPDOWN_ID"), agency);
 			clickButton(elementprop.getProperty("CHANGE_AGENCY_BUTTON"));
 			moveToElement(driver.findElement(By.id("reportPrint")));
 			WebElement we = waitForElementToBeClickable(ByLocator.xpath, esMDStatusReportHdrXpath, 30);
@@ -81,6 +82,7 @@ public class AuditDocPageV2 extends AbstractPageObject{
 	public boolean verifyADRESMDStatusReportColumns(String HIC,String patientName,String daysDue,
 			String thirtyDayDueDate,String code,String expectedADRStatusReportTableHeaders,String agency)throws Exception{
 
+		Thread.sleep(5000);
 		List<WebElement> lsADRStatusReportTabelColumns = helper.getReportTableHeaders(elementprop.getProperty("REPORT_TABLE_ID"));
 		lsADRStatusReportTabelColumns.remove(0);
 		if ( Verify.compareTableHeaderNames(lsADRStatusReportTabelColumns, expectedADRStatusReportTableHeaders)){
@@ -200,12 +202,12 @@ public class AuditDocPageV2 extends AbstractPageObject{
 	}
 
 	public boolean clickCMSLink(ESMDSubmissionType esmdSubmissionType)throws Exception{
-		
+
 		boolean stepResult = false;
 		String esMDCMSStatusReportHeaderXPATH = helper.setCMSStausTableHeaderXpath(esmdSubmissionType);
-		
+
 		WebElement cmsLink = waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty("CMS_LINK_XPATH"), 10);
-		
+
 		if( cmsLink != null){
 			clickLink("Sent to CMS");
 			if(waitForElementToBeClickable(ByLocator.xpath, esMDCMSStatusReportHeaderXPATH, 60) != null){
@@ -213,9 +215,9 @@ public class AuditDocPageV2 extends AbstractPageObject{
 				stepResult = true;
 			}
 		}
-		
+
 		return stepResult;
-		
+
 	}
 
 	@Override

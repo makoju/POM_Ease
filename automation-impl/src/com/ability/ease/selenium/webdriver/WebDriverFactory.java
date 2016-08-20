@@ -176,6 +176,7 @@ public class WebDriverFactory {
 			if (windowMaximize == true) {
 				report("open webDriver chrome with the flag of Maximized.");
 				switches.add("--start-maximized");
+				switches.add("--disable-extensions");
 			}
 
 			if (ignoreCertificateErrors == true) {

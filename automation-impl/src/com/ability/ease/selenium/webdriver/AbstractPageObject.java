@@ -1627,12 +1627,11 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	public void moveToElement(WebElement element) {
 		Actions builder = new Actions(driver);
 		Action moveAndClick = builder.moveToElement(element).build();
-		moveAndClick.perform();	
+		moveAndClick.perform();
 	}
 	public void moveToElement(String sElementText){
 		WebElement we = waitForElementVisibility(By.linkText(sElementText));
-		moveToElement(we);
-		//moveToElementAndClick(we);
+		moveToElementAndClick(we);
 	}
 	public void moveByOffset(WebElement element,int xCo,int yCo){
 		Actions builder = new Actions(driver);
@@ -1656,6 +1655,25 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		moveAndClick.perform();	
 	}
 
+	public void mouseHoverJScript(WebElement hoverElement) {
+		try {
+			if (hoverElement != null) {
+				String mouseOverScript = "if(document.createEvent){var evObj = document.createEvent('MouseEvents');evObj.initEvent('mouseover', true, false); "
+						+ "arguments[0].dispatchEvent(evObj);} else if(document.createEventObject) { arguments[0].fireEvent('onmouseover');}";
+				((JavascriptExecutor) driver).executeScript(mouseOverScript,
+						hoverElement);
+			} else {
+				report.report("Element was not visible to hover " + "\n");
+			}
+		} catch (StaleElementReferenceException e) {
+			report.report("Element with " + hoverElement + "is not attached to the page document" + e.getStackTrace());
+		} catch (NoSuchElementException e) {
+			report.report("Element " + hoverElement + " was not found in DOM" + e.getStackTrace());
+		} catch (Exception e) {
+			e.printStackTrace();
+			report.report("Error occurred while hovering" + e.getStackTrace());
+		}
+}
 	public void moveToElementAndClickCss(String cssString) {
 		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(cssString)));
 		new WebDriverWait(driver, 20).until(ExpectedConditions.elementToBeClickable(By.cssSelector(cssString)));

@@ -21,15 +21,19 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.JavascriptExecutor;
 
 import com.ability.ease.auto.common.MySQLDBUtil;
 import com.ability.ease.auto.common.TestCommonResource;
 import com.ability.ease.auto.common.Verify;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
 import com.ability.ease.auto.enums.portal.selenium.ESMDSubmissionType;
+import com.ability.ease.auto.enums.portal.selenium.WebDriverType;
 import com.ability.ease.auto.enums.tests.EaseSubMenuItems.ADRFileFomat;
+import com.ability.ease.auto.system.WorkingEnvironment;
 import com.ability.ease.claims.ClaimsHelper;
 import com.ability.ease.mydde.reports.ReportsHelper;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
@@ -77,7 +81,7 @@ public class AuditDocHelper extends AbstractPageObject{
 			"The last time the claim was updated in Ease from DDE.",
 	"ADR Response Document Submission status."};
 
-
+	String backNavigationID = elementprop.getProperty("BACKNAV_ID");
 
 	public void clickTimeFrame(String location,String value)throws Exception{ 
 		moveToElement(location);
@@ -146,15 +150,21 @@ public class AuditDocHelper extends AbstractPageObject{
 	}
 
 	public void navigateBack() throws Exception	{
-		WebElement we = waitForElementToBeClickable(ByLocator.id, "backNav", 10);
-		if ( we != null){
-			we.click();
-			waitForElementToBeClickable(ByLocator.xpath,elementprop.getProperty("ADR_STATUS_REPORT_HDR_XPATH"),60);
+
+		if( WorkingEnvironment.getWebdriverType() != WebDriverType.FIREFOX_DRIVER){
+			WebElement we = waitForElementToBeClickable(ByLocator.id, backNavigationID, 10);
+			if ( we != null){
+				we.click();
+				waitForElementToBeClickable(ByLocator.xpath,elementprop.getProperty("ADR_STATUS_REPORT_HDR_XPATH"),60);
+			}
+		}else{
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", driver.findElement(By.id(backNavigationID)));
+			Thread.sleep(5000);
 		}
 	}
 
 	public void navigateForward() throws Exception{
-		WebElement we = waitForElementToBeClickable(ByLocator.id, "forwardNav", 10);
+		WebElement we = waitForElementToBeClickable(ByLocator.id, elementprop.getProperty("FWDNAV_ID"), 10);
 		safeJavaScriptClick(we);
 		Thread.sleep(5000);
 	}
@@ -472,7 +482,9 @@ public class AuditDocHelper extends AbstractPageObject{
 	}
 
 	public void changeTimeFrame()throws Exception{
-		moveToElement("Timeframe");
+		Thread.sleep(5000);
+		WebElement we = retryUntilElementIsVisible("//*[@id='reportTimeframe']", 3);
+		moveToElement(we);
 		typeEditBox("reportCustomDateFrom", "2/23/2011");
 		report.report("Changed from date field to 2/23/2011");
 		clickButtonV2("reportTimeframeButton");
@@ -653,6 +665,7 @@ public class AuditDocHelper extends AbstractPageObject{
 				}
 			}else{
 				safeJavaScriptClick(esMD);
+				Thread.sleep(20000);
 				WebElement adrLink = waitForElementToBeClickable(ByLocator.linktext, esMDType.toString()+" Submission", 60);
 				if ( adrLink != null ){
 					safeJavaScriptClick(adrLink);

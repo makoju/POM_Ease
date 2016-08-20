@@ -80,6 +80,14 @@ public class AppealSelenium2Impl implements IAppealManagement {
 		return appeal.verifySearchCriteriawithclaimtagInAdvanceSearchPage(claimtag);
 	}
 
-	
+	@Override
+	public boolean verifyAddTagUnderCLAIMTAGGINGINFORMATIONScreen()
+			throws Exception {
+		return appeal.verifyAddTagUnderCLAIMTAGGINGINFORMATIONScreen();
+	}
 
+	@Override
+	public boolean verifyCMSStatusColumnForHHAAgency(String hic, String status) throws Exception {
+		return appeal.verifyCMSStatusColumnForHHAAgency(hic, status);
+	}
 }

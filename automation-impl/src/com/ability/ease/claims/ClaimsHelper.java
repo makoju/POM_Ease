@@ -108,6 +108,8 @@ public class ClaimsHelper extends AbstractPageObject{
 		if ( mydde != null) {
 			if( !classAttr.equalsIgnoreCase("topNavAnchor topNavAnchorSelected")){
 				safeJavaScriptClick("MY DDE");
+				//added this wait to overcome failures on FF and chrome
+				Thread.sleep(5000);
 				waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 60);
 				return;
 			}else{
@@ -338,7 +340,7 @@ public class ClaimsHelper extends AbstractPageObject{
 	public void moveToEditIcon(String xpath)throws Exception{
 		WebElement we = driver.findElement(By.xpath(xpath));
 		if( WorkingEnvironment.getWebdriverType() != WebDriverType.FIREFOX_DRIVER){
-			moveByOffset(we,-20,0);
+			moveAndClickByOffset(we,-20,0);
 		}else{
 			moveByOffset(we,-22,0);
 		}

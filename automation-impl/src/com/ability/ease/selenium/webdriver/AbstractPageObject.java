@@ -1631,13 +1631,28 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 	}
 	public void moveToElement(String sElementText){
 		WebElement we = waitForElementVisibility(By.linkText(sElementText));
-		moveToElementAndClick(we);
+		moveToElement(we);
 	}
+	
+	/*
+	 * moveByOffset is for Firefox browser
+	 */
 	public void moveByOffset(WebElement element,int xCo,int yCo){
+		Actions builder = new Actions(driver);
+		Action moveAndClick = builder.moveToElement(element, xCo, yCo).build();
+		moveAndClick.perform();
+	}
+	
+	/*
+	 * moveAndClickByOffset is for IE and Chrome browsers
+	 */
+	
+	public void moveAndClickByOffset(WebElement element,int xCo,int yCo){
 		Actions builder = new Actions(driver);
 		Action moveAndClick = builder.moveToElement(element, xCo, yCo).click().build();
 		moveAndClick.perform();
 	}
+	
 	public void moveByOffset(String sElementText,int xCo, int yCo){
 		WebElement we = waitForElementVisibility(By.linkText(sElementText), 60);
 		moveByOffset(we,xCo,yCo);
@@ -1954,7 +1969,9 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 					element.click();*/
 				return;
 			}else{
-				element.click();
+				//element.click();
+				((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+				Thread.sleep(10000);
 			}
 
 		} else { 

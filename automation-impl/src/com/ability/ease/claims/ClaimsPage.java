@@ -121,13 +121,14 @@ public class ClaimsPage extends AbstractPageObject{
 		}
 
 		//get current time from ease DB
-		Thread.sleep(5000);
+		Thread.sleep(60000);
 		String endTime = ClaimsHelper.getCurrentTimeFromEaseDB();
 		//validation 6 :: verify XML file
 		String sRequestDetails[] = helper.getUB04XMLFromDatabase(startTime, endTime);
 		sClaimRequestID = sRequestDetails[0];
 		sClaimRequestXML = sRequestDetails[1];
 
+		report.report("Claim Request ID from ddez.userdderequest Table is : " + sClaimRequestID);
 		String sFileName = TestCommonResource.getTestResoucresDirPath()+"UB04XMLs\\Claim_"+sClaimRequestID+".xml";
 
 		if( helper.validateXMLFileFields(lsAttributes, sClaimRequestXML, sFileName)){
@@ -290,12 +291,13 @@ public class ClaimsPage extends AbstractPageObject{
 
 		String endTime = ClaimsHelper.getCurrentTimeFromEaseDB();
 		//waiting to record to be pushed unto the database
-		Thread.sleep(5000);
+		Thread.sleep(10000);
 		//get the xml file from database
 		String sRequestDetails[] = helper.getUB04XMLFromDatabase(startTime, endTime);
 		sClaimRequestID = sRequestDetails[0];
 		sClaimRequestXML = sRequestDetails[1];
 
+		report.report("Claim Request ID from ddez.userdderequest Table is : " + sClaimRequestID);
 		String sFileName = TestCommonResource.getTestResoucresDirPath()+"UB04XMLs\\Claim_"+sClaimRequestID+".xml";
 
 		if( helper.validateXMLFileFields(lsAttributes, sClaimRequestXML, sFileName)){

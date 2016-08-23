@@ -18,6 +18,8 @@ import com.ability.ease.auto.common.Verify;
 import com.ability.ease.auto.dataStructure.common.AttibuteXMLParser.UIAttributeXMLParser;
 import com.ability.ease.auto.dataStructure.common.easeScreens.Attribute;
 import com.ability.ease.auto.enums.portal.selenium.ByLocator;
+import com.ability.ease.auto.enums.portal.selenium.WebDriverType;
+import com.ability.ease.auto.system.WorkingEnvironment;
 import com.ability.ease.selenium.webdriver.AbstractPageObject;
 
 public class ClaimsPage extends AbstractPageObject{
@@ -474,7 +476,11 @@ public class ClaimsPage extends AbstractPageObject{
 			report.report("Fail : there is a mismatch in data on edit claim line model dailog window");
 			failCounter++;
 		}
-		driver.findElement(By.xpath(sXpathToOKButton)).click();
+		if( WorkingEnvironment.getWebdriverType() != WebDriverType.FIREFOX_DRIVER){
+			driver.findElement(By.xpath(sXpathToOKButton)).click();
+		}else{
+			safeJavaScriptClick(driver.findElement(By.xpath(sXpathToOKButton)));
+		}
 		clickLinkV2("claimSubmit");
 		if (helper.handleSubmitWarningAlert(lsAttributes) ){
 			report.report("Successfully filled values in UB04 form");

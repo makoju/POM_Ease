@@ -1633,7 +1633,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		WebElement we = waitForElementVisibility(By.linkText(sElementText));
 		moveToElement(we);
 	}
-	
+
 	/*
 	 * moveByOffset is for Firefox browser
 	 */
@@ -1642,17 +1642,17 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 		Action moveAndClick = builder.moveToElement(element, xCo, yCo).build();
 		moveAndClick.perform();
 	}
-	
+
 	/*
 	 * moveAndClickByOffset is for IE and Chrome browsers
 	 */
-	
+
 	public void moveAndClickByOffset(WebElement element,int xCo,int yCo){
 		Actions builder = new Actions(driver);
 		Action moveAndClick = builder.moveToElement(element, xCo, yCo).click().build();
 		moveAndClick.perform();
 	}
-	
+
 	public void moveByOffset(String sElementText,int xCo, int yCo){
 		WebElement we = waitForElementVisibility(By.linkText(sElementText), 60);
 		moveByOffset(we,xCo,yCo);
@@ -1688,7 +1688,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			e.printStackTrace();
 			report.report("Error occurred while hovering" + e.getStackTrace());
 		}
-}
+	}
 	public void moveToElementAndClickCss(String cssString) {
 		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(cssString)));
 		new WebDriverWait(driver, 20).until(ExpectedConditions.elementToBeClickable(By.cssSelector(cssString)));
@@ -1969,8 +1969,9 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 					element.click();*/
 				return;
 			}else{
-				//element.click();
-				((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+				((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);", element);
+				//((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+				element.click();
 				Thread.sleep(10000);
 			}
 
@@ -2153,7 +2154,7 @@ public abstract class AbstractPageObject implements HasWebDriver, Observer  {
 			report.report(f.getName() + " not found!!!");
 		}
 	}
-	
+
 	public static void handleUnhandledAlerts(){
 		Alert alert = driver.switchTo().alert();
 		report.report("Found an unexpected alert: "+alert.getText()+" Closing it. Please have a look why its coming.", Reporter.WARNING);

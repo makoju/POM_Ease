@@ -26,9 +26,12 @@ import jsystem.framework.report.Reporter;
 import jsystem.framework.report.Reporter.ReportAttribute;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -443,7 +446,17 @@ public class ClaimsHelper extends AbstractPageObject{
 		WebElement we = driver.switchTo().activeElement();
 		if( we != null){
 			report.report("Text present on warning dailoge : " + we.getText());
-			clickButtonV2("ub04-warning-submit-button");
+			if( WorkingEnvironment.getWebdriverType() != WebDriverType.FIREFOX_DRIVER){
+				clickButtonV2("ub04-warning-submit-button");
+			}else{
+				WebDriverWait wait = new WebDriverWait(driver, 60);
+				WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.id("ub04-warning-submit-button")));
+				((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);", element);
+				//((JavascriptExecutor)driver).executeScript("argument[0].click()", element);
+				element.click();
+				Thread.sleep(5000);
+			}
+			
 			if (waitForElementToBeClickable(ByLocator.id, "yesConfirmEditClaimButton", 30) != null )
 				result = true;
 		}else{

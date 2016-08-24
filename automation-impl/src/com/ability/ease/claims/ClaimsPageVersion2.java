@@ -99,10 +99,14 @@ public class ClaimsPageVersion2 extends AbstractPageObject {
 		WebElement advancesearchlink = waitForElementToBeClickable(ByLocator.xpath, elementprop.getProperty("ADV_SEARCH_XPATH"), 60);
 		//WebElement advancesearchlink  = waitUntilElementVisibility(By.xpath(elementprop.getProperty("ADV_SEARCH_XPATH")));
 		safeJavaScriptClick(advancesearchlink);
+		//added this wait to over come navigation issues with FF
+		Thread.sleep(10000);
 		report.report("Clicked on Advanced Search link");
 		//fill advance search page filters and click search
 		fillscreen.fillScreenAttributes(lsAttributes);
 		clickButtonV2(elementprop.getProperty("SEARCH_BUTTON"));
+		//added this wait to over come navigation issues with FF
+		Thread.sleep(5000);
 
 		//wait for search result to be displayed
 		if(waitForElementToBeClickable(ByLocator.xpath, searchResPageHdr, 60) != null){

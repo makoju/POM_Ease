@@ -541,6 +541,7 @@ public class ClaimsPage extends AbstractPageObject{
 		Thread.sleep(5000);
 		waitForElementToBeClickable(ByLocator.linktext, "MY DDE", 60);
 		safeJavaScriptClick("MY DDE");
+		Thread.sleep(5000);
 		waitForElementToBeClickable(ByLocator.id, "reportNewUB04", 60);
 		try{
 			waitForElementToBeClickable(ByLocator.xpath, xpathToOverNightReportHeader, 60);
